@@ -127,7 +127,7 @@ force_recreate() {
     echo -e "${RED}#${RESET} Failed to pull the latest Docker images. Please check your network connection and the Docker registry status, then try again."
     exit 1
   fi
-  
+
   echo -e "${YELLOW}#${RESET} Forcing recreation of containers..."
   if ! docker compose -p cairn -f /opt/cairn/compose.yml up -d --force-recreate; then
     echo -e "${RED}#${RESET} Failed to recreate containers. Please check the Docker logs for more details."

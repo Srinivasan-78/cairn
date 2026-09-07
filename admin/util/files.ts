@@ -39,7 +39,7 @@ export async function chownRecursive(targetPath: string, uid: number, gid: numbe
         const stats = await fs.promises.stat(targetPath);
 
         await fs.promises.chown(targetPath, uid, gid);
-        
+
         if (stats.isDirectory()) {
             const items = await fs.promises.readdir(targetPath);
             for (const item of items) {

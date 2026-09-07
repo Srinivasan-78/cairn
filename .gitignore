@@ -51,3 +51,7 @@ admin/storage
 .env.*
 !.env.example
 !install/calibre-empty-library/metadata.db
+
+# Master Bot hygiene additions
+__pycache__/
+*.py[cod]

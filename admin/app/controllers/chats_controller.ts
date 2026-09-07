@@ -23,7 +23,7 @@ export default class ChatsController {
     if (!aiAssistantInstalled) {
       return response.status(404).json({ error: 'AI Assistant service not installed' })
     }
-    
+
     const chatSuggestionsEnabled = await KVStore.getValue('chat.suggestionsEnabled')
     return inertia.render('chat', {
       settings: {

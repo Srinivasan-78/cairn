@@ -121,7 +121,7 @@ fi
     echo "$TRIMMED"
     echo ""
   fi
-  
+
   # Add commit history if available
   if [[ -n "$COMMIT_LIST" ]]; then
     echo "---"

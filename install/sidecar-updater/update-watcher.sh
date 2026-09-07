@@ -22,7 +22,7 @@ write_status() {
     local stage="$1"
     local progress="$2"
     local message="$3"
-    
+
     cat > "$STATUS_FILE" <<EOF
 {
   "stage": "$stage",
@@ -72,31 +72,31 @@ perform_update() {
         write_status "error" 0 "Failed to pull Docker images - check logs"
         return 1
     fi
-    
+
     sleep 2
-    
+
     # Stage 3: Recreating containers individually (excluding updater)
     write_status "recreating" 65 "Recreating containers individually..."
     log "Recreating containers individually (excluding updater)..."
-    
+
     # List of services to update (excluding updater)
     SERVICES_TO_UPDATE="admin mysql redis dozzle"
-    
+
     local current_progress=65
     local progress_per_service=8  # (95 - 65) / 4 services ≈ 8% per service
-    
+
     for service in $SERVICES_TO_UPDATE; do
         log "Updating service: $service"
         write_status "recreating" $current_progress "Recreating $service..."
-        
+
         # Stop the service
         log "  Stopping $service..."
         docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" stop "$service" >> "$LOG_FILE" 2>&1 || log "  WARNING: Failed to stop $service"
-        
+
         # Remove the container
         log "  Removing old $service container..."
         docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" rm -f "$service" >> "$LOG_FILE" 2>&1 || log "  WARNING: Failed to remove $service"
-        
+
         # Recreate and start with new image
         log "  Starting new $service container..."
         if docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" up -d --no-deps "$service" >> "$LOG_FILE" 2>&1; then
@@ -106,10 +106,10 @@ perform_update() {
             write_status "error" $current_progress "Failed to recreate $service - check logs"
             return 1
         fi
-        
+
         current_progress=$((current_progress + progress_per_service))
     done
-    
+
     log "Successfully recreated all containers"
 
     # Stage 4: Reclaim disk from superseded images (best-effort; never fails the update)
@@ -225,7 +225,7 @@ while true; do
     # Check if an update request file exists
     if [ -f "$REQUEST_FILE" ]; then
         log "Found update request file"
-        
+
         # Read request details
         REQUEST_DATA=$(cat "$REQUEST_FILE" 2>/dev/null || echo "{}")
         log "Request data: $REQUEST_DATA"
@@ -242,11 +242,11 @@ while true; do
         else
             log "Update failed - see logs for details"
         fi
-        
+
         sleep 5
         write_status "idle" 0 "Ready for update requests"
     fi
-    
+
     # Sleep before next check (1 second polling)
     sleep 1
 done

@@ -126,7 +126,7 @@ services:
       - /opt/cairn:/opt/cairn # Writable access required so the updater can set the correct image tag in compose.yml. This needs to be the same location that the compose file is located at on the host for the updater to work correctly
       - cairn-update-shared:/shared # Shared volume for communication with admin container
   disk-collector:
-    # Disk Collector is a lightweight privileged container that collects disk usage information from the host system and shares it with the admin container so it can be displayed in the UI. 
+    # Disk Collector is a lightweight privileged container that collects disk usage information from the host system and shares it with the admin container so it can be displayed in the UI.
     # It requires read-only access to the host filesystem and is designed to be as secure and limited in scope as possible while still providing the necessary functionality.
     image: ghcr.io/srinivasan-78/cairn-disk-collector:latest
     pull_policy: always

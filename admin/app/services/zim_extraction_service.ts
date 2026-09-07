@@ -44,7 +44,7 @@ export class ZIMExtractionService {
      * Breaks out a ZIM file's entries into their structured content form
      * to facilitate better indexing and retrieval.
      * Returns enhanced chunks with full article context and metadata.
-     * 
+     *
      * @param filePath - Path to the ZIM file
      * @param opts - Options including maxArticles, strategy, onProgress, startOffset, and batchSize
      */
@@ -54,7 +54,7 @@ export class ZIMExtractionService {
     ): Promise<{ chunks: ZIMContentChunk[]; totalArticles: number }> {
         try {
             logger.info(`[ZIMExtractionService]: Processing ZIM file at path: ${filePath}`)
-            
+
             // defensive - check if file still exists before opening
             // could have been deleted by another process or batch
             try {

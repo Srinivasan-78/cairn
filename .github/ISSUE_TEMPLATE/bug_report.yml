@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to report a bug! Please fill out the information below to help us diagnose and fix the issue.
-        
+
         **Before submitting:**
         - Search existing issues to avoid duplicates
         - Ensure you're running the latest version of Cairn
@@ -135,10 +135,10 @@ body:
       label: System Specifications
       description: Provide relevant system specs (CPU, RAM, available disk space)
       placeholder: |
-        CPU: 
-        RAM: 
-        Available Disk Space: 
-        GPU (if any): 
+        CPU:
+        RAM:
+        Available Disk Space:
+        GPU (if any):
 
   - type: textarea
     id: service-status
@@ -154,7 +154,7 @@ body:
       label: Relevant Logs
       description: |
         Include any relevant logs or error messages. **Please redact any personal/sensitive information.**
-        
+
         Useful commands for collecting logs:
         - Cairn management app: `docker logs cairn_admin`
         - Ollama: `docker logs cairn_ollama`

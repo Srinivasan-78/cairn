@@ -154,26 +154,26 @@ check_is_debug_mode(){
 generateRandomPass() {
   local length="${1:-32}"  # Default to 32
   local password
-  
+
   # Generate random password using /dev/urandom
   password=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c "$length")
-  
+
   echo "$password"
 }
 
 ensure_docker_installed() {
   if ! command -v docker &> /dev/null; then
     echo -e "${YELLOW}#${RESET} Docker not found. Installing Docker...\\n"
-    
+
     # Update package database
     sudo apt-get update
-    
+
     # Install prerequisites
     sudo apt-get install -y ca-certificates curl
-    
+
     # Create directory for keyrings
     # sudo install -m 0755 -d /etc/apt/keyrings
-    
+
     # # Download Docker's official GPG key
     # sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
     # sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -201,11 +201,11 @@ ensure_docker_installed() {
       echo -e "${RED}#${RESET} Docker installation failed. Please check the logs and try again."
       exit 1
     fi
-    
+
     echo -e "${GREEN}#${RESET} Docker installation completed.\\n"
   else
     echo -e "${GREEN}#${RESET} Docker is already installed.\\n"
-    
+
     # Check if Docker service is running
     if ! systemctl is-active --quiet docker; then
       echo -e "${YELLOW}#${RESET} Docker is installed but not running. Attempting to start Docker...\\n"
@@ -235,9 +235,9 @@ check_docker_compose() {
 setup_nvidia_container_toolkit() {
   # This function attempts to set up NVIDIA GPU support but is non-blocking
   # Any failures will result in warnings but will NOT stop the installation process
-  
+
   echo -e "${YELLOW}#${RESET} Checking for NVIDIA GPU...\\n"
-  
+
   # Safely detect NVIDIA GPU
   local has_nvidia_gpu=false
   if command -v lspci &> /dev/null; then
@@ -246,7 +246,7 @@ setup_nvidia_container_toolkit() {
       echo -e "${GREEN}#${RESET} NVIDIA GPU detected.\\n"
     fi
   fi
-  
+
   # Also check for nvidia-smi
   if ! $has_nvidia_gpu && command -v nvidia-smi &> /dev/null; then
     if nvidia-smi &> /dev/null; then
@@ -254,59 +254,59 @@ setup_nvidia_container_toolkit() {
       echo -e "${GREEN}#${RESET} NVIDIA GPU detected via nvidia-smi.\\n"
     fi
   fi
-  
+
   if ! $has_nvidia_gpu; then
     echo -e "${YELLOW}#${RESET} No NVIDIA GPU detected. Skipping NVIDIA container toolkit installation.\\n"
     return 0
   fi
-  
+
   # Check if nvidia-container-toolkit is already installed
   if command -v nvidia-ctk &> /dev/null; then
     echo -e "${GREEN}#${RESET} NVIDIA container toolkit is already installed.\\n"
     return 0
   fi
-  
+
   echo -e "${YELLOW}#${RESET} Installing NVIDIA container toolkit...\\n"
-  
+
   # Install dependencies per https://docs.ollama.com/docker - wrapped in error handling
   if ! curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey 2>/dev/null | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg 2>/dev/null; then
     echo -e "${YELLOW}#${RESET} Warning: Failed to add NVIDIA container toolkit GPG key. Continuing anyway...\\n"
     return 0
   fi
-  
+
   if ! curl -fsSL https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list 2>/dev/null \
       | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
       | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list > /dev/null 2>&1; then
     echo -e "${YELLOW}#${RESET} Warning: Failed to add NVIDIA container toolkit repository. Continuing anyway...\\n"
     return 0
   fi
-  
+
   if ! sudo apt-get update 2>/dev/null; then
     echo -e "${YELLOW}#${RESET} Warning: Failed to update package list. Continuing anyway...\\n"
     return 0
   fi
-  
+
   if ! sudo apt-get install -y nvidia-container-toolkit 2>/dev/null; then
     echo -e "${YELLOW}#${RESET} Warning: Failed to install NVIDIA container toolkit. Continuing anyway...\\n"
     return 0
   fi
-  
+
   echo -e "${GREEN}#${RESET} NVIDIA container toolkit installed successfully.\\n"
-  
+
   # Configure Docker to use NVIDIA runtime
   echo -e "${YELLOW}#${RESET} Configuring Docker to use NVIDIA runtime...\\n"
-  
+
   if ! sudo nvidia-ctk runtime configure --runtime=docker 2>/dev/null; then
     echo -e "${YELLOW}#${RESET} nvidia-ctk configure failed, attempting manual configuration...\\n"
-    
+
     # Fallback: Manually configure daemon.json
     local daemon_json="/etc/docker/daemon.json"
     local config_success=false
-    
+
     if [[ -f "$daemon_json" ]]; then
       # Backup existing config (best effort)
       sudo cp "$daemon_json" "${daemon_json}.backup" 2>/dev/null || true
-      
+
       # Check if nvidia runtime already exists
       if ! grep -q '"nvidia"' "$daemon_json" 2>/dev/null; then
         # Add nvidia runtime to existing config using jq if available
@@ -330,30 +330,30 @@ setup_nvidia_container_toolkit() {
         config_success=true
       fi
     fi
-    
+
     if ! $config_success; then
       echo -e "${YELLOW}#${RESET} Manual daemon.json configuration unsuccessful. GPU support may require manual setup.\\n"
     fi
   fi
-  
+
   # Restart Docker service
   echo -e "${YELLOW}#${RESET} Restarting Docker service...\\n"
   if ! sudo systemctl restart docker 2>/dev/null; then
     echo -e "${YELLOW}#${RESET} Warning: Failed to restart Docker service. You may need to restart it manually.\\n"
     return 0
   fi
-  
+
   # Verify NVIDIA runtime is available
   echo -e "${YELLOW}#${RESET} Verifying NVIDIA runtime configuration...\\n"
   sleep 2  # Give Docker a moment to fully restart
-  
+
   if docker info 2>/dev/null | grep -q "nvidia"; then
     echo -e "${GREEN}#${RESET} NVIDIA runtime successfully configured and verified.\\n"
   else
     echo -e "${YELLOW}#${RESET} Warning: NVIDIA runtime not detected in Docker info. GPU acceleration may not work.\\n"
     echo -e "${YELLOW}#${RESET} You may need to manually configure /etc/docker/daemon.json and restart Docker.\\n"
   fi
-  
+
   echo -e "${GREEN}#${RESET} NVIDIA container toolkit configuration completed.\\n"
 }
 
@@ -439,11 +439,11 @@ download_management_compose_file() {
   echo -e "${YELLOW}#${RESET} Configuring docker-compose file env variables...\\n"
   sed -i "s|URL=replaceme|URL=http://${local_ip_address}:8080|g" "$compose_file_path"
   sed -i "s|APP_KEY=replaceme|APP_KEY=${app_key}|g" "$compose_file_path"
-  
+
   sed -i "s|DB_PASSWORD=replaceme|DB_PASSWORD=${db_user_password}|g" "$compose_file_path"
   sed -i "s|MYSQL_ROOT_PASSWORD=replaceme|MYSQL_ROOT_PASSWORD=${db_root_password}|g" "$compose_file_path"
   sed -i "s|MYSQL_PASSWORD=replaceme|MYSQL_PASSWORD=${db_user_password}|g" "$compose_file_path"
-  
+
   echo -e "${GREEN}#${RESET} Docker compose file configured successfully.\\n"
 }
 
@@ -493,10 +493,10 @@ get_local_ip() {
 verify_gpu_setup() {
   # This function only displays GPU setup status and is completely non-blocking
   # It never exits or returns error codes - purely informational
-  
+
   echo -e "\\n${YELLOW}#${RESET} GPU Setup Verification\\n"
   echo -e "${YELLOW}===========================================${RESET}\\n"
-  
+
   # Check if NVIDIA GPU is present
   if command -v nvidia-smi &> /dev/null; then
     echo -e "${GREEN}✓${RESET} NVIDIA GPU detected:"
@@ -507,21 +507,21 @@ verify_gpu_setup() {
   else
     echo -e "${YELLOW}○${RESET} No NVIDIA GPU detected (nvidia-smi not available)\\n"
   fi
-  
+
   # Check if NVIDIA Container Toolkit is installed
   if command -v nvidia-ctk &> /dev/null; then
     echo -e "${GREEN}✓${RESET} NVIDIA Container Toolkit installed: $(nvidia-ctk --version 2>/dev/null | head -n1)\\n"
   else
     echo -e "${YELLOW}○${RESET} NVIDIA Container Toolkit not installed\\n"
   fi
-  
+
   # Check if Docker has NVIDIA runtime
   if docker info 2>/dev/null | grep -q "nvidia"; then
     echo -e "${GREEN}✓${RESET} Docker NVIDIA runtime configured\\n"
   else
     echo -e "${YELLOW}○${RESET} Docker NVIDIA runtime not detected\\n"
   fi
-  
+
   # Check for AMD GPU — restrict to display controller classes to avoid false positives
   # from AMD CPU host bridges, PCI bridges, and chipset devices.
   local has_amd_gpu='false'
