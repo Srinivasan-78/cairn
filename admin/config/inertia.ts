@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​​​‌​​​‌‌‌​‌​​‌‌​​​‌​​‌‌​‌​‌‌​​‌‌‌​‌‌‌‌​​‌​‌‌‌​​​‌​‌‌‌​​​‌​​‌‌​​‌‌​‌‌​​‌‌​​‌‌‌​​​​​‌‌​‌‌‌​​​‌‌​‌​‌​‌‌​‌​​​​‌​​‌‌‌‌​‌​‌​​​‌​‌​‌​‌‌‌​​‌‌​​​‌​‌‌‌​‌​‌​‌​​​​‌‌​‌​​​‌​‌​‌​‌​‌​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.HGLMgyqq3fpn5hOQW1uCEU
+ */
 import KVStore from '#models/kv_store'
 import { SystemService } from '#services/system_service'
 import { defineConfig } from '@adonisjs/inertia'

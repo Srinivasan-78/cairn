@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌‌‌​‌​‌​‌​‌‌​​‌​‌‌​‌​​​​‌‌‌‌​‌​​​‌‌‌​​‌​​‌‌‌​​‌​‌​‌‌​‌​​​‌‌​‌​‌​‌‌​​‌​‌​‌​‌​​​​​‌​‌​​​​​‌​‌​​​​​‌​​​​‌​​​‌‌​​​‌​‌‌​‌​‌​​​‌‌​​​‌​‌​​​‌‌‌​​‌‌​‌​​​‌‌​​‌‌​​‌‌​​‌‌‌​‌‌‌‌​​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.zuYhz99Z5ePPPB1j1G4fgx
+ */
 import Uppy from '@uppy/core'
 import Dashboard from '@uppy/react/dashboard'
 import XHRUpload from '@uppy/xhr-upload'

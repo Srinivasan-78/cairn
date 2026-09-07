@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​​​‌​​‌‌​‌​‌‌‌​‌​​​‌‌​​​‌​​‌‌​‌‌​‌​‌​​‌​‌​​‌​​‌‌‌‌​‌‌‌​‌‌‌​​‌‌‌​​‌​‌‌​​​​‌​‌‌​​‌​​​‌‌​‌​‌‌​‌‌​‌​​​​‌​‌‌‌‌‌​‌​​​​‌​​‌​​‌‌​​​‌​​‌​‌‌​‌​‌‌‌‌‌​‌‌​‌‌​‌​‌‌​​​​‌​‌​​‌​‌​​‌‌​​​‌​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.HMtbmJOw9adkh_BLK_maJb
+ */
 import { Archive, Entry } from '@openzim/libzim'
 import * as cheerio from 'cheerio'
 import { HTML_SELECTORS_TO_REMOVE, NON_CONTENT_HEADING_PATTERNS } from '../../constants/zim_extraction.js'
@@ -37,7 +44,7 @@ export class ZIMExtractionService {
      * Breaks out a ZIM file's entries into their structured content form
      * to facilitate better indexing and retrieval.
      * Returns enhanced chunks with full article context and metadata.
-     * 
+     *
      * @param filePath - Path to the ZIM file
      * @param opts - Options including maxArticles, strategy, onProgress, startOffset, and batchSize
      */
@@ -47,7 +54,7 @@ export class ZIMExtractionService {
     ): Promise<{ chunks: ZIMContentChunk[]; totalArticles: number }> {
         try {
             logger.info(`[ZIMExtractionService]: Processing ZIM file at path: ${filePath}`)
-            
+
             // defensive - check if file still exists before opening
             // could have been deleted by another process or batch
             try {

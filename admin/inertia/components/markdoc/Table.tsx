@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌‌‌‌​​‌​‌‌​‌​​​​‌​​‌‌‌‌​‌​​‌​‌​​‌​​​​​‌​‌​​​​‌‌​‌​‌​​‌‌​‌‌‌​‌​​​‌​​‌‌‌‌​‌​​‌​‌​​‌‌​​​‌‌​‌‌‌​​​‌​​‌‌‌​​​​‌​‌​​‌‌​‌​​​​​‌​​‌‌​‌​‌​‌‌​​​‌​​​‌‌‌​​​​‌​​​​‌​​‌​​‌​‌‌​​‌‌‌​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.uyhOJACStOJcq8SA5b8BK9
+ */
 export function Table({ children }: { children: React.ReactNode }) {
   return (
     <div className="overflow-x-auto my-6 rounded-lg border border-desert-tan-lighter shadow-sm">

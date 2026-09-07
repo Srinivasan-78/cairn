@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​​‌‌‌​​‌​‌‌​‌‌​​​‌​‌​​‌​​‌‌​​‌‌​​‌‌​‌​‌​​‌‌​​‌​​​‌​​‌​​‌​‌​‌‌​​‌​‌​‌​‌‌‌​‌​‌​‌‌‌​‌​​‌‌‌‌​‌​​‌​‌​​‌‌​​‌‌​​​‌‌​​‌​​‌‌​​‌​​​‌​‌​‌‌​​‌‌‌​​​‌​‌‌​​​‌‌​‌​‌​‌​​​‌‌‌​‌​​​‌​‌‌​​‌⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.y9lRfjdIYWWOJf2dVqcTtY
+-->
 # Cairn — About the Disk Collector Migration Script
 
 This script migrates your Cairn installation from the old host-based disk info collector to the new disk-collector sidecar. It modifies `/opt/cairn/compose.yml` to add the new service and remove the old bind mount, then restarts the full compose stack to apply the changes.

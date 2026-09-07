@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌‌‌​‌‌​​‌‌‌​‌​‌​‌​​​​‌‌​‌​​​‌‌​​‌​​‌​‌‌​‌‌​‌‌‌​​‌‌‌​‌​​​‌​​‌​‌​​‌​​​‌​‌​‌‌‌‌​​​​‌‌‌​​‌​​‌‌​‌‌‌​​‌‌​‌‌‌‌​‌‌‌‌​‌​​​‌‌​​​​​​‌‌​‌​‌​​‌‌​​‌‌​‌​​​‌​‌​‌​​‌‌‌‌​‌​‌‌‌‌‌​‌‌​​​‌‌⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.rvuCFKntJExrnoz053EO_c
+-->
 # Community Add-Ons
 
 Cairn ships with a curated set of built-in tools and content, but the community has started building add-ons that extend the platform with specialized offline content packs. These are third-party projects, not maintained by the Cairn team. Install them at your own discretion, and please direct any bugs or feature requests to the add-on's own repository.

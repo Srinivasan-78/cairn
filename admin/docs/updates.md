@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌​​​‌​​​‌‌‌​‌​‌​​‌‌​​‌​​‌‌‌‌​​‌​‌‌​​​​‌​‌​​‌‌‌‌​​‌‌​​‌‌​​‌‌​‌‌‌​‌‌​‌‌​‌​‌‌​‌‌‌​​‌​‌​​​​​‌​​‌​​​​‌​‌​​‌​​‌‌​‌​‌​​‌​‌‌‌‌‌​‌‌​​​‌​​‌‌​​​‌‌​‌​​‌​​‌​‌‌​‌‌‌​​‌​‌‌​‌​​‌‌​‌​‌​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.LDu2yaO37mnPHRj_bcInZj
+-->
 # Keeping Cairn Updated
 
 Cairn works best when it's kept current while you have internet, so it's ready with the latest software and content the next time you go offline. This page explains what can be updated, how to do it on demand, and how to let Cairn handle it for you automatically.

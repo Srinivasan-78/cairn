@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌​​‌‌​‌​​​​‌‌​‌‌‌‌​‌​​​​‌‌​‌‌​‌​​​​‌‌​​‌‌‌​‌​​​‌​‌​‌‌‌​​​‌​​‌‌​‌​‌​‌​​​‌​​​‌​‌‌​​​​‌‌‌‌​‌​​‌‌‌​​​‌​‌​​‌​​​​‌‌​‌‌‌‌​‌​​​​‌​​‌​‌​‌​‌​‌​​​‌‌​​‌‌​‌‌‌​​‌​​​‌‌‌​‌​​‌​‌‌​‌​‌​‌​​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.RhoChgEq5DXzqHoBUFnGKT
+-->
 # Frequently Asked Questions (FAQ)
 
 Find answers to some of the most common questions about Cairn
@@ -68,7 +75,7 @@ All of Cairn's containers are prefixed with `cairn_` in their names, so they can
 See [What technologies is Cairn built with?](#what-technologies-is-cairn-built-with)
 
 ## Can I use any AI models?
-Cairn by default uses Ollama inside of a docker container to run LLM Models for the AI Assistant. So if you find a model on HuggingFace for example, you won't be able to use that model in Cairn. The list of available models in the AI Assistant settings (/settings/models) may not show all of the models you are looking for. If you found a model from https://ollama.com/search that you'd like to try and its not in the settings page, you can use a curl command to download the model.  
+Cairn by default uses Ollama inside of a docker container to run LLM Models for the AI Assistant. So if you find a model on HuggingFace for example, you won't be able to use that model in Cairn. The list of available models in the AI Assistant settings (/settings/models) may not show all of the models you are looking for. If you found a model from https://ollama.com/search that you'd like to try and its not in the settings page, you can use a curl command to download the model.
 `curl -X POST -H "Content-Type: application/json" -d '{"model":"MODEL_NAME_HERE"}' http://localhost:8080/api/ollama/models` replacing MODEL_NAME_HERE with the model name from whats in the ollama website.
 
 ## Do I have to install the AI features in Cairn?

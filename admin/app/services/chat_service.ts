@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌​‌‌‌‌‌​‌‌‌‌​​‌​‌‌​‌​‌‌​​‌‌‌​​‌​‌‌​‌​​​​‌​​‌​​​​‌‌‌​​‌​​​‌‌​​​​​​‌‌​​​​​‌‌‌​‌​​​‌‌‌​‌​‌​‌​​​​‌‌​‌​‌​​​​​‌‌​​​‌​​​‌‌​‌‌​​‌​​​​‌‌​‌‌​​‌‌‌​​‌‌​​​‌​‌​​‌​​‌​‌‌‌​​​​​‌‌​​‌‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.-_yk9hHr00tuCPb6Cg1Ipg
+ */
 import ChatSession from '#models/chat_session'
 import ChatMessage from '#models/chat_message'
 import KVStore from '#models/kv_store'
@@ -65,14 +72,14 @@ export class ChatService {
 
       if (response && response.message && response.message.content) {
         const content = response.message.content.trim()
-        
+
         // Handle both comma-separated and newline-separated formats
         let suggestions: string[] = []
-        
+
         // Try splitting by commas first
         if (content.includes(',')) {
           suggestions = content.split(',').map((s) => s.trim())
-        } 
+        }
         // Fall back to newline separation
         else {
           suggestions = content
@@ -83,7 +90,7 @@ export class ChatService {
             // Remove surrounding quotes if present
             .map((s) => s.replace(/^["']|["']$/g, ''))
         }
-        
+
         // Filter out empty strings and limit to 3 suggestions
         const filtered =  suggestions
           .filter((s) => s.length > 0)

@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​​​‌‌‌​‌​​​‌‌​​‌​​‌‌​​​​‌‌​‌​​​‌‌‌​​‌‌​‌​​​​‌‌​‌​‌​​‌​​‌​‌​​‌‌​‌​​​‌​​​​‌‌​‌‌‌​‌‌​​‌​​​‌​​​‌​‌​‌‌‌‌​‌​​​‌​‌‌​‌​‌​​‌​​​​‌‌​​​‌​​‌​‌​​‌​​‌​​‌‌‌​​‌‌​​‌​​​‌​‌​​​​​‌​‌​‌‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.SGFL4sCRSD7dEz-HbRNdPW
+ */
 import { CairnMdService } from '#services/cairn_md_service'
 import { updateCairnMdSchema } from '#validators/cairn_md'
 import { inject } from '@adonisjs/core'

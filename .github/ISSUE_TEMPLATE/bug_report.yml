@@ -1,3 +1,8 @@
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌‌​‌‌‌​​​‌​‌​‌‌‌‌‌​‌‌​​‌‌​​‌‌‌​‌​‌​‌​​​​​‌​‌‌​​‌‌​​​‌‌​‌‌‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌​​‌‌​‌​‌‌‌‌​​​​‌‌​​‌‌‌​​‌‌​​‌​​‌​‌‌​​​​​‌‌​‌​​​‌​‌​‌​​​‌​​‌‌‌‌​‌​‌​​​​​‌‌​​‌‌‌​‌​‌​‌​‌​‌​‌​​‌‌⁠
+# Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+# Author: https://github.com/Srinivasan-78
+# SPDX-License-Identifier: MIT
+# Fingerprint: AMK1.Cq_fuAf7goMxg2X4TOPgUS
 name: Bug Report
 description: Report a bug or issue with Cairn
 title: "[Bug]: "
@@ -7,7 +12,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to report a bug! Please fill out the information below to help us diagnose and fix the issue.
-        
+
         **Before submitting:**
         - Search existing issues to avoid duplicates
         - Ensure you're running the latest version of Cairn
@@ -130,10 +135,10 @@ body:
       label: System Specifications
       description: Provide relevant system specs (CPU, RAM, available disk space)
       placeholder: |
-        CPU: 
-        RAM: 
-        Available Disk Space: 
-        GPU (if any): 
+        CPU:
+        RAM:
+        Available Disk Space:
+        GPU (if any):
 
   - type: textarea
     id: service-status
@@ -149,7 +154,7 @@ body:
       label: Relevant Logs
       description: |
         Include any relevant logs or error messages. **Please redact any personal/sensitive information.**
-        
+
         Useful commands for collecting logs:
         - Cairn management app: `docker logs cairn_admin`
         - Ollama: `docker logs cairn_ollama`

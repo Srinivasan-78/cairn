@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌​‌‌​​​​‌​‌​‌​‌​‌​​‌​‌‌​‌​​‌‌‌‌​‌‌​​‌​‌​​‌‌​​​​​‌​​‌‌‌‌​‌​​‌​‌​​​‌‌​​​‌​​‌‌​‌​‌​‌​‌‌​​​​‌​‌‌​‌​​‌‌‌​​​‌​‌‌​​‌‌​​‌‌​​​‌‌​‌​​​​​‌​​‌‌​​‌​​‌‌‌​‌​‌​‌‌​​​​‌​​‌‌‌​​​​‌​‌​‌​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.MXUKOe0OJ15XZqfcA2ua8T
+ */
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, SnakeCaseNamingStrategy } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'

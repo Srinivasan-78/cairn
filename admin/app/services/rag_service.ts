@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌‌‌‌​​​​‌​‌‌​‌​​‌‌‌‌​​‌​‌​​​​‌‌​‌‌‌​‌​‌​‌‌‌​‌​​​‌‌​‌​​‌​‌‌‌​​​​​‌​​​‌​​​‌‌‌​‌‌​​‌‌‌​​​‌​‌​‌‌​​‌​‌‌​‌​‌‌​‌‌‌​​‌‌​‌​​​​‌‌​​‌‌​‌‌​​‌​​‌‌‌‌​‌‌​‌‌‌‌​‌​‌‌​‌​​‌‌‌​‌‌​​‌‌​‌‌​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.5xZyCutipDvqYksC6OoZvm
+ */
 import { QdrantClient } from '@qdrant/js-client-rest'
 import { DockerService } from './docker_service.js'
 import { inject } from '@adonisjs/core'
@@ -759,7 +766,7 @@ export class RagService {
   /**
    * Main pipeline to process and embed an uploaded file into the RAG knowledge base.
    * This includes text extraction, chunking, embedding, and storing in Qdrant.
-   * 
+   *
    * Orchestrates file type detection and delegates to specialized processors.
    * For ZIM files, supports batch processing via batchOffset parameter.
    */

@@ -1,3 +1,8 @@
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​‌​‌​‌‌​​‌‌‌​​‌‌​‌​​‌​​‌​‌​‌​​‌‌​‌‌‌​‌​​​‌​‌‌​​​​​‌‌​​‌​​‌​‌​​‌​​‌​‌​​​‌​‌‌‌​​​‌​‌​‌‌​​​​‌​​‌​‌​​‌‌​‌​​‌​‌‌​‌‌​‌​‌‌‌​​‌​​‌​​​​​‌​‌​​​‌‌‌​‌‌​​‌‌‌​‌​​‌​​‌​‌‌‌​‌‌​​‌‌​‌​‌‌⁠
+# Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+# Author: https://github.com/Srinivasan-78
+# SPDX-License-Identifier: MIT
+# Fingerprint: AMK1.gVsIStX2RQqXJimrAGgIvk
 name: Validate Collection URLs
 
 on:
@@ -15,7 +20,7 @@ jobs:
   validate-urls:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803  # v6
 
       - name: Extract and validate URLs
         run: |

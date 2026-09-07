@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌​​‌​​‌​‌‌​‌​‌‌​​​​‌​​​‌‌‌​‌‌​‌​​​​‌‌​‌​‌​​‌​​‌​​​​‌​​‌‌​‌​‌​‌‌​​‌​‌​​‌‌‌​​‌‌‌​‌​‌​‌​‌​​‌‌​‌​​​​​‌​‌​‌‌‌‌‌​‌​​​​​‌​‌‌‌​‌​‌​‌​‌​‌‌​​​‌‌​‌‌​​‌‌‌​‌‌‌​‌‌‌​‌​​​​‌‌​​​​​‌‌​​​‌​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.2KXGhjHMYNuSA_AuV6wt0b
+-->
 # Empty Calibre library (Calibre-Web seed)
 
 `metadata.db` is an empty Calibre library database, generated once with

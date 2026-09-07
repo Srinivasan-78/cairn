@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​‌‌​​‌‌​​‌​‌‌​​‌​‌‌‌​​‌‌​‌​‌‌‌‌‌​​‌‌​​​‌​‌​‌​‌‌‌​‌‌‌​​‌‌​‌‌​​​‌​​‌‌​‌‌‌‌​‌‌​​‌​​​‌​​​‌​‌​‌‌‌‌​​​​‌​‌‌​​​​‌‌​​‌‌​​​‌‌‌​​‌​‌‌‌​​​​​​‌‌​‌​‌​‌​​​​‌​​‌‌​‌‌​​​‌​‌​‌‌‌​‌​​​​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.gfYs_1WsbodExXf9p5BlWA
+ */
 import { useState } from 'react'
 import { IconMovie } from '@tabler/icons-react'
 import api from '~/lib/api'

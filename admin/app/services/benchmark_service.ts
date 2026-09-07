@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌​​​​‌​​‌​‌​​​‌​‌‌​​​​‌​‌‌‌​​‌​​‌‌​‌​‌​​‌​​​‌‌‌​​‌‌‌​​‌​‌​‌​‌‌‌​​‌‌​​​‌​‌‌‌​‌​‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌‌‌​​‌‌​‌‌‌​​​‌​‌‌‌​​‌​​‌‌​‌‌​​​‌‌​‌​​‌​‌​‌​​​​​‌‌​​‌‌‌​‌‌‌​‌‌‌​‌‌​​‌‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.YBQarjG9W1uOUsqrliPgwg
+ */
 import { inject } from '@adonisjs/core'
 import logger from '@adonisjs/core/services/logger'
 import transmit from '@adonisjs/transmit/services/main'
@@ -404,7 +411,7 @@ export class BenchmarkService {
       const detail = error.response?.data?.error || error.message || 'Unknown error'
       const statusCode = error.response?.status
       logger.error(`Failed to submit benchmark to repository: ${detail} (Status: ${statusCode})`)
-      
+
       // Create an error with the status code and raw detail attached for proper
       // handling upstream (the controller surfaces `detail` as the user-facing reason).
       const err: any = new Error(`Failed to submit benchmark: ${detail}`)
@@ -884,7 +891,7 @@ export class BenchmarkService {
       disk_read_score: this._normalizeScore(diskReadResult.read_mb_per_sec, REFERENCE_SCORES.disk_read_mb_per_sec),
       disk_write_score: this._normalizeScore(diskWriteResult.write_mb_per_sec, REFERENCE_SCORES.disk_write_mb_per_sec),
     }
-    
+
     // v2 raw channels — the payload of record for the leaderboard.
     const raws: SystemBenchmarkRawsV2 = {
       cpu_events_single: cpuSingle.events_per_second,
@@ -1587,7 +1594,7 @@ export class BenchmarkService {
 
       // Wait for completion
       await container.wait()
-      
+
       // Get logs after container has finished
       const logs = await container.logs({
         stdout: true,

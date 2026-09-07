@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​‌​‌‌‌​​‌​​‌​​​‌‌​​‌‌​‌​​‌​‌​​‌‌​​​​‌‌​​​‌​‌‌​‌‌​​​‌‌‌​‌​​​‌‌‌​‌​​​​‌‌​‌​‌​‌​​​​‌​​‌​​‌‌​‌​‌​​​‌​‌​‌‌​​​​‌​​‌‌​‌‌​​‌‌​​​‌​​‌​‌​‌‌‌​‌​​​‌​‌​‌​‌​‌‌‌​‌‌‌‌​​‌​‌‌​​‌‌​​‌‌​‌​‌​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.9rFiL1ltt5BMEa6bWEWyfj
+-->
 # Contributing to Cairn
 
 Thank you for your interest in contributing to Cairn! Community contributions are what keep this project growing and improving. Please read this guide fully before getting started — it will save you (and the maintainers) a lot of time.
@@ -25,7 +32,7 @@ Thank you for your interest in contributing to Cairn! Community contributions ar
 
 Please read and review our full [Code of Conduct](https://github.com/Srinivasan-78/cairn/blob/main/CODE_OF_CONDUCT.md) before contributing. In short: please be respectful and considerate in all interactions with maintainers and other contributors.
 
-We are committed to providing a welcoming environment for everyone. Disrespectful or abusive behavior will not be tolerated. 
+We are committed to providing a welcoming environment for everyone. Disrespectful or abusive behavior will not be tolerated.
 
 ---
 
@@ -49,7 +56,7 @@ When opening an issue:
 ---
 
 ## Getting Started with Contributing
-**Please note**: this is the Getting Started guide for developing and contributing to Cairn, NOT [installing Cairn](https://github.com/Srinivasan-78/cairn/blob/main/README.md) for regular use! 
+**Please note**: this is the Getting Started guide for developing and contributing to Cairn, NOT [installing Cairn](https://github.com/Srinivasan-78/cairn/blob/main/README.md) for regular use!
 
 ### Prerequisites
 

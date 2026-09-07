@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌​‌​‌​​‌‌‌‌​​‌​‌​​‌‌‌‌​‌​​​‌‌​​‌​​​‌​‌​‌​​​​‌​​‌​​​​​‌​‌​​‌‌​‌​‌​‌​​​​​‌​​​‌​​​‌​​‌​‌‌​‌‌‌‌​‌​​​‌‌​‌‌‌​​‌‌​​​‌​‌​‌​​‌​​‌​​‌​‌‌​‌​​‌​‌‌​‌‌‌​​​​​‌​‌​‌‌​​‌​​​​‌​​‌​​​‌‌​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.GjyOFEBAMPDKz71RKKpVBF
+ */
 import { IconSend, IconWand } from '@tabler/icons-react'
 import { useState, useRef, useEffect } from 'react'
 import classNames from '~/lib/classNames'

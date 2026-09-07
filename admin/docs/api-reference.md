@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​​‌‌​​​​​‌‌​​‌‌​​‌​‌​‌‌‌​‌‌​‌​‌​​‌‌​‌‌​‌​‌‌​‌‌‌​​‌‌‌​‌‌‌​‌​​‌‌‌​​‌‌​​​‌‌​‌‌​‌​​​​‌‌​‌‌‌​​‌‌‌​‌‌​​‌‌‌‌​​‌​‌​‌‌​​‌​‌​​‌​​‌​‌‌​‌‌​‌​‌​​‌​​‌​‌‌‌​​​‌​‌​‌​​​​​‌‌​‌‌‌‌​‌​‌​​‌​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.u0fWjmnwNchnvyYImIqPoR
+-->
 # API Reference
 
 Cairn exposes a REST API for all operations. All endpoints are under `/api/` and return JSON.

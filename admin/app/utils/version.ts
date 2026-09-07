@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌‌‌​​​‌​‌​‌​​​​​‌​​​‌​‌​‌​‌​​​‌​‌​‌‌​​​​‌​​​‌​​​‌​‌​‌​‌​​‌‌‌​​‌​‌​​‌‌​​​‌‌‌​​‌‌​‌​​‌​​​​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌‌‌​‌​​‌‌‌‌​​​​‌‌‌​​‌‌​‌​‌​​‌‌​‌​​​​​‌​‌‌​‌‌‌​​‌‌‌‌​​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.6qPEQXDU9LsHwsizxsSAnx
+ */
 /**
  * Compare two semantic version strings to determine if the first is newer than the second.
  * @param version1 - The version to check (e.g., "1.25.0")

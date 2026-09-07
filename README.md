@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌​​​​‌‌​​‌‌‌​​​​‌‌​​‌​‌​‌​‌​​‌​​‌​‌‌​‌​​‌​‌​‌‌​​‌‌​‌‌‌​​‌‌‌​​​‌​‌‌​​​‌‌​‌‌‌‌​​‌​‌​​​‌‌​​‌​‌​‌‌‌​‌‌‌​‌‌‌​‌​‌​​​‌​‌​‌‌​‌​​‌​‌​‌​​​‌​​‌‌​‌​‌​​‌‌‌​​‌​​​‌​​​‌​​​‌‌‌​‌​‌​​​‌⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.aC8eRZVnqcyFWwQZTMNDGQ
+-->
 <div align="center">
 
 # Cairn
@@ -102,8 +109,8 @@ To run LLMs and other included AI tools:
 Again, Cairn itself is quite lightweight — it's the tools and resources you choose to install with Cairn that will determine the specs required for your unique deployment
 
 #### Running AI models on a different host
-By default, Cairn's installer will attempt to setup Ollama on the host when the AI Assistant is installed. However, if you would like to run the AI model on a different host, you can go to the settings of the AI assistant and input a URL for either an ollama or OpenAI-compatible API server (such as LM Studio).  
-Note that if you use Ollama on a different host, you must start the server with this option: `OLLAMA_HOST=0.0.0.0`.  
+By default, Cairn's installer will attempt to setup Ollama on the host when the AI Assistant is installed. However, if you would like to run the AI model on a different host, you can go to the settings of the AI assistant and input a URL for either an ollama or OpenAI-compatible API server (such as LM Studio).
+Note that if you use Ollama on a different host, you must start the server with this option: `OLLAMA_HOST=0.0.0.0`.
 Ollama is the preferred way to use the AI assistant, as it has features such as model download that OpenAI API does not support. So when using LM Studio, for example, you will have to use LM Studio to download models.
 You are responsible for the setup of Ollama/OpenAI server on the other host.
 

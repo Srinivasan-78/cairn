@@ -1,3 +1,8 @@
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌‌​‌​​​‌​‌​​‌‌​‌‌‌​‌‌‌​​​‌​‌‌​‌​​‌​‌​‌‌​‌​​‌​‌​‌​‌​‌​​​​‌‌​‌​‌​​‌‌​‌‌​‌‌​‌​‌‌​​​​‌​‌‌​​​‌​​​‌​‌‌​‌​‌‌‌​​‌‌​‌​‌‌​​​​‌‌​‌​​​​‌​​​​‌‌​‌‌​‌​‌​​‌​‌​​​​​‌‌​‌​​​​‌​‌​‌‌‌​‌‌‌​​​‌⁠
+# Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+# Author: https://github.com/Srinivasan-78
+# SPDX-License-Identifier: MIT
+# Fingerprint: AMK1.CE7qiZUCSmab-sXhCjPhWq
 name: Build Admin
 
 on: pull_request
@@ -11,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803  # v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38  # v6
         with:
           node-version: '24'
           cache: 'npm'

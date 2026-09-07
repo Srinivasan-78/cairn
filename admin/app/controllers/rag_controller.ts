@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​‌​‌‌‌​​​​​‌‌‌​​​​​‌‌‌‌​‌​​‌​​​​​‌​‌​‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌‌​​‌‌​​​‌​‌‌​‌‌​​​‌​​​​‌‌​‌‌​​‌‌‌​‌​‌​​‌‌​​‌‌​‌‌‌​‌​‌‌‌‌‌​‌​‌​​‌‌​‌‌​‌​​​​‌​​‌‌​‌​​‌‌​​‌‌​‌​​‌‌‌​​​‌‌​​​​​‌​​​​‌​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.QppzASSG1lCgS7_ShM3N0B
+ */
 import { RagService } from '#services/rag_service'
 import { EmbedFileJob } from '#jobs/embed_file_job'
 import KbRatioRegistry from '#models/kb_ratio_registry'

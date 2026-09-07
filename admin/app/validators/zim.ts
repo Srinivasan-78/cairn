@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​‌​​‌‌​​​​‌​‌‌​‌​​‌‌​​‌​​‌​​‌​​​​​‌‌​​​‌​‌​‌‌​​‌​‌​​​​‌​​‌‌​‌​‌​​​‌‌​‌​​​‌​​​‌‌‌​‌​​​‌‌‌​​‌‌​‌‌‌​​‌‌‌​​‌​‌​​​‌​​​‌‌​​‌​​​‌​​‌‌​‌​​‌‌‌​​‌​‌‌​‌‌​‌​‌‌​​​‌‌​​‌‌‌​​​​‌​‌‌‌‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.DL-2H1YBj4GG79DdM9mc8_
+ */
 import vine from '@vinejs/vine'
 
 export const listRemoteZimValidator = vine.compile(

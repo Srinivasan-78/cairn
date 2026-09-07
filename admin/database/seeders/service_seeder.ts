@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌​‌‌​​‌​‌​​‌‌​​​‌‌‌​‌‌‌​‌​‌​​​‌​‌‌‌‌​​​​‌​‌​‌‌​​‌‌‌​​‌‌​‌‌‌‌​‌​​‌​‌‌​​‌​​‌‌‌​​​​‌​‌​​​‌​‌‌‌‌​‌​​‌‌​​‌​​​‌​​‌‌‌​​​‌‌​‌‌​​‌​​‌​​‌​‌​‌​​​​​‌‌‌​​‌​​‌​​‌​​‌​‌​‌​‌‌​​‌‌‌‌​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.uYLwQxVszY8QzdN6IPrIVy
+ */
 import Service from '#models/service'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import { ModelAttributes } from '@adonisjs/lucid/types/model'

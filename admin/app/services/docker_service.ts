@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌​‌​​​​​​‌‌​​​‌​‌‌​​‌​​​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌‌‌​​‌​​‌‌​​‌​​​‌‌‌​​‌​​​‌‌​​‌‌​‌‌​‌‌​​​‌‌‌​‌​​​‌‌​‌‌​​​‌‌‌‌​​​​‌​​‌‌‌​​‌​‌​​​​​‌​‌​‌‌​​​‌‌​‌​‌​‌‌‌​​​​​‌​​‌​‌‌​‌‌‌‌​‌​​‌​‌​​‌​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.aP1dgordr3ltlxNPV5pKzR
+ */
 import Service from '#models/service'
 import Docker from 'dockerode'
 import logger from '@adonisjs/core/services/logger'
@@ -888,7 +895,7 @@ export class DockerService {
         await KVStore.setValue('chat.suggestionsEnabled', false)
 
         logger.info('[DockerService] Ollama installation complete. Triggering Cairn docs discovery...')
-        
+
         // Need to use dynamic imports here to avoid circular dependency
         const ollamaService = new (await import('./ollama_service.js')).OllamaService()
         const ragService = new (await import('./rag_service.js')).RagService(this, ollamaService)
