@@ -14,20 +14,20 @@ RUN apt-get update && apt-get install -y \
 # All deps stage
 FROM base AS deps
 WORKDIR /app
-ADD admin/package.json admin/package-lock.json ./
+COPY admin/package.json admin/package-lock.json ./
 RUN npm ci
 
 # Production only deps stage
 FROM base AS production-deps
 WORKDIR /app
-ADD admin/package.json admin/package-lock.json ./
+COPY admin/package.json admin/package-lock.json ./
 RUN npm ci --omit=dev
 
 # Build stage
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
-ADD admin/ ./
+COPY admin/ ./
 # Regenerate the curated drug-reference data modules
 # (app/data/{conditions,natural_remedies,home_remedies}.ts) from their single
 # source of truth — the repo-root collections/*.json — so the JSON is what gets

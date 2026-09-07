@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 export default {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
+  content: ["./inertia/**/*.{js,jsx,ts,tsx,edge}", "./resources/**/*.edge"],
   theme: {
     extend: {
       colors: {

@@ -41,3 +41,13 @@ admin/public/assets
 
 # Admin specific development files
 admin/storage
+
+# Large content binaries and local databases (keep intentional fixtures via ! negation)
+*.zim
+*.pmtiles
+*.db
+*.sqlite
+*.sqlite3
+.env.*
+!.env.example
+!install/calibre-empty-library/metadata.db
