@@ -8,6 +8,9 @@ on:
     paths:
       - 'collections/**.json'
 
+permissions:
+  contents: read
+
 jobs:
   validate-urls:
     runs-on: ubuntu-latest

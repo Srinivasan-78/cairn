@@ -195,9 +195,7 @@ This project uses [Semantic Versioning](https://semver.org/). Versions are manag
 
 Have questions or want to discuss ideas before opening an issue? Join the community:
 
-- **Discord:** [Join the Srinivasan Vijayaraghavan server](https://github.com/Srinivasan-78/cairn/discussions) — the best place to get help, share your builds, and talk with other Cairn users
-- **Website:** [cairn.example](https://cairn.example)
-- **Benchmark Leaderboard:** [benchmark.cairn.example](https://benchmark.cairn.example)
+- **Discussions:** [GitHub Discussions](https://github.com/Srinivasan-78/cairn/discussions) — the best place to get help, share your builds, and talk with other Cairn users
 
 ---
 
