@@ -1,0 +1,22 @@
+Cairn
+Copyright 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+
+This product is a derivative work based on:
+
+    Project NOMAD
+    Copyright Crosstalk Solutions, LLC
+    https://github.com/Crosstalk-Solutions/project-nomad
+    Licensed under the Apache License, Version 2.0
+
+Cairn is an independent project and is not affiliated with, endorsed by, or
+sponsored by Crosstalk Solutions, LLC. "Project NOMAD" and "Crosstalk
+Solutions" are names/marks of their respective owner and are used here only
+for attribution, not as branding for this project.
+
+Modifications from the upstream project include (and will continue to grow):
+  - Renamed the project to "Cairn"; removed upstream product branding and logo
+    from this project's own presentation.
+  - Added this NOTICE file and origin/credits section in README.
+
+The full Apache License 2.0 text is in the LICENSE file. Original source
+files retain their upstream copyright and license headers.
