@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌​‌​‌​‌​‌​​‌​​​​‌‌​‌​‌​​​‌‌​‌‌​​‌​​‌‌‌‌​‌​​​​​‌​‌‌​‌‌​​​‌​‌‌​​‌​‌​​​‌​‌​‌​​‌​​‌​‌​‌​‌​‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌‌​​​‌​‌‌‌​‌‌‌​​‌‌​​‌​​​‌‌​​​‌​‌‌​‌‌‌​​‌‌‌​‌‌‌​‌‌​​‌‌​​‌​​‌​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.TUHj6OAlYEIUe-qw21nwfI
+ */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePage } from '@inertiajs/react'
 import { IconBrain } from '@tabler/icons-react'

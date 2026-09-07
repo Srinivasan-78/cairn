@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌​​‌​‌​​‌​​‌‌​​​‌​​​‌‌‌​​‌​‌​​‌‌​​​‌‌‌​‌​‌​‌​​‌‌‌​​‌​​‌​​‌​‌‌​‌‌​‌​‌​‌​‌​‌​‌​‌​​​​​‌‌‌​​‌‌​‌​​​‌​‌​​‌‌​‌​‌​‌​​​‌‌​​‌​‌​‌​​​‌​​​​‌​​‌‌​‌​​‌​‌​​​‌‌​​​‌‌‌​​‌​‌​​‌​​‌​‌​​‌​‌‌⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.JRb9LuNImUPsE5FTBiF9IK
+-->
 # Supply Depot Apps
 
 The Supply Depot is where you install extra apps onto your Cairn beyond the built-in tools. Each app runs in its own container on your Cairn, fully offline, and shows up with an **Open** button once it finishes installing.

@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​​‌‌​​‌‌​‌‌‌​​​​​‌​‌​‌‌‌​​‌‌​‌‌​​‌‌​​‌​​​‌‌‌​​​‌​‌​​‌‌‌​​​‌‌​​‌‌​‌​​​‌​​​‌​​​​​‌​‌‌​​‌​‌​​‌‌​​​​​​‌‌​‌‌‌​​‌‌‌​​​​‌​​‌‌‌‌​​‌‌‌​​‌​‌​​‌​​​​‌‌​​​‌‌​‌‌‌​​​‌​‌‌​‌​‌​​‌‌‌​‌‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.v3pW6dqN3DAe078O9Hcqjw
+ */
 export function formatSpeed(bytesPerSecond: number): string {
   if (bytesPerSecond < 1024) return `${bytesPerSecond.toFixed(0)} B/s`
   if (bytesPerSecond < 1024 * 1024) return `${(bytesPerSecond / 1024).toFixed(1)} KB/s`

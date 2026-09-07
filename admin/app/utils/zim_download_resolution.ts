@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​‌​​‌‌​‌​‌​​‌‌​‌​‌​‌​​​​‌​‌‌​‌​‌​​‌‌​‌​‌‌​​‌​​​‌‌​‌​​‌​‌‌​​​​‌​‌​‌‌​​​​​‌‌​‌‌​​‌‌​‌​​​​‌​​‌‌‌​​‌​‌‌‌‌‌​‌‌‌​​‌​​‌‌​‌​​​​‌‌‌​‌‌‌​‌​​​‌​​​​‌‌​​‌​​‌‌​​‌​‌​‌‌​‌​‌​​‌‌​‌‌​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.sSST-MdiaX6hN_rhwD2ejl
+ */
 import type { CatalogResult } from '../services/kiwix_catalog_service.js'
 import type { SpecResource } from '../../types/collections.js'
 import { isGatedResource } from './hosted_content.js'

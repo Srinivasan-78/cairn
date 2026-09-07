@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌‌​‌​​‌​​‌‌​‌​‌​‌​​​‌​​​‌‌‌​​‌‌​‌​‌​​​‌​‌‌​​​‌​​​‌‌​​‌​​​‌‌​‌‌​​‌​‌​​‌​​‌​​‌​‌​​‌‌‌​​‌‌​‌​‌‌​​​​‌‌​​‌‌​​​‌‌​‌‌​​‌‌‌​‌‌​​‌‌‌​‌​‌​​‌‌​​​​​‌‌​‌​​​​‌​​​​​‌​​‌​‌‌​‌​‌‌‌‌​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.vi5DsQb26RJsXf6vu0hA-y
+ */
 /**
  * Generates the curated drug-reference data modules
  * (`app/data/{conditions,natural_remedies,home_remedies}.ts`) from the

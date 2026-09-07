@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​​‌‌​‌‌‌​‌‌​​‌​​​‌‌‌‌​​​​‌​‌‌‌‌‌​‌‌​‌‌‌‌​‌‌‌​‌‌‌​‌​‌‌​​‌​‌‌​​‌‌​​‌​‌‌​​​​‌​​‌‌‌​​‌​​​​​‌​‌‌‌‌​​​​‌‌​‌‌‌​​‌​‌​‌‌​​‌‌‌​‌​‌​‌‌‌​​​​​​‌‌​​​​​​‌‌​‌​​​‌‌‌​​​​​​‌‌​​‌​​‌​‌​‌‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.V7dx_owYfXNAxnVup04p2W
+ */
 /**
  * Decision for reconciling the AI knowledge base (Qdrant) after a curated
  * content file (a ZIM) is replaced by a newer downloaded version.

@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌‌‌‌​​​​‌​‌‌​‌​​‌‌‌‌​​‌​‌​​​​‌‌​‌‌‌​‌​‌​‌‌‌​‌​​​‌‌​‌​​‌​‌‌‌​​​​​‌​​​‌​​​‌‌‌​‌‌​​‌‌‌​​​‌​‌​‌‌​​‌​‌‌​‌​‌‌​‌‌‌​​‌‌​‌​​​​‌‌​​‌‌​‌‌​​‌​​‌‌‌‌​‌‌​‌‌‌‌​‌​‌‌​‌​​‌‌‌​‌‌​​‌‌​‌‌​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.5xZyCutipDvqYksC6OoZvm
+ */
 import { QdrantClient } from '@qdrant/js-client-rest'
 import { DockerService } from './docker_service.js'
 import { inject } from '@adonisjs/core'

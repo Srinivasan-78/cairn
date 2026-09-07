@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​​‌‌‌​​​​‌‌​​​‌‌​‌‌​‌​‌​​‌‌‌‌​‌​​‌‌​​‌​​​​‌‌‌​​​​‌‌‌​​​​​‌​‌‌​​‌​‌​​​​‌‌​‌‌​‌‌​​​‌‌‌​‌‌‌​‌‌​​‌​​​‌‌​​​​‌​‌​​‌​‌‌​‌‌‌​‌‌‌​‌​‌‌​‌​​‌​‌‌​‌​​‌​​​​​‌​‌‌‌​​​‌​‌‌‌​‌​​​‌‌‌​​​​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.B8cjzd8pYClwdaKwZZAqtp
+-->
 # About Cairn
 
 Cairn is an independent fork of **[Project NOMAD](https://github.com/Crosstalk-Solutions/project-nomad)**, a project started in 2025 by Chris Sherwood of [Crosstalk Solutions, LLC](https://crosstalksolutions.com) and released under the Apache License 2.0. The goal of the project is not to create just another utility for storing offline resources, but rather to allow users to run their own ultimate "survival computer". The upstream name began as a backronym — Node for Offline Maps, Archives, and Data. Cairn keeps that design and codebase; it is not affiliated with or endorsed by Crosstalk Solutions.

@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​‌​‌​​‌​‌‌​​‌‌​‌‌​​​‌​‌‌​‌​‌‌​​​‌​​‌‌​​​‌​​‌​‌​​‌​​‌‌​‌​​‌​​‌‌​​​‌​​‌‌​‌‌​​​‌‌​‌​‌​‌‌​​​​‌​‌​‌​‌​​​‌‌​​​‌‌​‌‌‌​​​​​‌‌‌​​​​​​‌‌​‌​‌​‌​​‌​‌​​‌‌‌​‌‌‌​‌​‌​​‌​​‌​​‌‌‌‌​‌‌‌​​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.qK6-bbRi165aTcpp5JwROq
+ */
 import { assert } from '@japa/assert'
 import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'

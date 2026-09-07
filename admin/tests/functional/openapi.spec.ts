@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​‌​‌​​‌‌​​​​‌‌​​‌​​‌​​‌‌‌‌​‌​‌​​‌‌​‌‌‌​​‌‌​‌​‌​​​​​‌‌​​​‌​​​‌‌​​‌‌​‌‌‌​​‌​​‌‌​‌​‌​​‌​​‌​​​​‌​‌‌​‌​​‌​​‌‌​​​‌‌‌​​‌‌​‌‌​‌​‌‌​‌​​​​‌‌​​‌​‌‌​‌​‌​‌​​​​​‌‌‌​‌‌‌​‌​​​‌‌​​‌‌​​‌​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.1L2OSsPb3rjHZLskC-PwFd
+ */
 import { test } from '@japa/runner'
 import router from '@adonisjs/core/services/router'
 import { getDocRegistry } from '#start/openapi/documented'

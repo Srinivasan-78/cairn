@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌​‌​​‌​‌‌​​‌​​​‌​‌‌​‌​​‌‌​​‌‌​​​‌‌​​‌‌​‌‌​​​‌‌​‌‌​​​​‌​‌​​​​‌‌​​‌‌‌​​​​‌‌‌‌​​‌​‌‌​‌​​‌​​‌‌​‌​‌​‌‌​‌​‌‌​‌​​‌‌‌‌​‌​​​‌​‌​‌‌‌​‌‌​​‌‌​‌‌​​​‌​​​​‌‌​​‌‌​​​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.shuidZf3caC8yi5kOEvlC0
+ */
 export const PMTILES_BINARY_PATH = '/usr/local/bin/pmtiles'
 
 // Clamp these so a user can't ask for nonsense that never extracts
