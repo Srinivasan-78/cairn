@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​​​‌‌​‌‌‌‌​​‌‌​‌​​​‌​​​​‌​​​‌‌​​‌‌​​‌‌​​​‌​​‌‌​​‌‌​‌‌​​​‌​​‌​‌​​‌​​‌‌​‌‌‌‌​‌‌‌​‌​​​‌​​​‌‌‌​‌‌​‌​​​​‌​‌​​‌‌​‌‌​‌​​‌​‌​‌​‌‌‌​‌‌‌​​‌‌​‌​‌​​​‌​‌‌​​‌‌​​‌‌​‌‌‌‌​‌​​​​‌‌​‌‌‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌​​‌​‌‌​​‌‌​‌‌​​‌‌​‌​‌‌​‌‌​​‌​​​‌​​​​‌‌​​‌‌​‌‌​​​‌‌​‌​​​‌‌​​​​‌​‌‌‌​‌‌‌​‌​​​‌​‌​‌​​​​‌​​​‌‌​​‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​​‌​​​‌​‌‌​​‌​‌‌​‌‌​‌​‌‌​‌​‌​​‌‌​​‌​​​‌‌‌​‌​​​‌​‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Ho4B313bRotGhSiWsQfoCr
+ * Fingerprint: AMK1.PK6kdC64awEB3kodYmjdtS
  */
 import vine from '@vinejs/vine'
 import ipaddr from 'ipaddr.js'
@@ -79,9 +79,7 @@ export function assertNotPrivateUrl(urlString: string): void {
 // Compared after `ipaddr.toNormalizedString()`, which expands IPv6 to its
 // fully-zero-padded form (e.g. `fd00:ec2::254` → `fd00:ec2:0:0:0:0:0:254`).
 const BLOCKED_METADATA_IPV4 = new Set(['169.254.169.254'])
-const BLOCKED_METADATA_IPV6 = new Set([
-  ipaddr.parse('fd00:ec2::254').toNormalizedString(),
-])
+const BLOCKED_METADATA_IPV6 = new Set([ipaddr.parse('fd00:ec2::254').toNormalizedString()])
 
 export function assertNotCloudMetadataUrl(urlString: string): void {
   const parsed = new URL(urlString)
@@ -110,8 +108,7 @@ export function assertNotCloudMetadataUrl(urlString: string): void {
 
   const canonical = addr.toNormalizedString()
 
-  const blocked =
-    addr.kind() === 'ipv4' ? BLOCKED_METADATA_IPV4 : BLOCKED_METADATA_IPV6
+  const blocked = addr.kind() === 'ipv4' ? BLOCKED_METADATA_IPV4 : BLOCKED_METADATA_IPV6
   if (blocked.has(canonical)) {
     throw new Error(`URL must not point to the cloud instance metadata endpoint: ${canonical}`)
   }
@@ -180,11 +177,15 @@ export const selectWikipediaValidator = vine.compile(
   })
 )
 
+// Path-safe identifier: alphanumeric, dash, underscore, dot.
+// Prohibits path separators (/ and \), leading dots, and directory traversal sequences (..).
+export const safeResourceIdentifierRegex = /^(?!\.)(?!.*\.\.)[a-zA-Z0-9_.-]+$/
+
 const resourceUpdateInfoBase = vine.object({
-  resource_id: vine.string().trim().minLength(1),
+  resource_id: vine.string().trim().minLength(1).regex(safeResourceIdentifierRegex),
   resource_type: vine.enum(['zim', 'map'] as const),
   installed_version: vine.string().trim(),
-  latest_version: vine.string().trim().minLength(1),
+  latest_version: vine.string().trim().minLength(1).regex(safeResourceIdentifierRegex),
   download_url: vine.string().url({ require_tld: false }).trim(),
   size_bytes: vine.number().positive().optional(),
 })
@@ -193,9 +194,7 @@ export const applyContentUpdateValidator = vine.compile(resourceUpdateInfoBase)
 
 export const applyAllContentUpdatesValidator = vine.compile(
   vine.object({
-    updates: vine
-      .array(resourceUpdateInfoBase)
-      .minLength(1),
+    updates: vine.array(resourceUpdateInfoBase).minLength(1),
   })
 )
 
