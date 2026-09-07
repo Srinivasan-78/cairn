@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Project NOMAD Installation Script
+# Cairn Installation Script
 
 ###################################################################################################################################################################################################
 
-# Script                | Project NOMAD Installation Script
+# Script                | Cairn Installation Script
 # Version               | 1.0.0
-# Author                | Crosstalk Solutions, LLC
-# Website               | https://crosstalksolutions.com
+# Author                | Srinivasan Vijayaraghavan
+# Website               | https://cairn.com
 
 ###################################################################################################################################################################################################
 #                                                                                                                                                                                                 #
@@ -28,12 +28,12 @@ GREEN='\033[1;32m' # Light Green.
 #                                                                                                                                                                                                 #
 ###################################################################################################################################################################################################
 
-WHIPTAIL_TITLE="Project NOMAD Installation"
-NOMAD_DIR="/opt/project-nomad"
-MANAGEMENT_COMPOSE_FILE_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/management_compose.yaml"
-START_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/start_nomad.sh"
-STOP_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/stop_nomad.sh"
-UPDATE_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/update_nomad.sh"
+WHIPTAIL_TITLE="Cairn Installation"
+CAIRN_DIR="/opt/cairn"
+MANAGEMENT_COMPOSE_FILE_URL="https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/install/management_compose.yaml"
+START_SCRIPT_URL="https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/install/start_cairn.sh"
+STOP_SCRIPT_URL="https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/install/stop_cairn.sh"
+UPDATE_SCRIPT_URL="https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/install/update_cairn.sh"
 script_option_debug='true'
 accepted_terms='false'
 local_ip_address=''
@@ -90,7 +90,7 @@ check_is_x86_64() {
   local arch
   arch="$(uname -m)"
   if [[ "${arch}" != "x86_64" && "${arch}" != "amd64" ]]; then
-    echo -e "${YELLOW}#${RESET} WARNING: Detected architecture '${arch}'. NOMAD officially supports x86_64 only.\\n"
+    echo -e "${YELLOW}#${RESET} WARNING: Detected architecture '${arch}'. Cairn officially supports x86_64 only.\\n"
     echo -e "${YELLOW}#${RESET} ARM64/aarch64 support is tracked in PR #419 and is not yet ready.\\n"
     echo -e "${YELLOW}#${RESET} Continuing on an unsupported architecture will likely fail and may leave\\n"
     echo -e "${YELLOW}#${RESET} partial Docker images and files behind that you'll need to clean up manually.\\n"
@@ -353,8 +353,8 @@ setup_nvidia_container_toolkit() {
 }
 
 get_install_confirmation(){
-  echo -e "${YELLOW}#${RESET} This script will install Project NOMAD and its dependencies on your machine."
-  echo -e "${YELLOW}#${RESET} If you already have Project NOMAD installed with customized config or data, please be aware that running this installation script may overwrite existing files and configurations. It is highly recommended to back up any important data/configs before proceeding."
+  echo -e "${YELLOW}#${RESET} This script will install Cairn and its dependencies on your machine."
+  echo -e "${YELLOW}#${RESET} If you already have Cairn installed with customized config or data, please be aware that running this installation script may overwrite existing files and configurations. It is highly recommended to back up any important data/configs before proceeding."
   read -p "Are you sure you want to continue? (y/N): " choice
   case "$choice" in
     y|Y )
@@ -372,9 +372,9 @@ accept_terms() {
   echo "License Agreement & Terms of Use"
   echo "__________________________"
   printf "\n\n"
-  echo "Project NOMAD is licensed under the Apache License 2.0. The full license can be found at https://www.apache.org/licenses/LICENSE-2.0 or in the LICENSE file of this repository."
+  echo "Cairn is licensed under the Apache License 2.0. The full license can be found at https://www.apache.org/licenses/LICENSE-2.0 or in the LICENSE file of this repository."
   printf "\n"
-  echo "By accepting this agreement, you acknowledge that you have read and understood the terms and conditions of the Apache License 2.0 and agree to be bound by them while using Project NOMAD"
+  echo "By accepting this agreement, you acknowledge that you have read and understood the terms and conditions of the Apache License 2.0 and agree to be bound by them while using Cairn"
   echo -e "\n\n"
   read -p "I have read and accept License Agreement & Terms of Use (y/N)? " choice
   case "$choice" in
@@ -388,27 +388,27 @@ accept_terms() {
   esac
 }
 
-create_nomad_directory(){
+create_cairn_directory(){
   # Ensure the main installation directory exists
-  if [[ ! -d "$NOMAD_DIR" ]]; then
-    echo -e "${YELLOW}#${RESET} Creating directory for Project NOMAD at $NOMAD_DIR...\\n"
-    sudo mkdir -p "$NOMAD_DIR"
-    sudo chown "$(whoami):$(whoami)" "$NOMAD_DIR"
+  if [[ ! -d "$CAIRN_DIR" ]]; then
+    echo -e "${YELLOW}#${RESET} Creating directory for Cairn at $CAIRN_DIR...\\n"
+    sudo mkdir -p "$CAIRN_DIR"
+    sudo chown "$(whoami):$(whoami)" "$CAIRN_DIR"
 
     echo -e "${GREEN}#${RESET} Directory created successfully.\\n"
   else
-    echo -e "${GREEN}#${RESET} Directory $NOMAD_DIR already exists.\\n"
+    echo -e "${GREEN}#${RESET} Directory $CAIRN_DIR already exists.\\n"
   fi
 
   # Also ensure the directory has a /storage/logs/ subdirectory
-  sudo mkdir -p "${NOMAD_DIR}/storage/logs"
+  sudo mkdir -p "${CAIRN_DIR}/storage/logs"
 
   # Create a admin.log file in the logs directory
-  sudo touch "${NOMAD_DIR}/storage/logs/admin.log"
+  sudo touch "${CAIRN_DIR}/storage/logs/admin.log"
 }
 
 download_management_compose_file() {
-  local compose_file_path="${NOMAD_DIR}/compose.yml"
+  local compose_file_path="${CAIRN_DIR}/compose.yml"
 
   echo -e "${YELLOW}#${RESET} Downloading docker-compose file for management...\\n"
   if ! curl -fsSL "$MANAGEMENT_COMPOSE_FILE_URL" -o "$compose_file_path"; then
@@ -425,9 +425,9 @@ download_management_compose_file() {
   # MySQL only initializes credentials on first startup when the data dir is empty.
   # If stale data exists, MySQL ignores the new passwords above and uses the old ones,
   # causing "Access denied" errors when the admin container tries to connect.
-  if [[ -d "${NOMAD_DIR}/mysql" ]]; then
+  if [[ -d "${CAIRN_DIR}/mysql" ]]; then
     echo -e "${YELLOW}#${RESET} Removing existing MySQL data directory to ensure credentials match...\\n"
-    sudo rm -rf "${NOMAD_DIR}/mysql"
+    sudo rm -rf "${CAIRN_DIR}/mysql"
   fi
 
   # Inject dynamic env values into the compose file
@@ -443,9 +443,9 @@ download_management_compose_file() {
 }
 
 download_helper_scripts() {
-  local start_script_path="${NOMAD_DIR}/start_nomad.sh"
-  local stop_script_path="${NOMAD_DIR}/stop_nomad.sh"
-  local update_script_path="${NOMAD_DIR}/update_nomad.sh"
+  local start_script_path="${CAIRN_DIR}/start_cairn.sh"
+  local stop_script_path="${CAIRN_DIR}/stop_cairn.sh"
+  local update_script_path="${CAIRN_DIR}/update_cairn.sh"
 
   echo -e "${YELLOW}#${RESET} Downloading helper scripts...\\n"
   if ! curl -fsSL --retry 5 --retry-delay 3 "$START_SCRIPT_URL" -o "$start_script_path"; then
@@ -471,7 +471,7 @@ download_helper_scripts() {
 
 start_management_containers() {
   echo -e "${YELLOW}#${RESET} Starting management containers using docker compose...\\n"
-  if ! sudo docker compose -p project-nomad -f "${NOMAD_DIR}/compose.yml" up -d; then
+  if ! sudo docker compose -p cairn -f "${CAIRN_DIR}/compose.yml" up -d; then
     echo -e "${RED}#${RESET} Failed to start management containers. Please check the logs and try again."
     exit 1
   fi
@@ -565,7 +565,7 @@ verify_gpu_setup() {
   # Write detected GPU type to a marker file the admin container can read. The admin
   # container lacks lspci and AMD GPUs don't register a Docker runtime, so this is the
   # only reliable way for the admin to know an AMD GPU is present at install time.
-  local gpu_marker_path="${NOMAD_DIR}/storage/.nomad-gpu-type"
+  local gpu_marker_path="${CAIRN_DIR}/storage/.cairn-gpu-type"
   if command -v nvidia-smi &> /dev/null; then
     echo 'nvidia' | sudo tee "${gpu_marker_path}" > /dev/null 2>&1 || true
   elif [[ "${has_amd_gpu}" == 'true' ]]; then
@@ -577,7 +577,7 @@ verify_gpu_setup() {
   # Companion marker used by the admin to pick the right HSA_OVERRIDE_GFX_VERSION for
   # the detected card. Absence of this file means "unknown gfx" — the admin falls back
   # to its built-in default. Always rewrite (or remove) on install to keep state fresh.
-  local amd_gfx_marker_path="${NOMAD_DIR}/storage/.nomad-amd-gfx"
+  local amd_gfx_marker_path="${CAIRN_DIR}/storage/.cairn-amd-gfx"
   if [[ -n "${amd_gfx_version}" ]]; then
     echo "${amd_gfx_version}" | sudo tee "${amd_gfx_marker_path}" > /dev/null 2>&1 || true
   else
@@ -601,11 +601,11 @@ verify_gpu_setup() {
 }
 
 success_message() {
-  echo -e "${GREEN}#${RESET} Project NOMAD installation completed successfully!\\n"
-  echo -e "${GREEN}#${RESET} Installation files are located at /opt/project-nomad\\n\n"
-  echo -e "${GREEN}#${RESET} Project NOMAD's Command Center should automatically start whenever your device reboots. However, if you need to start it manually, you can always do so by running: ${WHITE_R}${NOMAD_DIR}/start_nomad.sh${RESET}\\n"
+  echo -e "${GREEN}#${RESET} Cairn installation completed successfully!\\n"
+  echo -e "${GREEN}#${RESET} Installation files are located at /opt/cairn\\n\n"
+  echo -e "${GREEN}#${RESET} Cairn's Command Center should automatically start whenever your device reboots. However, if you need to start it manually, you can always do so by running: ${WHITE_R}${CAIRN_DIR}/start_cairn.sh${RESET}\\n"
   echo -e "${GREEN}#${RESET} You can now access the management interface at http://localhost:8080 or http://${local_ip_address}:8080\\n"
-  echo -e "${GREEN}#${RESET} Thank you for supporting Project NOMAD!\\n"
+  echo -e "${GREEN}#${RESET} Thank you for supporting Cairn!\\n"
 }
 
 ###################################################################################################################################################################################################
@@ -629,7 +629,7 @@ ensure_docker_installed
 check_docker_compose
 setup_nvidia_container_toolkit
 get_local_ip
-create_nomad_directory
+create_cairn_directory
 download_helper_scripts
 download_management_compose_file
 start_management_containers

@@ -46,7 +46,7 @@ export type BenchmarkResultSlim = Pick<
   | 'id'
   | 'benchmark_id'
   | 'benchmark_type'
-  | 'nomad_score'
+  | 'cairn_score'
   | 'submitted_to_repository'
   | 'created_at'
   | 'builder_tag'
@@ -160,7 +160,7 @@ export type UpdateBuilderTagResponse = {
   error: string
 }
 
-// NOMAD Score v2 raw channels captured from a full benchmark run (all present
+// Cairn Score v2 raw channels captured from a full benchmark run (all present
 // and > 0). cpu_events_multi is measured at cpu_benchmark_threads; memory at
 // memory_threads; disk figures are O_DIRECT MB/s. total_events/total_time are the
 // W6 consistency companions from the multi-thread CPU pass.
@@ -208,15 +208,15 @@ export type RepositorySubmission = Pick<
   | 'disk_write_score'
   | 'ai_tokens_per_second'
   | 'ai_time_to_first_token'
-  | 'nomad_score'
+  | 'cairn_score'
 > & {
-  nomad_version: string
+  cairn_version: string
   benchmark_version: string
   ram_gb: number
   builder_tag: string | null // null = anonymous submission
 }
 
-// NOMAD Score v2 submission payload. Mirrors the leaderboard's submitValidatorV2
+// Cairn Score v2 submission payload. Mirrors the leaderboard's submitValidatorV2
 // exactly: raw channels in (server recomputes the score), required test params +
 // W6 companions + provenance, optional environment metadata. ai_time_to_first_token
 // is in SECONDS here (the server treats it as seconds); the client stores TTFT in
@@ -256,7 +256,7 @@ export type RepositorySubmissionV2 = {
   os_name?: string
   os_version?: string
   // Benchmark metadata (shared with v1)
-  nomad_version: string
+  cairn_version: string
   benchmark_version: string
   builder_tag?: string
 }
@@ -282,7 +282,7 @@ export type RepositoryStats = {
   }
 }
 
-export type LeaderboardEntry = Pick<BenchmarkResult, 'cpu_model' | 'gpu_model' | 'nomad_score'> & {
+export type LeaderboardEntry = Pick<BenchmarkResult, 'cpu_model' | 'gpu_model' | 'cairn_score'> & {
   rank: number
   submitted_at: string
 }

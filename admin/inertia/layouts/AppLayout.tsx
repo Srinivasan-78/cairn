@@ -46,8 +46,8 @@ export default function AppLayout({
         onClick={() => router.visit('/home')}
       >
         <img
-          src="/project_nomad_logo.webp"
-          alt="Project NOMAD Logo"
+          src="/cairn_logo.svg"
+          alt="Cairn Logo"
           className={compact ? 'h-12 w-12' : 'h-40 w-40'}
         />
         <h1

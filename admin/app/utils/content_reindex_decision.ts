@@ -41,7 +41,7 @@ export type ReindexOutcome =
 export interface ContentReindexInput {
   /** The replaced file existed AND its path differs from the new file's path. */
   isReplacement: boolean
-  /** `nomad_qdrant` service exists (installed), regardless of running state. */
+  /** `cairn_qdrant` service exists (installed), regardless of running state. */
   qdrantInstalled: boolean
   /** The replaced file's `KbIngestState.state === 'indexed'`. */
   oldFileWasIndexed: boolean

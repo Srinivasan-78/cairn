@@ -1,16 +1,16 @@
-# Getting Started with NOMAD
+# Getting Started with Cairn
 
-This guide will help you get the most out of your NOMAD server.
+This guide will help you get the most out of your Cairn server.
 
 ---
 
 ## System Requirements
 
-If you already have NOMAD running, you can skip this section. It is here for when you are planning a second server, moving to different hardware, or helping someone else get set up.
+If you already have Cairn running, you can skip this section. It is here for when you are planning a second server, moving to different hardware, or helping someone else get set up.
 
 ### Operating System
 
-NOMAD runs on Debian-based Linux.
+Cairn runs on Debian-based Linux.
 
 | Support level | Operating system |
 |---|---|
@@ -20,13 +20,13 @@ NOMAD runs on Debian-based Linux.
 
 Ubuntu 26.04 LTS is the version we test on and the one we recommend for new installs. If you are already running 24.04 LTS or Debian 12, there is no need to reinstall, both are still supported.
 
-Ubuntu Desktop is the friendlier choice if you are coming from Windows or macOS. Ubuntu Server works just as well if you are comfortable at the terminal, and NOMAD does not need a desktop environment either way since everything is accessed through a browser.
+Ubuntu Desktop is the friendlier choice if you are coming from Windows or macOS. Ubuntu Server works just as well if you are comfortable at the terminal, and Cairn does not need a desktop environment either way since everything is accessed through a browser.
 
 macOS and non-Debian distributions like Fedora or Arch are not officially supported.
 
 ### Hardware
 
-NOMAD itself is lightweight. What drives your requirements is the content and tools you choose to install, and whether you want to run AI locally.
+Cairn itself is lightweight. What drives your requirements is the content and tools you choose to install, and whether you want to run AI locally.
 
 **Minimum, without local AI:**
 
@@ -41,7 +41,7 @@ NOMAD itself is lightweight. What drives your requirements is the content and to
 - NVIDIA RTX 3060 or AMD equivalent, more VRAM lets you run larger models
 - 250 GB or more of free disk space, preferably an SSD
 
-A stable internet connection is required during installation only. After that, NOMAD is designed to run fully offline.
+A stable internet connection is required during installation only. After that, Cairn is designed to run fully offline.
 
 ### A note on GPU drivers
 
@@ -55,7 +55,7 @@ Without a GPU, the AI Assistant still works. It just runs on the CPU, which is c
 
 ## Easy Setup Wizard
 
-If this is your first time using NOMAD, the Easy Setup wizard will help you get everything configured.
+If this is your first time using Cairn, the Easy Setup wizard will help you get everything configured.
 
 **[Launch Easy Setup →](/easy-setup)**
 
@@ -115,7 +115,7 @@ The Education Platform provides complete educational courses that work offline.
 
 ![AI Chat interface](/docs/ai-chat.webp)
 
-NOMAD includes a built-in AI chat interface powered by Ollama. It runs entirely on your server — no internet needed, no data sent anywhere.
+Cairn includes a built-in AI chat interface powered by Ollama. It runs entirely on your server — no internet needed, no data sent anywhere.
 
 **What can it do:**
 - Answer questions on any topic
@@ -133,7 +133,7 @@ NOMAD includes a built-in AI chat interface powered by Ollama. It runs entirely 
 
 **Note:** The AI Assistant must be installed first. Enable it during Easy Setup or install it from the [Supply Depot](/supply-depot).
 
-**GPU Acceleration:** If your server has an NVIDIA GPU, NOMAD's installer sets up GPU support for you (it installs the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) and configures Docker automatically). You only need the NVIDIA driver present on the host, which on Ubuntu you get by enabling "Install third-party drivers" during setup. With a GPU, AI responses are dramatically faster (10-20x improvement). If you add a GPU later, go to the [Supply Depot](/supply-depot) and **Force Reinstall** the AI Assistant to enable it.
+**GPU Acceleration:** If your server has an NVIDIA GPU, Cairn's installer sets up GPU support for you (it installs the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) and configures Docker automatically). You only need the NVIDIA driver present on the host, which on Ubuntu you get by enabling "Install third-party drivers" during setup. With a GPU, AI responses are dramatically faster (10-20x improvement). If you add a GPU later, go to the [Supply Depot](/supply-depot) and **Force Reinstall** the AI Assistant to enable it.
 
 ---
 
@@ -145,7 +145,7 @@ The Knowledge Base lets you upload documents so the AI can reference them when a
 
 **Supported file types:**
 - PDFs, text files, and other document formats
-- NOMAD documentation is automatically loaded when the AI Assistant is installed
+- Cairn documentation is automatically loaded when the AI Assistant is installed
 
 **How to use it:**
 1. Go to **[Knowledge Base →](/knowledge-base)**
@@ -199,7 +199,7 @@ As your needs change, you can add more content anytime:
 
 ![Content Explorer — browse and download Wikipedia packages and curated collections](/docs/content-explorer.webp)
 
-NOMAD includes a dedicated Wikipedia content management tool for browsing and downloading Wikipedia packages.
+Cairn includes a dedicated Wikipedia content management tool for browsing and downloading Wikipedia packages.
 
 **How to use it:**
 1. Go to **[Content Explorer →](/settings/zim/remote-explorer)**
@@ -210,16 +210,16 @@ NOMAD includes a dedicated Wikipedia content management tool for browsing and do
 
 ### System Benchmark
 
-![System Benchmark with NOMAD Score and Builder Tag](/docs/benchmark.webp)
+![System Benchmark with Cairn Score and Builder Tag](/docs/benchmark.webp)
 
-Test your hardware performance and see how your NOMAD build stacks up against the community.
+Test your hardware performance and see how your Cairn build stacks up against the community.
 
 **How to use it:**
 1. Go to **[System Benchmark →](/settings/benchmark)**
 2. Choose a benchmark type: Full, System Only, or AI Only
-3. View your NOMAD Score (a weighted composite of CPU, memory, disk, and AI performance)
-4. Create a Builder Tag (your NOMAD-themed identity, like "Tactical-Llama-1234")
-5. Share your results with the [community leaderboard](https://benchmark.projectnomad.us)
+3. View your Cairn Score (a weighted composite of CPU, memory, disk, and AI performance)
+4. Create a Builder Tag (your Cairn-themed identity, like "Tactical-Llama-1234")
+5. Share your results with the [community leaderboard](https://benchmark.cairn.example)
 
 **Note:** Only Full Benchmarks with AI data can be shared to the community leaderboard.
 
@@ -233,7 +233,7 @@ While you have internet, periodically check for updates:
 
 Content updates (Wikipedia, maps, etc.) can be managed separately from software updates.
 
-**Automatic updates:** NOMAD can also keep itself current without you having to check. Software, installed apps, and content can each be set to update automatically on an opt-in basis, with safety checks and a time window you control. See the **[Updates guide](/docs/updates)** for the full picture.
+**Automatic updates:** Cairn can also keep itself current without you having to check. Software, installed apps, and content can each be set to update automatically on an opt-in basis, with safety checks and a time window you control. See the **[Updates guide](/docs/updates)** for the full picture.
 
 **Early Access Channel:** Want the latest features before they hit stable? Enable the Early Access Channel from the Check for Updates page to receive release candidate builds. You can switch back to stable anytime.
 
@@ -275,7 +275,7 @@ Check storage usage in **Settings → System**.
 
 ## Next Steps
 
-You're ready to use NOMAD Here are some things to try:
+You're ready to use Cairn Here are some things to try:
 
 1. **Look something up** — Search for a topic in the Information Library
 2. **Learn something** — Start a Khan Academy course in the Education Platform

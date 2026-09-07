@@ -2,7 +2,7 @@
 
 The Drug Reference is an offline, searchable database of **FDA drug labels**, the official information that comes with over-the-counter and prescription medicines. Once it is installed you can look up a medicine by name, work backwards from a situation to the medicines that treat it, and put two labels side by side, all with no internet connection.
 
-It is an optional add-on. A fresh NOMAD does not have it until you choose to install it, because the dataset is large.
+It is an optional add-on. A fresh Cairn does not have it until you choose to install it, because the dataset is large.
 
 > **This is health information, not medical advice.** The Drug Reference shows you the manufacturer's FDA label text and matches situations to over-the-counter options. It cannot replace a doctor, pharmacist, or nurse. Always follow the directions on the actual product you have, and in a real emergency get professional help if you can.
 
@@ -25,8 +25,8 @@ There are two ways to get the data, and they end up in the same place.
 
 Either way it runs in two stages in the background:
 
-- **Download** — NOMAD pulls the openFDA drug-label dataset, about **1.7 GB** compressed, in several parts. If your connection drops it picks up where it left off.
-- **Indexing** — NOMAD ingests those labels into a fast offline search database. This is the longer stage, and the data expands to roughly **8 to 10 GB** on disk.
+- **Download** — Cairn pulls the openFDA drug-label dataset, about **1.7 GB** compressed, in several parts. If your connection drops it picks up where it left off.
+- **Indexing** — Cairn ingests those labels into a fast offline search database. This is the longer stage, and the data expands to roughly **8 to 10 GB** on disk.
 
 You do not have to sit and watch. Leave the page and it keeps going, and search switches on by itself once indexing finishes. The page shows progress for both stages while they run.
 
@@ -38,13 +38,13 @@ Everything lives behind a single **Drug Reference** tile on the home screen. Onc
 
 ### Search by drug
 
-Type a drug name, brand or generic, and NOMAD shows matching FDA labels: what the medicine is for, dosing, warnings, and ingredients, straight from the manufacturer's official label.
+Type a drug name, brand or generic, and Cairn shows matching FDA labels: what the medicine is for, dosing, warnings, and ingredients, straight from the manufacturer's official label.
 
 Results are **grouped by active ingredient** rather than listed as hundreds of near-identical products. A search for a common painkiller returns one group per ingredient instead of every store brand separately, so you can see what you are actually choosing between.
 
 ### By situation
 
-Start from the problem instead of the product. Pick one or more situations, such as burn, fever, or diarrhea, and NOMAD lists the medicines whose FDA labels cover them.
+Start from the problem instead of the product. Pick one or more situations, such as burn, fever, or diarrhea, and Cairn lists the medicines whose FDA labels cover them.
 
 Selecting more than one situation looks for medicines that cover **all** of them first, then falls back to showing results for each situation on its own. That is useful when you are dealing with more than one symptom at once and want a single product if one exists.
 
@@ -64,7 +64,7 @@ This puts the two manufacturers' warning sections next to each other. It does **
 
 ## Keeping it current
 
-FDA labels change over time. If you have turned on **automatic content updates** (Settings → Updates), NOMAD periodically checks whether openFDA has published a newer dataset and refreshes the Drug Reference on its own, the same way it handles your other offline content.
+FDA labels change over time. If you have turned on **automatic content updates** (Settings → Updates), Cairn periodically checks whether openFDA has published a newer dataset and refreshes the Drug Reference on its own, the same way it handles your other offline content.
 
 With automatic updates off, the data stays exactly as it was when you installed it, which is fine for offline use. You can always re-run the download from the **FDA data** tab to pull the latest.
 

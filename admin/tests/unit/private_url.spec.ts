@@ -45,7 +45,7 @@ test('allows RFC1918 LAN literals, bare LAN hostnames, and public FQDNs', () => 
   expectAllowed('http://10.0.0.2/file.zim')
   expectAllowed('http://172.16.0.2/file.zim')
   expectAllowed('http://192.168.1.10/file.zim')
-  expectAllowed('http://nomad3/file.zim')
+  expectAllowed('http://cairn3/file.zim')
   expectAllowed('http://my-nas.local/file.zim')
   expectAllowed('https://downloads.example.com/file.zim')
   // A mapped *public* IP must not be blocked

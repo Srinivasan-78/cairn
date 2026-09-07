@@ -104,7 +104,7 @@ export default function Chat({
     const next: Record<string, boolean> = {}
     for (const m of installedModels) {
       try {
-        const stored = localStorage.getItem(`nomad:thinking:${m.name}`)
+        const stored = localStorage.getItem(`cairn:thinking:${m.name}`)
         if (stored !== null) next[m.name] = stored === 'true'
       } catch {}
     }
@@ -124,7 +124,7 @@ export default function Chat({
   const setModelThinking = useCallback((model: string, value: boolean) => {
     setThinkingOverrides((prev) => ({ ...prev, [model]: value }))
     try {
-      localStorage.setItem(`nomad:thinking:${model}`, String(value))
+      localStorage.setItem(`cairn:thinking:${model}`, String(value))
     } catch {}
   }, [])
 

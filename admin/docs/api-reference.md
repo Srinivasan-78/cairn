@@ -1,6 +1,6 @@
 # API Reference
 
-NOMAD exposes a REST API for all operations. All endpoints are under `/api/` and return JSON.
+Cairn exposes a REST API for all operations. All endpoints are under `/api/` and return JSON.
 
 ---
 

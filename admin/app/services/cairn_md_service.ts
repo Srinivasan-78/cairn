@@ -5,18 +5,18 @@ import app from '@adonisjs/core/services/app'
 import { ensureDirectoryExists, getFile } from '../utils/fs.js'
 
 /**
- * Manages the user-editable `NOMAD.md` file that is injected as a system prompt
+ * Manages the user-editable `Cairn.md` file that is injected as a system prompt
  * during chat completions. The file lives in the admin storage directory
- * (`/app/storage/NOMAD.md` in the container, `/opt/project-nomad/storage/NOMAD.md`
+ * (`/app/storage/Cairn.md` in the container, `/opt/cairn/storage/Cairn.md`
  * on the host), so an end user can also edit it directly on disk. The file is
  * created lazily on the first save — a missing or empty file simply means no
  * custom prompt is injected.
  */
-export class NomadMdService {
-  static STORAGE_PATH = 'storage/NOMAD.md'
+export class CairnMdService {
+  static STORAGE_PATH = 'storage/Cairn.md'
 
   private get filePath(): string {
-    return app.makePath(NomadMdService.STORAGE_PATH)
+    return app.makePath(CairnMdService.STORAGE_PATH)
   }
 
   /**

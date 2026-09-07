@@ -1,17 +1,17 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 Discord Community
-    url: https://discord.com/invite/crosstalksolutions
+    url: https://github.com/Srinivasan-78/cairn/discussions
     about: Join our Discord community for general questions, support, and discussions
   - name: 📖 Documentation
-    url: https://projectnomad.us
+    url: https://cairn.example
     about: Check the official documentation and guides
   - name: 🏆 Community Leaderboard
-    url: https://benchmark.projectnomad.us
-    about: View the NOMAD benchmark leaderboard
+    url: https://benchmark.cairn.example
+    about: View the Cairn benchmark leaderboard
   - name: 🤝 Contributing Guide
-    url: https://github.com/Crosstalk-Solutions/project-nomad/blob/main/CONTRIBUTING.md
-    about: Learn how to contribute to Project NOMAD
+    url: https://github.com/Srinivasan-78/cairn/blob/main/CONTRIBUTING.md
+    about: Learn how to contribute to Cairn
   - name: 📅 Roadmap
-    url: https://roadmap.projectnomad.us
+    url: https://roadmap.cairn.example
     about: See our public roadmap, vote on features, and suggest new ones

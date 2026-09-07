@@ -72,7 +72,7 @@ export interface AppAutoUpdateStatus extends AppAutoUpdateConfig {
 
 /**
  * Decision + safety layer for automatic updates of installed sibling apps (the
- * containers NOMAD deploys via the Docker socket and manages in Supply Depot).
+ * containers Cairn deploys via the Docker socket and manages in Supply Depot).
  *
  * This is the app-side counterpart to {@link AutoUpdateService} and intentionally
  * reuses its generic window/disk pre-flight helpers. Unlike the core update, an

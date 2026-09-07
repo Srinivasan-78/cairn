@@ -21,7 +21,7 @@ export class CollectionUpdateService {
   /**
    * Check every installed resource against the upstream catalogs locally (Kiwix
    * OPDS for ZIMs, GitHub for maps) — no longer routed through the external
-   * project-nomad-api. Side-effect: persists each resource's available-update
+   * cairn-api. Side-effect: persists each resource's available-update
    * state (version + cool-off anchor) so the auto-updater can act on it later.
    */
   async checkForUpdates(): Promise<ContentUpdateCheckResult> {

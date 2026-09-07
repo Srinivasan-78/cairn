@@ -55,7 +55,7 @@ export class RunDownloadJob {
 
   /** Redis key used to signal cancellation across processes */
   static cancelKey(jobId: string): string {
-    return `nomad:download:cancel:${jobId}`
+    return `cairn:download:cancel:${jobId}`
   }
 
   /** Signal cancellation via Redis so the worker process can pick it up */
@@ -212,7 +212,7 @@ export class RunDownloadJob {
               // Only touch the knowledge base if AI Assistant (Ollama) is installed.
               // skip_embedding opts a ZIM out entirely — Creator Pack video ZIMs are
               // media galleries, not text, so they must never be embedded or KB-reconciled.
-              const ollamaUrl = await dockerService.getServiceURL('nomad_ollama')
+              const ollamaUrl = await dockerService.getServiceURL('cairn_ollama')
               if (ollamaUrl && !resourceMetadata?.skip_embedding) {
                 // A content UPDATE replaces a prior file at a DIFFERENT path
                 // (version is in the filename). A fresh install has no prior row;

@@ -14,8 +14,8 @@ import type { CreatorPacksSpec, CreatorPackWithStatus } from '../../types/collec
 const ZIM_MIME_TYPES = ['application/x-zim', 'application/x-openzim', 'application/octet-stream']
 
 // Default entitlement Worker origin. Overridable via CREATOR_PACKS_WORKER_BASE so
-// we can move to a branded packs.projectnomad.us domain without a code change.
-const DEFAULT_WORKER_BASE = 'https://nomad-packs-worker.chris-556.workers.dev'
+// we can move to a branded packs.cairn.example domain without a code change.
+const DEFAULT_WORKER_BASE = 'https://cairn-packs-worker.chris-556.workers.dev'
 
 /**
  * Outcome of an install request. Discriminated on `code` so the controller can

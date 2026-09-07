@@ -1,8 +1,8 @@
 # Community Add-Ons
 
-Project NOMAD ships with a curated set of built-in tools and content, but the community has started building add-ons that extend the platform with specialized offline content packs. These are third-party projects, not maintained by the NOMAD team. Install them at your own discretion, and please direct any bugs or feature requests to the add-on's own repository.
+Cairn ships with a curated set of built-in tools and content, but the community has started building add-ons that extend the platform with specialized offline content packs. These are third-party projects, not maintained by the Cairn team. Install them at your own discretion, and please direct any bugs or feature requests to the add-on's own repository.
 
-Have you built a NOMAD add-on? Open an issue on the [Project NOMAD GitHub repository](https://github.com/Crosstalk-Solutions/project-nomad/issues/new) or send us a note through the [contact form on projectnomad.us](https://www.projectnomad.us/contact), and we'll review it for inclusion on this page.
+Have you built a Cairn add-on? Open an issue on the [Cairn GitHub repository](https://github.com/Srinivasan-78/cairn/issues/new) or send us a note through the [contact form on cairn.example](https://cairn.example/contact), and we'll review it for inclusion on this page.
 
 ---
 
@@ -32,9 +32,9 @@ Final ZIM size is around 700 MB. The builder downloads about 6 GB of source file
 
 Each add-on has its own install instructions, but most ZIM packs follow the same shape:
 
-1. Clone the add-on's repository onto your NOMAD host over SSH.
+1. Clone the add-on's repository onto your Cairn host over SSH.
 2. Check the README for required build dependencies. Most need `git`, `python3`, `unzip`, and `zim-tools`.
-3. Run the included `install.sh` with a `--deploy` flag, pointing it at your Kiwix library path (`/opt/project-nomad/storage/zim`) and your Kiwix container name (`nomad_kiwix_server`).
+3. Run the included `install.sh` with a `--deploy` flag, pointing it at your Kiwix library path (`/opt/cairn/storage/zim`) and your Kiwix container name (`cairn_kiwix_server`).
 4. The script builds the ZIM, copies it into your Kiwix library, registers it with Kiwix, and restarts the Kiwix container.
 
 Once the script finishes, the new content will appear in your Information Library the next time you load it.
@@ -45,4 +45,4 @@ Expect the initial build to take anywhere from a few minutes to an hour or more 
 
 ## A Note on Support
 
-These add-ons are community-built and community-maintained. If something goes wrong with an install script or the content inside a ZIM, please open an issue on the add-on's own repository rather than Project NOMAD's. We're happy to help if the issue is with NOMAD itself, for example if Kiwix isn't picking up a new ZIM after an install, but we can't maintain or support third-party content.
+These add-ons are community-built and community-maintained. If something goes wrong with an install script or the content inside a ZIM, please open an issue on the add-on's own repository rather than Cairn's. We're happy to help if the issue is with Cairn itself, for example if Kiwix isn't picking up a new ZIM after an install, but we can't maintain or support third-party content.

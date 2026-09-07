@@ -4,7 +4,7 @@ import type { ApplicationService } from '@adonisjs/core/types'
 /**
  * Auto-remediates NVIDIA GPU passthrough loss after admin / host restart.
  *
- * After an update or container recreate, nomad_ollama's HostConfig.DeviceRequests
+ * After an update or container recreate, cairn_ollama's HostConfig.DeviceRequests
  * still lists the nvidia driver, but the NVIDIA Container Toolkit binding inside
  * the container is torn. `nvidia-smi` inside the container returns
  * "Failed to initialize NVML: Unknown Error" and Ollama silently falls back to
@@ -58,7 +58,7 @@ export default class GpuPassthroughRemediationProvider {
 
         if (!ollama) {
           logger.info(
-            '[GpuPassthroughRemediationProvider] nomad_ollama not running — skipping.'
+            '[GpuPassthroughRemediationProvider] cairn_ollama not running — skipping.'
           )
           return
         }
@@ -94,8 +94,8 @@ export default class GpuPassthroughRemediationProvider {
         }
 
         logger.warn(
-          '[GpuPassthroughRemediationProvider] NVIDIA passthrough broken (nvidia-smi inside nomad_ollama failed). ' +
-            'Auto-reinstalling nomad_ollama; volumes and installed models are preserved.'
+          '[GpuPassthroughRemediationProvider] NVIDIA passthrough broken (nvidia-smi inside cairn_ollama failed). ' +
+            'Auto-reinstalling cairn_ollama; volumes and installed models are preserved.'
         )
 
         const dockerService = new DockerService()
@@ -104,7 +104,7 @@ export default class GpuPassthroughRemediationProvider {
         if (result.success) {
           await KVStore.setValue('gpu.autoRemediatedAt', new Date().toISOString())
           logger.info(
-            '[GpuPassthroughRemediationProvider] nomad_ollama force-reinstall completed successfully.'
+            '[GpuPassthroughRemediationProvider] cairn_ollama force-reinstall completed successfully.'
           )
         } else {
           logger.error(

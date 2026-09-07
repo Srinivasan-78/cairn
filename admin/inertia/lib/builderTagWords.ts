@@ -1,4 +1,4 @@
-// Builder Tag word lists for generating unique, NOMAD-themed identifiers
+// Builder Tag word lists for generating unique, Cairn-themed identifiers
 // Format: [Adjective]-[Noun]-[4-digit number]
 
 export const ADJECTIVES = [
@@ -10,7 +10,7 @@ export const ADJECTIVES = [
   'Silent',
   'Covert',
   'Lone',
-  'Nomad',
+  'Cairn',
   'Digital',
   'Cyber',
   'Off-Grid',
@@ -75,7 +75,7 @@ export const NOUNS = [
   'Scout',
   'Survivor',
   'Prepper',
-  'Nomad',
+  'Cairn',
   'Wanderer',
   'Drifter',
   'Outpost',

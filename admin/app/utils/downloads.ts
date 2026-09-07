@@ -32,7 +32,7 @@ export class GatedContentAuthError extends Error {
 // User-Agent per Wikimedia's UA policy. Identify ourselves descriptively so
 // those downloads succeed.
 const DOWNLOAD_HEADERS: Record<string, string> = {
-  'User-Agent': 'ProjectNOMAD/1.0 (+https://projectnomad.us)',
+  'User-Agent': 'Cairn/1.0 (+https://cairn.example)',
 }
 
 /**
@@ -89,7 +89,7 @@ export async function doResumableDownload({
     const status = error?.response?.status
     if (status === 401 || status === 403) {
       throw new GatedContentAuthError(
-        'This content is hosted by Project NOMAD and requires an official release build. ' +
+        'This content is hosted by Cairn and requires an official release build. ' +
           `The download server rejected this install's credentials (HTTP ${status}).`
       )
     }

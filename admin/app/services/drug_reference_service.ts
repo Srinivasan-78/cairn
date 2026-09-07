@@ -529,7 +529,7 @@ export class DrugReferenceService {
   /**
    * Force-clear a wedged ingest and restart it from the on-disk parts.
    *
-   * A worker killed mid-ingest (e.g. during a `nomad upgrade`) leaves its job
+   * A worker killed mid-ingest (e.g. during a `cairn upgrade`) leaves its job
    * 'active' holding a lock BullMQ won't reclaim until lockDuration elapses, so
    * the normal dispatch refuses to start a new ingest and the UI button stays
    * disabled ("Indexing…") with no way out. Obliterating the single-purpose

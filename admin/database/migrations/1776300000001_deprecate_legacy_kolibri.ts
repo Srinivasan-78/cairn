@@ -12,8 +12,8 @@ export default class extends BaseSchema {
     })
 
     // Sunset the legacy treehouses/kolibri:0.12.8 entry, replaced by the learningequality Gen 2
-    // entry seeded as `nomad_kolibri_2`. The seeder is additive + sync-existing and never deletes,
-    // so without this step every existing deployment keeps an orphaned `nomad_kolibri` row and can
+    // entry seeded as `cairn_kolibri_2`. The seeder is additive + sync-existing and never deletes,
+    // so without this step every existing deployment keeps an orphaned `cairn_kolibri` row and can
     // still install the dead 6-year-old image. Conditional handling keeps it data-safe:
     this.defer(async (db) => {
       // Never installed → just an orphaned catalog row; drop it outright.
@@ -24,7 +24,7 @@ export default class extends BaseSchema {
         .delete()
 
       // Currently installed → a running 0.12.8 container holds port 8300 + a bind mount. Keep the
-      // row (it's Nomad's only handle to open/stop/uninstall that container) but flag it deprecated
+      // row (it's Cairn's only handle to open/stop/uninstall that container) but flag it deprecated
       // so it shows a "Legacy" badge and drops out of the catalog once the user uninstalls it.
       await db
         .from(this.tableName)

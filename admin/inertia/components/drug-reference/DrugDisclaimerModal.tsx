@@ -7,7 +7,7 @@ import StyledButton from '~/components/StyledButton'
  * bump the suffix if the disclaimer text changes materially so every browser is
  * re-prompted. Per-browser by design — a new browser/device gets the gate again.
  */
-export const DRUG_DISCLAIMER_ACK_KEY = 'nomad:drugReferenceDisclaimer:v1'
+export const DRUG_DISCLAIMER_ACK_KEY = 'cairn:drugReferenceDisclaimer:v1'
 
 export function hasAcknowledgedDrugDisclaimer(): boolean {
   if (typeof window === 'undefined') return true
@@ -76,7 +76,7 @@ export default function DrugDisclaimerModal({ open, onAcknowledge }: { open: boo
                 </li>
               </ul>
               <p className="text-xs text-text-muted">
-                Data is from openFDA (U.S. FDA, public domain). NOMAD is not affiliated with or endorsed by the FDA.
+                Data is from openFDA (U.S. FDA, public domain). Cairn is not affiliated with or endorsed by the FDA.
               </p>
             </div>
 

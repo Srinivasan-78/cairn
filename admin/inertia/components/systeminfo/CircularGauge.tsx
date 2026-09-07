@@ -9,7 +9,7 @@ interface CircularGaugeProps {
   variant?: 'cpu' | 'memory' | 'disk' | 'default'
   subtext?: string
   animated?: boolean
-  /** Render the ring in a neutral tone (e.g. for a partial, non-NOMAD score). */
+  /** Render the ring in a neutral tone (e.g. for a partial, non-Cairn score). */
   muted?: boolean
 }
 
@@ -64,7 +64,7 @@ export default function CircularGauge({
   const offset = circumference - (displayValue / 100) * circumference
 
   const getColor = () => {
-    // Neutral tone signals this isn't a real NOMAD Score (partial run).
+    // Neutral tone signals this isn't a real Cairn Score (partial run).
     if (muted) return 'desert-stone'
     // For benchmarks: higher scores = better = green
     if (value >= 75) return 'desert-green'

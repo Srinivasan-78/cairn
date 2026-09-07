@@ -4,7 +4,7 @@ import { test } from 'node:test'
 import { evaluateBindMounts, evaluateImageReference } from '../../app/services/custom_app_guard.js'
 
 // ── Bind mounts ──────────────────────────────────────────────────────────────
-// These assume the default storage root (/opt/project-nomad/storage), i.e. NOMAD_STORAGE_PATH unset.
+// These assume the default storage root (/opt/cairn/storage), i.e. CAIRN_STORAGE_PATH unset.
 
 test('evaluateBindMounts hard-blocks the Docker socket', () => {
   const { blocked } = evaluateBindMounts([
@@ -21,7 +21,7 @@ test('evaluateBindMounts hard-blocks core system directories', () => {
 })
 
 test('evaluateBindMounts hard-blocks mounting at or above the install tree', () => {
-  for (const dir of ['/', '/opt', '/opt/project-nomad']) {
+  for (const dir of ['/', '/opt', '/opt/cairn']) {
     const { blocked } = evaluateBindMounts([{ host_path: dir, container_path: '/data' }])
     assert.equal(blocked.length, 1, `${dir} should be blocked`)
   }
@@ -29,7 +29,7 @@ test('evaluateBindMounts hard-blocks mounting at or above the install tree', () 
 
 test('evaluateBindMounts allows paths under the storage root without warning', () => {
   const { blocked, warnings } = evaluateBindMounts([
-    { host_path: '/opt/project-nomad/storage/myapp', container_path: '/data' },
+    { host_path: '/opt/cairn/storage/myapp', container_path: '/data' },
   ])
   assert.equal(blocked.length, 0)
   assert.equal(warnings.length, 0)
@@ -53,7 +53,7 @@ test('evaluateBindMounts resolves .. before matching (no traversal escape)', () 
 
 test('evaluateBindMounts requires absolute container paths', () => {
   const { blocked } = evaluateBindMounts([
-    { host_path: '/opt/project-nomad/storage/x', container_path: 'relative' },
+    { host_path: '/opt/cairn/storage/x', container_path: 'relative' },
   ])
   assert.equal(blocked.length, 1)
 })
@@ -69,7 +69,7 @@ test('evaluateBindMounts hard-blocks a colon in the host path', () => {
 
 test('evaluateBindMounts hard-blocks a colon in the container path', () => {
   const { blocked } = evaluateBindMounts([
-    { host_path: '/opt/project-nomad/storage/x', container_path: '/data:ro' },
+    { host_path: '/opt/cairn/storage/x', container_path: '/data:ro' },
   ])
   assert.equal(blocked.length, 1)
 })

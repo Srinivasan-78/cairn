@@ -63,7 +63,7 @@ export default class BenchmarkSubmit extends BaseCommand {
         this.logger.info(`  AI Tokens/sec: ${result.ai_tokens_per_second.toFixed(2)}`)
         this.logger.info(`  AI TTFT: ${result.ai_time_to_first_token?.toFixed(2)} ms`)
       }
-      this.logger.info(`  NOMAD Score: ${result.nomad_score.toFixed(2)}`)
+      this.logger.info(`  Cairn Score: ${result.cairn_score.toFixed(2)}`)
       this.logger.info('')
       this.logger.info('Privacy Notice:')
       this.logger.info('  - Only the information shown above will be submitted')
@@ -91,7 +91,7 @@ export default class BenchmarkSubmit extends BaseCommand {
       this.logger.info(`Repository ID: ${submitResult.repository_id}`)
       this.logger.info(`Your percentile: ${submitResult.percentile}%`)
       this.logger.info('')
-      this.logger.info('Thank you for contributing to the NOMAD community!')
+      this.logger.info('Thank you for contributing to the Cairn community!')
 
     } catch (error) {
       this.logger.error(`Submission failed: ${error.message}`)

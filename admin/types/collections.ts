@@ -15,7 +15,7 @@ export type SpecResource = {
    * Marks a resource we host ourselves behind the entitlement Worker. Absent ==
    * unauthenticated, so every existing manifest entry is unchanged.
    *
-   * 'nomad_app_key' means "send the bearer key that official release builds bake
+   * 'cairn_app_key' means "send the bearer key that official release builds bake
    * in". It also pins the download to `url`: see resolveZimDownload, which
    * deliberately skips the Kiwix-catalog comparison for these so a resource-id
    * collision can never redirect our gated content to a third-party mirror.
@@ -23,7 +23,7 @@ export type SpecResource = {
    * An enum rather than a boolean so a second scheme can be added later without
    * another schema change.
    */
-  auth?: 'nomad_app_key'
+  auth?: 'cairn_app_key'
 }
 
 export type SpecTier = {

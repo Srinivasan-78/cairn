@@ -2,7 +2,7 @@ import { mkdir, open, readdir, readFile, stat, unlink } from 'fs/promises'
 import path, { join } from 'path'
 import { FileEntry } from '../../types/files.js'
 import { createReadStream } from 'fs'
-import { LSBlockDevice, NomadDiskInfoRaw } from '../../types/system.js'
+import { LSBlockDevice, CairnDiskInfoRaw } from '../../types/system.js'
 
 export const ZIM_STORAGE_PATH = '/storage/zim'
 export const KIWIX_LIBRARY_XML_PATH = '/storage/zim/kiwix-library.xml'
@@ -149,9 +149,9 @@ export async function deleteFileIfExists(path: string): Promise<void> {
 
 export function getAllFilesystems(
   device: LSBlockDevice,
-  fsSize: NomadDiskInfoRaw['fsSize']
-): NomadDiskInfoRaw['fsSize'] {
-  const filesystems: NomadDiskInfoRaw['fsSize'] = []
+  fsSize: CairnDiskInfoRaw['fsSize']
+): CairnDiskInfoRaw['fsSize'] {
+  const filesystems: CairnDiskInfoRaw['fsSize'] = []
   const seen = new Set()
 
   function traverse(dev: LSBlockDevice) {

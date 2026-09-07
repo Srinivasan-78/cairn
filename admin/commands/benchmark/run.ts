@@ -80,7 +80,7 @@ export default class BenchmarkRun extends BaseCommand {
       }
 
       this.logger.info('')
-      this.logger.info(`NOMAD Score: ${result.nomad_score.toFixed(2)} / 100`)
+      this.logger.info(`Cairn Score: ${result.cairn_score.toFixed(2)} / 100`)
       this.logger.info('')
       this.logger.info(`Benchmark ID: ${result.benchmark_id}`)
 

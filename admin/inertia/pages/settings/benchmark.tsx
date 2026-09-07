@@ -179,7 +179,7 @@ export default function BenchmarkPage(props: {
     !latestResult.submitted_to_repository
 
   // How to present the headline score: partial (System/AI Only) runs are NOT the
-  // NOMAD Score and are relabelled + flagged so users don't mistake them for it.
+  // Cairn Score and are relabelled + flagged so users don't mistake them for it.
   const scoreInfo = latestResult ? getScoreDisplay(latestResult.benchmark_type) : null
 
   // Handle Full Benchmark click with pre-flight check
@@ -219,7 +219,7 @@ export default function BenchmarkPage(props: {
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-desert-green mb-2">System Benchmark</h1>
             <p className="text-desert-stone-dark">
-              Measure your server's performance and compare with the NOMAD community
+              Measure your server's performance and compare with the Cairn community
             </p>
           </div>
 
@@ -266,7 +266,7 @@ export default function BenchmarkPage(props: {
                     <Alert
                       type="warning"
                       title={`${aiAssistantName} Required`}
-                      message={`Full benchmark requires ${aiAssistantName} to be installed. Install it to measure your complete NOMAD capability and share results with the community.`}
+                      message={`Full benchmark requires ${aiAssistantName} to be installed. Install it to measure your complete Cairn capability and share results with the community.`}
                       variant="bordered"
                       dismissible
                       onDismiss={() => setShowAIRequiredAlert(false)}
@@ -337,7 +337,7 @@ export default function BenchmarkPage(props: {
               <section className="mb-12">
                 <h2 className="text-2xl font-bold text-desert-green mb-6 flex items-center gap-2">
                   <div className="w-1 h-6 bg-desert-green" />
-                  {scoreInfo?.label ?? 'NOMAD Score'}
+                  {scoreInfo?.label ?? 'Cairn Score'}
                   {scoreInfo?.isPartial && (
                     <span className="ml-1 px-2 py-0.5 rounded-full bg-desert-stone-light text-desert-stone-dark text-xs font-semibold uppercase tracking-wide">
                       Partial
@@ -349,8 +349,8 @@ export default function BenchmarkPage(props: {
                   <div className="flex flex-col md:flex-row items-center gap-8">
                     <div className="shrink-0">
                       <CircularGauge
-                        value={latestResult.nomad_score}
-                        label={latestResult.nomad_score_v2 != null ? 'Legacy Score' : 'NOMAD Score'}
+                        value={latestResult.cairn_score}
+                        label={latestResult.cairn_score_v2 != null ? 'Legacy Score' : 'Cairn Score'}
                         size="lg"
                         variant="cpu"
                         subtext="out of 100"
@@ -359,21 +359,21 @@ export default function BenchmarkPage(props: {
                       />
                     </div>
                     <div className="flex-1 space-y-4">
-                      {latestResult.nomad_score_v2 != null ? (
+                      {latestResult.cairn_score_v2 != null ? (
                         <>
                           <div className="flex items-baseline gap-3">
                             <div className="text-5xl font-bold text-desert-green">
-                              {latestResult.nomad_score_v2.toFixed(1)}
+                              {latestResult.cairn_score_v2.toFixed(1)}
                             </div>
                             <div className="text-sm text-desert-stone-dark flex items-center gap-1">
-                              NOMAD Score
-                              <InfoTooltip text="NOMAD Score v2 is an uncapped index versus the NOMAD Reference Build, which scores exactly 1000. Higher is better, and there is no ceiling." />
+                              Cairn Score
+                              <InfoTooltip text="Cairn Score v2 is an uncapped index versus the Cairn Reference Build, which scores exactly 1000. Higher is better, and there is no ceiling." />
                             </div>
                           </div>
                           <p className="text-sm text-desert-stone-dark">
                             Reference Build = 1000.{' '}
                             <span className="text-desert-stone">
-                              Legacy scale: {latestResult.nomad_score.toFixed(1)} / 100
+                              Legacy scale: {latestResult.cairn_score.toFixed(1)} / 100
                             </span>
                           </p>
                         </>
@@ -384,10 +384,10 @@ export default function BenchmarkPage(props: {
                               className={`text-5xl font-bold ${
                             scoreInfo?.isPartial
                               ? 'text-desert-stone-dark'
-                              : getScoreColor(latestResult.nomad_score)
+                              : getScoreColor(latestResult.cairn_score)
                           }`}
                             >
-                              {latestResult.nomad_score.toFixed(1)}
+                              {latestResult.cairn_score.toFixed(1)}
                             </div>
                         {scoreInfo?.isPartial && (
                           <span className="px-2 py-1 rounded-md bg-desert-stone-light text-desert-stone-dark text-xs font-semibold uppercase tracking-wide">
@@ -398,7 +398,7 @@ export default function BenchmarkPage(props: {
                           <p className="text-desert-stone-dark">
                             {scoreInfo?.isPartial
                           ? scoreInfo.cta
-                          : 'Your NOMAD Score is a weighted composite of all benchmark results.'}
+                          : 'Your Cairn Score is a weighted composite of all benchmark results.'}
                           </p>
                         </>
                       )}
@@ -483,7 +483,7 @@ export default function BenchmarkPage(props: {
                           variant="bordered"
                         >
                           <a
-                            href="https://benchmark.projectnomad.us"
+                            href="https://benchmark.cairn.example"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-desert-green hover:underline mt-2 inline-block"
@@ -666,9 +666,9 @@ export default function BenchmarkPage(props: {
                         </div>
                       </div>
                       <div>
-                        <div className="text-desert-stone-dark">NOMAD Score</div>
+                        <div className="text-desert-stone-dark">Cairn Score</div>
                         <div className="font-bold text-desert-green">
-                          {(latestResult.nomad_score_v2 ?? latestResult.nomad_score).toFixed(1)}
+                          {(latestResult.cairn_score_v2 ?? latestResult.cairn_score).toFixed(1)}
                         </div>
                       </div>
                     </div>
@@ -945,7 +945,7 @@ export default function BenchmarkPage(props: {
                                   <td className="p-3 capitalize">{result.benchmark_type}</td>
                                   <td className="p-3">
                                     <span className="font-bold text-desert-green">
-                                      {result.nomad_score.toFixed(1)}
+                                      {result.cairn_score.toFixed(1)}
                                     </span>
                                   </td>
                                   <td className="p-3 font-mono text-xs">

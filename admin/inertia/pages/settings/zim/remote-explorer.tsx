@@ -77,7 +77,7 @@ export default function ZimRemoteExplorer() {
   // Custom library state - persist selection to localStorage
   const [selectedSource, setSelectedSource] = useState<'default' | number>(() => {
     try {
-      const saved = localStorage.getItem('nomad:zim-library-source')
+      const saved = localStorage.getItem('cairn:zim-library-source')
       if (saved && saved !== 'default') return parseInt(saved, 10)
     } catch {}
     return 'default'
@@ -226,14 +226,14 @@ export default function ZimRemoteExplorer() {
       } else if (!lib) {
         // Saved library was deleted
         setSelectedSource('default')
-        localStorage.setItem('nomad:zim-library-source', 'default')
+        localStorage.setItem('cairn:zim-library-source', 'default')
       }
     }
   }, [customLibraries, selectedSource])
 
   // When selecting a custom library, navigate to its root
   const handleSourceChange = (value: string) => {
-    localStorage.setItem('nomad:zim-library-source', value)
+    localStorage.setItem('cairn:zim-library-source', value)
     if (value === 'default') {
       setSelectedSource('default')
       setBrowseUrl(null)
@@ -460,7 +460,7 @@ export default function ZimRemoteExplorer() {
 
   return (
     <SettingsLayout>
-      <Head title="Content Explorer | Project NOMAD" />
+      <Head title="Content Explorer | Cairn" />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
           <div className="flex justify-between items-center">

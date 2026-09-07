@@ -4,7 +4,7 @@ import SettingsLayout from '~/layouts/SettingsLayout'
 export default function LegalPage() {
   return (
     <SettingsLayout>
-      <Head title="Legal Notices | Project NOMAD" />
+      <Head title="Legal Notices | Cairn" />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6 max-w-4xl">
           <h1 className="text-4xl font-semibold mb-8">Legal Notices</h1>
@@ -12,7 +12,7 @@ export default function LegalPage() {
           {/* License Agreement */}
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">License Agreement</h2>
-            <p className="text-text-primary mb-3">Copyright 2024-2026 Crosstalk Solutions, LLC</p>
+            <p className="text-text-primary mb-3">Copyright 2024-2026 Srinivasan Vijayaraghavan</p>
             <p className="text-text-primary mb-3">
               Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
               you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Third-Party Software Attribution</h2>
             <p className="text-text-primary mb-4">
-              Project NOMAD&trade; integrates the following open source projects. We are grateful to
+              Cairn&trade; integrates the following open source projects. We are grateful to
               their developers and communities:
             </p>
             <ul className="space-y-3 text-text-primary">
@@ -75,12 +75,12 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Privacy Statement</h2>
             <p className="text-text-primary mb-3">
-              Project NOMAD is designed with privacy as a core principle:
+              Cairn is designed with privacy as a core principle:
             </p>
             <ul className="list-disc list-inside space-y-2 text-text-primary">
-              <li><strong>Zero Telemetry:</strong> NOMAD does not collect, transmit, or store any usage data, analytics, or telemetry.</li>
+              <li><strong>Zero Telemetry:</strong> Cairn does not collect, transmit, or store any usage data, analytics, or telemetry.</li>
               <li><strong>Local-First:</strong> All your data, downloaded content, AI conversations, and notes remain on your device.</li>
-              <li><strong>No Accounts Required:</strong> NOMAD operates without user accounts or authentication by default.</li>
+              <li><strong>No Accounts Required:</strong> Cairn operates without user accounts or authentication by default.</li>
               <li><strong>Network Optional:</strong> An internet connection is only required to download content or updates. All installed features work fully offline.</li>
             </ul>
           </section>
@@ -89,12 +89,12 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Content Disclaimer</h2>
             <p className="text-text-primary mb-3">
-              Project NOMAD provides tools to download and access content from third-party sources
+              Cairn provides tools to download and access content from third-party sources
               including Wikipedia, Wikibooks, medical references, educational platforms, and other
               publicly available resources.
             </p>
             <p className="text-text-primary mb-3">
-              Crosstalk Solutions, LLC does not create, control, verify, or guarantee the accuracy,
+              Srinivasan Vijayaraghavan does not create, control, verify, or guarantee the accuracy,
               completeness, or reliability of any third-party content. The inclusion of any content
               does not constitute an endorsement.
             </p>
@@ -108,7 +108,7 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Medical and Emergency Information Disclaimer</h2>
             <p className="text-text-primary mb-3">
-              Some content available through NOMAD includes medical references, first aid guides,
+              Some content available through Cairn includes medical references, first aid guides,
               and emergency preparedness information. This content is provided for general
               informational purposes only.
             </p>
@@ -127,15 +127,15 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Data Storage</h2>
             <p className="text-text-primary mb-3">
-              All data associated with Project NOMAD is stored locally on your device:
+              All data associated with Cairn is stored locally on your device:
             </p>
             <ul className="list-disc list-inside space-y-2 text-text-primary">
-              <li><strong>Installation Directory:</strong> /opt/project-nomad</li>
-              <li><strong>Downloaded Content:</strong> /opt/project-nomad/storage</li>
+              <li><strong>Installation Directory:</strong> /opt/cairn</li>
+              <li><strong>Downloaded Content:</strong> /opt/cairn/storage</li>
               <li><strong>Application Data:</strong> Stored in Docker volumes on your local system</li>
             </ul>
             <p className="text-text-primary mt-3">
-              You maintain full control over your data. Uninstalling NOMAD or deleting these
+              You maintain full control over your data. Uninstalling Cairn or deleting these
               directories will permanently remove all associated data.
             </p>
           </section>

@@ -23,12 +23,12 @@ export default class extends BaseSchema {
 
       // Populate source_repo for services whose images lack the OCI source label
       const sourceRepos: Record<string, string> = {
-        nomad_kiwix_server: 'https://github.com/kiwix/kiwix-tools',
-        nomad_ollama: 'https://github.com/ollama/ollama',
-        nomad_qdrant: 'https://github.com/qdrant/qdrant',
-        nomad_cyberchef: 'https://github.com/gchq/CyberChef',
-        nomad_flatnotes: 'https://github.com/dullage/flatnotes',
-        nomad_kolibri: 'https://github.com/learningequality/kolibri',
+        cairn_kiwix_server: 'https://github.com/kiwix/kiwix-tools',
+        cairn_ollama: 'https://github.com/ollama/ollama',
+        cairn_qdrant: 'https://github.com/qdrant/qdrant',
+        cairn_cyberchef: 'https://github.com/gchq/CyberChef',
+        cairn_flatnotes: 'https://github.com/dullage/flatnotes',
+        cairn_kolibri: 'https://github.com/learningequality/kolibri',
       }
 
       for (const [serviceName, repoUrl] of Object.entries(sourceRepos)) {

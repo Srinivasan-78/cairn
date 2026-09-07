@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Project NOMAD Update Script
+# Cairn Update Script
 
 ###################################################################################################################################################################################################
 
-# Script                | Project NOMAD Update Script
+# Script                | Cairn Update Script
 # Version               | 1.0.1
-# Author                | Crosstalk Solutions, LLC
-# Website               | https://crosstalksolutions.com
+# Author                | Srinivasan Vijayaraghavan
+# Website               | https://cairn.com
 
 ###################################################################################################################################################################################################
 #                                                                                                                                                                                                 #
@@ -66,7 +66,7 @@ check_is_debian_based() {
 }
 
 get_update_confirmation(){
-  read -p "This script will update Project NOMAD and its dependencies on your machine. No data loss is expected, but you should always back up your data before proceeding. Are you sure you want to continue? (y/n): " choice
+  read -p "This script will update Cairn and its dependencies on your machine. No data loss is expected, but you should always back up your data before proceeding. Are you sure you want to continue? (y/n): " choice
   case "$choice" in
     y|Y )
       echo -e "${GREEN}#${RESET} User chose to continue with the update."
@@ -85,7 +85,7 @@ get_update_confirmation(){
 
 ensure_docker_installed_and_running() {
   if ! command -v docker &> /dev/null; then
-    echo -e "${RED}#${RESET} Docker is not installed. This is unexpected, as Project NOMAD requires Docker to run. Did you mean to use the install script instead of the update script?"
+    echo -e "${RED}#${RESET} Docker is not installed. This is unexpected, as Cairn requires Docker to run. Did you mean to use the install script instead of the update script?"
     exit 1
   fi
 
@@ -110,21 +110,21 @@ check_docker_compose() {
 }
 
 ensure_docker_compose_file_exists() {
-  if [ ! -f "/opt/project-nomad/compose.yml" ]; then
-    echo -e "${RED}#${RESET} compose.yml file not found. Please ensure it exists at /opt/project-nomad/compose.yml."
+  if [ ! -f "/opt/cairn/compose.yml" ]; then
+    echo -e "${RED}#${RESET} compose.yml file not found. Please ensure it exists at /opt/cairn/compose.yml."
     exit 1
   fi
 }
 
 force_recreate() {
   echo -e "${YELLOW}#${RESET} Pulling the latest Docker images..."
-  if ! docker compose -p project-nomad -f /opt/project-nomad/compose.yml pull; then
+  if ! docker compose -p cairn -f /opt/cairn/compose.yml pull; then
     echo -e "${RED}#${RESET} Failed to pull the latest Docker images. Please check your network connection and the Docker registry status, then try again."
     exit 1
   fi
   
   echo -e "${YELLOW}#${RESET} Forcing recreation of containers..."
-  if ! docker compose -p project-nomad -f /opt/project-nomad/compose.yml up -d --force-recreate; then
+  if ! docker compose -p cairn -f /opt/cairn/compose.yml up -d --force-recreate; then
     echo -e "${RED}#${RESET} Failed to recreate containers. Please check the Docker logs for more details."
     exit 1
   fi
@@ -139,11 +139,11 @@ get_local_ip() {
 }
 
 success_message() {
-  echo -e "${GREEN}#${RESET} Project NOMAD update completed successfully!\\n"
-  echo -e "${GREEN}#${RESET} Installation files are located at /opt/project-nomad\\n\n"
-  echo -e "${GREEN}#${RESET} Project NOMAD's Command Center should automatically start whenever your device reboots. However, if you need to start it manually, you can always do so by running: ${WHITE_R}${nomad_dir}/start_nomad.sh${RESET}\\n"
+  echo -e "${GREEN}#${RESET} Cairn update completed successfully!\\n"
+  echo -e "${GREEN}#${RESET} Installation files are located at /opt/cairn\\n\n"
+  echo -e "${GREEN}#${RESET} Cairn's Command Center should automatically start whenever your device reboots. However, if you need to start it manually, you can always do so by running: ${WHITE_R}${cairn_dir}/start_cairn.sh${RESET}\\n"
   echo -e "${GREEN}#${RESET} You can now access the management interface at http://localhost:8080 or http://${local_ip_address}:8080\\n"
-  echo -e "${GREEN}#${RESET} Thank you for supporting Project NOMAD!\\n"
+  echo -e "${GREEN}#${RESET} Thank you for supporting Cairn!\\n"
 }
 
 ###################################################################################################################################################################################################

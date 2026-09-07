@@ -10,7 +10,7 @@ import { isGatedResource } from './hosted_content.js'
  * Dockerfile ARG/ENV pair, fed from the CI secret). That is the whole point: a
  * fork rebuilt from source cannot point at our bucket and spend our bandwidth.
  *
- * A manifest resource opts in with `auth: 'nomad_app_key'`. Everything else keeps
+ * A manifest resource opts in with `auth: 'cairn_app_key'`. Everything else keeps
  * downloading unauthenticated exactly as before.
  *
  * Note on the key name: this deliberately reuses CREATOR_PACKS_APP_KEY rather

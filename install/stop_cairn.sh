@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "Finding running Docker containers for Project NOMAD.."
+echo "Finding running Docker containers for Cairn.."
 
-containers=$(docker ps --filter "name=^nomad_" --format "{{.Names}}")
+containers=$(docker ps --filter "name=^cairn_" --format "{{.Names}}")
 
 if [ -z "$containers" ]; then
-    echo "No running containers found for Project NOMAD"
+    echo "No running containers found for Cairn"
     exit 0
 fi
 
@@ -23,4 +23,4 @@ for container in $containers; do
     echo ""
 done
 
-echo "Finished initiating graceful shutdown of all Project NOMAD containers."
+echo "Finished initiating graceful shutdown of all Cairn containers."

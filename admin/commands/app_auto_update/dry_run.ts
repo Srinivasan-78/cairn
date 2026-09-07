@@ -79,7 +79,7 @@ export default class AppAutoUpdateDryRun extends BaseCommand {
     const hoursAgo = (h: number) => now.minus({ hours: h })
 
     const mk = (o: Record<string, any>) => ({
-      service_name: 'nomad_test',
+      service_name: 'cairn_test',
       container_image: 'ollama/ollama:0.18.1',
       available_update_version: null,
       available_update_first_seen_at: null,

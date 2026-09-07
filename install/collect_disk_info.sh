@@ -14,7 +14,7 @@ while true; do
         } 
         END {print "]"}')
 
-    cat > /tmp/nomad-disk-info.json << EOF
+    cat > /tmp/cairn-disk-info.json << EOF
 {
 "diskLayout": $DISK_LAYOUT,
 "fsSize": $FS_SIZE

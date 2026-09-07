@@ -21,7 +21,7 @@
  *
  * Docker reports `x86_64` / `aarch64`; images and the board talk in `amd64` /
  * `arm64`. A fixed two-way map rather than a general normalisation table: these
- * are the only architectures NOMAD targets, and anything unrecognised passes
+ * are the only architectures Cairn targets, and anything unrecognised passes
  * through verbatim rather than being guessed at, so an unexpected platform shows
  * up honestly instead of mislabelled.
  */

@@ -10,8 +10,8 @@ import type { SpecResource } from '../../types/collections.js'
  */
 
 /** The only gating scheme we support today. See SpecResource.auth. */
-export const NOMAD_APP_KEY_AUTH = 'nomad_app_key' as const
+export const CAIRN_APP_KEY_AUTH = 'cairn_app_key' as const
 
 export function isGatedResource(resource: Pick<SpecResource, 'auth'>): boolean {
-  return resource.auth === NOMAD_APP_KEY_AUTH
+  return resource.auth === CAIRN_APP_KEY_AUTH
 }

@@ -1,14 +1,14 @@
-export type NomadOllamaModel = {
+export type CairnOllamaModel = {
   id: string
   name: string
   description: string
   estimated_pulls: string
   model_last_updated: string
   first_seen: string
-  tags: NomadOllamaModelTag[]
+  tags: CairnOllamaModelTag[]
 }
 
-export type NomadOllamaModelTag = {
+export type CairnOllamaModelTag = {
   name: string
   size: string
   context: string
@@ -17,10 +17,10 @@ export type NomadOllamaModelTag = {
   thinking: boolean
 }
 
-export type NomadOllamaModelAPIResponse = {
+export type CairnOllamaModelAPIResponse = {
   success: boolean
   message: string
-  models: NomadOllamaModel[]
+  models: CairnOllamaModel[]
 }
 
 export type OllamaChatMessage = {
@@ -48,7 +48,7 @@ export type OllamaChatResponse = {
   done: boolean
 }
 
-export type NomadInstalledModel = {
+export type CairnInstalledModel = {
   name: string
   size: number
   digest?: string
@@ -57,7 +57,7 @@ export type NomadInstalledModel = {
   thinking?: boolean
 }
 
-export type NomadChatResponse = {
+export type CairnChatResponse = {
   message: { content: string; thinking?: string }
   done: boolean
   model: string

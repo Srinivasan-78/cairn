@@ -187,7 +187,7 @@ export class CountriesService {
     const key = `b${REGION_BUFFER_DEGREES}:${resolved.join(',')}`
     const hash = createHash('sha1').update(key).digest('hex').slice(0, 12)
 
-    const dir = resolve(tmpdir(), 'nomad-pmtiles-regions')
+    const dir = resolve(tmpdir(), 'cairn-pmtiles-regions')
     await mkdir(dir, { recursive: true })
     const filepath = join(dir, `region-${hash}.geojson`)
 

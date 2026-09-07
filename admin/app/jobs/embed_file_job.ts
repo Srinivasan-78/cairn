@@ -80,7 +80,7 @@ export class EmbedFileJob {
       // Check if Ollama and Qdrant services are installed and ready
       // Use UnrecoverableError for "not installed" so BullMQ won't retry —
       // retrying 30x when the service doesn't exist just wastes Redis connections
-      const ollamaUrl = await dockerService.getServiceURL('nomad_ollama')
+      const ollamaUrl = await dockerService.getServiceURL('cairn_ollama')
       if (!ollamaUrl) {
         logger.warn('[EmbedFileJob] Ollama is not installed. Skipping embedding for: %s', fileName)
         throw new UnrecoverableError('Ollama service is not installed. Install AI Assistant to enable file embeddings.')
@@ -92,7 +92,7 @@ export class EmbedFileJob {
         throw new Error('Ollama service not ready yet')
       }
 
-      const qdrantUrl = await dockerService.getServiceURL('nomad_qdrant')
+      const qdrantUrl = await dockerService.getServiceURL('cairn_qdrant')
       if (!qdrantUrl) {
         logger.warn('[EmbedFileJob] Qdrant is not installed. Skipping embedding for: %s', fileName)
         throw new UnrecoverableError('Qdrant service is not installed. Install AI Assistant to enable file embeddings.')
@@ -491,7 +491,7 @@ export class EmbedFileJob {
     for (const job of jobs) {
       const filePath = (job.data as EmbedFileJobParams).filePath
       // Same guard as cleanupFailedJobs: only delete user uploads, never ZIM
-      // library files or Nomad docs that live outside the uploads path.
+      // library files or Cairn docs that live outside the uploads path.
       if (filePath && filePath.includes(RagService.UPLOADS_STORAGE_PATH)) {
         try {
           await fs.unlink(filePath)

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Project NOMAD Update Sidecar - Polls for update requests and executes them
+# Cairn Update Sidecar - Polls for update requests and executes them
 
 SHARED_DIR="/shared"
 REQUEST_FILE="${SHARED_DIR}/update-request"
 STATUS_FILE="${SHARED_DIR}/update-status"
 LOG_FILE="${SHARED_DIR}/update-log"
-COMPOSE_FILE="/opt/project-nomad/compose.yml"
-COMPOSE_PROJECT_NAME="project-nomad"
+COMPOSE_FILE="/opt/cairn/compose.yml"
+COMPOSE_PROJECT_NAME="cairn"
 
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
@@ -43,7 +43,7 @@ perform_update() {
 
     # Apply target image tag to compose.yml before pulling
     log "Applying image tag '${target_tag}' to compose.yml..."
-    if sed -i "s|\(image: ghcr\.io/crosstalk-solutions/project-nomad\):.*|\1:${target_tag}|" "$COMPOSE_FILE" 2>> "$LOG_FILE"; then
+    if sed -i "s|\(image: ghcr\.io/srinivasan-78/cairn\):.*|\1:${target_tag}|" "$COMPOSE_FILE" 2>> "$LOG_FILE"; then
         log "Successfully updated compose.yml admin image tag to '${target_tag}'"
     else
         log "ERROR: Failed to update compose.yml image tag"
@@ -56,7 +56,7 @@ perform_update() {
     log "Pulling latest Docker images..."
 
     # Snapshot the images backing our managed repos before the pull supersedes
-    # them, so the post-update cleanup can drop only NOMAD's own dangling layers.
+    # them, so the post-update cleanup can drop only Cairn's own dangling layers.
     PRE_UPDATE_IMAGE_IDS=$(snapshot_managed_image_ids)
 
     if docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" pull >> "$LOG_FILE" 2>&1; then
@@ -119,7 +119,7 @@ perform_update() {
 # Record the full image IDs currently backing our compose-managed repositories
 # BEFORE we pull. After the pull, the old digests of moving tags (e.g. :latest)
 # become dangling <none> images; knowing their IDs lets the cleanup target only
-# NOMAD's own images and leave every other app's dangling images on this shared
+# Cairn's own images and leave every other app's dangling images on this shared
 # host's Docker daemon alone. --no-trunc so IDs match `docker images` output later.
 snapshot_managed_image_ids() {
     local managed_repos
@@ -148,7 +148,7 @@ prune_old_images() {
 
     # 1. Drop the prior image layers this update left dangling — but ONLY ours.
     #    We snapshotted the managed repos' image IDs before pulling; any of those
-    #    IDs now untagged (<none>) is a superseded NOMAD image, safe to remove.
+    #    IDs now untagged (<none>) is a superseded Cairn image, safe to remove.
     #    We deliberately do NOT run `docker image prune`, which would also delete
     #    unrelated dangling images from other apps sharing this host's daemon.
     if [ -n "$PRE_UPDATE_IMAGE_IDS" ]; then

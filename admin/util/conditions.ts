@@ -295,7 +295,7 @@ export function remediesForCondition(file: NaturalRemediesFile, slug: string): N
 
 /**
  * Short, display-friendly source attribution for a remedy — plain text, NOT a
- * link. NOMAD is offline-first: remedy cards carry everything needed to act and
+ * link. Cairn is offline-first: remedy cards carry everything needed to act and
  * never link out to the internet; this credit satisfies the public-domain
  * attribution without implying connectivity.
  */

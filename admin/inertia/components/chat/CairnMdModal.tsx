@@ -6,21 +6,21 @@ import MarkdownEditor from '~/components/MarkdownEditor'
 import { useNotifications } from '~/context/NotificationContext'
 import api from '~/lib/api'
 
-interface NomadMdModalProps {
+interface CairnMdModalProps {
   aiAssistantName?: string
   onClose: () => void
 }
 
-// Seeded into the editor when no NOMAD.md exists yet. Nothing is written to disk
+// Seeded into the editor when no Cairn.md exists yet. Nothing is written to disk
 // until the user saves, so this is purely a starting point they can replace.
-const NOMAD_MD_TEMPLATE = `# NOMAD.md
+const CAIRN_MD_TEMPLATE = `# Cairn.md
 
 <!--
 This file holds custom instructions for your AI assistant. Everything here is
 sent to the assistant as a system prompt on every chat — use it to set persona,
 tone, priorities, and standing rules.
 
-It is also stored on disk at storage/NOMAD.md, so you can edit it directly.
+It is also stored on disk at storage/Cairn.md, so you can edit it directly.
 Replace this template with your own instructions, then click Save.
 -->
 
@@ -34,36 +34,36 @@ Replace this template with your own instructions, then click Save.
 - Prioritize safety and proven methods.
 `
 
-export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalProps) {
+export default function CairnMdModal({ aiAssistantName, onClose }: CairnMdModalProps) {
   const queryClient = useQueryClient()
   const { addNotification } = useNotifications()
   const [content, setContent] = useState<string | null>(null)
 
   const { data, isLoading } = useQuery({
-    queryKey: ['nomad-md'],
-    queryFn: () => api.getNomadMd(),
+    queryKey: ['cairn-md'],
+    queryFn: () => api.getCairnMd(),
   })
 
   // Seed the editor once the file loads: existing content, or the template when empty.
   useEffect(() => {
     if (data && content === null) {
-      setContent(data.content.trim().length > 0 ? data.content : NOMAD_MD_TEMPLATE)
+      setContent(data.content.trim().length > 0 ? data.content : CAIRN_MD_TEMPLATE)
     }
   }, [data, content])
 
   const saveMutation = useMutation({
-    mutationFn: (value: string) => api.saveNomadMd(value),
+    mutationFn: (value: string) => api.saveCairnMd(value),
     onSuccess: (result) => {
       if (!result?.success) {
-        addNotification({ type: 'error', message: 'Failed to save NOMAD.md.' })
+        addNotification({ type: 'error', message: 'Failed to save Cairn.md.' })
         return
       }
-      addNotification({ type: 'success', message: 'NOMAD.md saved. It applies to new messages.' })
-      queryClient.invalidateQueries({ queryKey: ['nomad-md'] })
+      addNotification({ type: 'success', message: 'Cairn.md saved. It applies to new messages.' })
+      queryClient.invalidateQueries({ queryKey: ['cairn-md'] })
       onClose()
     },
     onError: (error: any) => {
-      addNotification({ type: 'error', message: error?.message || 'Failed to save NOMAD.md.' })
+      addNotification({ type: 'error', message: error?.message || 'Failed to save Cairn.md.' })
     },
   })
 
@@ -74,7 +74,7 @@ export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalP
       <div className="bg-surface-primary rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         <div className="flex items-center justify-between p-6 border-b border-border-subtle shrink-0">
           <div>
-            <h2 className="text-2xl font-semibold text-text-primary">NOMAD.md</h2>
+            <h2 className="text-2xl font-semibold text-text-primary">Cairn.md</h2>
             <p className="text-sm text-text-muted mt-1">
               Custom instructions passed to {assistantName} as a system prompt on every chat.
             </p>
@@ -97,7 +97,7 @@ export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalP
           )}
           <p className="text-xs text-text-muted mt-3">
             Tip: this file is also stored on disk at{' '}
-            <code className="font-mono">storage/NOMAD.md</code> and can be edited directly.
+            <code className="font-mono">storage/Cairn.md</code> and can be edited directly.
           </p>
         </div>
 

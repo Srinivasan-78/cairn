@@ -21,7 +21,7 @@ const hoursAgo = (h: number) => NOW.minus({ hours: h })
 
 function makeService(overrides: Record<string, any> = {}) {
   return {
-    service_name: 'nomad_test',
+    service_name: 'cairn_test',
     container_image: 'ollama/ollama:0.18.1',
     available_update_version: null,
     available_update_first_seen_at: null,

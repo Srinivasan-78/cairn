@@ -45,7 +45,7 @@ export class RunExtractPmtilesJob {
 
   /** Redis key used to signal cancellation across processes */
   static cancelKey(jobId: string): string {
-    return `nomad:download:pmtiles-cancel:${jobId}`
+    return `cairn:download:pmtiles-cancel:${jobId}`
   }
 
   static async signalCancel(jobId: string): Promise<void> {

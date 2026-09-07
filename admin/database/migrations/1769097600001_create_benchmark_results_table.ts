@@ -28,8 +28,8 @@ export default class extends BaseSchema {
       table.string('ai_model_used').nullable()
       table.float('ai_time_to_first_token').nullable()
 
-      // Composite NOMAD score (0-100)
-      table.float('nomad_score').notNullable()
+      // Composite Cairn score (0-100)
+      table.float('cairn_score').notNullable()
 
       // Repository submission tracking
       table.boolean('submitted_to_repository').defaultTo(false)

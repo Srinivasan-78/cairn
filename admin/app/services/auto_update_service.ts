@@ -17,9 +17,9 @@ import {
   type PreflightResult,
 } from '../utils/image_disk_preflight.js'
 
-/** Docker image repository for the NOMAD admin/core image (tag applied per-release). */
-const NOMAD_IMAGE_REPO = 'ghcr.io/crosstalk-solutions/project-nomad'
-const RELEASES_URL = 'https://api.github.com/repos/Crosstalk-Solutions/project-nomad/releases'
+/** Docker image repository for the Cairn admin/core image (tag applied per-release). */
+const CAIRN_IMAGE_REPO = 'ghcr.io/srinivasan-78/cairn'
+const RELEASES_URL = 'https://api.github.com/repos/Srinivasan-78/cairn/releases'
 
 /** Defaults for user-configurable settings (server-local time window + cool-off). */
 const DEFAULT_WINDOW_START = '02:00'
@@ -118,7 +118,7 @@ export interface AutoUpdateStatus extends AutoUpdateConfig {
 }
 
 /**
- * Decision + safety layer for automatic updates of the NOMAD application itself.
+ * Decision + safety layer for automatic updates of the Cairn application itself.
  *
  * It does NOT recreate containers — that remains the sidecar's job. This service
  * decides *whether* an update should run right now (opt-in, in-window, an eligible
@@ -196,7 +196,7 @@ export class AutoUpdateService {
   }
 
   /**
-   * Fetch the published GitHub releases for the NOMAD repo, cached in-process.
+   * Fetch the published GitHub releases for the Cairn repo, cached in-process.
    * A successful result is reused for {@link RELEASES_CACHE_TTL_MS} so repeated
    * status-page loads don't each hit (and risk rate-limiting) the unauthenticated
    * GitHub API. A recent failure is negatively cached for {@link RELEASES_FAILURE_TTL_MS}
@@ -331,7 +331,7 @@ export class AutoUpdateService {
   private async checkDiskSpace(targetTag: string): Promise<Blocker | null> {
     const hostArch = await this.getHostArch()
     return checkImageDiskSpace({
-      image: `${NOMAD_IMAGE_REPO}:${targetTag}`,
+      image: `${CAIRN_IMAGE_REPO}:${targetTag}`,
       hostArch,
       containerRegistryService: this.containerRegistryService,
       systemService: this.systemService,

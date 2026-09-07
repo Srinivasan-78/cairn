@@ -31,15 +31,15 @@ import { KIWIX_LIBRARY_CMD } from '../../constants/kiwix.js'
 export class DockerService {
   public docker: Docker
   private activeInstallations: Set<string> = new Set()
-  public static NOMAD_NETWORK = 'project-nomad_default'
-  public static ADMIN_CONTAINER_NAME = 'nomad_admin'
+  public static CAIRN_NETWORK = 'cairn_default'
+  public static ADMIN_CONTAINER_NAME = 'cairn_admin'
   // The admin's own storage mount destination inside its container (compose maps
   // <hostPath>:/app/storage). Used to locate the backing host path (#938).
   public static ADMIN_STORAGE_DEST = '/app/storage'
   // Hardcoded production default host storage root. A seeded/frozen child bind can
-  // still carry this prefix even after NOMAD_STORAGE_PATH is set elsewhere, so it's
+  // still carry this prefix even after CAIRN_STORAGE_PATH is set elsewhere, so it's
   // matched alongside the env value when relocating binds (#938).
-  public static DEFAULT_HOST_STORAGE_ROOT = '/opt/project-nomad/storage'
+  public static DEFAULT_HOST_STORAGE_ROOT = '/opt/cairn/storage'
 
   // Resolved once: the host filesystem path backing the admin's /app/storage mount.
   // Child-service binds are rewritten to live under this so relocating the admin
@@ -165,7 +165,7 @@ export class DockerService {
   }
 
   /**
-   * Fetches the status of all Docker containers related to Nomad services. (those prefixed with 'nomad_')
+   * Fetches the status of all Docker containers related to Cairn services. (those prefixed with 'cairn_')
    * Results are cached for 5 seconds and concurrent callers share a single in-flight request,
    * preventing Docker socket congestion during rapid page navigation.
    */
@@ -202,7 +202,7 @@ export class DockerService {
       const containerMap = new Map<string, Docker.ContainerInfo>()
       containers.forEach((container) => {
         const name = container.Names[0]?.replace('/', '')
-        if (name && name.startsWith('nomad_')) {
+        if (name && name.startsWith('cairn_')) {
           containerMap.set(name, container)
         }
       })
@@ -496,7 +496,7 @@ export class DockerService {
       const port = portMatch[1] || portMatch[2]
       const portText = port ? `port ${port}` : 'a required port'
       if (port === '11434' || serviceName === SERVICE_NAMES.OLLAMA) {
-        return `Couldn't start because ${portText} is already in use on this machine. This usually means Ollama is already installed and running directly on the host (outside NOMAD). Stop and disable the host Ollama service (e.g. "sudo systemctl stop ollama" then "sudo systemctl disable ollama"), then try again.`
+        return `Couldn't start because ${portText} is already in use on this machine. This usually means Ollama is already installed and running directly on the host (outside Cairn). Stop and disable the host Ollama service (e.g. "sudo systemctl stop ollama" then "sudo systemctl disable ollama"), then try again.`
       }
       return `Couldn't start because ${portText} is already in use on this machine. Stop whatever is using ${portText} on the host, then try again.`
     }
@@ -511,7 +511,7 @@ export class DockerService {
    * the admin storage volume is mapped to in compose, child apps follow it
    * automatically (#938).
    *
-   * Falls back to NOMAD_STORAGE_PATH / the production default if the admin
+   * Falls back to CAIRN_STORAGE_PATH / the production default if the admin
    * container or its storage mount can't be inspected.
    */
   /**
@@ -525,7 +525,7 @@ export class DockerService {
 
   private async _resolveHostStorageRoot(): Promise<string> {
     if (this._hostStorageRoot) return this._hostStorageRoot
-    const fallback = env.get('NOMAD_STORAGE_PATH', DockerService.DEFAULT_HOST_STORAGE_ROOT)
+    const fallback = env.get('CAIRN_STORAGE_PATH', DockerService.DEFAULT_HOST_STORAGE_ROOT)
     try {
       const adminStorageDest = DockerService.ADMIN_STORAGE_DEST
       const containers = await this.docker.listContainers({ all: true })
@@ -566,12 +566,12 @@ export class DockerService {
    * host, swap a known storage-root prefix so the child container mounts the same
    * physical location (#938).
    *
-   * A bind's prefix may be the current NOMAD_STORAGE_PATH *or* the hardcoded default:
+   * A bind's prefix may be the current CAIRN_STORAGE_PATH *or* the hardcoded default:
    * curated services re-bake their config from the env every boot, but user-modified
    * curated services and custom apps freeze their binds at edit time and can still
-   * carry the default prefix even after NOMAD_STORAGE_PATH is changed. Matching both
+   * carry the default prefix even after CAIRN_STORAGE_PATH is changed. Matching both
    * (rather than only the current env, and short-circuiting when env == root) means
-   * the documented "set NOMAD_STORAGE_PATH and relocate the volume" path also fixes
+   * the documented "set CAIRN_STORAGE_PATH and relocate the volume" path also fixes
    * those frozen-prefix apps instead of leaving them mounting an empty directory.
    * Idempotent: binds already under `root` match no other prefix and are left alone.
    */
@@ -582,7 +582,7 @@ export class DockerService {
     // Known host-side prefixes a seeded/frozen bind might carry. Exclude `root` itself
     // so binds already pointing at the resolved location are never rewritten.
     const seededRoots = [
-      env.get('NOMAD_STORAGE_PATH', DockerService.DEFAULT_HOST_STORAGE_ROOT),
+      env.get('CAIRN_STORAGE_PATH', DockerService.DEFAULT_HOST_STORAGE_ROOT),
       DockerService.DEFAULT_HOST_STORAGE_ROOT,
     ].filter((r) => r !== root)
     if (!seededRoots.length) return
@@ -843,8 +843,8 @@ export class DockerService {
         name: service.service_name,
         Labels: {
           ...(containerConfig?.Labels ?? {}),
-          'com.docker.compose.project': 'project-nomad-managed',
-          'io.project-nomad.managed': 'true',
+          'com.docker.compose.project': 'cairn-managed',
+          'io.cairn.managed': 'true',
         },
         ...(containerConfig?.User && { User: containerConfig.User }),
         HostConfig: gpuHostConfig,
@@ -852,11 +852,11 @@ export class DockerService {
         ...(containerConfig?.ExposedPorts && { ExposedPorts: containerConfig.ExposedPorts }),
         Env: [...(containerConfig?.Env ?? []), ...ollamaEnv, ...appEnv],
         ...(service.container_command ? { Cmd: service.container_command.split(' ') } : {}),
-        // Ensure container is attached to the Nomad docker network in production
+        // Ensure container is attached to the Cairn docker network in production
         ...(process.env.NODE_ENV === 'production' && {
           NetworkingConfig: {
             EndpointsConfig: {
-              [DockerService.NOMAD_NETWORK]: {},
+              [DockerService.CAIRN_NETWORK]: {},
             },
           },
         }),
@@ -882,19 +882,19 @@ export class DockerService {
       // Remove from active installs tracking
       this.activeInstallations.delete(service.service_name)
 
-      // If Ollama was just installed, trigger Nomad docs discovery and embedding
+      // If Ollama was just installed, trigger Cairn docs discovery and embedding
       if (service.service_name === SERVICE_NAMES.OLLAMA) {
         logger.info('[DockerService] Ollama installation complete. Default behavior is to not enable chat suggestions.')
         await KVStore.setValue('chat.suggestionsEnabled', false)
 
-        logger.info('[DockerService] Ollama installation complete. Triggering Nomad docs discovery...')
+        logger.info('[DockerService] Ollama installation complete. Triggering Cairn docs discovery...')
         
         // Need to use dynamic imports here to avoid circular dependency
         const ollamaService = new (await import('./ollama_service.js')).OllamaService()
         const ragService = new (await import('./rag_service.js')).RagService(this, ollamaService)
 
-        ragService.discoverNomadDocs().catch((error) => {
-          logger.error('[DockerService] Failed to discover Nomad docs:', error)
+        ragService.discoverCairnDocs().catch((error) => {
+          logger.error('[DockerService] Failed to discover Cairn docs:', error)
         })
       }
 
@@ -955,7 +955,7 @@ export class DockerService {
      * We'll download the lightweight mini Wikipedia Top 100 zim file for this purpose.
      **/
     const WIKIPEDIA_ZIM_URL =
-      'https://github.com/Crosstalk-Solutions/project-nomad/raw/refs/heads/main/install/wikipedia_en_100_mini_2026-01.zim'
+      'https://github.com/Srinivasan-78/cairn/raw/refs/heads/main/install/wikipedia_en_100_mini_2026-01.zim'
     const filename = 'wikipedia_en_100_mini_2026-01.zim'
     const filepath = join(process.cwd(), ZIM_STORAGE_PATH, filename)
     logger.info(`[DockerService] Kiwix Serve pre-install: Downloading ZIM file to ${filepath}`)
@@ -1097,7 +1097,7 @@ export class DockerService {
       `openssl req -x509 -newkey rsa:2048 -nodes ` +
         `-keyout "${keyPath}" -out "${certPath}" -days 3650 ` +
         `-subj "/CN=${commonName}" ` +
-        `-addext "subjectAltName=DNS:nomad,DNS:localhost"`
+        `-addext "subjectAltName=DNS:cairn,DNS:localhost"`
     )
 
     await chmod(keyPath, 0o600)
@@ -1123,7 +1123,7 @@ export class DockerService {
     )
 
     try {
-      await this._ensureSelfSignedCert(dataDir, 'Project NOMAD Vaultwarden')
+      await this._ensureSelfSignedCert(dataDir, 'Cairn Vaultwarden')
       this._broadcast(
         SERVICE_NAMES.VAULTWARDEN,
         'preinstall',
@@ -1159,7 +1159,7 @@ export class DockerService {
     )
 
     try {
-      await this._ensureSelfSignedCert(certDir, 'Project NOMAD MeshCore Web')
+      await this._ensureSelfSignedCert(certDir, 'Cairn MeshCore Web')
 
       // SSL server block bind-mounted over the image's default.conf. Serves the Flutter build that
       // already lives at /usr/share/nginx/html in the image, over HTTPS only, with the SPA fallback
@@ -1347,7 +1347,7 @@ export class DockerService {
         ...(process.env.NODE_ENV === 'production' && {
           NetworkingConfig: {
             EndpointsConfig: {
-              [DockerService.NOMAD_NETWORK]: {},
+              [DockerService.CAIRN_NETWORK]: {},
             },
           },
         }),
@@ -1372,7 +1372,7 @@ export class DockerService {
   /**
    * Detect GPU type and toolkit availability.
    * Primary: Check Docker runtimes via docker.info() (works from inside containers).
-   * Secondary: Read /app/storage/.nomad-gpu-type written by install_nomad.sh — needed
+   * Secondary: Read /app/storage/.cairn-gpu-type written by install_cairn.sh — needed
    *   for AMD detection because lspci isn't available inside the admin container and
    *   AMD has no Docker runtime registration to query.
    * Fallback: lspci for host-based installs.
@@ -1392,10 +1392,10 @@ export class DockerService {
         logger.warn(`[DockerService] Could not query Docker info for GPU runtimes: ${error.message}`)
       }
 
-      // Secondary: install_nomad.sh writes the host-detected GPU type to a marker file in
+      // Secondary: install_cairn.sh writes the host-detected GPU type to a marker file in
       // the storage volume so the admin container (which lacks lspci) can read it.
       try {
-        const marker = (await readFile('/app/storage/.nomad-gpu-type', 'utf8')).trim()
+        const marker = (await readFile('/app/storage/.cairn-gpu-type', 'utf8')).trim()
         if (marker === 'nvidia') {
           // Hardware present but Docker doesn't have nvidia runtime → toolkit missing
           logger.warn('[DockerService] NVIDIA GPU recorded in marker file but NVIDIA Container Toolkit is not installed')
@@ -1484,7 +1484,7 @@ export class DockerService {
    *
    * Resolution order:
    *   1. KV `ai.amdHsaOverride` — manual user override; accepts 'none' (disable) or a semver-style value.
-   *   2. Marker file `/app/storage/.nomad-amd-gfx` written by install_nomad.sh.
+   *   2. Marker file `/app/storage/.cairn-amd-gfx` written by install_cairn.sh.
    *   3. Default: none — let ROCm discover the GPU natively. Users on hardware that still
    *      needs coercion can force a value via the KV. A hardcoded default gets more wrong
    *      as ROCm adds native targets, so null is the safer forward-looking default.
@@ -1527,17 +1527,17 @@ export class DockerService {
     }
 
     try {
-      const gfx = (await readFile('/app/storage/.nomad-amd-gfx', 'utf8')).trim()
+      const gfx = (await readFile('/app/storage/.cairn-amd-gfx', 'utf8')).trim()
       const mapped = this._mapGfxToHsaOverride(gfx)
       logger.info(`[DockerService] AMD gfx marker '${gfx}' → HSA override ${mapped ?? 'none'}`)
       return mapped
     } catch {
       // Marker absent — most likely an existing install upgraded without re-running
-      // install_nomad.sh. Fall through to the default.
+      // install_cairn.sh. Fall through to the default.
     }
 
     logger.warn(
-      '[DockerService] AMD GPU configured but no gfx marker (/app/storage/.nomad-amd-gfx) and no ' +
+      '[DockerService] AMD GPU configured but no gfx marker (/app/storage/.cairn-amd-gfx) and no ' +
         'ai.amdHsaOverride KV; relying on native ROCm discovery. iGPUs not on the bundled rocblas ' +
         'allowlist (e.g. 780M/gfx1103, 680M/gfx1035) will silently fall back to CPU. Set the ' +
         'ai.amdHsaOverride KV (e.g. 11.0.0 for a 780M) and force-reinstall the AI service if so.'
@@ -2212,8 +2212,8 @@ export class DockerService {
         name: serviceName,
         Labels: {
           ...(containerConfig?.Labels ?? {}),
-          'com.docker.compose.project': 'project-nomad-managed',
-          'io.project-nomad.managed': 'true',
+          'com.docker.compose.project': 'cairn-managed',
+          'io.cairn.managed': 'true',
         },
         ...(containerConfig?.User && { User: containerConfig.User }),
         HostConfig: containerConfig?.HostConfig ?? {},
@@ -2221,7 +2221,7 @@ export class DockerService {
         ...(recreateEnv.length ? { Env: recreateEnv } : {}),
         ...(service.container_command ? { Cmd: service.container_command.split(' ') } : {}),
         ...(process.env.NODE_ENV === 'production' && {
-          NetworkingConfig: { EndpointsConfig: { [DockerService.NOMAD_NETWORK]: {} } },
+          NetworkingConfig: { EndpointsConfig: { [DockerService.CAIRN_NETWORK]: {} } },
         }),
       })
       await newContainer.start()

@@ -56,9 +56,9 @@ export function buildOpenApiDocument(force = false): JsonObject {
   cached = {
     openapi: '3.1.0',
     info: {
-      title: 'Nomad Admin API',
+      title: 'Cairn Admin API',
       description:
-        'HTTP API for the Nomad admin appliance. Generated from the application ' +
+        'HTTP API for the Cairn admin appliance. Generated from the application ' +
         'routes and VineJS validators — see `/reference` for the interactive UI.',
       version: SystemService.getAppVersion(),
     },

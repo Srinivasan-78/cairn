@@ -26,7 +26,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring storage paths
   |----------------------------------------------------------
   */
-  NOMAD_STORAGE_PATH: Env.schema.string.optional(),
+  CAIRN_STORAGE_PATH: Env.schema.string.optional(),
 
   /*
   |----------------------------------------------------------
@@ -58,10 +58,10 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   /*
   |----------------------------------------------------------
-  | Variables for configuring Project Nomad's external API URL
+  | Variables for configuring Cairn's external API URL
   |----------------------------------------------------------
   */
-  NOMAD_API_URL: Env.schema.string.optional(),
+  CAIRN_API_URL: Env.schema.string.optional(),
 
   /*
   |----------------------------------------------------------
@@ -72,7 +72,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   | committed to source). When unset, pack installs fail with a clear
   | "not configured" error and the rest of the app is unaffected.
   | CREATOR_PACKS_WORKER_BASE overrides the default Worker origin (e.g. to
-  | point at a branded packs.projectnomad.us domain later).
+  | point at a branded packs.cairn.example domain later).
   */
   CREATOR_PACKS_APP_KEY: Env.schema.string.optional(),
   CREATOR_PACKS_WORKER_BASE: Env.schema.string.optional(),

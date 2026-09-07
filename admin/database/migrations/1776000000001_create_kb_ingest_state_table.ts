@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       // utf8mb4 caps an indexed varchar at 768 chars (3072 byte InnoDB key limit);
-      // 512 leaves headroom and is plenty for any NOMAD-managed file path.
+      // 512 leaves headroom and is plenty for any Cairn-managed file path.
       table.string('file_path', 512).notNullable().unique()
       table
         .enum('state', ['pending_decision', 'indexed', 'browse_only', 'failed', 'stalled'])

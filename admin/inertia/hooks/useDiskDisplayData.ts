@@ -1,4 +1,4 @@
-import { NomadDiskInfo } from '../../types/system'
+import { CairnDiskInfo } from '../../types/system'
 import { Systeminformation } from 'systeminformation'
 import { formatBytes } from '~/lib/util'
 
@@ -14,7 +14,7 @@ type DiskDisplayItem = {
 
 /** Get all valid disks formatted for display (settings/system page) */
 export function getAllDiskDisplayItems(
-  disks: NomadDiskInfo[] | undefined,
+  disks: CairnDiskInfo[] | undefined,
   fsSize: Systeminformation.FsSizeData[] | undefined
 ): DiskDisplayItem[] {
   const validDisks = disks?.filter((d) => d.totalSize > 0) || []
@@ -86,12 +86,12 @@ export function getAllDiskDisplayItems(
 
 /** Get primary disk info for storage projection (easy-setup page) */
 export function getPrimaryDiskInfo(
-  disks: NomadDiskInfo[] | undefined,
+  disks: CairnDiskInfo[] | undefined,
   fsSize: Systeminformation.FsSizeData[] | undefined
 ): { totalSize: number; totalUsed: number } | null {
   // First, check if /app/storage is on a dedicated filesystem (e.g. NFS mount).
   // This is the most accurate source since it reflects the actual backing
-  // store for NOMAD content, regardless of whether it's a local disk or
+  // store for Cairn content, regardless of whether it's a local disk or
   // network-attached storage.
   const storageMount = fsSize?.find((fs) => fs.mount === '/app/storage' && fs.size > 0)
   if (storageMount) {

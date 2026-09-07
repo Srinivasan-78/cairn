@@ -87,7 +87,7 @@ jobs:
       # - name: Send release notes email
       #   if: steps.semver.outputs.new_release_published == 'true' && steps.finalize-notes.outputs.has_notes == 'true'
       #   run: |
-      #     curl -X POST "https://api.projectnomad.us/api/v1/newsletter/release" \
-      #       -H "Authorization: Bearer ${{ secrets.NOMAD_API_KEY }}" \
+      #     curl -X POST "https://api.cairn.example/api/v1/newsletter/release" \
+      #       -H "Authorization: Bearer ${{ secrets.CAIRN_API_KEY }}" \
       #       -H "Content-Type: application/json" \
       #       -d "{\"version\": \"${{ steps.semver.outputs.new_release_version }}\", \"body\": $(cat admin/docs/release-notes.md.section | jq -Rs .)}"

@@ -86,9 +86,9 @@ const gatedResource = {
   version: '2026-07',
   title: 'US Military Field Manuals',
   description: 'Public-domain US military field manuals',
-  url: 'https://nomad-packs-worker.chris-556.workers.dev/content/field-manuals_2026-07.zim',
+  url: 'https://cairn-packs-worker.chris-556.workers.dev/content/field-manuals_2026-07.zim',
   size_mb: 2_000,
-  auth: 'nomad_app_key' as const,
+  auth: 'cairn_app_key' as const,
 }
 
 test('gated resource ignores a newer catalog result and stays on the manifest URL', () => {

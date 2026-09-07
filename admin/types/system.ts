@@ -12,7 +12,7 @@ export type SystemInformationResponse = {
   cpu: Systeminformation.CpuData
   mem: Systeminformation.MemData
   os: Systeminformation.OsData
-  disk: NomadDiskInfo[]
+  disk: CairnDiskInfo[]
   currentLoad: Systeminformation.CurrentLoadData
   fsSize: Systeminformation.FsSizeData[]
   uptime: Systeminformation.TimeData
@@ -38,7 +38,7 @@ export type LSBlockDevice = {
   children?: LSBlockDevice[]
 }
 
-export type NomadDiskInfoRaw = {
+export type CairnDiskInfoRaw = {
   diskLayout: {
     blockdevices: LSBlockDevice[]
   }
@@ -52,7 +52,7 @@ export type NomadDiskInfoRaw = {
   }[]
 }
 
-export type NomadDiskInfo = {
+export type CairnDiskInfo = {
   name: string
   model: string
   vendor: string

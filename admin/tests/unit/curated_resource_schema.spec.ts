@@ -42,20 +42,20 @@ const baseResource = {
   version: '2026-07',
   title: 'US Military Field Manuals',
   description: 'Public-domain US military field manuals',
-  url: 'https://nomad-packs-worker.chris-556.workers.dev/content/field-manuals_2026-07.zim',
+  url: 'https://cairn-packs-worker.chris-556.workers.dev/content/field-manuals_2026-07.zim',
   size_mb: 2000,
 }
 
 test('auth survives manifest validation', async () => {
   const validated: any = await vine.validate({
     schema: zimCategoriesSpecSchema,
-    data: specWithResource({ ...baseResource, auth: 'nomad_app_key' }),
+    data: specWithResource({ ...baseResource, auth: 'cairn_app_key' }),
   })
 
   const resource = validated.categories[0].tiers[0].resources[0]
   assert.equal(
     resource.auth,
-    'nomad_app_key',
+    'cairn_app_key',
     'auth was stripped by the validator — gated downloads would 401'
   )
 })
@@ -81,10 +81,10 @@ test('an unrecognised auth scheme is rejected rather than silently ignored', asy
 test('auth and type coexist on one resource', async () => {
   const validated: any = await vine.validate({
     schema: zimCategoriesSpecSchema,
-    data: specWithResource({ ...baseResource, type: 'zim', auth: 'nomad_app_key' }),
+    data: specWithResource({ ...baseResource, type: 'zim', auth: 'cairn_app_key' }),
   })
 
   const resource = validated.categories[0].tiers[0].resources[0]
   assert.equal(resource.type, 'zim')
-  assert.equal(resource.auth, 'nomad_app_key')
+  assert.equal(resource.auth, 'cairn_app_key')
 })

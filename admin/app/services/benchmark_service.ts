@@ -41,7 +41,7 @@ import Dockerode from 'dockerode'
 
 // HMAC secret for signing submissions to the benchmark repository
 // This provides basic protection against casual API abuse.
-// Note: Since NOMAD is open source, a determined attacker could extract this.
+// Note: Since Cairn is open source, a determined attacker could extract this.
 // For stronger protection, see challenge-response authentication.
 const BENCHMARK_HMAC_SECRET = '778ba65d0bc0e23119e5ffce4b3716648a7d071f0a47ec3f'
 
@@ -57,24 +57,24 @@ const SCORE_WEIGHTS = {
 
 // The benchmark_version this client emits. Server dispatches on the major:
 // >= 2 → raw-channel v2 ingest (score recomputed server-side). Bumped 1.0.0 -> 2.0.0
-// for the NOMAD Score v2 rollout (uncapped index vs a frozen Reference Build).
+// for the Cairn Score v2 rollout (uncapped index vs a frozen Reference Build).
 const BENCHMARK_VERSION = '2.0.0'
 
 // ---------------------------------------------------------------------------
-// NOMAD Score v2 — the uncapped index.
+// Cairn Score v2 — the uncapped index.
 //
 // Score = 1000 × Π( (raw_i / ref_i) ^ w_i )  (weighted geometric mean, log domain).
 //
 // These constants + the computation below MUST stay byte-identical to the
-// leaderboard's score_service.ts (computeNomadScoreV2): the client shows this
+// leaderboard's score_service.ts (computeCairnScoreV2): the client shows this
 // score immediately after a run, and the server recomputes the same value from
 // the raw channels on submit. Any drift makes the displayed score disagree with
 // the leaderboard. FROZEN under benchmark_version 2.0.0 — Reference Build =
-// NOMAD6 (Ryzen 9 PRO 8945HS / 780M / 64GB, kernel 6.17), measured median-of-N
+// CAIRN6 (Ryzen 9 PRO 8945HS / 780M / 64GB, kernel 6.17), measured median-of-N
 // with direct-I/O disk 2026-07-12. There are NO clamps here; outlier control is
 // the server's rejection gates + quarantine, not the score math.
 const REFERENCE_SCORES_V2 = {
-  // Measured on the Reference Build (NOMAD6, 780M) with llama3.1:8b under the v2
+  // Measured on the Reference Build (CAIRN6, 780M) with llama3.1:8b under the v2
   // harness (VRAM evict + unload + num_predict=256 + median-of-3), iGPU
   // acceleration enabled (OLLAMA_IGPU_ENABLE — the config PR #1074 ships fleet-
   // wide). Must stay byte-identical to the leaderboard's score_service.ts. Final
@@ -116,7 +116,7 @@ if (Math.abs(WEIGHT_SUM_V2 - 1) > 1e-9) {
 // distorts the very measurement it is taking.
 //
 // This is our own multi-arch build (Debian 12 + sysbench 1.0.20+ds-5, built at
-// Crosstalk-Solutions/nomad-sysbench for linux/amd64 + linux/arm64). ONE digest
+// Srinivasan-78/cairn-sysbench for linux/amd64 + linux/arm64). ONE digest
 // covers both architectures because a manifest list resolves per-arch on pull.
 //
 // Comparability: 1.0.17 -> 1.0.20 measured 1.25% apart on identical hardware
@@ -124,18 +124,18 @@ if (Math.abs(WEIGHT_SUM_V2 - 1) > 1e-9) {
 // noise, ~0.3% on a composite. No rescoring required. Both this and the legacy
 // digest are allowlisted server-side, so the fleet can cross over gradually.
 const SYSBENCH_IMAGE =
-  'ghcr.io/crosstalk-solutions/nomad-sysbench@sha256:1f08e527f5d440135de9bd49006a2c13342cb1e483c59a53774e2db35e8e13f0'
+  'ghcr.io/srinivasan-78/cairn-sysbench@sha256:1f08e527f5d440135de9bd49006a2c13342cb1e483c59a53774e2db35e8e13f0'
 const SYSBENCH_DIGEST = 'sha256:1f08e527f5d440135de9bd49006a2c13342cb1e483c59a53774e2db35e8e13f0'
 
 
-const SYSBENCH_CONTAINER_NAME = 'nomad_benchmark_sysbench'
+const SYSBENCH_CONTAINER_NAME = 'cairn_benchmark_sysbench'
 
 // Reference model for AI benchmark. v2 uses an 8B (was llama3.2:1b): a 1B is so
 // light it runs overhead-bound on any GPU (~240 tok/s), saturating the score and
 // failing to differentiate hardware. An 8B is compute/bandwidth-bound and scales
 // with real GPU capability. Non-thinking (deterministic workload). Changing this
 // re-baselines REFERENCE_SCORES_V2.ai_tokens_per_second — re-measure on the
-// Reference Build (NOMAD6) before shipping.
+// Reference Build (CAIRN6) before shipping.
 const AI_BENCHMARK_MODEL = 'llama3.1:8b'
 const AI_BENCHMARK_PROMPT = 'Explain recursion in programming in exactly 100 words.'
 // Cap generation so the workload is bounded and comparable across machines rather
@@ -152,12 +152,12 @@ const MEMORY_BENCHMARK_THREADS = 4
 const AI_BENCHMARK_RUNS = 3
 
 /**
- * Does `ai.remoteOllamaUrl` point back at the machine NOMAD itself runs on?
+ * Does `ai.remoteOllamaUrl` point back at the machine Cairn itself runs on?
  *
  * The submission gate exists because a remote AI host makes the AI channel
  * describe someone else's hardware. That reasoning does not apply when the
  * "remote" host is this same box — the commonest case being Ollama installed
- * natively on the host while NOMAD runs in Docker, which is how the AI
+ * natively on the host while Cairn runs in Docker, which is how the AI
  * assistant is expected to work on macOS.
  *
  * `host.docker.internal` is the meaningful entry: from inside the admin
@@ -294,13 +294,13 @@ export class BenchmarkService {
    * Whether to show the dashboard "re-run under Score v2" banner. Shown to users
    * who have a v1 leaderboard submission but no Score v2 result yet, and who
    * haven't dismissed it. Self-clears two ways: dismiss sets the KV flag, and any
-   * result carrying a nomad_score_v2 (i.e. a v2 run happened) flips (b) false.
+   * result carrying a cairn_score_v2 (i.e. a v2 run happened) flips (b) false.
    */
   async shouldShowRerunBanner(): Promise<boolean> {
     const dismissed = await KVStore.getValue('benchmark.rerunBannerDismissed')
     if (dismissed === true) return false
 
-    const hasV2Run = await BenchmarkResult.query().whereNotNull('nomad_score_v2').first()
+    const hasV2Run = await BenchmarkResult.query().whereNotNull('cairn_score_v2').first()
     if (hasV2Run) return false
 
     const hasSubmittedV1 = await BenchmarkResult.query()
@@ -360,7 +360,7 @@ export class BenchmarkService {
         // already marks it installed — so it sent them looking for something
         // they believe they have, and never mentioned the one thing that fixes
         // it.
-        'This NOMAD is set to use a remote AI host, so the AI portion of this benchmark measured that machine, not this one. ' +
+        'This Cairn is set to use a remote AI host, so the AI portion of this benchmark measured that machine, not this one. ' +
           'Leaderboard results have to be measured entirely on the hardware being submitted. ' +
           'To share a result, clear the remote host under Settings → Models so AI runs locally, then run a Full Benchmark.'
       )
@@ -379,13 +379,13 @@ export class BenchmarkService {
         .digest('hex')
 
       const response = await axios.post(
-        'https://benchmark.projectnomad.us/api/v1/submit',
+        'https://benchmark.cairn.example/api/v1/submit',
         submission,
         {
           timeout: 30000,
           headers: {
-            'X-NOMAD-Timestamp': timestamp,
-            'X-NOMAD-Signature': signature,
+            'X-Cairn-Timestamp': timestamp,
+            'X-Cairn-Signature': signature,
           },
         }
       )
@@ -415,7 +415,7 @@ export class BenchmarkService {
   }
 
   /**
-   * Build the NOMAD Score v2 submission payload from a stored result, validating
+   * Build the Cairn Score v2 submission payload from a stored result, validating
    * that every required raw channel + companion + provenance field is present.
    *
    * A row produced before this benchmark_version (or an interrupted run) won't
@@ -478,7 +478,7 @@ export class BenchmarkService {
       cpu_total_time: result.cpu_total_time,
       ollama_version: result.ollama_version,
       sysbench_digest: result.sysbench_digest,
-      nomad_version: SystemService.getAppVersion(),
+      cairn_version: SystemService.getAppVersion(),
       benchmark_version: BENCHMARK_VERSION,
     }
 
@@ -504,7 +504,7 @@ export class BenchmarkService {
    */
   async getComparisonStats(): Promise<RepositoryStats | null> {
     try {
-      const response = await axios.get('https://benchmark.projectnomad.us/api/v1/stats', {
+      const response = await axios.get('https://benchmark.cairn.example/api/v1/stats', {
         timeout: 10000,
       })
       return response.data as RepositoryStats
@@ -742,16 +742,16 @@ export class BenchmarkService {
       // AI-only benchmark never pulls the image.
       const sysbenchDigest = systemRaws ? await this._resolveSysbenchDigest() : null
 
-      // Calculate NOMAD scores (v1 legacy + v2 uncapped)
-      this._updateStatus('calculating_score', 'Calculating NOMAD score...')
-      const nomadScore = this._calculateNomadScore(systemScores, aiScores)
+      // Calculate Cairn scores (v1 legacy + v2 uncapped)
+      this._updateStatus('calculating_score', 'Calculating Cairn score...')
+      const cairnScore = this._calculateCairnScore(systemScores, aiScores)
 
       // v2 requires a complete run of every channel (system raws + AI). Only a
-      // full benchmark with AI qualifies; otherwise nomad_score_v2 stays null.
-      let nomadScoreV2: number | null = null
+      // full benchmark with AI qualifies; otherwise cairn_score_v2 stays null.
+      let cairnScoreV2: number | null = null
       if (systemRaws && aiScores.ai_tokens_per_second && aiScores.ai_tokens_per_second > 0) {
         try {
-          nomadScoreV2 = this._calculateNomadScoreV2({
+          cairnScoreV2 = this._calculateCairnScoreV2({
             ai_tokens_per_second: aiScores.ai_tokens_per_second,
             cpu_events_single: systemRaws.cpu_events_single,
             cpu_events_multi: systemRaws.cpu_events_multi,
@@ -762,7 +762,7 @@ export class BenchmarkService {
         } catch (error: any) {
           // A non-positive channel shouldn't reach here (each sysbench step throws
           // on a bad parse), but never let a v2 math error sink the whole run.
-          logger.warn(`NOMAD Score v2 not computed: ${error.message}`)
+          logger.warn(`Cairn Score v2 not computed: ${error.message}`)
         }
       }
 
@@ -786,7 +786,7 @@ export class BenchmarkService {
         ai_tokens_per_second: aiScores.ai_tokens_per_second || null,
         ai_model_used: aiScores.ai_model_used || null,
         ai_time_to_first_token: aiScores.ai_time_to_first_token || null,
-        nomad_score: nomadScore,
+        cairn_score: cairnScore,
         submitted_to_repository: false,
         sysbench_digest: sysbenchDigest,
         ollama_version: aiScores.ai_ollama_version ?? null,
@@ -800,7 +800,7 @@ export class BenchmarkService {
         memory_threads: systemRaws?.memory_threads ?? null,
         disk_read_mb_per_sec: systemRaws?.disk_read_mb_per_sec ?? null,
         disk_write_mb_per_sec: systemRaws?.disk_write_mb_per_sec ?? null,
-        nomad_score_v2: nomadScoreV2,
+        cairn_score_v2: cairnScoreV2,
         run_environment: env.run_environment,
         storage_path_type: env.storage_path_type,
         gpu_compute_detected: env.gpu_compute_detected,
@@ -1031,7 +1031,7 @@ export class BenchmarkService {
       // model-load + GPU spin-up cost. On a cold box that lands as a huge outlier
       // (observed: 173s TTFT / 5.83 tok/s on a run whose warm steady-state was
       // ~80 tok/s), and since the AI channel is uncapped and ~30% of the composite
-      // it swings the whole NOMAD Score ~2x between a cold first run and a warm
+      // it swings the whole Cairn Score ~2x between a cold first run and a warm
       // re-run of the same machine. Measure warm, steady-state throughput instead:
       // load the model and warm the context here, then time the median-of-N below.
       // Best-effort — a warm-up hiccup must not fail the run (the timed loop will
@@ -1205,9 +1205,9 @@ export class BenchmarkService {
   }
 
   /**
-   * Calculate weighted NOMAD score
+   * Calculate weighted Cairn score
    */
-  private _calculateNomadScore(
+  private _calculateCairnScore(
     systemScores: SystemScores | null,
     aiScores: Partial<AIScores>
   ): number {
@@ -1217,7 +1217,7 @@ export class BenchmarkService {
     // System scores (only when the system benchmarks actually ran). Passing null
     // for an AI-only run keeps the system weights OUT of the denominator so the
     // score renormalizes to just the AI portion's 0-100 range, rather than being
-    // scaled against the full NOMAD 100 (where an excellent AI setup would cap
+    // scaled against the full Cairn 100 (where an excellent AI setup would cap
     // at ~40). System-only already renormalizes correctly because aiScores is
     // empty and its weights are likewise skipped below.
     if (systemScores) {
@@ -1257,15 +1257,15 @@ export class BenchmarkService {
     }
 
     // Normalize by actual weight used (in case AI benchmarks were skipped)
-    const nomadScore = totalWeight > 0 ? (weightedSum / totalWeight) * 100 : 0
+    const cairnScore = totalWeight > 0 ? (weightedSum / totalWeight) * 100 : 0
 
-    return Math.round(Math.min(100, Math.max(0, nomadScore)) * 100) / 100
+    return Math.round(Math.min(100, Math.max(0, cairnScore)) * 100) / 100
   }
 
   /**
-   * Calculate the NOMAD Score v2 from raw channel values.
+   * Calculate the Cairn Score v2 from raw channel values.
    *
-   * Byte-identical to the leaderboard's computeNomadScoreV2 (score_service.ts):
+   * Byte-identical to the leaderboard's computeCairnScoreV2 (score_service.ts):
    * the weighted geometric mean vs the frozen Reference Build, computed in the
    * log domain, rounded to one decimal. NO clamps. Throws if any channel is
    * <= 0 — a full v2 run measures every channel, and log2 of a non-positive
@@ -1273,12 +1273,12 @@ export class BenchmarkService {
    * a user input to clamp. Every scored channel (incl. AI) is required; callers
    * only invoke this for a complete full-benchmark run.
    */
-  private _calculateNomadScoreV2(raws: ScoreRawsV2): number {
+  private _calculateCairnScoreV2(raws: ScoreRawsV2): number {
     let logSum = 0
     for (const channel of SCORE_CHANNELS_V2) {
       const raw = raws[channel]
       if (!(raw > 0)) {
-        throw new Error(`_calculateNomadScoreV2: channel "${channel}" must be > 0 (got ${raw})`)
+        throw new Error(`_calculateCairnScoreV2: channel "${channel}" must be > 0 (got ${raw})`)
       }
       const ratio = raw / REFERENCE_SCORES_V2[channel]
       logSum += SCORE_WEIGHTS_V2[channel] * Math.log2(ratio)

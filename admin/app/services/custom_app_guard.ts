@@ -4,7 +4,7 @@ import env from '#start/env'
 /**
  * Security guardrails for user-defined ("custom app") containers.
  *
- * project-nomad runs containers as host siblings via the mounted Docker socket (DooD), so a
+ * cairn runs containers as host siblings via the mounted Docker socket (DooD), so a
  * misconfigured bind mount or image is a real host-takeover vector. The posture here is
  * "guardrails with warnings": hard-block the genuinely catastrophic, warn-but-allow the merely
  * risky so a trusted admin keeps their power without an easy foot-gun.
@@ -25,7 +25,7 @@ const TRUSTED_REGISTRIES = ['docker.io', 'registry-1.docker.io', 'ghcr.io', 'lsc
 
 /** Resolve the managed storage root (where bind mounts are expected to live). */
 export function getStorageRoot(): string {
-  return normalize(env.get('NOMAD_STORAGE_PATH', '/opt/project-nomad/storage')).replace(/\/+$/, '')
+  return normalize(env.get('CAIRN_STORAGE_PATH', '/opt/cairn/storage')).replace(/\/+$/, '')
 }
 
 /** Normalize an absolute path: collapse `..`/`.` segments and strip any trailing slash. */
@@ -40,7 +40,7 @@ function isWithin(child: string, ancestor: string): boolean {
 
 /**
  * Evaluate user-supplied bind mounts. Hard-blocks the Docker socket, core system directories,
- * and any mount at or above project-nomad's own install tree (which would expose its code/data).
+ * and any mount at or above cairn's own install tree (which would expose its code/data).
  * Warns on any host path outside the managed storage root.
  */
 export function evaluateBindMounts(
@@ -50,8 +50,8 @@ export function evaluateBindMounts(
   const warnings: string[] = []
 
   const storageRoot = getStorageRoot()
-  // The install tree is the parent of the storage root (e.g. /opt/project-nomad). Mounting it —
-  // or any ancestor, up to and including `/` — would hand a container project-nomad's own files.
+  // The install tree is the parent of the storage root (e.g. /opt/cairn). Mounting it —
+  // or any ancestor, up to and including `/` — would hand a container cairn's own files.
   const installRoot = dirname(storageRoot)
 
   for (const { host_path: hostPath, container_path: containerPath } of volumes) {
@@ -89,10 +89,10 @@ export function evaluateBindMounts(
       continue
     }
 
-    // At or above project-nomad's own install tree (covers `/`, `/opt`, `/opt/project-nomad`).
+    // At or above cairn's own install tree (covers `/`, `/opt`, `/opt/cairn`).
     if (host === installRoot || isWithin(installRoot, host)) {
       blocked.push(
-        `Mounting "${hostPath}" would expose project-nomad's own files and is not allowed.`
+        `Mounting "${hostPath}" would expose cairn's own files and is not allowed.`
       )
       continue
     }
@@ -132,7 +132,7 @@ export function evaluateImageReference(image: string): GuardEvaluation {
 
   if (!TRUSTED_REGISTRIES.includes(registry)) {
     warnings.push(
-      `Image is from "${registry}", which is outside project-nomad's trusted registries. Only install images you trust.`
+      `Image is from "${registry}", which is outside cairn's trusted registries. Only install images you trust.`
     )
   }
 

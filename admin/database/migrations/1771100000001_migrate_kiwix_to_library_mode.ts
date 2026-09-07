@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.defer(async (db) => {
       await db
         .from(this.tableName)
-        .where('service_name', 'nomad_kiwix_server')
+        .where('service_name', 'cairn_kiwix_server')
         .whereRaw('`container_command` LIKE ?', ['%*.zim%'])
         .update({
           container_command: '--library /data/kiwix-library.xml --monitorLibrary --address=all',
@@ -19,7 +19,7 @@ export default class extends BaseSchema {
     this.defer(async (db) => {
       await db
         .from(this.tableName)
-        .where('service_name', 'nomad_kiwix_server')
+        .where('service_name', 'cairn_kiwix_server')
         .where('container_command', '--library /data/kiwix-library.xml --monitorLibrary --address=all')
         .update({
           container_command: '*.zim --address=all',

@@ -57,7 +57,7 @@ const SYSTEM_ITEMS = [
     to: '/easy-setup',
     target: '',
     description:
-      'Not sure where to start? Use the setup wizard to quickly configure your NOMAD!',
+      'Not sure where to start? Use the setup wizard to quickly configure your Cairn!',
     icon: <IconBolt size={48} />,
     installed: true,
     displayOrder: 50,
@@ -77,7 +77,7 @@ const SYSTEM_ITEMS = [
     label: 'Docs',
     to: '/docs/home',
     target: '',
-    description: 'Read Project NOMAD manuals and guides',
+    description: 'Read Cairn manuals and guides',
     icon: <IconHelp size={48} />,
     installed: true,
     displayOrder: 52,
@@ -87,7 +87,7 @@ const SYSTEM_ITEMS = [
     label: 'Settings',
     to: '/settings/system',
     target: '',
-    description: 'Configure your NOMAD settings',
+    description: 'Configure your Cairn settings',
     icon: <IconSettings size={48} />,
     installed: true,
     displayOrder: 53,
@@ -181,7 +181,7 @@ export default function Home(props: {
         updateInfo?.updateAvailable && (
           <div className='flex justify-center items-center p-4 w-full'>
             <Alert
-              title="An update is available for Project NOMAD!"
+              title="An update is available for Cairn!"
               type="info-inverted"
               variant="solid"
               className="w-full"

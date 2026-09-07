@@ -13,7 +13,7 @@ import type { CreatorPackWithStatus } from '../../types/collections'
 // new tab from the install modal; install is an online action so an external link
 // is fine. A per-pack catalog `license_url` can supersede this later if needed.
 const LICENSE_URL =
-  'https://github.com/Crosstalk-Solutions/project-nomad/blob/main/collections/creator-pack-license.md'
+  'https://github.com/Srinivasan-78/cairn/blob/main/collections/creator-pack-license.md'
 
 export interface CreatorPacksSectionProps {
   /** Show uninstall controls on installed packs (the settings "manage" surface). */
@@ -151,7 +151,7 @@ const CreatorPacksSection: React.FC<CreatorPacksSectionProps> = ({ allowUninstal
         {packToUninstall && (
           <p className="text-text-secondary">
             This removes the downloaded videos (
-            {formatBytes(packToUninstall.size_mb * 1024 * 1024, 0)}) from this NOMAD. You can
+            {formatBytes(packToUninstall.size_mb * 1024 * 1024, 0)}) from this Cairn. You can
             reinstall the pack anytime.
           </p>
         )}

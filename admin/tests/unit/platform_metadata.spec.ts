@@ -3,8 +3,8 @@ import { test } from 'node:test'
 
 import { normalizeArchitecture, deriveOsName } from '../../app/utils/platform_metadata.js'
 
-// Values observed from `docker info` across the test fleet (NOMAD3 x86 / 26.04,
-// NOMAD6 x86 / 24.04, nomad10 Raspberry Pi 5 arm64 / 26.04).
+// Values observed from `docker info` across the test fleet (CAIRN3 x86 / 26.04,
+// CAIRN6 x86 / 24.04, cairn10 Raspberry Pi 5 arm64 / 26.04).
 
 test('normalizeArchitecture maps Docker arch strings to OCI platform names', () => {
   assert.equal(normalizeArchitecture('x86_64'), 'amd64')

@@ -9,7 +9,7 @@ import { AutoUpdateService } from '#services/auto_update_service'
 import logger from '@adonisjs/core/services/logger'
 
 /**
- * Hourly job that evaluates whether the NOMAD application should auto-update right
+ * Hourly job that evaluates whether the Cairn application should auto-update right
  * now and, if so, requests it. All gating (opt-in, window, eligibility, cool-off,
  * pre-flight, backoff) lives in {@link AutoUpdateService}; this job is just the
  * scheduled trigger. Runs hourly so it can act anywhere inside a user's window

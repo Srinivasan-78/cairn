@@ -5,7 +5,7 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.alterTable(this.tableName, (table) => {
-      // NOMAD Score v2 (Phase 4): raw channel values the leaderboard scores from,
+      // Cairn Score v2 (Phase 4): raw channel values the leaderboard scores from,
       // the frozen test parameters, the W6 consistency companions, the uncapped
       // score, and best-effort run-environment metadata (#1016). All nullable —
       // pre-v2 rows and system-only runs simply leave them empty.
@@ -22,7 +22,7 @@ export default class extends BaseSchema {
       table.integer('memory_threads').nullable()
       table.double('disk_read_mb_per_sec').nullable()
       table.double('disk_write_mb_per_sec').nullable()
-      table.double('nomad_score_v2').nullable()
+      table.double('cairn_score_v2').nullable()
       table.string('run_environment').nullable()
       table.string('storage_path_type').nullable()
       table.boolean('gpu_compute_detected').nullable()
@@ -40,7 +40,7 @@ export default class extends BaseSchema {
       table.dropColumn('memory_threads')
       table.dropColumn('disk_read_mb_per_sec')
       table.dropColumn('disk_write_mb_per_sec')
-      table.dropColumn('nomad_score_v2')
+      table.dropColumn('cairn_score_v2')
       table.dropColumn('run_environment')
       table.dropColumn('storage_path_type')
       table.dropColumn('gpu_compute_detected')

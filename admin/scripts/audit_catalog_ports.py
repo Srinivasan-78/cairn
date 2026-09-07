@@ -11,9 +11,9 @@ A mismatch is the "Meshtastic Web" class of bug: the catalog publishes host->con
 the app listens on a different internal port, so the published port reaches nothing.
 
 Non-invasive: separate `audit_*` containers, random host ports on 127.0.0.1, temp volumes,
-auto-removed. It never touches NOMAD's service records or real containers.
+auto-removed. It never touches Cairn's service records or real containers.
 
-Run on a NOMAD host (needs the nomad_mysql container + docker):  python3 audit_catalog_ports.py
+Run on a Cairn host (needs the cairn_mysql container + docker):  python3 audit_catalog_ports.py
 """
 import json
 import os
@@ -31,9 +31,9 @@ MEMORY_CAP = "2g"      # generous cap; some apps (Stirling) OOM under 1g and fal
 # "CRASHED"/"UNREACHABLE" verdict for them is expected and NOT a catalog port bug. Listed for the
 # reader's benefit only — the script still probes them.
 KNOWN_NEEDS_SETUP = {
-    "nomad_kiwix_server": "needs a ZIM library (managed separately by NOMAD)",
-    "nomad_meshtasticd": "needs a config.yaml with a MAC address",
-    "nomad_meshcore_web": "serves HTTPS on 443 only with the bind-mounted SSL config (absent in a bare probe)",
+    "cairn_kiwix_server": "needs a ZIM library (managed separately by Cairn)",
+    "cairn_meshtasticd": "needs a config.yaml with a MAC address",
+    "cairn_meshcore_web": "serves HTTPS on 443 only with the bind-mounted SSL config (absent in a bare probe)",
 }
 
 
@@ -42,14 +42,14 @@ def sh(cmd):
 
 
 def mysql(query):
-    """Run a query in the nomad_mysql container, reading the password from its own env.
+    """Run a query in the cairn_mysql container, reading the password from its own env.
 
     The inner command is single-quoted for the host shell so $MYSQL_PASSWORD is NOT expanded
     on the host (where it's unset) — it reaches the container's shell literally and expands there.
     Query must contain no double quotes (these catalog queries don't).
     """
-    inner = 'mysql -N -unomad_user -p"$MYSQL_PASSWORD" nomad -e "%s"' % query
-    out = sh("docker exec nomad_mysql sh -c " + shlex.quote(inner))
+    inner = 'mysql -N -ucairn_user -p"$MYSQL_PASSWORD" cairn -e "%s"' % query
+    out = sh("docker exec cairn_mysql sh -c " + shlex.quote(inner))
     if out.returncode != 0:
         raise SystemExit("mysql query failed: " + out.stderr)
     return out.stdout

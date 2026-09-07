@@ -1,9 +1,9 @@
-import { NomadOllamaModel } from '../types/ollama.js'
+import { CairnOllamaModel } from '../types/ollama.js'
 
 /**
  * Fallback basic recommended Ollama models in case fetching from the service fails.
  */
-export const FALLBACK_RECOMMENDED_OLLAMA_MODELS: NomadOllamaModel[] = [
+export const FALLBACK_RECOMMENDED_OLLAMA_MODELS: CairnOllamaModel[] = [
   {
     name: 'llama3.1',
     description:
@@ -86,7 +86,7 @@ export const SYSTEM_PROMPTS = {
  - Use tables when presenting structured data.
 `,
   rag_context: (context: string) => `
-Information has been retrieved from the NOMAD knowledge base that MAY be relevant to the
+Information has been retrieved from the Cairn knowledge base that MAY be relevant to the
 user's question. It was selected by automated similarity search, which is imperfect — some
 or all of it may be unrelated to what the user actually asked.
 

@@ -289,7 +289,7 @@ export default function DrugReferenceInteractions({ ingestStatus, rowCount }: Pa
         {/* ── Source citation (CC0, no-endorsement) ───────────────────────── */}
         <footer className="mt-8 pt-4 border-t border-border-subtle text-xs text-text-secondary">
           <strong>Source:</strong> U.S. Food &amp; Drug Administration drug labeling, via{' '}
-          <strong>openFDA</strong> — public domain (CC0 1.0). NOMAD is not affiliated with or
+          <strong>openFDA</strong> — public domain (CC0 1.0). Cairn is not affiliated with or
           endorsed by the FDA. Label data is provided as-is; do not rely on it for medical
           decisions.
         </footer>

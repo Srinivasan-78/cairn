@@ -19,7 +19,7 @@ const loggerConfig = defineConfig({
           targets()
             .pushIf(!app.inProduction, targets.pretty())
             // Production: write JSON to both the persisted log file (for Debug
-            // Info bundle export) AND stdout (so `docker logs nomad_admin` and
+            // Info bundle export) AND stdout (so `docker logs cairn_admin` and
             // any external log aggregator can see runtime telemetry — RAG
             // retrieval scores, query rewrites, etc.). Writing to fd 1 via
             // pino/file is the standard way to do this; without it, prod

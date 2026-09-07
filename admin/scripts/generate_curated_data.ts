@@ -10,7 +10,7 @@
  * fragility), and `tests/standalone/curated_data_sync.standalone.ts` fails CI if
  * a generated module ever drifts from its JSON. This removes the old burden of
  * hand-keeping the `.json` mirror and the `.ts` constant in sync
- * (Crosstalk-Solutions/project-nomad#1040 follow-up).
+ * (Srinivasan-78/cairn#1040 follow-up).
  */
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'

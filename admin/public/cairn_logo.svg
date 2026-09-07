@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Cairn">
+  <title>Cairn</title>
+  <!-- Placeholder mark: a cairn (stacked trail-marker stones). Replace with real artwork. -->
+  <defs>
+    <linearGradient id="s" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9b2a6"/>
+      <stop offset="1" stop-color="#8f877a"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#s)" stroke="#5f584c" stroke-width="2.5">
+    <ellipse cx="64" cy="104" rx="34" ry="13"/>
+    <ellipse cx="62" cy="80"  rx="27" ry="12"/>
+    <ellipse cx="66" cy="58"  rx="21" ry="10"/>
+    <ellipse cx="62" cy="40"  rx="15" ry="8"/>
+    <ellipse cx="64" cy="26"  rx="9"  ry="6"/>
+  </g>
+</svg>

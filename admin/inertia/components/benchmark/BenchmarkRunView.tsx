@@ -90,7 +90,7 @@ function StageHero({ run }: { run: BenchmarkRunHook }) {
         <div className="flex-1 flex items-center justify-center">
           <div className="flex items-center gap-3 text-desert-green">
             <div className="animate-spin h-6 w-6 border-2 border-desert-green border-t-transparent rounded-full" />
-            <span className="text-lg font-medium">Calculating your NOMAD Score...</span>
+            <span className="text-lg font-medium">Calculating your Cairn Score...</span>
           </div>
         </div>
       </div>

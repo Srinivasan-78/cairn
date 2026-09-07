@@ -5,7 +5,7 @@ import { ChatSession } from '../../../types/chat'
 import { IconMessage } from '@tabler/icons-react'
 import { useState } from 'react'
 import KnowledgeBaseModal from './KnowledgeBaseModal'
-import NomadMdModal from './NomadMdModal'
+import CairnMdModal from './CairnMdModal'
 
 interface ChatSidebarProps {
   sessions: ChatSession[]
@@ -32,7 +32,7 @@ export default function ChatSidebar({
   const [isKnowledgeBaseModalOpen, setIsKnowledgeBaseModalOpen] = useState(
     () => new URLSearchParams(window.location.search).get('knowledge_base') === 'true'
   )
-  const [isNomadMdModalOpen, setIsNomadMdModalOpen] = useState(false)
+  const [isCairnMdModalOpen, setIsCairnMdModalOpen] = useState(false)
 
   function handleCloseKnowledgeBase() {
     setIsKnowledgeBaseModalOpen(false)
@@ -114,11 +114,11 @@ export default function ChatSidebar({
         )}
       </div>
       <div className="p-4 flex flex-col items-center justify-center gap-y-2">
-        <img src="/project_nomad_logo.webp" alt="Project NOMAD Logo" className="h-28 w-28 mb-6" />
+        <img src="/cairn_logo.svg" alt="Cairn Logo" className="h-28 w-28 mb-6" />
         <StyledButton
           onClick={() => {
             // /chat is served by the admin app itself, so navigate in place rather than
-            // spawning a window. Popping out broke anyone running NOMAD as an installed
+            // spawning a window. Popping out broke anyone running Cairn as an installed
             // web app or in kiosk mode, who then had a stray window to get back out of.
             router.visit(isInModal ? '/chat' : '/home')
           }}
@@ -153,14 +153,14 @@ export default function ChatSidebar({
         </StyledButton>
         <StyledButton
           onClick={() => {
-            setIsNomadMdModalOpen(true)
+            setIsCairnMdModalOpen(true)
           }}
           icon="IconFileDescription"
           variant="primary"
           size="sm"
           fullWidth
         >
-          NOMAD.md
+          Cairn.md
         </StyledButton>
         {sessions.length > 0 && (
           <StyledButton
@@ -177,10 +177,10 @@ export default function ChatSidebar({
       {isKnowledgeBaseModalOpen && (
         <KnowledgeBaseModal aiAssistantName={aiAssistantName} onClose={handleCloseKnowledgeBase} />
       )}
-      {isNomadMdModalOpen && (
-        <NomadMdModal
+      {isCairnMdModalOpen && (
+        <CairnMdModal
           aiAssistantName={aiAssistantName}
-          onClose={() => setIsNomadMdModalOpen(false)}
+          onClose={() => setIsCairnMdModalOpen(false)}
         />
       )}
     </aside>

@@ -7,8 +7,8 @@ import logger from '@adonisjs/core/services/logger'
 import si from 'systeminformation'
 import {
   GpuHealthStatus,
-  NomadDiskInfo,
-  NomadDiskInfoRaw,
+  CairnDiskInfo,
+  CairnDiskInfoRaw,
   SystemInformationResponse,
 } from '../../types/system.js'
 import { SERVICE_NAMES } from '../../constants/service_names.js'
@@ -27,7 +27,7 @@ import { KiwixLibraryService } from '#services/kiwix_library_service'
 @inject()
 export class SystemService {
   private static appVersion: string | null = null
-  private static diskInfoFile = '/storage/nomad-disk-info.json'
+  private static diskInfoFile = '/storage/cairn-disk-info.json'
 
   constructor(private dockerService: DockerService) {}
 
@@ -39,13 +39,13 @@ export class SystemService {
   async getInternetStatus(): Promise<boolean> {
     // Primary endpoint stays Cloudflare's privacy-respecting utility endpoint.
     // The fallbacks are hosts the application already contacts elsewhere
-    // (GitHub API for update checks, the Project NOMAD API for release-note
+    // (GitHub API for update checks, the Cairn API for release-note
     // subscriptions), so no new third-party services are introduced. They exist
     // to avoid false "offline" reports on networks that block 1.1.1.1.
     const DEFAULT_TEST_URLS = [
       'https://1.1.1.1/cdn-cgi/trace',
       'https://api.github.com',
-      'https://api.projectnomad.us',
+      'https://api.cairn.example',
     ]
     const MAX_ATTEMPTS = 3
 
@@ -151,7 +151,7 @@ export class SystemService {
         logsOpts.until = startedAtSec + 300 // 5-minute window
       } else {
         logger.warn(
-          `[SystemService] nomad_ollama State.StartedAt missing or invalid (${startedAtRaw ?? 'undefined'}); falling back to tail:500 for inference-compute probe`
+          `[SystemService] cairn_ollama State.StartedAt missing or invalid (${startedAtRaw ?? 'undefined'}); falling back to tail:500 for inference-compute probe`
         )
         logsOpts.tail = 500
       }
@@ -425,8 +425,8 @@ export class SystemService {
         si.graphics(),
       ])
 
-      let diskInfo: NomadDiskInfoRaw | undefined
-      let disk: NomadDiskInfo[] = []
+      let diskInfo: CairnDiskInfoRaw | undefined
+      let disk: CairnDiskInfo[] = []
 
       try {
         const diskInfoRawString = await getFile(
@@ -438,7 +438,7 @@ export class SystemService {
           diskInfoRawString
             ? JSON.parse(diskInfoRawString.toString())
             : { diskLayout: { blockdevices: [] }, fsSize: [] }
-        ) as NomadDiskInfoRaw
+        ) as CairnDiskInfoRaw
 
         disk = this.calculateDiskUsage(diskInfo)
       } catch (error) {
@@ -512,13 +512,13 @@ export class SystemService {
 
           // AMD doesn't register a Docker runtime. Detection sources, in priority order:
           //   1. KV 'gpu.type' (set by DockerService._detectGPUType after first Ollama install)
-          //   2. Marker file at /app/storage/.nomad-gpu-type (written by install_nomad.sh)
+          //   2. Marker file at /app/storage/.cairn-gpu-type (written by install_cairn.sh)
           // The marker file matters because the System page should reflect AMD presence
           // even before AI Assistant has been installed for the first time.
           let savedGpuType: string | null | undefined = await KVStore.getValue('gpu.type') as string | undefined
           if (!savedGpuType) {
             try {
-              savedGpuType = (await readFile('/app/storage/.nomad-gpu-type', 'utf8')).trim()
+              savedGpuType = (await readFile('/app/storage/.cairn-gpu-type', 'utf8')).trim()
             } catch {}
           }
           const amdEnabledRaw = await KVStore.getValue('ai.amdGpuAcceleration')
@@ -676,14 +676,14 @@ export class SystemService {
       let latestVersion: string
       if (earlyAccess) {
         const response = await axios.get(
-          'https://api.github.com/repos/Crosstalk-Solutions/project-nomad/releases',
+          'https://api.github.com/repos/Srinivasan-78/cairn/releases',
           { headers: { Accept: 'application/vnd.github+json' }, timeout: 5000 }
         )
         if (!response?.data?.length) throw new Error('No releases found')
         latestVersion = response.data[0].tag_name.replace(/^v/, '').trim()
       } else {
         const response = await axios.get(
-          'https://api.github.com/repos/Crosstalk-Solutions/project-nomad/releases/latest',
+          'https://api.github.com/repos/Srinivasan-78/cairn/releases/latest',
           { headers: { Accept: 'application/vnd.github+json' }, timeout: 5000 }
         )
         if (!response?.data?.tag_name) throw new Error('Invalid response from GitHub API')
@@ -722,7 +722,7 @@ export class SystemService {
   async subscribeToReleaseNotes(email: string): Promise<{ success: boolean; message: string }> {
     try {
       const response = await axios.post(
-        'https://api.projectnomad.us/api/v1/lists/release-notes/subscribe',
+        'https://api.cairn.example/api/v1/lists/release-notes/subscribe',
         { email },
         { timeout: 5000 }
       )
@@ -781,7 +781,7 @@ export class SystemService {
     const isEnabled = (v: any) => v === true || v === 'true'
 
     const lines: string[] = [
-      'Project NOMAD Debug Info',
+      'Cairn Debug Info',
       '========================',
       `App Version: ${appVersion}`,
       `Environment: ${environment}`,
@@ -846,9 +846,9 @@ export class SystemService {
     lines.push('Storage:')
     lines.push(`  Host storage root: ${hostStorageRoot ?? 'unknown'}`)
     lines.push(`  Container path: ${DockerService.ADMIN_STORAGE_DEST}`)
-    const storageEnv = process.env.NOMAD_STORAGE_PATH
+    const storageEnv = process.env.CAIRN_STORAGE_PATH
     lines.push(
-      `  NOMAD_STORAGE_PATH: ${storageEnv ? storageEnv : 'not set (auto-detected from admin mount)'}`
+      `  CAIRN_STORAGE_PATH: ${storageEnv ? storageEnv : 'not set (auto-detected from admin mount)'}`
     )
     if (kiwixBookCount !== null) {
       lines.push(
@@ -999,7 +999,7 @@ export class SystemService {
     }
   }
 
-  private calculateDiskUsage(diskInfo: NomadDiskInfoRaw): NomadDiskInfo[] {
+  private calculateDiskUsage(diskInfo: CairnDiskInfoRaw): CairnDiskInfo[] {
     const { diskLayout, fsSize } = diskInfo
 
     if (!diskLayout?.blockdevices || !fsSize) {
@@ -1008,7 +1008,7 @@ export class SystemService {
 
     // Deduplicate: same device path mounted in multiple places (Docker bind-mounts)
     // Keep the entry with the largest size — that's the real partition
-    const deduped = new Map<string, NomadDiskInfoRaw['fsSize'][0]>()
+    const deduped = new Map<string, CairnDiskInfoRaw['fsSize'][0]>()
     for (const entry of fsSize) {
       const existing = deduped.get(entry.fs)
       if (!existing || entry.size > existing.size) {
@@ -1069,7 +1069,7 @@ export class SystemService {
     }
 
     try {
-      const storagePath = env.get('NOMAD_STORAGE_PATH', '/opt/project-nomad/storage')
+      const storagePath = env.get('CAIRN_STORAGE_PATH', '/opt/cairn/storage')
       const fsSizes = await si.fsSize()
       // Find the filesystem whose mount point is the longest prefix of storagePath
       const fs = fsSizes

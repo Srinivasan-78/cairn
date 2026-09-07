@@ -131,7 +131,7 @@ export default function ConditionsShow({ condition, drugs, remedies, drugRowCoun
         <footer className="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 space-y-1">
           <p>
             <strong>Source:</strong> U.S. Food &amp; Drug Administration drug labeling, via{' '}
-            <strong>openFDA</strong> — public domain (CC0 1.0). NOMAD is not affiliated with or
+            <strong>openFDA</strong> — public domain (CC0 1.0). Cairn is not affiliated with or
             endorsed by the FDA.
           </p>
           <p>

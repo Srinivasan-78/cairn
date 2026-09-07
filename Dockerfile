@@ -70,14 +70,14 @@ RUN set -eux; \
     /usr/local/bin/pmtiles version
 
 # Labels
-LABEL org.opencontainers.image.title="Project NOMAD" \
-      org.opencontainers.image.description="The Project NOMAD Official Docker image" \
+LABEL org.opencontainers.image.title="Cairn" \
+      org.opencontainers.image.description="The Cairn Official Docker image" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.vendor="Crosstalk Solutions, LLC" \
-      org.opencontainers.image.documentation="https://github.com/CrosstalkSolutions/project-nomad/blob/main/README.md" \
-      org.opencontainers.image.source="https://github.com/CrosstalkSolutions/project-nomad" \
+      org.opencontainers.image.vendor="Srinivasan Vijayaraghavan" \
+      org.opencontainers.image.documentation="https://github.com/Cairn/cairn/blob/main/README.md" \
+      org.opencontainers.image.source="https://github.com/Cairn/cairn" \
       org.opencontainers.image.licenses="Apache-2.0"
 
 ENV NODE_ENV=production

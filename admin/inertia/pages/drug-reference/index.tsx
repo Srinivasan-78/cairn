@@ -905,7 +905,7 @@ function SourceFooter() {
   return (
     <footer className="mt-8 pt-4 border-t border-desert-stone-lighter/40 text-xs text-desert-stone">
       <strong>Source:</strong> U.S. Food &amp; Drug Administration drug labeling, via{' '}
-      <strong>openFDA</strong> — public domain (CC0 1.0). NOMAD is not affiliated with or endorsed by the
+      <strong>openFDA</strong> — public domain (CC0 1.0). Cairn is not affiliated with or endorsed by the
       FDA. Label data and situation matches are label-text only; do not rely on them for medical decisions.
     </footer>
   )

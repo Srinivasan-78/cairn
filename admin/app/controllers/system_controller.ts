@@ -372,7 +372,7 @@ export default class SystemController {
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '_')
             .replace(/^_+|_+$/g, '')
-        const serviceName = `nomad_custom_${slug}`
+        const serviceName = `cairn_custom_${slug}`
 
         const existing = await Service.query().where('service_name', serviceName).first()
         if (existing) {

@@ -11,7 +11,7 @@ interface ScoreRevealProps {
   onDone: () => void
 }
 
-// Same thresholds as the NOMAD Score section on the benchmark page.
+// Same thresholds as the Cairn Score section on the benchmark page.
 const getScoreColor = (score: number) => {
   if (score >= 70) return 'text-green-600'
   if (score >= 40) return 'text-yellow-600'
@@ -43,7 +43,7 @@ function useCountUp(target: number, durationMs = 1200): number {
 
 /**
  * End-of-run score reveal. Replaces the abrupt unmount of the live run view
- * with a deliberate report: big NOMAD score gauge + count-up number, then the
+ * with a deliberate report: big Cairn score gauge + count-up number, then the
  * sub-score gauges cascading in. Dismisses via the Continue button or an
  * auto-dismiss timer.
  */
@@ -52,8 +52,8 @@ export default function ScoreReveal({
   scoreScale = { max: 100, caption: 'out of 100' },
   onDone,
 }: ScoreRevealProps) {
-  const displayScore = useCountUp(result.nomad_score)
-  // A partial (System/AI Only) run is not the NOMAD Score -- relabel + flag it.
+  const displayScore = useCountUp(result.cairn_score)
+  // A partial (System/AI Only) run is not the Cairn Score -- relabel + flag it.
   const scoreInfo = getScoreDisplay(result.benchmark_type)
 
   // Sub-score gauges, mirroring the System Performance / AI Performance grids.
@@ -118,7 +118,7 @@ export default function ScoreReveal({
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="shrink-0">
               <CircularGauge
-                value={Math.min(100, (result.nomad_score / scoreScale.max) * 100)}
+                value={Math.min(100, (result.cairn_score / scoreScale.max) * 100)}
                 label={scoreInfo.label}
                 size="lg"
                 variant="cpu"
@@ -130,7 +130,7 @@ export default function ScoreReveal({
             <div className="flex-1 space-y-4">
               <div
                 className={`text-5xl font-bold font-mono tabular-nums ${
-                  scoreInfo.isPartial ? 'text-desert-stone-dark' : getScoreColor(result.nomad_score)
+                  scoreInfo.isPartial ? 'text-desert-stone-dark' : getScoreColor(result.cairn_score)
                 }`}
               >
                 {displayScore.toFixed(1)}
@@ -138,7 +138,7 @@ export default function ScoreReveal({
               <p className="text-desert-stone-dark">
                 {scoreInfo.isPartial
                   ? scoreInfo.cta
-                  : 'Your NOMAD Score is a weighted composite of all benchmark results.'}
+                  : 'Your Cairn Score is a weighted composite of all benchmark results.'}
               </p>
             </div>
           </div>

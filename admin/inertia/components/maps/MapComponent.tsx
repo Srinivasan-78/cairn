@@ -28,7 +28,7 @@ type MapComponentProps = {
   showCoordinatesEnabled: boolean
 }
 
-const SAVED_MAP_VIEW_KEY = 'nomad:map-view'
+const SAVED_MAP_VIEW_KEY = 'cairn:map-view'
 const DEFAULT_MAP_VIEW = { longitude: -101, latitude: 40, zoom: 3.5 }
 
 type SavedMapView = { longitude: number; latitude: number; zoom: number }
@@ -77,7 +77,7 @@ export default function MapComponent({
   const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null)
 
   const [scaleUnit, setScaleUnit] = useState<ScaleUnit>(
-    () => (localStorage.getItem('nomad:map-scale-unit') as ScaleUnit) || 'metric'
+    () => (localStorage.getItem('cairn:map-scale-unit') as ScaleUnit) || 'metric'
   )
 
   // Resolve the initial view once at mount: saved view → default. Lazy so it isn't recomputed
@@ -117,7 +117,7 @@ export default function MapComponent({
 
   const handleScaleUnitChange = useCallback((unit: ScaleUnit) => {
     setScaleUnit(unit)
-    localStorage.setItem('nomad:map-scale-unit', unit)
+    localStorage.setItem('cairn:map-scale-unit', unit)
   }, [])
 
   const handleMouseMove = useCallback(

@@ -41,7 +41,7 @@ import { getHostedContentHeaders } from '../utils/hosted_content_auth.js'
 import { KIWIX_CATALOG_BASE_URL } from '../../constants/kiwix.js'
 
 const ZIM_MIME_TYPES = ['application/x-zim', 'application/x-openzim', 'application/octet-stream']
-const WIKIPEDIA_OPTIONS_URL = 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/wikipedia.json'
+const WIKIPEDIA_OPTIONS_URL = 'https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/collections/wikipedia.json'
 
 @inject()
 export class ZimService {
@@ -596,7 +596,7 @@ export class ZimService {
       logger.error(`[ZimService] Failed to update WikipediaSelection for ${filename}:`, error)
     }
 
-    const ollamaUrl = await this.dockerService.getServiceURL('nomad_ollama')
+    const ollamaUrl = await this.dockerService.getServiceURL('cairn_ollama')
     if (ollamaUrl) {
       // Respect the global ingest policy, same as the post-download path (PR #919).
       // This used to dispatch unconditionally, so a user who deliberately chose

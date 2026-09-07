@@ -45,14 +45,14 @@ export default class MapsController {
       if (!ready) {
         return response.status(500).send({
           message:
-            'Could not download the base map. Please connect this NOMAD to the internet and try again.',
+            'Could not download the base map. Please connect this Cairn to the internet and try again.',
         })
       }
       return { success: true }
     } catch {
       return response.status(500).send({
         message:
-          'Could not download the base map. Please connect this NOMAD to the internet and try again.',
+          'Could not download the base map. Please connect this Cairn to the internet and try again.',
       })
     }
   }

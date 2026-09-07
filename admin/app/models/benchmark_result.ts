@@ -75,7 +75,7 @@ export default class BenchmarkResult extends BaseModel {
   @column()
   declare os_version: string | null
 
-  // NOMAD Score v2 raw channels (nullable — added in Score v2 Phase 4). Populated
+  // Cairn Score v2 raw channels (nullable — added in Score v2 Phase 4). Populated
   // on full benchmarks under benchmark_version >= 2.0.0; the leaderboard recomputes
   // the score from these on submit. cpu_events_multi is measured at
   // cpu_benchmark_threads; memory_ops_per_sec at memory_threads. Disk figures are
@@ -107,14 +107,14 @@ export default class BenchmarkResult extends BaseModel {
   @column()
   declare disk_write_mb_per_sec: number | null
 
-  // Uncapped NOMAD Score v2 (null for pre-v2 rows and system-only runs). The
-  // legacy nomad_score below is retained in parallel for display continuity.
+  // Uncapped Cairn Score v2 (null for pre-v2 rows and system-only runs). The
+  // legacy cairn_score below is retained in parallel for display continuity.
   // columnName + serializeAs pinned: the snake_case strategy would otherwise map
-  // this property to `nomad_score_v_2` (splitting the digit) for both the DB column
+  // this property to `cairn_score_v_2` (splitting the digit) for both the DB column
   // (which the migration doesn't create) and the JSON key (which the frontend reads
-  // as nomad_score_v2). Pin both so DB, API, and UI all agree.
-  @column({ columnName: 'nomad_score_v2', serializeAs: 'nomad_score_v2' })
-  declare nomad_score_v2: number | null
+  // as cairn_score_v2). Pin both so DB, API, and UI all agree.
+  @column({ columnName: 'cairn_score_v2', serializeAs: 'cairn_score_v2' })
+  declare cairn_score_v2: number | null
 
   // Best-effort run environment metadata (issue #1016)
   @column()
@@ -129,9 +129,9 @@ export default class BenchmarkResult extends BaseModel {
   })
   declare gpu_compute_detected: boolean | null
 
-  // Composite NOMAD score (0-100)
+  // Composite Cairn score (0-100)
   @column()
-  declare nomad_score: number
+  declare cairn_score: number
 
   // Repository submission tracking
   @column({

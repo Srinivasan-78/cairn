@@ -1,6 +1,6 @@
-# Keeping NOMAD Updated
+# Keeping Cairn Updated
 
-NOMAD works best when it's kept current while you have internet, so it's ready with the latest software and content the next time you go offline. This page explains what can be updated, how to do it on demand, and how to let NOMAD handle it for you automatically.
+Cairn works best when it's kept current while you have internet, so it's ready with the latest software and content the next time you go offline. This page explains what can be updated, how to do it on demand, and how to let Cairn handle it for you automatically.
 
 ---
 
@@ -8,7 +8,7 @@ NOMAD works best when it's kept current while you have internet, so it's ready w
 
 There are three separate things that can be updated, and you control each one independently:
 
-1. **Software (the core)** — NOMAD itself: the Command Center, new features, bug fixes, and security improvements.
+1. **Software (the core)** — Cairn itself: the Command Center, new features, bug fixes, and security improvements.
 2. **Apps** — the installable apps from the [Supply Depot](/supply-depot) (Kiwix, the AI Assistant, and any others you've added).
 3. **Content** — your offline material: Wikipedia and other Kiwix libraries, and downloaded map regions.
 
@@ -21,28 +21,28 @@ You can update any of these on demand, or set any of them to update automaticall
 To check for and install updates yourself:
 
 1. Go to **[Settings → Check for Updates](/settings/update)**.
-2. If a software update is available, click to install it. NOMAD downloads the update and restarts (usually 2–5 minutes).
+2. If a software update is available, click to install it. Cairn downloads the update and restarts (usually 2–5 minutes).
 3. Apps can be updated from their card in the [Supply Depot](/supply-depot) using **Manage › Update**.
 4. Content is managed from **Settings → Content Manager** and **Content Explorer**, where you can download newer versions of installed libraries and maps.
 
-If a software or app update ever fails, NOMAD is designed to recover gracefully — the previous working version keeps running, so your server stays up.
+If a software or app update ever fails, Cairn is designed to recover gracefully — the previous working version keeps running, so your server stays up.
 
 ---
 
 ## Automatic updates
 
-NOMAD can keep itself current without you having to remember to check. **Automatic updates are opt-in and off by default** — nothing updates on its own until you turn it on. You manage all of it from **Settings → Updates**.
+Cairn can keep itself current without you having to remember to check. **Automatic updates are opt-in and off by default** — nothing updates on its own until you turn it on. You manage all of it from **Settings → Updates**.
 
 A few things are true across all three:
 
 - **You choose a time window.** Automatic updates only run during the hours you set, so they never interrupt you mid-use.
 - **Major versions are never automatic.** Only minor and patch updates apply on their own; a big version jump always waits for you to do it manually, on purpose.
-- **Safety checks come first.** Before applying anything, NOMAD confirms there's enough disk space and that no other update, download, or install is already in progress.
-- **Being offline is harmless.** If NOMAD can't reach the internet to check, it simply skips that round and tries again later.
+- **Safety checks come first.** Before applying anything, Cairn confirms there's enough disk space and that no other update, download, or install is already in progress.
+- **Being offline is harmless.** If Cairn can't reach the internet to check, it simply skips that round and tries again later.
 
 ### Automatic software (core) updates
 
-Turn this on from **Settings → Updates**. When enabled, NOMAD updates its own core to newer releases within the same major version, during your chosen window, after a configurable **cool-off** period (so a brand-new release has time to prove itself before your server takes it). The same page shows the toggle, the window, the cool-off setting, and live status. If updates fail repeatedly for a real reason, NOMAD turns the feature back off and lets you know rather than retrying forever.
+Turn this on from **Settings → Updates**. When enabled, Cairn updates its own core to newer releases within the same major version, during your chosen window, after a configurable **cool-off** period (so a brand-new release has time to prove itself before your server takes it). The same page shows the toggle, the window, the cool-off setting, and live status. If updates fail repeatedly for a real reason, Cairn turns the feature back off and lets you know rather than retrying forever.
 
 ### Automatic app updates
 
@@ -50,7 +50,7 @@ App auto-updates are opt-in at **two levels**: a master switch in **Settings →
 
 ### Automatic content updates
 
-Installed Wikipedia/ZIM libraries and map regions can refresh themselves too. Because content downloads are large (often many gigabytes), content updates run on their **own dedicated overnight window** with a **bandwidth cap**, separate from the software and app schedule. NOMAD checks the upstream Kiwix and map catalogs directly, and when a Wikipedia library is replaced with a newer version, it keeps the AI Knowledge Base in sync automatically.
+Installed Wikipedia/ZIM libraries and map regions can refresh themselves too. Because content downloads are large (often many gigabytes), content updates run on their **own dedicated overnight window** with a **bandwidth cap**, separate from the software and app schedule. Cairn checks the upstream Kiwix and map catalogs directly, and when a Wikipedia library is replaced with a newer version, it keeps the AI Knowledge Base in sync automatically.
 
 ---
 

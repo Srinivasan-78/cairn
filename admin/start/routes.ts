@@ -15,7 +15,7 @@ import DownloadsController from '#controllers/downloads_controller'
 import EasySetupController from '#controllers/easy_setup_controller'
 import HomeController from '#controllers/home_controller'
 import MapsController from '#controllers/maps_controller'
-import NomadMdController from '#controllers/nomad_md_controller'
+import CairnMdController from '#controllers/cairn_md_controller'
 import OllamaController from '#controllers/ollama_controller'
 import OpenApiController from '#controllers/openapi_controller'
 import RagController from '#controllers/rag_controller'
@@ -89,7 +89,7 @@ import {
   chatSessionListResponse,
   chatMessageResponse,
 } from '#validators/responses/chat'
-import { updateNomadMdSchema } from '#validators/nomad_md'
+import { updateCairnMdSchema } from '#validators/cairn_md'
 import { searchDrugValidator, interactionsValidator } from '#validators/drug_reference'
 import { conditionDrugsValidator } from '#validators/conditions'
 
@@ -347,14 +347,14 @@ router
 
 router
   .group(() => {
-    documented(router.get('/nomad-md', [NomadMdController, 'show']), {
-      summary: 'Get the NOMAD.md system prompt',
+    documented(router.get('/cairn-md', [CairnMdController, 'show']), {
+      summary: 'Get the Cairn.md system prompt',
       tags: ['ai'],
     })
-    documented(router.put('/nomad-md', [NomadMdController, 'update']), {
-      summary: 'Update the NOMAD.md system prompt',
+    documented(router.put('/cairn-md', [CairnMdController, 'update']), {
+      summary: 'Update the Cairn.md system prompt',
       tags: ['ai'],
-      request: updateNomadMdSchema,
+      request: updateCairnMdSchema,
     })
   })
   .prefix('/api/ai')

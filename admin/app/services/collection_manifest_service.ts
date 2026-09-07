@@ -29,10 +29,10 @@ import type {
 } from '../../types/collections.js'
 
 const SPEC_URLS: Record<ManifestType, string> = {
-  zim_categories: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/kiwix-categories.json',
-  maps: 'https://github.com/Crosstalk-Solutions/project-nomad/raw/refs/heads/main/collections/maps.json',
-  wikipedia: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/wikipedia.json',
-  creator_packs: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/creator-packs.json',
+  zim_categories: 'https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/collections/kiwix-categories.json',
+  maps: 'https://github.com/Srinivasan-78/cairn/raw/refs/heads/main/collections/maps.json',
+  wikipedia: 'https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/collections/wikipedia.json',
+  creator_packs: 'https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/collections/creator-packs.json',
 }
 
 const VALIDATORS: Record<ManifestType, any> = {
@@ -317,7 +317,7 @@ export class CollectionManifestService {
 
   /**
    * Resource ids in the ZIM manifest that we host ourselves behind the
-   * entitlement Worker (`auth: 'nomad_app_key'`).
+   * entitlement Worker (`auth: 'cairn_app_key'`).
    *
    * Used to keep gated content out of the Kiwix-catalog update path. Those
    * resources are not in the openzim catalog, so they can never legitimately

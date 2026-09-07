@@ -9,7 +9,7 @@ import { KIWIX_CATALOG_BASE_URL } from '../../constants/kiwix.js'
 /**
  * Local, in-process freshness check for installed content (Kiwix ZIM files +
  * PMTiles maps). This replaces the former dependency on the external
- * project-nomad-api `/api/v1/resources/check-updates` endpoint — every NOMAD
+ * cairn-api `/api/v1/resources/check-updates` endpoint — every Cairn
  * instance now queries the upstream catalogs directly.
  *
  * Downloads have always gone straight to the Kiwix/GitHub mirrors regardless of
@@ -26,7 +26,7 @@ import { KIWIX_CATALOG_BASE_URL } from '../../constants/kiwix.js'
  */
 
 const GITHUB_PMTILES_URL =
-  'https://api.github.com/repos/Crosstalk-Solutions/project-nomad-maps/contents/pmtiles'
+  'https://api.github.com/repos/Srinivasan-78/cairn-maps/contents/pmtiles'
 
 const CATALOG_TIMEOUT_MS = 15000
 /** Bounded paginated fallback scan when the exact `name=` lookup comes up empty. */

@@ -13,10 +13,21 @@ sponsored by Crosstalk Solutions, LLC. "Project NOMAD" and "Crosstalk
 Solutions" are names/marks of their respective owner and are used here only
 for attribution, not as branding for this project.
 
+Cairn was forked from Project NOMAD v1.34.1 (commit f8e40fb).
+
 Modifications from the upstream project include (and will continue to grow):
-  - Renamed the project to "Cairn"; removed upstream product branding and logo
-    from this project's own presentation.
-  - Added this NOTICE file and origin/credits section in README.
+  - Renamed the project and its identifiers, install scripts, docs, and the
+    in-app custom-instructions file from "Project NOMAD" / "NOMAD" to "Cairn".
+  - Removed upstream marks: the logo (replaced with a placeholder), the
+    projectnomad.us domain, the Discord invite, and the hosted benchmark
+    leaderboard. Hosted-service URLs now point at the reserved "cairn.example"
+    domain and are non-functional placeholders.
+  - Removed references to upstream-owned container images
+    (ghcr.io/crosstalk-solutions/*); the auto-updater and benchmark are inert
+    until Cairn publishes its own images and backends.
+  - Emptied the Creator Packs catalog (upstream-curated content).
+  - Added this NOTICE file, an origin/credits section in README, a fork notice
+    in admin/docs/about.md, and a second copyright line in LICENSE.
 
 The full Apache License 2.0 text is in the LICENSE file. Original source
 files retain their upstream copyright and license headers.

@@ -3,7 +3,7 @@
  * suggested defaults — the actual set of usable tags is open-ended, since
  * `collection` is a free-form string and getKnowledgeCollections() returns
  * whatever's actually in use (see RagService). Kept general-purpose rather
- * than survival-specific so NOMAD's Knowledge Base reads well for home-lab,
+ * than survival-specific so Cairn's Knowledge Base reads well for home-lab,
  * reference, and everyday use too.
  */
 export const KB_COLLECTIONS = [

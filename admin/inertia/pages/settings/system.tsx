@@ -27,7 +27,7 @@ export default function SettingsPage(props: {
 
   const [gpuBannerDismissed, setGpuBannerDismissed] = useState(() => {
     try {
-      return localStorage.getItem('nomad:gpu-banner-dismissed') === 'true'
+      return localStorage.getItem('cairn:gpu-banner-dismissed') === 'true'
     } catch {
       return false
     }
@@ -37,7 +37,7 @@ export default function SettingsPage(props: {
   const handleDismissGpuBanner = () => {
     setGpuBannerDismissed(true)
     try {
-      localStorage.setItem('nomad:gpu-banner-dismissed', 'true')
+      localStorage.setItem('cairn:gpu-banner-dismissed', 'true')
     } catch {}
   }
 
@@ -49,7 +49,7 @@ export default function SettingsPage(props: {
           closeAllModals()
           setReinstalling(true)
           try {
-            const response = await api.forceReinstallService('nomad_ollama')
+            const response = await api.forceReinstallService('cairn_ollama')
             if (!response || !response.success) {
               throw new Error(response?.message || 'Force reinstall failed')
             }
@@ -57,7 +57,7 @@ export default function SettingsPage(props: {
               message: 'AI Assistant is being reinstalled with GPU support. This page will reload shortly.',
               type: 'success',
             })
-            try { localStorage.removeItem('nomad:gpu-banner-dismissed') } catch {}
+            try { localStorage.removeItem('cairn:gpu-banner-dismissed') } catch {}
             setTimeout(() => window.location.reload(), 5000)
           } catch (error) {
             addNotification({

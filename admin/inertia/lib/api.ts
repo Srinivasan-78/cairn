@@ -8,7 +8,7 @@ import type { Country, CountryCode, CountryGroup, MapExtractPreflight } from '..
 import { EmbedJobWithProgress, FileWarningsResult, StoredFileInfo } from '../../types/rag'
 import type { CategoryWithStatus, CollectionWithStatus, ContentUpdateCheckResult, CreatorPackWithStatus, ResourceUpdateInfo } from '../../types/collections'
 import { catchInternal } from './util'
-import { NomadChatResponse, NomadInstalledModel, NomadOllamaModel, OllamaChatRequest } from '../../types/ollama'
+import { CairnChatResponse, CairnInstalledModel, CairnOllamaModel, OllamaChatRequest } from '../../types/ollama'
 import BenchmarkResult from '#models/benchmark_result'
 import { BenchmarkType, RunBenchmarkResponse, SubmitBenchmarkResponse, UpdateBuilderTagResponse } from '../../types/benchmark'
 
@@ -275,7 +275,7 @@ class API {
 
   async getInstalledModels() {
     return catchInternal(async () => {
-      const response = await this.client.get<NomadInstalledModel[]>('/ollama/installed-models')
+      const response = await this.client.get<CairnInstalledModel[]>('/ollama/installed-models')
       return response.data
     })()
   }
@@ -301,7 +301,7 @@ class API {
   async getAvailableModels(params: { query?: string; recommendedOnly?: boolean; limit?: number; force?: boolean }) {
     return catchInternal(async () => {
       const response = await this.client.get<{
-        models: NomadOllamaModel[]
+        models: CairnOllamaModel[]
         hasMore: boolean
       }>('/ollama/models', {
         params: { sort: 'pulls', ...params },
@@ -312,7 +312,7 @@ class API {
 
   async sendChatMessage(chatRequest: OllamaChatRequest) {
     return catchInternal(async () => {
-      const response = await this.client.post<NomadChatResponse>('/ollama/chat', chatRequest)
+      const response = await this.client.post<CairnChatResponse>('/ollama/chat', chatRequest)
       return response.data
     })()
   }
@@ -1103,17 +1103,17 @@ class API {
     })()
   }
 
-  async getNomadMd() {
+  async getCairnMd() {
     return catchInternal(async () => {
-      const response = await this.client.get<{ content: string }>('/ai/nomad-md')
+      const response = await this.client.get<{ content: string }>('/ai/cairn-md')
       return response.data
     })()
   }
 
-  async saveNomadMd(content: string) {
+  async saveCairnMd(content: string) {
     return catchInternal(async () => {
       const response = await this.client.put<{ success: boolean; message: string }>(
-        '/ai/nomad-md',
+        '/ai/cairn-md',
         { content }
       )
       return response.data

@@ -11,7 +11,7 @@ export default class extends BaseSchema {
         powered_by = 'Kiwix',
         display_order = 1,
         description = 'Offline access to Wikipedia, medical references, how-to guides, and encyclopedias'
-      WHERE service_name = 'nomad_kiwix_serve'
+      WHERE service_name = 'cairn_kiwix_serve'
     `)
 
     await this.db.rawQuery(`
@@ -20,7 +20,7 @@ export default class extends BaseSchema {
         powered_by = 'Kolibri',
         display_order = 2,
         description = 'Interactive learning platform with video courses and exercises'
-      WHERE service_name = 'nomad_kolibri'
+      WHERE service_name = 'cairn_kolibri'
     `)
 
     await this.db.rawQuery(`
@@ -30,7 +30,7 @@ export default class extends BaseSchema {
         ui_location = '/chat',
         display_order = 3,
         description = 'Local AI chat that runs entirely on your hardware - no internet required'
-      WHERE service_name = 'nomad_ollama'
+      WHERE service_name = 'cairn_ollama'
     `)
 
     await this.db.rawQuery(`
@@ -39,7 +39,7 @@ export default class extends BaseSchema {
         powered_by = 'FlatNotes',
         display_order = 10,
         description = 'Simple note-taking app with local storage'
-      WHERE service_name = 'nomad_flatnotes'
+      WHERE service_name = 'cairn_flatnotes'
     `)
 
     await this.db.rawQuery(`
@@ -48,7 +48,7 @@ export default class extends BaseSchema {
         powered_by = 'CyberChef',
         display_order = 11,
         description = 'Swiss Army knife for data encoding, encryption, and analysis'
-      WHERE service_name = 'nomad_cyberchef'
+      WHERE service_name = 'cairn_cyberchef'
     `)
   }
 
@@ -60,7 +60,7 @@ export default class extends BaseSchema {
         powered_by = NULL,
         display_order = NULL,
         description = 'Offline Wikipedia, eBooks, and more'
-      WHERE service_name = 'nomad_kiwix_serve'
+      WHERE service_name = 'cairn_kiwix_serve'
     `)
 
     await this.db.rawQuery(`
@@ -69,7 +69,7 @@ export default class extends BaseSchema {
         powered_by = NULL,
         display_order = NULL,
         description = 'An offline-first education platform for schools and learners'
-      WHERE service_name = 'nomad_kolibri'
+      WHERE service_name = 'cairn_kolibri'
     `)
 
     await this.db.rawQuery(`
@@ -78,7 +78,7 @@ export default class extends BaseSchema {
         powered_by = NULL,
         display_order = NULL,
         description = 'Local AI chat that runs entirely on your hardware - no internet required'
-      WHERE service_name = 'nomad_ollama'
+      WHERE service_name = 'cairn_ollama'
     `)
 
     await this.db.rawQuery(`
@@ -87,7 +87,7 @@ export default class extends BaseSchema {
         powered_by = NULL,
         display_order = NULL,
         description = 'A simple note-taking app that stores all files locally'
-      WHERE service_name = 'nomad_flatnotes'
+      WHERE service_name = 'cairn_flatnotes'
     `)
 
     await this.db.rawQuery(`
@@ -96,7 +96,7 @@ export default class extends BaseSchema {
         powered_by = NULL,
         display_order = NULL,
         description = 'The Cyber Swiss Army Knife - a web app for encryption, encoding, and data analysis'
-      WHERE service_name = 'nomad_cyberchef'
+      WHERE service_name = 'cairn_cyberchef'
     `)
   }
 }

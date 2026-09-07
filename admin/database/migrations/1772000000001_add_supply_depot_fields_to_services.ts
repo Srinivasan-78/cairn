@@ -12,11 +12,11 @@ export default class extends BaseSchema {
     // Backfill categories for existing curated services
     this.defer(async (db) => {
       const updates: Array<{ service_name: string; category: string }> = [
-        { service_name: 'nomad_kiwix_server', category: 'education' },
-        { service_name: 'nomad_kolibri', category: 'education' },
-        { service_name: 'nomad_ollama', category: 'ai' },
-        { service_name: 'nomad_cyberchef', category: 'utility' },
-        { service_name: 'nomad_flatnotes', category: 'productivity' },
+        { service_name: 'cairn_kiwix_server', category: 'education' },
+        { service_name: 'cairn_kolibri', category: 'education' },
+        { service_name: 'cairn_ollama', category: 'ai' },
+        { service_name: 'cairn_cyberchef', category: 'utility' },
+        { service_name: 'cairn_flatnotes', category: 'productivity' },
       ]
 
       for (const { service_name, category } of updates) {
