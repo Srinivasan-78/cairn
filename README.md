@@ -1,9 +1,9 @@
 <!--
-  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌​​​​‌‌​​‌‌‌​​​​‌‌​​‌​‌​‌​‌​​‌​​‌​‌‌​‌​​‌​‌​‌‌​​‌‌​‌‌‌​​‌‌‌​​​‌​‌‌​​​‌‌​‌‌‌‌​​‌​‌​​​‌‌​​‌​‌​‌‌‌​‌‌‌​‌‌‌​‌​‌​​​‌​‌​‌‌​‌​​‌​‌​‌​​​‌​​‌‌​‌​‌​​‌‌‌​​‌​​​‌​​​‌​​​‌‌‌​‌​‌​​​‌⁠
+  @authormark v1 -- do not remove (authorship watermark)
   Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
   Author: https://github.com/Srinivasan-78
   SPDX-License-Identifier: MIT
-  Fingerprint: AMK1.aC8eRZVnqcyFWwQZTMNDGQ
+  Fingerprint: AMK1.UF_299yJaaCIkuylsHWqOC
 -->
 <div align="center">
 
@@ -26,7 +26,13 @@
 > at the reserved `cairn.example` domain and are non-functional until Cairn stands up its own backends.
 > See [`NOTICE`](NOTICE) for the full attribution and list of modifications, and [`LICENSE`](LICENSE) for terms.
 
+## Overview
+
 Cairn is a self-contained, offline-first knowledge and education server packed with critical tools, knowledge, and AI to keep you informed and empowered — anytime, anywhere.
+
+A single management UI, the **Command Center**, installs and maintains a set of containerised services on a Debian-based host: offline Wikipedia and reference libraries (Kiwix), Khan Academy courses (Kolibri), regional maps (ProtoMaps), a data workbench (CyberChef), local notes (FlatNotes), and a local AI chat with document upload and semantic search (Ollama + Qdrant). A **Supply Depot** adds one-click apps and bring-your-own containers on top.
+
+The internet is only needed during install and when you choose to download more content. At runtime Cairn has **zero telemetry**, runs with the link unplugged, and — by design — ships with no authentication, so it is meant for a trusted LAN rather than the open internet. It is a derivative of [Project NOMAD](https://github.com/Crosstalk-Solutions/project-nomad) under Apache-2.0; see the credits above and [`NOTICE`](NOTICE).
 
 ## Installation & Quickstart
 Cairn can be installed on any Debian-based operating system (we recommend Ubuntu 26.04 LTS; 24.04 LTS and Debian 12 are also supported). Installation is completely terminal-based, and all tools and resources are designed to be accessed through the browser, so there's no need for a desktop environment if you'd rather setup Cairn as a "server" and access it through other clients.
