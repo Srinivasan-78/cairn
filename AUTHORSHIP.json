@@ -4,2405 +4,2420 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-09-07T09:54:42.091Z",
-  "fileCount": 479,
-  "digest": "516345df248d3bd79fff9596d01a70611b6a910e8a472dbb7a76956e917c5ead",
-  "proof": "d215cf46142686eebfff2208b9edd3d22612a75108455718c41347313884c686",
+  "sealedAt": "2026-09-07T12:58:42.147Z",
+  "fileCount": 482,
+  "digest": "fea1863c20e010a85ef875dd167468d2f4e43ff5642b28a600bef78eb1760127",
+  "proof": "39b456afda3573288bec8c53715b627c0fc5ee89232b721d8ffef43ccde4f5fe",
   "files": [
     {
-      "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
-      "sha256": "766d454f5e54d6f72d00089035953ce84a0b6d662e36e88d9ab50b3dec6a402f",
-      "bytes": 6949
+      "path": ".github\\ISSUE_TEMPLATE\\bug_report.yml",
+      "sha256": "728954f7ad134b561479dfe2b91e9daba21c182d0f886b9b3331a714c743468f",
+      "bytes": 7128
     },
     {
-      "path": ".github/ISSUE_TEMPLATE/config.yml",
-      "sha256": "89a1667585a54fcc962dc0a064219bbf5eea38049b752fdce91902bb0c8420fa",
-      "bytes": 1538
+      "path": ".github\\ISSUE_TEMPLATE\\config.yml",
+      "sha256": "b5256cfa59e8b059cddbd481022be49030bfc3b71ec5f1480963fae0970ecd7c",
+      "bytes": 1559
     },
     {
-      "path": ".github/ISSUE_TEMPLATE/feature_request.yml",
-      "sha256": "ad88f9d7b77457423d804281076bb56d7a01d937cd29b9c53d25ead33b723b16",
-      "bytes": 6835
+      "path": ".github\\ISSUE_TEMPLATE\\feature_request.yml",
+      "sha256": "c1c239494eaefee43c567800466ddedcb24567519480683ba5b4d2d9f87cf949",
+      "bytes": 6966
     },
     {
-      "path": ".github/dependabot.yaml",
-      "sha256": "66f415dc13b6383b82b7d35a9be27f29d44ddad73ed8fcabf4ba34415c3363ba",
-      "bytes": 923
+      "path": ".github\\SECURITY.md",
+      "sha256": "707b1582453df88d8e42fa3c2439766f247cd437c162d81041209bb092fb6304",
+      "bytes": 569
     },
     {
-      "path": ".github/scripts/finalize-release-notes.sh",
-      "sha256": "bc1f0c5516cda08c1884eeb2e46d76bdccd2d69608834a2aa2f616686f625f72",
-      "bytes": 4873
+      "path": ".github\\dependabot.yaml",
+      "sha256": "83096df846abdbb870b2c14790a0afbf4524f0002e303176c7b03d6ccbf7abb1",
+      "bytes": 763
     },
     {
-      "path": ".github/workflows/authormark.yml",
-      "sha256": "ac8474923b61566b24e44a562f486a36dc2002cdcd51a26b3af316432bbecf3a",
-      "bytes": 1285
+      "path": ".github\\scripts\\finalize-release-notes.sh",
+      "sha256": "1ed52c7fd69999952b649330994a1fa4bee2dba8ad8779221b20e0811c51f9fb",
+      "bytes": 5009
     },
     {
-      "path": ".github/workflows/build-admin-on-pr.yml",
-      "sha256": "c4d6ae4b11ef554d35f959a9d34382ec26ec4bd97e208035399d1279b885ee7b",
-      "bytes": 1281
+      "path": ".github\\workflows\\authormark.yml",
+      "sha256": "81573b8a2e6b4f215cf481dd3f2d13dc78fe793f5019c0eb50ecb849e62838f1",
+      "bytes": 1403
     },
     {
-      "path": ".github/workflows/build-disk-collector.yml",
-      "sha256": "fb7a92c63e1ecd150e8d9f768dc9e3d815ac831f5209f2698b44121733cc700c",
-      "bytes": 2491
+      "path": ".github\\workflows\\build-admin-on-pr.yml",
+      "sha256": "840fb3a72929dafed78c990104c0512f8ec0506ea51d58b1cafa6f2a56d85ea8",
+      "bytes": 1409
     },
     {
-      "path": ".github/workflows/build-primary-image.yml",
-      "sha256": "1a7df6147666fcce6c9a63796ed4644397bef5ef3f539dbdf8020e224d2d5e9f",
-      "bytes": 2674
+      "path": ".github\\workflows\\build-disk-collector.yml",
+      "sha256": "467d3520dc7ca57573175be12dc85739a1012f37c67a25d7cd334336b4626b2b",
+      "bytes": 2683
     },
     {
-      "path": ".github/workflows/build-sidecar-updater.yml",
-      "sha256": "d4465876c4c93d2fa4a05ea726f2c7b8702ba473a317fd899b104373ebc76c59",
-      "bytes": 2489
+      "path": ".github\\workflows\\build-primary-image.yml",
+      "sha256": "281b272adc2dad385c40121f5bbae6b5dce13327af9c458e446cbf686462b838",
+      "bytes": 2864
     },
     {
-      "path": ".github/workflows/release.yml",
-      "sha256": "57f563eac13172ebe0002bc1e52688d58c3e4a41a4d3a65f7f3cf8b019506462",
-      "bytes": 4685
+      "path": ".github\\workflows\\build-sidecar-updater.yml",
+      "sha256": "e9ed35f4675c85d2532156c1c947c24049da19de5099b3a69a885a616fbde55f",
+      "bytes": 2689
     },
     {
-      "path": ".github/workflows/validate-collection-urls.yml",
-      "sha256": "4fad771f5ce6799df7eccc0939fe0b5868576afdc41f4d5085f66a62758e3973",
-      "bytes": 3596
+      "path": ".github\\workflows\\dependabot-automerge.yml",
+      "sha256": "1f5dbf2b9411319e0b214055a117575f34d5b66c57da9ab70b742a1489fd2f7d",
+      "bytes": 851
+    },
+    {
+      "path": ".github\\workflows\\release.yml",
+      "sha256": "10d2d9b4e6aa8008986bd8a97e82d71b29b2329bdf6644bb78dae5e1b9467ca0",
+      "bytes": 4874
+    },
+    {
+      "path": ".github\\workflows\\validate-collection-urls.yml",
+      "sha256": "bf03e53a12726d16bd3d837546db64810dea7826c1208f05603376625d2eaa8c",
+      "bytes": 3734
     },
     {
       "path": "AGENTS.md",
-      "sha256": "6f4bb78900bf58971b266a4df35ff4137cd210494cc71089ecc7f3feb6130012",
-      "bytes": 1511
+      "sha256": "84d940b9bd68b69712152c3eca29a7bc59a5b4c5bad69d440253fcb737820749",
+      "bytes": 1531
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "a4f80ec424ce2382e519318c7cdbc38276dc8575a452e566c67f21c1eb0ca882",
-      "bytes": 822
+      "sha256": "ed354304c250ba110bdcb5ce22cb028ae12daeb72d588d04fb017779acf5c45b",
+      "bytes": 832
     },
     {
       "path": "CODE_OF_CONDUCT.md",
-      "sha256": "27fd1081709baea89759c1075629a84947f77c00a57828e09181767e28ac261c",
-      "bytes": 5999
+      "sha256": "d16c42a4a89293ab644fe3d8b5a70ec110cf40d6f86fd33ca5ab4ef6866bbe48",
+      "bytes": 6134
     },
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "cbc181b7ce3bef4aa5b9cd8077530304e61248ddfb3fb98153744afd6ddd62ba",
-      "bytes": 10639
+      "sha256": "4e10c54f25d0621862503f37deaa9ff23ae300e5bf5ce1dc79a80c182c47f6f2",
+      "bytes": 10845
     },
     {
       "path": "Dockerfile",
-      "sha256": "719f2f7744e6979261af9ca5d0f5a9281380cfd045ebebd92abe22441772b914",
-      "bytes": 5511
+      "sha256": "75ef86b76d63fa12ac9e0c944094bef7f2a6a0f9c97f657b8c33a5fb07faa149",
+      "bytes": 5631
     },
     {
       "path": "FAQ.md",
-      "sha256": "ced3a9b762e6e55c684c56ea5e000a52e1a00346ddbe9f71203e195797065367",
-      "bytes": 13676
+      "sha256": "fc9e68242bb90759483f4214814daccbcce983d9009714875e20893187ddf2db",
+      "bytes": 13789
     },
     {
       "path": "README.md",
-      "sha256": "159e5507cd4b0d9d010e978e6f9152b5cd07d9a38a225f406a55e02815183fa5",
-      "bytes": 15691
+      "sha256": "b4db43b2bfaacd4accba3513b91ac5d85b8c155aa5031e0ab26f872a3bf03cdf",
+      "bytes": 16259
     },
     {
-      "path": "admin/ace.js",
-      "sha256": "1db6f405e0a2f4d5a1f611046b52f9cc1f452401d95eac5a33033c78fdc26416",
-      "bytes": 1618
+      "path": "admin\\ace.js",
+      "sha256": "52ca59e6845b7a1bf76311ffc4512692a9937517bdbb6b79e44f5bf2f027b0dc",
+      "bytes": 1652
     },
     {
-      "path": "admin/adonisrc.ts",
-      "sha256": "feed284f9587800e91a58ca769d6526a41181c1534c056d29c3250477a20022f",
-      "bytes": 4750
+      "path": "admin\\adonisrc.ts",
+      "sha256": "c57d36cd91ad7d2cec31c402cb803cec47e00f1d9956c87ad15798adea820ca3",
+      "bytes": 4883
     },
     {
-      "path": "admin/app/controllers/benchmark_controller.ts",
-      "sha256": "bb942719c26c2accca7c58df494ac44bc9cada4522da2df209576360d28066ab",
-      "bytes": 9648
+      "path": "admin\\app\\controllers\\benchmark_controller.ts",
+      "sha256": "ac5876c02913f5a2c4903853e0475232dfbcb2e5021aeabfc4e7fafc958d1990",
+      "bytes": 9953
     },
     {
-      "path": "admin/app/controllers/cairn_md_controller.ts",
-      "sha256": "e870ee46ad44ea8b7ca0dd6d16e05135bea9904693060097e0a73f6046057e55",
-      "bytes": 1684
+      "path": "admin\\app\\controllers\\cairn_md_controller.ts",
+      "sha256": "778a387a2e212c79baf20f9578aa921f9c9f1525bbe7c610e2b77eb535ba1b3b",
+      "bytes": 1713
     },
     {
-      "path": "admin/app/controllers/chats_controller.ts",
-      "sha256": "6a2b410a275a765966236cf958d67a296c754f966778ff1e242dd71ca5142360",
-      "bytes": 4941
+      "path": "admin\\app\\controllers\\chats_controller.ts",
+      "sha256": "d670e6acb3e698ed6cb5d16197e9f569959ba587ed6ec022ff0c243c83dfe97c",
+      "bytes": 5064
     },
     {
-      "path": "admin/app/controllers/collection_updates_controller.ts",
-      "sha256": "cf0e7fbd4d9a719a2ce6811b2419742b2eaae31c629e7adc994a12565811b38e",
-      "bytes": 1854
+      "path": "admin\\app\\controllers\\collection_updates_controller.ts",
+      "sha256": "b7214dca01f4679bd42d43377d947c783809a755b658a6d8b82c373ffab4e193",
+      "bytes": 1891
     },
     {
-      "path": "admin/app/controllers/conditions_controller.ts",
-      "sha256": "4658b01644c6f6be54cc9d66906b0f5fe989a9d3f2400ad3ae544f6c8855fe96",
-      "bytes": 4987
+      "path": "admin\\app\\controllers\\conditions_controller.ts",
+      "sha256": "2d32ac99c5aab7dd608c27e8d4ae38c3781a1a24a9667051e8426194f8dc98e1",
+      "bytes": 5108
     },
     {
-      "path": "admin/app/controllers/creator_packs_controller.ts",
-      "sha256": "ba331b24b466715fdf993f503abc39c3880dfaaabcc126c1e9e384c245aa1271",
-      "bytes": 3298
+      "path": "admin\\app\\controllers\\creator_packs_controller.ts",
+      "sha256": "10956de9dab24d988a14723484ddba6cd6c7367e0e60e13aa8e90e0f7360bb2a",
+      "bytes": 3367
     },
     {
-      "path": "admin/app/controllers/docs_controller.ts",
-      "sha256": "31c2a5c3aa360fc9dacb563167c40b2dde362b60aa87144767951b7133228c00",
-      "bytes": 1365
+      "path": "admin\\app\\controllers\\docs_controller.ts",
+      "sha256": "b1e7f56e0a012ac12e4f7b325bcba496b60bf690707d3e59e4a94496ae269fe7",
+      "bytes": 1392
     },
     {
-      "path": "admin/app/controllers/downloads_controller.ts",
-      "sha256": "adddd585dbf159789beab1e855388209692f826e3f71103016cb56823eea5bfe",
-      "bytes": 1772
-    },
-    {
-      "path": "admin/app/controllers/drug_reference_controller.ts",
-      "sha256": "f4d6f940983eb0fd02daee200398c2ed5e6d38c4a7874210d8001a4e8683b6ea",
-      "bytes": 12495
-    },
-    {
-      "path": "admin/app/controllers/easy_setup_controller.ts",
-      "sha256": "233cbcbd1e6064e9fc78b089d0e5e707a269473add0dfb8c44b7f35eae56f350",
-      "bytes": 2381
-    },
-    {
-      "path": "admin/app/controllers/home_controller.ts",
-      "sha256": "0ec1149bc8d5d966a7b6b39ab81eb88b160b9f6665228122f69eb9e255ed9cc9",
-      "bytes": 3166
-    },
-    {
-      "path": "admin/app/controllers/maps_controller.ts",
-      "sha256": "7a4d979726471989b371487b4cc5f3e90447c650bf35f91e3b58679dbf5472a8",
-      "bytes": 8857
-    },
-    {
-      "path": "admin/app/controllers/ollama_controller.ts",
-      "sha256": "f2397dc0b9c7f6e29b75591cb6b4ab507a3d49963be98fc0e431d09c34c78d36",
-      "bytes": 22573
-    },
-    {
-      "path": "admin/app/controllers/openapi_controller.ts",
-      "sha256": "30175993d831d7c23b1a8b4dd42cb7a729aa26d8082f10e0dfc1a7bd49480150",
-      "bytes": 3076
-    },
-    {
-      "path": "admin/app/controllers/rag_controller.ts",
-      "sha256": "93be53b5c6651bf1972a8126fd20860f825fe161bbb53293021da8985f390d55",
-      "bytes": 10420
-    },
-    {
-      "path": "admin/app/controllers/settings_controller.ts",
-      "sha256": "4e177a96f022682f5d9ff81e40df910f874c66a007c4c87b365ed4405c51e2bf",
-      "bytes": 6130
-    },
-    {
-      "path": "admin/app/controllers/supply_depot_controller.ts",
-      "sha256": "08d2a27eac099674f14d618b1569931396f2c2ae6988b55c224fe4e74b781a31",
-      "bytes": 1265
-    },
-    {
-      "path": "admin/app/controllers/system_controller.ts",
-      "sha256": "a66f1494798003d16c5ebccdea2696e404ab1a950a7aeca330eae24c0e6e9973",
-      "bytes": 37242
-    },
-    {
-      "path": "admin/app/controllers/zim_controller.ts",
-      "sha256": "13f09e8173c6b9d07cab7982ddf36852b17654a74b2b61f093e384a10c0909e4",
-      "bytes": 8106
-    },
-    {
-      "path": "admin/app/data/conditions.ts",
-      "sha256": "0e97db8465ca289f65c86d99898d1a9d7d7d907c02f54a23dd17b7bb5a78bebe",
-      "bytes": 10696
-    },
-    {
-      "path": "admin/app/data/home_remedies.ts",
-      "sha256": "625ff496241de252ab6a1a5518d3d8981bd44a57b909dad037d6338436d17479",
-      "bytes": 30458
-    },
-    {
-      "path": "admin/app/data/natural_remedies.ts",
-      "sha256": "84eb6eb13bdfda4f37d5bcc2266ccfb8c4aa79810cb9fb318c3af177d8436d1e",
-      "bytes": 26408
-    },
-    {
-      "path": "admin/app/exceptions/handler.ts",
-      "sha256": "4c45b7b300b96b8824899a39710f3860524dbd85c83f6a8fd91fe97a2c4ce2fa",
-      "bytes": 2361
-    },
-    {
-      "path": "admin/app/exceptions/internal_server_error_exception.ts",
-      "sha256": "3146968ce6e9c7a45525856851263068f6dd85b1e5c28a4738461c0ab4506096",
-      "bytes": 991
-    },
-    {
-      "path": "admin/app/jobs/app_auto_update_job.ts",
-      "sha256": "251a545fe93d3db228d4754d72e4bbbf3c5229d8c87dbab37f4aa9904d7cdcfe",
-      "bytes": 3330
-    },
-    {
-      "path": "admin/app/jobs/auto_update_job.ts",
-      "sha256": "f335eeac58b8b50009f2a201e4b9f92e7cd9c4abbfe25168e2d794daee93e022",
-      "bytes": 3341
-    },
-    {
-      "path": "admin/app/jobs/check_service_updates_job.ts",
-      "sha256": "ae31bcfa7c4a1c8a4b69dab14e39015b50fa198cff3e7a51b5db79c9529041c4",
-      "bytes": 5249
-    },
-    {
-      "path": "admin/app/jobs/check_update_job.ts",
-      "sha256": "6f2c780f2adb8d5fcd0719d6d2f74c78da67a650553b344273e5089b990dc42d",
-      "bytes": 2952
-    },
-    {
-      "path": "admin/app/jobs/content_auto_update_job.ts",
-      "sha256": "496fb9dd26dbf4544c383967532db77aaa550335c086823a5cb37b89223936b5",
-      "bytes": 3600
-    },
-    {
-      "path": "admin/app/jobs/download_drug_data_job.ts",
-      "sha256": "ad38410039fe11605f75615692002a2b1646f64a014608deaa64da7bcaefae7d",
-      "bytes": 14089
-    },
-    {
-      "path": "admin/app/jobs/download_model_job.ts",
-      "sha256": "b9a1a4be6f0e9a278fc203a2001de791ba9a854c8e27a5cc0cdcb7c4beb0cc41",
-      "bytes": 8385
-    },
-    {
-      "path": "admin/app/jobs/embed_file_job.ts",
-      "sha256": "b44be8532ec9926fd35a7e71a73ad0449c4cb5084827d8e1f499761d4ba614c6",
-      "bytes": 23849
-    },
-    {
-      "path": "admin/app/jobs/ingest_drug_data_job.ts",
-      "sha256": "ed0408287040aad149d8cc36b5d1429b9e7eb95b6916b4b273e40d4487c54510",
-      "bytes": 36435
-    },
-    {
-      "path": "admin/app/jobs/run_benchmark_job.ts",
-      "sha256": "ad3ca1e32bbc42885f8f0dabddbc35a46e67f62d6a3e0adeb3322507d2060845",
-      "bytes": 3904
-    },
-    {
-      "path": "admin/app/jobs/run_download_job.ts",
-      "sha256": "cbf4d3c66ecfdd3b9f81794aa5329acfbc0e23c6d3137b13283c232745a21df4",
-      "bytes": 18244
-    },
-    {
-      "path": "admin/app/jobs/run_extract_pmtiles_job.ts",
-      "sha256": "ead0087a340478eebb76c8d136b0d2ded0c2756548869147431383688bd64bf3",
-      "bytes": 11697
-    },
-    {
-      "path": "admin/app/middleware/compression_middleware.ts",
-      "sha256": "9e137ba7d4ea7a4987d6e9b9f4c2994f16174c006b7ed33f45d7f861a58444fd",
-      "bytes": 1997
-    },
-    {
-      "path": "admin/app/middleware/container_bindings_middleware.ts",
-      "sha256": "63cbd9fa40494ed6bf51727edeb54f3b6652d7ebc55e2c9ed64aa577df4aad5f",
-      "bytes": 1415
-    },
-    {
-      "path": "admin/app/middleware/force_json_response_middleware.ts",
-      "sha256": "3cd0f6830131908d3315c5885c4ea74afcdc0f8c1a69b4c91cc08503fce98854",
-      "bytes": 1343
-    },
-    {
-      "path": "admin/app/middleware/maps_static_middleware.ts",
-      "sha256": "3f661db3f5c2de4f15b764049497f2598be4bbdf93cf016e7ee4e0b666ce14de",
-      "bytes": 1433
-    },
-    {
-      "path": "admin/app/models/benchmark_result.ts",
-      "sha256": "1e12383787f4763075594a21af076e6316802a44e37cff5f127660e1c4330cf7",
-      "bytes": 4982
-    },
-    {
-      "path": "admin/app/models/benchmark_setting.ts",
-      "sha256": "706d646c97e4cfa6b1694ca9e794386d78211613a67415cd3e79d7b9e8ac285a",
-      "bytes": 2536
-    },
-    {
-      "path": "admin/app/models/chat_message.ts",
-      "sha256": "28823ae1d9ed1664f1b83b44d6833013f6417ea3ea7b27e4720ee7dff1ce0877",
-      "bytes": 1634
-    },
-    {
-      "path": "admin/app/models/chat_session.ts",
-      "sha256": "d8fba3c32f622dd81cafdc2a5b424ee71b6854b809da981bb2db88aca1fa61a6",
-      "bytes": 1576
-    },
-    {
-      "path": "admin/app/models/collection_manifest.ts",
-      "sha256": "20eda2e4745949a5f7ac52176b7a0c719bfcac99e816b318addad86ac3cd8be5",
-      "bytes": 1439
-    },
-    {
-      "path": "admin/app/models/custom_library_source.ts",
-      "sha256": "6a794f90174bc0441d0d3b516e0cf0e775ac435394cbf348074b198a4ecab957",
-      "bytes": 1371
-    },
-    {
-      "path": "admin/app/models/drug_label.ts",
-      "sha256": "0e4fe216111bf63891b6b6fd155cf734a2bd303f1361babaac6ae6acda56e76d",
-      "bytes": 4283
-    },
-    {
-      "path": "admin/app/models/installed_resource.ts",
-      "sha256": "1bdf91e8f64a97480ffeddd331752ce83cb826b97d5aecf3c27babee4483199c",
-      "bytes": 2223
-    },
-    {
-      "path": "admin/app/models/kb_ingest_state.ts",
-      "sha256": "ef722dd236e47cacb2428da4a4f89bace00edc3d5936f39030f0f35a86d34f3f",
-      "bytes": 3331
-    },
-    {
-      "path": "admin/app/models/kb_ratio_registry.ts",
-      "sha256": "57c2a8b5365160049ae489163c6acb6e6c806a794c45f7dc20777e8f48c2a63c",
-      "bytes": 3437
-    },
-    {
-      "path": "admin/app/models/kv_store.ts",
-      "sha256": "2b465efd1c9d4027dcaf9fbaa4eca37b682c93c5af77ef79149a899ee5752c7a",
-      "bytes": 2859
-    },
-    {
-      "path": "admin/app/models/map_marker.ts",
-      "sha256": "37ab8b04a5bebfbd6ac13cb0e5f26f799a0b944ec374ba71aaa98e0da9a39c47",
-      "bytes": 1770
-    },
-    {
-      "path": "admin/app/models/service.ts",
-      "sha256": "4e6070d22513952cb24debb04866c1dc771b321821ea0a1c530d0391264d445f",
-      "bytes": 4643
-    },
-    {
-      "path": "admin/app/models/wikipedia_selection.ts",
-      "sha256": "7dd194b2cb813fbb5ebdf4b010854d41fbe8eda9b436a287358aa020bc91eecc",
-      "bytes": 1460
-    },
-    {
-      "path": "admin/app/services/app_auto_update_service.ts",
-      "sha256": "b734a4aebade86d2c2032c94d0cbd7b6ce9d0faed217a84bdd1f5ea320ec5116",
-      "bytes": 15939
-    },
-    {
-      "path": "admin/app/services/auto_update_service.ts",
-      "sha256": "903d6b117f403073f474ecff26ad3a1361aa03e6a356975f90bde5fba81fd2c7",
-      "bytes": 22181
-    },
-    {
-      "path": "admin/app/services/benchmark_service.ts",
-      "sha256": "5e75f09208633a544d1dbd9d7695139ea94ca3fcb8035239dbe83055ed159b90",
-      "bytes": 77026
-    },
-    {
-      "path": "admin/app/services/benchmark_telemetry.ts",
-      "sha256": "3359bf7573a79b3453951f511fa158b58f5ac6d9d5baef7d0379ec1ce6ab891c",
-      "bytes": 4803
-    },
-    {
-      "path": "admin/app/services/cairn_md_service.ts",
-      "sha256": "a172337ec110ed942cbbaa3537562db20998ff763ce1eabf743e69b33b757eee",
-      "bytes": 2662
-    },
-    {
-      "path": "admin/app/services/chat_service.ts",
-      "sha256": "cc52f977b51da5a5b729750348ccb65250c19040310d431b4a400af9b817ba4d",
-      "bytes": 9746
-    },
-    {
-      "path": "admin/app/services/collection_manifest_service.ts",
-      "sha256": "aebf1b4f5f549507c2cfa6c2745064af9dc53186495769ea288d1537b3265894",
-      "bytes": 22063
-    },
-    {
-      "path": "admin/app/services/collection_update_service.ts",
-      "sha256": "a011c23a664b54a09a00f0bcd8436014e4eba92a38b786ea23bbeea2973e0a87",
-      "bytes": 8275
-    },
-    {
-      "path": "admin/app/services/condition_service.ts",
-      "sha256": "6f6f6e96ad99ddd73a26742c2e4d5c8a474816374193021e2ab4436466b6145f",
-      "bytes": 13068
-    },
-    {
-      "path": "admin/app/services/container_registry_service.ts",
-      "sha256": "f797d80dd94cbec3a81761fbe7dd127849e9186b5ca3dde72ad3b7072cadb754",
-      "bytes": 19993
-    },
-    {
-      "path": "admin/app/services/content_auto_update_service.ts",
-      "sha256": "ca9989242c275027f05ccd3607d8ff12d90887e2c78ca3910623839a539065f7",
-      "bytes": 25403
-    },
-    {
-      "path": "admin/app/services/countries_service.ts",
-      "sha256": "50b58a5f24928d524aabcb4fccb9dde20e5e911aad04e6727f499279fb629264",
-      "bytes": 10847
-    },
-    {
-      "path": "admin/app/services/creator_pack_service.ts",
-      "sha256": "8ee7f81435b11150cf89fa2205b04e51214ebf45a6948ca1edd8a83520e2ef9c",
-      "bytes": 8147
-    },
-    {
-      "path": "admin/app/services/custom_app_guard.ts",
-      "sha256": "2eccb283bdc72fa11bd389023b89458d3134f3f37593f014b93c82a28887eb43",
-      "bytes": 7681
-    },
-    {
-      "path": "admin/app/services/docker_service.ts",
-      "sha256": "916b2ce47accd95cc6f592875573e917fc4d473e143a649a8fb39cae1ca54126",
-      "bytes": 96433
-    },
-    {
-      "path": "admin/app/services/docs_service.ts",
-      "sha256": "f083787b05b76157cfb8e6224c3d556c1e67aa8c09826348720f6e84dc4b9e45",
-      "bytes": 6759
-    },
-    {
-      "path": "admin/app/services/download_service.ts",
-      "sha256": "37837db6f94abe23f8b469fcaaebf2150b2760c6933c0b1e527f64d9a8a38df1",
-      "bytes": 18715
-    },
-    {
-      "path": "admin/app/services/drug_reference_service.ts",
-      "sha256": "1321732819d724a404e5123ecca69f4c7a257b33a833b6bee2d08b588fbdb0e2",
-      "bytes": 32261
-    },
-    {
-      "path": "admin/app/services/kiwix_catalog_service.ts",
-      "sha256": "10e04699be70e4ee961a944dbab7b5741d572ce6af53354673c4c5af1734b44c",
-      "bytes": 12864
-    },
-    {
-      "path": "admin/app/services/kiwix_library_service.ts",
-      "sha256": "2ec1380dc73b9f07fe041b0eab7212a7bfddd336c23c1aaf8679e03e9313a72c",
-      "bytes": 13396
-    },
-    {
-      "path": "admin/app/services/map_service.ts",
-      "sha256": "50c9b4d940efaa920e85f880d8e073f8b533298884016836976677ab9037e467",
-      "bytes": 35699
-    },
-    {
-      "path": "admin/app/services/ollama_service.ts",
-      "sha256": "b6f2ebb5db21d796c745245ada6d2fba841380ac4787775679d11da4584084bd",
-      "bytes": 42677
-    },
-    {
-      "path": "admin/app/services/queue_service.ts",
-      "sha256": "a03a479602f27adeae8d94b6899114a2fa14b6ba6a84692528b718f327f2ce43",
-      "bytes": 1947
-    },
-    {
-      "path": "admin/app/services/rag_service.ts",
-      "sha256": "7a438b0b0ecdb9b547c295ae76061c6b47f372a8fe5be2a8b4df7a5d15f2ffa6",
-      "bytes": 89051
-    },
-    {
-      "path": "admin/app/services/system_service.ts",
-      "sha256": "e8ad7f290202338f1d78af4a9c986f9b0b2b5b195b11b0131a2e1d82ea455b1e",
-      "bytes": 44896
-    },
-    {
-      "path": "admin/app/services/system_update_service.ts",
-      "sha256": "74102b24fd763f197057b337cf2a0c91af07da23b7203b7b470055a5e61e1fb3",
-      "bytes": 4811
-    },
-    {
-      "path": "admin/app/services/zim_extraction_service.ts",
-      "sha256": "baeab8426dac49fea233439d2a3944ec2c4e59878dc92e695792ad7e597977a9",
-      "bytes": 11767
-    },
-    {
-      "path": "admin/app/services/zim_service.ts",
-      "sha256": "613ebd082d2bf22579fc1e8f110d50890939174cb295bea672df7e6f916dcef8",
-      "bytes": 40589
-    },
-    {
-      "path": "admin/app/utils/affirmative_remedies.ts",
-      "sha256": "8b48ffc4b5bf0cb2445c34bf8d6887a3d035e580e46cdae928ae005bc4122746",
-      "bytes": 1937
-    },
-    {
-      "path": "admin/app/utils/amd_hsa_override.ts",
-      "sha256": "b6e92151f006fd8ac3c5618d8a874ab14a3dc7c22a2b7922f8baf9fe075a810b",
-      "bytes": 3536
-    },
-    {
-      "path": "admin/app/utils/content_auto_update_backoff.ts",
-      "sha256": "94b7bf30b65ae4b092d7186c3edc8a6ea130009c50e1f0230c31b394f14663ba",
-      "bytes": 3096
-    },
-    {
-      "path": "admin/app/utils/content_reindex_decision.ts",
-      "sha256": "ec4c348a7af336d054e795191f4aeabb68484384601fbd74ae23f4e07725dd9d",
-      "bytes": 3668
-    },
-    {
-      "path": "admin/app/utils/downloads.ts",
-      "sha256": "6bb498782548f49dcd4c28822c2edf80df1e9dd04524662aacd0874602b9f9f2",
-      "bytes": 12547
-    },
-    {
-      "path": "admin/app/utils/fs.ts",
-      "sha256": "cc4caa245650e23b03304061085f01b1ed2a3faf1d5910b4a9559083d6caaa39",
-      "bytes": 7782
-    },
-    {
-      "path": "admin/app/utils/hosted_content.ts",
-      "sha256": "1d12a7c487f89f13da13658f144f1e4ebd78f9f0187ffdd860e5ff7a96b8fa92",
-      "bytes": 1511
-    },
-    {
-      "path": "admin/app/utils/hosted_content_auth.ts",
-      "sha256": "88b8789b4183c07d0877b480773c6b71e68387c9726108f85cf752f1f9eeac71",
-      "bytes": 2612
-    },
-    {
-      "path": "admin/app/utils/image_disk_preflight.ts",
-      "sha256": "aed2d5337b57970f8b9b0f4c325f8036809a71f277585d3fb1dfcf47007bfc91",
-      "bytes": 3814
-    },
-    {
-      "path": "admin/app/utils/kb_ingest_decision.ts",
-      "sha256": "d800c6a94fa139cd1ff24bcc2b1f837898ab604b5efe64ab3efd3d2b2c59b6f5",
-      "bytes": 3619
-    },
-    {
-      "path": "admin/app/utils/kb_job_health.ts",
-      "sha256": "8b95e7640f07aa6c7dd3eed475f004608c530e0e9501a4c80697e5347d1e43b1",
-      "bytes": 2725
-    },
-    {
-      "path": "admin/app/utils/kb_ratio_lookup.ts",
-      "sha256": "d0eec59982e71e75a9c9b013ac1755b43c52340c6e3c1345300ac1dcd212a674",
-      "bytes": 4525
-    },
-    {
-      "path": "admin/app/utils/kb_warning_decision.ts",
-      "sha256": "fbba4214604720899bf9271783106a97e8cd1809b52ca01f95b29d3cec067720",
-      "bytes": 3776
-    },
-    {
-      "path": "admin/app/utils/misc.ts",
-      "sha256": "ee6a8118c0c50e9ab59df7df1321d8768d62ac4a070d55060b8b1e024d6c9807",
-      "bytes": 1569
-    },
-    {
-      "path": "admin/app/utils/platform_metadata.ts",
-      "sha256": "b3264f6fc22b08b01cf1c2ccdb35c63b8830ce4f52d0f93673975b2baa86f124",
-      "bytes": 3524
-    },
-    {
-      "path": "admin/app/utils/superseded_resource.ts",
-      "sha256": "142b006faede47a887d397dc85b4e26de3a7744af79c2519ae7edc22ca05dad0",
-      "bytes": 3898
-    },
-    {
-      "path": "admin/app/utils/update_window.ts",
-      "sha256": "5d1aa99a957f542026f74537cfcf9cbc89beda7e3e64908f7e6a3bf454ef82ae",
-      "bytes": 2060
-    },
-    {
-      "path": "admin/app/utils/version.ts",
-      "sha256": "5bd0d52b013ce634b0e13013616e089bf0c6c66769465925a5eac56723f37f1c",
-      "bytes": 2688
-    },
-    {
-      "path": "admin/app/utils/zim_download_resolution.ts",
-      "sha256": "bd448d754cdcd78ff0d35956c29f682a5781b5678d2e5024b6ce751d56871e61",
-      "bytes": 2896
-    },
-    {
-      "path": "admin/app/utils/zim_filename.ts",
-      "sha256": "e358f7b178f469604c24a54d9f2889b1e4a78fa54aadc468d107f819ac233f21",
-      "bytes": 1845
-    },
-    {
-      "path": "admin/app/utils/zim_html.ts",
-      "sha256": "c34a42741fdbe2d209aee9c8f883765be0c9732296a9bf26ec7402b7284b875f",
-      "bytes": 5082
-    },
-    {
-      "path": "admin/app/validators/benchmark.ts",
-      "sha256": "c4ecb41051b69b8e5c6eee8f2e623befe2758a1d60681121a30d70b01f86dec7",
-      "bytes": 1098
-    },
-    {
-      "path": "admin/app/validators/cairn_md.ts",
-      "sha256": "dfd5c4377dbde3d1315eee9bcd848bd467828a35de31fa75d8261cb24cc832ce",
-      "bytes": 1237
-    },
-    {
-      "path": "admin/app/validators/chat.ts",
-      "sha256": "c50b130036178d72e56c579ebb4ef6775ef2f702dc6f7e50a5278895d5a509b0",
-      "bytes": 1380
-    },
-    {
-      "path": "admin/app/validators/common.ts",
-      "sha256": "426926642c2fdc956b7c1bb7d77f28c62783416f5cef3bbd1e333f9720a33491",
-      "bytes": 8446
-    },
-    {
-      "path": "admin/app/validators/conditions.ts",
-      "sha256": "8ad57e1dd9f9874203df50dad1b92d2372a9c5343cc31c0a78b2caacb91c744a",
-      "bytes": 1695
-    },
-    {
-      "path": "admin/app/validators/curated_collections.ts",
-      "sha256": "06ebd863a934b9ee65c2a0f1a0096979854472b1034a368f33a50ad976e699a7",
-      "bytes": 4421
-    },
-    {
-      "path": "admin/app/validators/download.ts",
-      "sha256": "777c1565059d025915b1a32038ae841cb45fd4f4c1ddf24f5c256816e644ec34",
-      "bytes": 1075
-    },
-    {
-      "path": "admin/app/validators/drug_reference.ts",
-      "sha256": "915b5acc6be3389848e5b910638598b86eb8ef41c0a8c417dec749327bcc7cea",
-      "bytes": 2368
-    },
-    {
-      "path": "admin/app/validators/ollama.ts",
-      "sha256": "77f9a472bd2ab7602a2ea068b24a68489218775cabf32a88d02ae55b8f46d247",
-      "bytes": 1881
-    },
-    {
-      "path": "admin/app/validators/rag.ts",
-      "sha256": "ccf786e94575c4caecd021a1d09d2dc54ed9979258a27e77c67be2fdf1fe4359",
-      "bytes": 1581
-    },
-    {
-      "path": "admin/app/validators/responses/chat.ts",
-      "sha256": "bce4d3447ca158fba298c40cc4e6030dac4ab50303dc22bff1114b4d09c99525",
-      "bytes": 1906
-    },
-    {
-      "path": "admin/app/validators/responses/common.ts",
-      "sha256": "ec6c566ebbda325d4caac90d150ed09a93620cd1d1578c78f4ba0ac250ba9583",
-      "bytes": 1959
-    },
-    {
-      "path": "admin/app/validators/settings.ts",
-      "sha256": "2bee1b030598f4d6c473b1f8f3a9690dd1da1f6d4a25395514a4b3cf06c76e38",
-      "bytes": 3420
-    },
-    {
-      "path": "admin/app/validators/system.ts",
-      "sha256": "badab4119e046f2b5c6d34d03de248590f5b0d095b2e365ed64e829ea0ea0e84",
-      "bytes": 6749
-    },
-    {
-      "path": "admin/app/validators/zim.ts",
-      "sha256": "c85e8f4124c52cd525b11db5ed17e62fa0fc16dfac0d20b47bf29a68cb48b46d",
-      "bytes": 1552
-    },
-    {
-      "path": "admin/bin/console.ts",
-      "sha256": "da5fd8e82183d4cc60742dccc12f5bdd3781c0aed5c7d428528d293aa0cc31cf",
-      "bytes": 2134
-    },
-    {
-      "path": "admin/bin/server.ts",
-      "sha256": "f6d747a8da4cea89113817b6e1c3a1b8d69ea08bb1f626a7bb374a1b46beb435",
-      "bytes": 2528
-    },
-    {
-      "path": "admin/bin/test.ts",
-      "sha256": "a0ad51861c1e0a5dfd1e83fde2db2764bfdb27c36eb8c6f738b5c88f8acfa3c0",
-      "bytes": 2520
-    },
-    {
-      "path": "admin/commands/app_auto_update/dry_run.ts",
-      "sha256": "d8b6223194506bdc9ae5e5dcc0a37a40d2e6846423a1126fd40155ca00914a1c",
-      "bytes": 8326
-    },
-    {
-      "path": "admin/commands/auto_update/dry_run.ts",
-      "sha256": "a04045924d9b2b79fcfc1ef011514777b54cf81a340bbd4866010d1f86e63d95",
-      "bytes": 11018
-    },
-    {
-      "path": "admin/commands/benchmark/results.ts",
-      "sha256": "cbf41e418881066c1323c6f8d70cdf1bc6ebfe5fa613a20b6e1b2405613d81fd",
-      "bytes": 4273
-    },
-    {
-      "path": "admin/commands/benchmark/run.ts",
-      "sha256": "debfe3d5f5ab88d93d0122cf17ed2c6d0ed6abfd72558ee7eabd53ac63a723c5",
-      "bytes": 4747
-    },
-    {
-      "path": "admin/commands/benchmark/submit.ts",
-      "sha256": "843985590b5e396a3c3ea68fc0c04ce8b84d80029d5d4a123e2b22454bd43b47",
-      "bytes": 4835
-    },
-    {
-      "path": "admin/commands/content_auto_update/dry_run.ts",
-      "sha256": "63fe79bcf55dd714865378f9729fce3799053c3f13f44766cea2838e8c836b17",
-      "bytes": 8859
-    },
-    {
-      "path": "admin/commands/queue/work.ts",
-      "sha256": "21906f6b6839b56aa9ef81405a6fc269d9242f8d67717a115ac7754f91ec8ba9",
-      "bytes": 11816
-    },
-    {
-      "path": "admin/config/app.ts",
-      "sha256": "3e4831c30310b0bdd8486f6112212511ad01e0fe8099466672e83ed9f7064112",
-      "bytes": 1878
-    },
-    {
-      "path": "admin/config/bodyparser.ts",
-      "sha256": "c1529d1abc56fca4744b4d560c73333265a63b87544472c22c7d56b3e202c6af",
-      "bytes": 2179
-    },
-    {
-      "path": "admin/config/cors.ts",
-      "sha256": "2ac7a425d51af55cd401d1d6883c364b6a7717d0009dec4c040790cced404f66",
-      "bytes": 1263
-    },
-    {
-      "path": "admin/config/database.ts",
-      "sha256": "d37160e51d89c914dd32c53e32aefad70ac45fcd506f42924b0953da8d1dd64b",
-      "bytes": 1613
-    },
-    {
-      "path": "admin/config/hash.ts",
-      "sha256": "dea1782f0b3d4a52c4074d63b85d8d25f7a72bbea53d905dea47990057b5be5e",
-      "bytes": 1304
-    },
-    {
-      "path": "admin/config/inertia.ts",
-      "sha256": "472a761339879b02b32524f8bf114174c9b37dbc25f0723782368ce3a62615e9",
-      "bytes": 2248
-    },
-    {
-      "path": "admin/config/logger.ts",
-      "sha256": "8b9bfcc13fd9c2715a0dc75e8fbbc993ddd6d934a6a5a2eeff1adc14b9aecaea",
-      "bytes": 2392
-    },
-    {
-      "path": "admin/config/queue.ts",
-      "sha256": "0a4f374b409e89d452cfd06794760dae84d2be267cb5e928417f00c20c33e00b",
-      "bytes": 2881
-    },
-    {
-      "path": "admin/config/session.ts",
-      "sha256": "7e0ece9705e11e4437ddb257662b0852e691b989d96f08fab1d39122b8cafe4c",
-      "bytes": 1950
-    },
-    {
-      "path": "admin/config/shield.ts",
-      "sha256": "7e42d5fbd8ef4278d3153a10fa52abbbe2ed18e38ba1ff3db532b5c688710b8a",
+      "path": "admin\\app\\controllers\\downloads_controller.ts",
+      "sha256": "ad35a635821849a7f1b6728212fee2f30746d6e0653f05529acc84a50f134b83",
       "bytes": 1810
     },
     {
-      "path": "admin/config/static.ts",
-      "sha256": "ac0963c752839faea7de00c528ce724bccabd32471d3182ba469e185c8c707c8",
-      "bytes": 1239
+      "path": "admin\\app\\controllers\\drug_reference_controller.ts",
+      "sha256": "bcba35f2273ad8666ab17748be31122de4f6a29ac8d7d6e5fdd500e2aa86dd2c",
+      "bytes": 12797
     },
     {
-      "path": "admin/config/transmit.ts",
-      "sha256": "73696efc26fd0e06cdd73c4c79d388a050a3eab441b2d255437e8eedd5cafa62",
-      "bytes": 1172
+      "path": "admin\\app\\controllers\\easy_setup_controller.ts",
+      "sha256": "f42209874c08bda3ee849f4313d2ebf9f91b24db3fa656d223005171d42c4fbd",
+      "bytes": 2441
     },
     {
-      "path": "admin/config/vite.ts",
-      "sha256": "c099c791a926313c009b607a1bbb311442c3f3554180dc319580f1dc41401d33",
-      "bytes": 1420
-    },
-    {
-      "path": "admin/constants/broadcast.ts",
-      "sha256": "3d095d66ccef623e75500c102077bbb119c2d757722dcb37e7f972c24a69e438",
-      "bytes": 1075
-    },
-    {
-      "path": "admin/constants/kb_collections.ts",
-      "sha256": "b41ff532e58466358ce145db97d2dc5eacb3a8de69858fe3854103f8aeca2811",
-      "bytes": 2277
-    },
-    {
-      "path": "admin/constants/kiwix.ts",
-      "sha256": "701fb00ead29177b08b0c4800cf0d67422f2ccc1f4d81585266c555b460e626d",
-      "bytes": 1567
-    },
-    {
-      "path": "admin/constants/kv_store.ts",
-      "sha256": "28ce82638cf9917099505edc1426a6a60bdd7316016ac17494f3c3254a1f20bc",
-      "bytes": 1602
-    },
-    {
-      "path": "admin/constants/map_regions.ts",
-      "sha256": "2ecfd29b7b3b96b9695ab7829b91d9943fe7db76c3a328fca8857cb03a37bb4e",
-      "bytes": 2104
-    },
-    {
-      "path": "admin/constants/misc.ts",
-      "sha256": "8af90f45d3e41f32a8d1164d47f22ff64587262f9ca335da534182b43313d3fd",
-      "bytes": 871
-    },
-    {
-      "path": "admin/constants/ollama.ts",
-      "sha256": "b685770c69c2b3cce0cc8fc5d9669e26cf72a7793cd1de41a576209de359bb64",
-      "bytes": 7587
-    },
-    {
-      "path": "admin/constants/service_names.ts",
-      "sha256": "82a31ae93add6ad7eb237e2011ccb42439b27c2e7b624cf8ac8924f0dc803f54",
-      "bytes": 1484
-    },
-    {
-      "path": "admin/constants/supply_depot_docs.ts",
-      "sha256": "248c71526a6c9f5e7d99b33ea716d37b647ae30f0660987058f8baf6de275c16",
-      "bytes": 2258
-    },
-    {
-      "path": "admin/constants/zim_extraction.ts",
-      "sha256": "1088514763acebfb211c38447af0c6355cf7e00c4cc705d3ecba9dcf2e0c815a",
-      "bytes": 1862
-    },
-    {
-      "path": "admin/database/migrations/1751086751801_create_services_table.ts",
-      "sha256": "c91c82d85a20c9164a488bfa9d3be6e8c594380619378344922269383a2479fe",
-      "bytes": 1692
-    },
-    {
-      "path": "admin/database/migrations/1763499145832_update_services_table.ts",
-      "sha256": "a3f551d39e97472be6d58e9580470ee462e92f519a2986d85b544063bed87e9f",
-      "bytes": 1270
-    },
-    {
-      "path": "admin/database/migrations/1764912210741_create_curated_collections_table.ts",
-      "sha256": "e9b5e84d83b1a90d1b03ef4bdf06a127e968b82979f29bbc92b8a30e66181490",
-      "bytes": 1429
-    },
-    {
-      "path": "admin/database/migrations/1764912270123_create_curated_collection_resources_table.ts",
-      "sha256": "f157fe111b5b3a413402afc9c94cd363f983d829173e42165465ca1a9f0ef933",
-      "bytes": 1569
-    },
-    {
-      "path": "admin/database/migrations/1768170944482_update_services_add_installation_statuses_table.ts",
-      "sha256": "8190efb0b8e3e30c0ae542e3225657df5dacd173f21e98e35fd4f2b9b3cbc174",
-      "bytes": 1220
-    },
-    {
-      "path": "admin/database/migrations/1768453747522_update_services_add_icon.ts",
-      "sha256": "c4b1de1a9a818cda5157db8b7baacfd047d237b241e7b22f115f2cd0ded17533",
-      "bytes": 1170
-    },
-    {
-      "path": "admin/database/migrations/1769097600001_create_benchmark_results_table.ts",
-      "sha256": "9a1cd88899ff9f25d852b982e34610bc7178e69afe32f5dd4c4aaca135e9f871",
-      "bytes": 2411
-    },
-    {
-      "path": "admin/database/migrations/1769097600002_create_benchmark_settings_table.ts",
-      "sha256": "45d8a31cb14e62d8232516b6b5b23e0a8c6e30aff2a9c4a3dedf9c15c84cc6c0",
-      "bytes": 1278
-    },
-    {
-      "path": "admin/database/migrations/1769300000001_add_powered_by_and_display_order_to_services.ts",
-      "sha256": "9ec3fcef05cb5390aca318eb88f6f6068237181da4a1cfd1d0fa43c69a2ed74b",
-      "bytes": 1285
-    },
-    {
-      "path": "admin/database/migrations/1769300000002_update_services_friendly_names.ts",
-      "sha256": "9546f08d0abb9aa87faef996976c0e750cc0cf4bf9e4296d8540b8284ac137d7",
-      "bytes": 4020
-    },
-    {
-      "path": "admin/database/migrations/1769324448000_add_builder_tag_to_benchmark_results.ts",
-      "sha256": "f0c6b121c24be72cff7445e5d94abfc8a6d217088f67f1ba537cb6bc000376f5",
-      "bytes": 1197
-    },
-    {
-      "path": "admin/database/migrations/1769400000001_create_installed_tiers_table.ts",
-      "sha256": "aeb26d9e2e64bcfb7f9a2cb2b4b06b91ac7941e93bc0d279d9c95ac5883609fe",
-      "bytes": 1304
-    },
-    {
-      "path": "admin/database/migrations/1769400000002_create_kv_store_table.ts",
-      "sha256": "e4fb426de861075b0696e42631a69d2c6a10f1a42bd266ca1e930c763cbbf1ec",
-      "bytes": 1267
-    },
-    {
-      "path": "admin/database/migrations/1769500000001_create_wikipedia_selection_table.ts",
-      "sha256": "37b18aeba803375c77451e99f7ff141b266de1a67d185ea4eab4b87db54753ee",
-      "bytes": 1422
-    },
-    {
-      "path": "admin/database/migrations/1769646771604_create_create_chat_sessions_table.ts",
-      "sha256": "6abc4179ecc1c68074e728b0377cc0beeca74b22f99df3dff9e13e31dae0b388",
-      "bytes": 1267
-    },
-    {
-      "path": "admin/database/migrations/1769646798266_create_create_chat_messages_table.ts",
-      "sha256": "c32768f32a871d190eee381b89b9704fd6e63c70d4b1ddfe7da61ea17f1f5ea8",
-      "bytes": 1407
-    },
-    {
-      "path": "admin/database/migrations/1769700000001_create_zim_file_metadata_table.ts",
-      "sha256": "33bf8a04a1a2df296647d260ef2add5aaf1f5608cd0c2b9f6a63c8cb4e8439bf",
-      "bytes": 1424
-    },
-    {
-      "path": "admin/database/migrations/1770269324176_add_unique_constraint_to_curated_collection_resources_table.ts",
-      "sha256": "9e4919fa573d74bed7adc3232ef40c58469580aca0cf6511dccd752dabfe0abe",
-      "bytes": 1342
-    },
-    {
-      "path": "admin/database/migrations/1770273423670_drop_installed_tiers_table.ts",
-      "sha256": "1d989db10da01fb67c66e8baac88dc9bc3ebb2e5b1940cf0771953c1a10b2574",
-      "bytes": 1384
-    },
-    {
-      "path": "admin/database/migrations/1770849108030_create_create_collection_manifests_table.ts",
-      "sha256": "c0339e86c8d3c0c2e020c8c51ebfbfd7071d2bb61c1c54d133702cde1a8f5e10",
-      "bytes": 1316
-    },
-    {
-      "path": "admin/database/migrations/1770849119787_create_create_installed_resources_table.ts",
-      "sha256": "891098b7de56831d08c39b5b4b327f6f5e7c6e823e64db59b06aa9c7103a208e",
-      "bytes": 1580
-    },
-    {
-      "path": "admin/database/migrations/1770850092871_create_drop_legacy_curated_tables_table.ts",
-      "sha256": "a9eba41b0a5ec8446383581830f35e6c5861faec6187ccbae3b35cfe28152707",
-      "bytes": 1180
-    },
-    {
-      "path": "admin/database/migrations/1771000000001_add_update_fields_to_services.ts",
-      "sha256": "4e80c0a78d6d9f8682fd007c8b3001e8729f99cff311acb86975395aebcc0515",
-      "bytes": 1400
-    },
-    {
-      "path": "admin/database/migrations/1771000000002_pin_latest_service_images.ts",
-      "sha256": "5ad62956cc70da54e2d1a26482da61259b788e898593297bd91dc04d482ffde8",
-      "bytes": 2908
-    },
-    {
-      "path": "admin/database/migrations/1771100000001_migrate_kiwix_to_library_mode.ts",
-      "sha256": "3c25db99768a860f763f05df159bf15476fca1c8a906d4e38abf7f1d1662527f",
-      "bytes": 1619
-    },
-    {
-      "path": "admin/database/migrations/1771200000001_create_map_markers_table.ts",
-      "sha256": "c61713ab62635409fbde5f72cfc4189cb2eed8a0a1860686e3a4f26bc0ff4f4e",
-      "bytes": 1577
-    },
-    {
-      "path": "admin/database/migrations/1772000000001_add_supply_depot_fields_to_services.ts",
-      "sha256": "1c4bd6e30aeff5153675d6def1eaf049f0dfcadaecc2740af0848c5b375bc33a",
-      "bytes": 1947
-    },
-    {
-      "path": "admin/database/migrations/1772000000002_add_user_modified_to_services.ts",
-      "sha256": "fb247c857009f3f8ce0f33b506c9b72f80fc38ce06f57aa878868881f0e7eabf",
-      "bytes": 1462
-    },
-    {
-      "path": "admin/database/migrations/1772000000003_add_app_auto_update_fields_to_services.ts",
-      "sha256": "476f973a9c063671e1aa248739eddf8d3f1b32b1bcc71cb31ae7cd9b9640b5b4",
-      "bytes": 2037
-    },
-    {
-      "path": "admin/database/migrations/1775100000001_create_custom_library_sources_table.ts",
-      "sha256": "384c0bf6a1864a10bead51ae560bc87051887555aec6caf26d7e09abec7c84f3",
-      "bytes": 2278
-    },
-    {
-      "path": "admin/database/migrations/1776000000001_create_kb_ingest_state_table.ts",
-      "sha256": "6967da546657f23ea4721b23ffa7dcb12abd9c584586a988df2c6df4c4dae54b",
-      "bytes": 1721
-    },
-    {
-      "path": "admin/database/migrations/1776100000001_create_kb_ratio_registry_table.ts",
-      "sha256": "89e10bdcc9218593c7ed3f81656bd715996760d2114b5238b787411a4c9b38a9",
-      "bytes": 3536
-    },
-    {
-      "path": "admin/database/migrations/1776200000001_add_content_auto_update_fields_to_installed_resources.ts",
-      "sha256": "65a7518ef6a22105cca62c0081ce816ff3cf7954941d8dc3c986bc01faf9e50b",
-      "bytes": 2534
-    },
-    {
-      "path": "admin/database/migrations/1776200000001_add_custom_url_to_services.ts",
-      "sha256": "94acaa0da56517221d6a333125016eac07d2f183e767c764aa9ff5a856045577",
-      "bytes": 1637
-    },
-    {
-      "path": "admin/database/migrations/1776300000001_deprecate_legacy_kolibri.ts",
-      "sha256": "54e0cd2223a82f8fdc78a5e17fdb4ff2ae7827353950deb682ab2687d3f6cbba",
-      "bytes": 2691
-    },
-    {
-      "path": "admin/database/migrations/1776400000001_add_benchmark_harness_metadata.ts",
-      "sha256": "e0e5a4ba49df4043ebec9ee0794a347c41c2a11a997daef6fe72392ef9d56da8",
-      "bytes": 1550
-    },
-    {
-      "path": "admin/database/migrations/1776400000001_add_collection_to_kb_ingest_state.ts",
-      "sha256": "73a75b07b6331a6afa2aa076c5909c4b24f1958f332d220db9be43707b3a54ff",
-      "bytes": 1197
-    },
-    {
-      "path": "admin/database/migrations/1776400000001_sunset_meshtastic_daemon.ts",
-      "sha256": "d8a651d15d36296781f4d30655909b5cc02fdbd8737f8e0ed4c5ac57ef4bba80",
-      "bytes": 2616
-    },
-    {
-      "path": "admin/database/migrations/1776400000002_add_benchmark_score_v2.ts",
-      "sha256": "e32df04f7d41a9b2fa330176139d3bb27b29fe3b33bb00ea29e15d45a228eb14",
-      "bytes": 2996
-    },
-    {
-      "path": "admin/database/migrations/1776400000003_add_benchmark_platform_metadata.ts",
-      "sha256": "1318bca930390f3e112a9b87cacd284f3d5c67e24e94f002c2ecc571dc962813",
-      "bytes": 1933
-    },
-    {
-      "path": "admin/database/migrations/1778600000004_create_drug_labels_table.ts",
-      "sha256": "2d80590b397c24da5c09222c8ea99b526c9940f0d73c3888cf703ae5bd8a9edc",
-      "bytes": 6701
-    },
-    {
-      "path": "admin/database/migrations/1778600000006_add_indications_fulltext_index.ts",
-      "sha256": "960296737447dd95cacc7c3be2d60a035418055428b467a388f52df98efc9218",
-      "bytes": 2615
-    },
-    {
-      "path": "admin/database/migrations/1778700000006_add_ingested_at_default_drug_labels.ts",
-      "sha256": "e57a6db1d8e1c50b4f32415de4c353c27d7745ce63a49b4711c8364fbd92915a",
-      "bytes": 1255
-    },
-    {
-      "path": "admin/database/seeders/service_seeder.ts",
-      "sha256": "a95bd81186fd2dd82b470517bf3946368c5cd9fc97a2c5b5870b9d9096463c76",
-      "bytes": 25166
-    },
-    {
-      "path": "admin/docs/about.md",
-      "sha256": "97de0188b67a7239a3f0471e12ced211cbedf15f810da2f9bbbfb2a04ff4915e",
-      "bytes": 2391
-    },
-    {
-      "path": "admin/docs/api-reference.md",
-      "sha256": "af4572f3fa4dfb4e4f92057a1e5eded1cc67a4669557cc4406643b2826253dc9",
-      "bytes": 1969
-    },
-    {
-      "path": "admin/docs/community-add-ons.md",
-      "sha256": "1f717889f5e906bacf6b9bd0762bd7056502a29f197df64401ae526f564e89bb",
-      "bytes": 3963
-    },
-    {
-      "path": "admin/docs/drug-reference.md",
-      "sha256": "18a9a52727337f8191ff681db66472a97e0ee9d5492b5c3507640e08672537cf",
-      "bytes": 5658
-    },
-    {
-      "path": "admin/docs/faq.md",
-      "sha256": "2978a06b6a10e71ae6f7cc0ddfa56c8b5bcd192b631fea97fd4607f1f7af3dd3",
-      "bytes": 14720
-    },
-    {
-      "path": "admin/docs/getting-started.md",
-      "sha256": "cf90c1c3636488e9cfad7599cd4007f38216a56a82b3b9172ab18c23eb81b142",
-      "bytes": 12209
-    },
-    {
-      "path": "admin/docs/home.md",
-      "sha256": "d9c39272ca36cbb47795f595ed566e9176adb1ff3d52a33eff0ba7f05ad52451",
-      "bytes": 4241
-    },
-    {
-      "path": "admin/docs/release-notes.md",
-      "sha256": "0b3807fdf9efdea4329505a9d0861e513d1e0bbc40071fe5a5e8ea3d55609d91",
-      "bytes": 1938
-    },
-    {
-      "path": "admin/docs/supply-depot-apps.md",
-      "sha256": "37abb44eddc4384f12351085ae03dba311545fb8132c15286fc0dbd7300d1b97",
-      "bytes": 34256
-    },
-    {
-      "path": "admin/docs/updates.md",
-      "sha256": "d813ce76dbf02625b5035df13b5e311fdfa4cf5fdffc968cc11fa1066b3cdbca",
-      "bytes": 5440
-    },
-    {
-      "path": "admin/docs/use-cases.md",
-      "sha256": "1ea302d9c0a7fda625fdd37e1b58e69a64283287630728c5406afe0ebe7f70ae",
-      "bytes": 7605
-    },
-    {
-      "path": "admin/eslint.config.js",
-      "sha256": "abd48bfead483c753141ca0735a04ea0059d6d06cda1202bf3fa8564afb2f2f8",
-      "bytes": 978
-    },
-    {
-      "path": "admin/inertia/app/app.tsx",
-      "sha256": "23de8aa5f4ae889de4042fe6e9af9a16606ed8ae1fe8922b4a609ede29ff9bbf",
-      "bytes": 2871
-    },
-    {
-      "path": "admin/inertia/components/ActiveDownloads.tsx",
-      "sha256": "425dee5e48cc56dc92bcf065ccb453e0a002cae7a6e5213300bb2ecffd5f5676",
-      "bytes": 14586
-    },
-    {
-      "path": "admin/inertia/components/ActiveEmbedJobs.tsx",
-      "sha256": "89fad063b2dd36ae7dd2f60c3d570c36b00b4482e323a52164a733dd152a6131",
-      "bytes": 3881
-    },
-    {
-      "path": "admin/inertia/components/ActiveModelDownloads.tsx",
-      "sha256": "6667bcb05c49473a6f7dd4f162c778d15f4ec0615046148771683bc802eef35f",
-      "bytes": 12344
-    },
-    {
-      "path": "admin/inertia/components/Alert.tsx",
-      "sha256": "6eeff926b7a3f2481bdb2d22039ded97d75318f3467248a29d8b8713fc453431",
-      "bytes": 7898
-    },
-    {
-      "path": "admin/inertia/components/AppUrlModal.tsx",
-      "sha256": "28ec518ee96091cc13de14aa883d7d6514aba59d4f9dd8120367d7522ce87216",
-      "bytes": 5047
-    },
-    {
-      "path": "admin/inertia/components/BouncingDots.tsx",
-      "sha256": "adbe3e34acf2e8703355081395e536e04fed276846ea7f8cc0e29d520e9daa74",
-      "bytes": 1736
-    },
-    {
-      "path": "admin/inertia/components/BouncingLogo.tsx",
-      "sha256": "ce9a300164888f812ab4669604e9c9a3b27f33db278db9adb339082a42872320",
-      "bytes": 1842
-    },
-    {
-      "path": "admin/inertia/components/BuilderTagSelector.tsx",
-      "sha256": "2d9f4a626e6587b6ed12fcd701c549aa3c1bcb6122b5e01bd07dc7312e6a1d1f",
-      "bytes": 4979
-    },
-    {
-      "path": "admin/inertia/components/CategoryCard.tsx",
-      "sha256": "ffffe04c7c816171d348ba5e3b8b821bd551694b6b34bbdf061873d1a5708282",
-      "bytes": 5663
-    },
-    {
-      "path": "admin/inertia/components/CountryPickerModal.tsx",
-      "sha256": "38d1101574402f593ebdfae432ab73910e1d930f28c024a4ef38bb0e0d2470c8",
-      "bytes": 15796
-    },
-    {
-      "path": "admin/inertia/components/CreatorPackCard.tsx",
-      "sha256": "696ecbc4f4c053bb9cc4f585bc27e0def308e9277cddd3f31a4dda6631c1a723",
-      "bytes": 5181
-    },
-    {
-      "path": "admin/inertia/components/CreatorPacksSection.tsx",
-      "sha256": "682e4bd52a94a1dbddf0d740ee3ec9fcdf62e3476abce601469c0059eb197b90",
-      "bytes": 7287
-    },
-    {
-      "path": "admin/inertia/components/CuratedCollectionCard.tsx",
-      "sha256": "d49117d7abff958ed3060673754a52dca266fba0d4260785dbc2d6d4fb4f1301",
-      "bytes": 2982
-    },
-    {
-      "path": "admin/inertia/components/CustomAppModal.tsx",
-      "sha256": "743825d5c06001cfb14c98402261543b53003d122251c78c3e056a9b1f6276a3",
-      "bytes": 20883
-    },
-    {
-      "path": "admin/inertia/components/DebugInfoModal.tsx",
-      "sha256": "2d4702199309f216ed3af9854b7c8966e7cf57f047af4e14662570aaa38c7491",
-      "bytes": 3801
-    },
-    {
-      "path": "admin/inertia/components/DownloadURLModal.tsx",
-      "sha256": "b8506962a9bf69c74c1c353b26bf53e78b3b9120981bcac5a8a3d1d4f1274108",
-      "bytes": 3710
-    },
-    {
-      "path": "admin/inertia/components/DynamicIcon.tsx",
-      "sha256": "be39f4d7b5ea194d0905b06044fcfa856d16d6a371099356289c91c7fc08b9db",
-      "bytes": 1427
-    },
-    {
-      "path": "admin/inertia/components/Footer.tsx",
-      "sha256": "9b9d6b5799bb8d2e4c5998d99c36ff3c88483f37f5bb6acba7bd60279b04d10d",
-      "bytes": 1939
-    },
-    {
-      "path": "admin/inertia/components/HorizontalBarChart.tsx",
-      "sha256": "d56937aee332fb64f78ee01e1ef07487314216b4bb3dc1d7ddd5f714547f2642",
-      "bytes": 4528
-    },
-    {
-      "path": "admin/inertia/components/InfoTooltip.tsx",
-      "sha256": "99cb7ad5d9b1abca28abe4107eff72aa835a594db05b7fadb0c4c7c5733399ef",
-      "bytes": 3018
-    },
-    {
-      "path": "admin/inertia/components/InstallActivityFeed.tsx",
-      "sha256": "1a502ea6fe9b219c5eb0ace3e550cefbe6c8b030ede0b2447d7f8a761c165497",
-      "bytes": 4314
-    },
-    {
-      "path": "admin/inertia/components/KbGuardrailModal.tsx",
-      "sha256": "977f85c4d4fa922e4837c4d4ed6fc3997e216712c2bf0563ae73994b597b5d54",
-      "bytes": 5560
-    },
-    {
-      "path": "admin/inertia/components/LoadingSpinner.tsx",
-      "sha256": "dfa3998781d450e53832542eb4c5bee7fde02e9825151bd6fd2c511054b43fbd",
-      "bytes": 2041
-    },
-    {
-      "path": "admin/inertia/components/MarkdocRenderer.tsx",
-      "sha256": "93741a9f3a8772eb8b5c68fe97a7bf972b466abeb93d32b47a2ec0803342cff3",
-      "bytes": 4503
-    },
-    {
-      "path": "admin/inertia/components/MarkdownEditor.tsx",
-      "sha256": "ebad65bbd950f499017a26de0ceb1e2eea59608ddcbab3f2565b0d42c3275083",
-      "bytes": 3283
-    },
-    {
-      "path": "admin/inertia/components/ProgressBar.tsx",
-      "sha256": "649076f48df9076e0fe57fa3a6c426da2f8020727fe6daf7da7f03203650fc94",
-      "bytes": 1527
-    },
-    {
-      "path": "admin/inertia/components/ServiceLogsModal.tsx",
-      "sha256": "2b84f13fcfb73cd2723778e59404102551f55e2e15480d119f3cca885c83dc2c",
-      "bytes": 2229
-    },
-    {
-      "path": "admin/inertia/components/ServiceStatsModal.tsx",
-      "sha256": "b213a96fe2d53353098933e5e75f0cef4316b12d55c770775b49633534b71861",
-      "bytes": 3756
-    },
-    {
-      "path": "admin/inertia/components/StorageProjectionBar.tsx",
-      "sha256": "ff1e5b343bf9a38c5078531f1a07b3f14b7b44d62aa756f1a725a688fe158a25",
-      "bytes": 5462
-    },
-    {
-      "path": "admin/inertia/components/StyledButton.tsx",
-      "sha256": "7fdf465a51f0a87933323ba04ed04853f85d53afbbc38fdea28a1b243ae76a5f",
-      "bytes": 5712
-    },
-    {
-      "path": "admin/inertia/components/StyledModal.tsx",
-      "sha256": "537892f3cb5465571496b506e86bc709bd2810f7501b5c4cde2246def3d2c12c",
-      "bytes": 4460
-    },
-    {
-      "path": "admin/inertia/components/StyledSectionHeader.tsx",
-      "sha256": "f29d38455687b373b28fe0f012d75a7697f549c4f502dd20454cc9da0a4bf9de",
-      "bytes": 1420
-    },
-    {
-      "path": "admin/inertia/components/StyledSidebar.tsx",
-      "sha256": "f16dc7c6b5186e1ff465846279056b8efd2c1e6bbcc0fc678defcbee0582ba42",
-      "bytes": 6079
-    },
-    {
-      "path": "admin/inertia/components/StyledTable.tsx",
-      "sha256": "329b8c2c723f1a54e63e21960e6b2adcc1ea3c011fb1cd4b5cbc49f9bae5a187",
-      "bytes": 8331
-    },
-    {
-      "path": "admin/inertia/components/ThemeToggle.tsx",
-      "sha256": "e3f386091916f4c51e19ff360283a01dc2347a1830d1e9e2ba0519714dea2339",
-      "bytes": 1671
-    },
-    {
-      "path": "admin/inertia/components/TierSelectionModal.tsx",
-      "sha256": "257602ea5f86f593f0f83c0177efbb0109f045a2f1f432c63a48ed3abbf2c415",
-      "bytes": 17797
-    },
-    {
-      "path": "admin/inertia/components/UpdateServiceModal.tsx",
-      "sha256": "6d19b1ba96d6e0e769df061d51e4f0ffe72c57291ddf35931e34e0dde1c4e2d9",
-      "bytes": 7604
-    },
-    {
-      "path": "admin/inertia/components/WhatsNewBanner.tsx",
-      "sha256": "96a02eaefd5ecbd6b283e0b605932bf9d5043990300fba908e4f05111325ad0a",
-      "bytes": 3989
-    },
-    {
-      "path": "admin/inertia/components/WikipediaSelector.tsx",
-      "sha256": "2396d82bd10eea3925cc40db57bf0100364de175e930dbbc625d495d9a3bc185",
-      "bytes": 8199
-    },
-    {
-      "path": "admin/inertia/components/ZimUploader/index.tsx",
-      "sha256": "a7dd0b27f3c07cfbd7c43a14925b851d61c5e170b8558a1b8aabc8bbacd81a00",
-      "bytes": 4255
-    },
-    {
-      "path": "admin/inertia/components/benchmark/BenchmarkRunView.tsx",
-      "sha256": "f11677f1e74b4af2b1be2ab079d3016631c7fec32ff3ff10cff763776963c452",
-      "bytes": 8865
-    },
-    {
-      "path": "admin/inertia/components/benchmark/CoreGrid.tsx",
-      "sha256": "1c03291931ad738187ad3e303cc92f0c0eb35bcc7b3c923144961feefe412e32",
-      "bytes": 2581
-    },
-    {
-      "path": "admin/inertia/components/benchmark/LiveReadout.tsx",
-      "sha256": "7f768ce901bd8b2d2047959a9c31a148d75d891b866f0dacaf412549ca32a6b4",
-      "bytes": 1933
-    },
-    {
-      "path": "admin/inertia/components/benchmark/ResultsSoFar.tsx",
-      "sha256": "1c1c06eb8bde0fa2bbedbd29016681ce0eecbc806693be3d80f6bff4bfc51510",
-      "bytes": 2215
-    },
-    {
-      "path": "admin/inertia/components/benchmark/ScoreReveal.tsx",
-      "sha256": "81ac688455016cee685a2233815bac3c5369b65e90f360f93c3a736e34f8d7c6",
-      "bytes": 7175
-    },
-    {
-      "path": "admin/inertia/components/benchmark/Sparkline.tsx",
-      "sha256": "a16a7e0f2142fe1111d4e6639b20f314d0fbb115b53983e0c9dbb003bc9886ff",
-      "bytes": 2363
-    },
-    {
-      "path": "admin/inertia/components/benchmark/StageRail.tsx",
-      "sha256": "4779b751a8175c05240bc0c696952cbbd68dfc23009465d039e122f966e9bfd2",
-      "bytes": 4272
-    },
-    {
-      "path": "admin/inertia/components/chat/CairnMdModal.tsx",
-      "sha256": "4ec0cb8af8eb9879b669d90da2330c310d7fe121f3ee27c53b5466ae18efa67b",
-      "bytes": 5398
-    },
-    {
-      "path": "admin/inertia/components/chat/ChatAssistantAvatar.tsx",
-      "sha256": "2e0c5dc2510e0e6d97dbb47e0d9caa5d0bd61a3199640a7cf710a62cc96737fa",
-      "bytes": 1121
-    },
-    {
-      "path": "admin/inertia/components/chat/ChatButton.tsx",
-      "sha256": "a1e0699b25b791617563f209436ce3de6a95c3224397570b149c3c14244e191f",
-      "bytes": 1378
-    },
-    {
-      "path": "admin/inertia/components/chat/ChatInterface.tsx",
-      "sha256": "1aedd7aee343c158a6fe648128cc592457df6002065294b1f43e6a0e1e59e9bd",
-      "bytes": 10002
-    },
-    {
-      "path": "admin/inertia/components/chat/ChatMessageBubble.tsx",
-      "sha256": "18df57efdb0a3af8fd98a45232b63425019f56af0816cdaa8f78dfdbf68eb0ef",
-      "bytes": 5505
-    },
-    {
-      "path": "admin/inertia/components/chat/ChatModal.tsx",
-      "sha256": "3b4ea91ca79c18531feade3496b8172ff1b6b7abcc865983bc98cbaea01ef909",
-      "bytes": 2143
-    },
-    {
-      "path": "admin/inertia/components/chat/ChatSidebar.tsx",
-      "sha256": "ea90d548028e310fe1a85a26008bcac18b00f60206260413ccdeac7217bbb1ce",
-      "bytes": 6978
-    },
-    {
-      "path": "admin/inertia/components/chat/CollectionCombobox.tsx",
-      "sha256": "65009376f4b68b631f28d374b34e50ed2735b8a79421bca51390627c1142d3d0",
-      "bytes": 7496
-    },
-    {
-      "path": "admin/inertia/components/chat/CollectionsManager.tsx",
-      "sha256": "fd0282efd491b5499618e1a762fd9724278b2e5417facfd1863abc1bb7757287",
-      "bytes": 6267
-    },
-    {
-      "path": "admin/inertia/components/chat/KbPolicyPromptBanner.tsx",
-      "sha256": "67d48a84d747b788e038c02c4c236c984719fd2ff0d4cb5799ea047d83ec40b2",
-      "bytes": 5860
-    },
-    {
-      "path": "admin/inertia/components/chat/KnowledgeBaseModal.tsx",
-      "sha256": "05f2aed38e8ed584876566060245f43f649ae391bf77881927f2ec29d6f2990f",
-      "bytes": 49300
-    },
-    {
-      "path": "admin/inertia/components/chat/index.tsx",
-      "sha256": "ce87f2faff13b2d12c4b8d34e988ba5c5760dcfcab6cc5539b7290fed2f83101",
-      "bytes": 26136
-    },
-    {
-      "path": "admin/inertia/components/conditions/RemedySafetyNote.tsx",
-      "sha256": "778d1f82a8245d91c36f7d6fc4eacb1776290a09a2809a29930e1430447d19f2",
-      "bytes": 2503
-    },
-    {
-      "path": "admin/inertia/components/conditions/SafetyBanner.tsx",
-      "sha256": "bf7b85f34267ce943016007bafb82f6cc1dc9eb14166f56226afd85e50d052fb",
-      "bytes": 2494
-    },
-    {
-      "path": "admin/inertia/components/drug-reference/DrugDisclaimerModal.tsx",
-      "sha256": "33f7322fac62bb0c1eb115a9fa657e68a57adbb7b4169024ef9083ad6f0654f2",
-      "bytes": 5136
-    },
-    {
-      "path": "admin/inertia/components/drug-reference/DrugResultRow.tsx",
-      "sha256": "42c7a7747ace711754e66ae796912f9825d7b16cec5bd4e021c6bf0b8fccc1ec",
-      "bytes": 4142
-    },
-    {
-      "path": "admin/inertia/components/drug-reference/IngestStatus.tsx",
-      "sha256": "bb8cd106087bca1410ec2608c773a7a0e8adb0cf4474608c034fff2af0ca5723",
-      "bytes": 10388
-    },
-    {
-      "path": "admin/inertia/components/drug-reference/IngredientGroup.tsx",
-      "sha256": "deae4bd133ae57ee13b1fa672534e4c9fef8d91a118e548001cee5c6bd370373",
-      "bytes": 3504
-    },
-    {
-      "path": "admin/inertia/components/drug-reference/InteractionColumn.tsx",
-      "sha256": "41708011d94f4ed52fe29d6453548349faa79be376952da5daa9d33d013332f8",
-      "bytes": 3691
-    },
-    {
-      "path": "admin/inertia/components/drug-reference/LabelBlocks.tsx",
-      "sha256": "4bdef928be88ce2a94b5cd9ee27760be5e2565aa2f811dd35944c1e93fd7a8a3",
-      "bytes": 2606
-    },
-    {
-      "path": "admin/inertia/components/file-uploader/index.css",
-      "sha256": "0ba34f11676c5f5c311d568d2b11ae68f2ca9c86eab43351c7ecf53cfbdb1e72",
-      "bytes": 883
-    },
-    {
-      "path": "admin/inertia/components/file-uploader/index.tsx",
-      "sha256": "c1a5785f3f77f1e3749b0744b0708fca153ef3eabbd660f4510e6a1ff775915d",
-      "bytes": 3334
-    },
-    {
-      "path": "admin/inertia/components/inputs/Input.tsx",
-      "sha256": "43898dc536aac8e42d87e4e5ded8a0ee99b5a95ee0cc9ac54380ebf6f6e67940",
-      "bytes": 2645
-    },
-    {
-      "path": "admin/inertia/components/inputs/Select.tsx",
-      "sha256": "fa3b0451f29022c56030cba4c4472aef37c65832d544b105b6f9b896aec33292",
-      "bytes": 4438
-    },
-    {
-      "path": "admin/inertia/components/inputs/Switch.tsx",
-      "sha256": "9f2acaa380bf187e79198c45c4b72bbc839e921f5ca3ebe2debb093c860ac7af",
-      "bytes": 2682
-    },
-    {
-      "path": "admin/inertia/components/layout/BackToHomeHeader.tsx",
-      "sha256": "1931e102b428a8d344855fcb8286c5644c9e30c8c06d658c067ba4d27eb7626a",
-      "bytes": 1562
-    },
-    {
-      "path": "admin/inertia/components/maps/CoordinateOverlay.tsx",
-      "sha256": "4d3f90ec1cab68a006ba3c0f8d7f5a6538ced942fd412bccd57370eb0219c3c9",
-      "bytes": 1318
-    },
-    {
-      "path": "admin/inertia/components/maps/MapComponent.tsx",
-      "sha256": "aba48b3140d39bbb8f7c10ebc5f71cb94c97aceceac13713df0875cb888465be",
-      "bytes": 13918
-    },
-    {
-      "path": "admin/inertia/components/maps/MarkerPanel.tsx",
-      "sha256": "65e91e50232038b287c96043b46602a632ff5cb0c2f061c4ebaea1413cd2c4f6",
-      "bytes": 5186
-    },
-    {
-      "path": "admin/inertia/components/maps/MarkerPin.tsx",
-      "sha256": "03b0dddd99e7b658b858f98d61efa7efdaa427106bc36a8eaabef038650f9d6a",
-      "bytes": 1231
-    },
-    {
-      "path": "admin/inertia/components/maps/ScaleUnitToggle.tsx",
-      "sha256": "1cae21b41588efea4fcfdd3fa4f4e7e30bb5c41e8528ec2523dc8491edb61035",
-      "bytes": 2035
-    },
-    {
-      "path": "admin/inertia/components/markdoc/Heading.tsx",
-      "sha256": "20d10bd21ab8433bbc943899debeaf92ac891d9e64d4f874380d7493bc48f0bc",
-      "bytes": 1638
-    },
-    {
-      "path": "admin/inertia/components/markdoc/Image.tsx",
-      "sha256": "c87eb0c1506acf11f0a7022de69127d29d347c1302d22479263c093b22df3994",
-      "bytes": 1362
-    },
-    {
-      "path": "admin/inertia/components/markdoc/List.tsx",
-      "sha256": "77c7bd84430bec24ac274daa92a5391b7772553a2beabe9df0190c0de94a830c",
-      "bytes": 1312
-    },
-    {
-      "path": "admin/inertia/components/markdoc/ListItem.tsx",
-      "sha256": "58b2ffd9b601c1edda19d50eccccef88b6c7d01549714d671aa55d2b1f7a0230",
-      "bytes": 965
-    },
-    {
-      "path": "admin/inertia/components/markdoc/Table.tsx",
-      "sha256": "0614ec6e8ac0d3c89525826406edb61464efdcf7b02930e787a29ad9ef50be6e",
-      "bytes": 1970
-    },
-    {
-      "path": "admin/inertia/components/systeminfo/CircularGauge.tsx",
-      "sha256": "27613e3d6fe36ed28c8abf6179c080dd69cc0769d401c4b51c5cf0df046f79cc",
-      "bytes": 5803
-    },
-    {
-      "path": "admin/inertia/components/systeminfo/InfoCard.tsx",
-      "sha256": "cbda9d13cb4da3671b4a61f63abf4d9bcd496ad3b38edcdaae57276edc60d600",
-      "bytes": 3330
-    },
-    {
-      "path": "admin/inertia/components/systeminfo/StatusCard.tsx",
-      "sha256": "f55b47274afd88b53fbd883d2eeebb116520d5a407ea819643dcf36f1422778c",
-      "bytes": 1376
-    },
-    {
-      "path": "admin/inertia/components/updates/AppAutoUpdateSection.tsx",
-      "sha256": "c7eaedd736ce79b468eb48c3125e21a98b2688386e21e27eefecdc96b6a5c320",
-      "bytes": 5010
-    },
-    {
-      "path": "admin/inertia/components/updates/ContentAutoUpdateSection.tsx",
-      "sha256": "85e7bfe6c1697a5a504bf4c038835b4cb0d1a415b43481bbae0105d42456544e",
-      "bytes": 11272
-    },
-    {
-      "path": "admin/inertia/components/updates/ContentUpdatesSection.tsx",
-      "sha256": "58804a8ffda44ecaae3a37db6994da68a765d4edf4ef0a2336c621839c44650a",
-      "bytes": 9008
-    },
-    {
-      "path": "admin/inertia/components/updates/CoreAutoUpdateSection.tsx",
-      "sha256": "487000646c45ee8561d0320cc8178f119bfefcd4d9b6ef284099b42e265137aa",
-      "bytes": 7744
-    },
-    {
-      "path": "admin/inertia/context/ModalContext.ts",
-      "sha256": "490d6fdb852a808d4dec6ebb6810ae86871a0f39778cf33be733ad0c81f2f2cc",
-      "bytes": 1400
-    },
-    {
-      "path": "admin/inertia/context/NotificationContext.ts",
-      "sha256": "508ef6130e53f5ae7b74b7e5bbd6177f0be39d5f7e21f7ffdd3f50420d82bc04",
-      "bytes": 1536
-    },
-    {
-      "path": "admin/inertia/css/app.css",
-      "sha256": "646ec886a861bf2dc4ff7128103609719c521ff39b9d1169c4031dfefbc5f961",
-      "bytes": 5332
-    },
-    {
-      "path": "admin/inertia/hooks/useAppAutoUpdateStatus.ts",
-      "sha256": "7a5f6af5998bd83a0f895d3272660cdc3e7d3ecfa7e3074e084a46326d8782ba",
-      "bytes": 1166
-    },
-    {
-      "path": "admin/inertia/hooks/useAutoUpdateStatus.ts",
-      "sha256": "73a801ee96fa2dfb2ff2a2a5a3a3cfbc8253b80a37360d315e0f09ae4fb17f0e",
-      "bytes": 1150
-    },
-    {
-      "path": "admin/inertia/hooks/useBenchmarkRerunBanner.ts",
-      "sha256": "efb60c89a3c4f8d25e1f85b1b3f8d0fe6dd32ee61249a4edc99a3fd25825ca4c",
-      "bytes": 1314
-    },
-    {
-      "path": "admin/inertia/hooks/useBenchmarkRun.ts",
-      "sha256": "316941927ba4e93c2b96ebb1fe3bd0a328511598ce858d0f7d94598af0c0c614",
-      "bytes": 7264
-    },
-    {
-      "path": "admin/inertia/hooks/useContentAutoUpdateStatus.ts",
-      "sha256": "301ab188bf0a2a3ca00a5e402d73007c9ee0c6c1d1ef0e87af36e471e7a8f679",
-      "bytes": 1186
-    },
-    {
-      "path": "admin/inertia/hooks/useCreatorPacks.ts",
-      "sha256": "0fb650c5699061b267b797bd03a82ee9844bbb43dc36812c65eeb215884b929f",
-      "bytes": 2236
-    },
-    {
-      "path": "admin/inertia/hooks/useDebounce.ts",
-      "sha256": "734feaca115f849f38cf8b2fc729a6befb6c0000de83355f7533623e7226f7fd",
-      "bytes": 1312
-    },
-    {
-      "path": "admin/inertia/hooks/useDiskDisplayData.ts",
-      "sha256": "f725e286aad7bc16abaf5f1cc33989d38a6a0f0360079391cf54c4a9e53ef9b0",
-      "bytes": 5088
-    },
-    {
-      "path": "admin/inertia/hooks/useDownloads.ts",
-      "sha256": "25e79f0a8cdd791c4d9218531600ea3b3196ec1c9ed3fcdf3e38a8812a98b2a4",
-      "bytes": 1857
-    },
-    {
-      "path": "admin/inertia/hooks/useEmbedJobs.ts",
-      "sha256": "53ec1409fc1338d376544a5ba1bfdd028474a12ace67940f8ab54d3326eda6a9",
-      "bytes": 2005
-    },
-    {
-      "path": "admin/inertia/hooks/useErrorNotification.ts",
-      "sha256": "f4765e030a96970f312dba1b53ad48ca7666783ddd6cfe5e97d81bd81fdb9289",
-      "bytes": 1163
-    },
-    {
-      "path": "admin/inertia/hooks/useInternetStatus.ts",
-      "sha256": "9f312f7b9bab2d75b56af868cfcce14e8cf5bfd508622d94d83af1ee7c61857a",
-      "bytes": 1885
-    },
-    {
-      "path": "admin/inertia/hooks/useMapMarkers.ts",
-      "sha256": "4ee456160346255947a93a71bc1426baa7b2df417ad5b07df393b73c6dbeb11c",
-      "bytes": 3393
-    },
-    {
-      "path": "admin/inertia/hooks/useMapRegionFiles.ts",
-      "sha256": "a7b56a7c63413ba59ca1d54313874bd862bb771368865f1bc6266626c30c66bd",
-      "bytes": 1157
-    },
-    {
-      "path": "admin/inertia/hooks/useOllamaModelDownloads.ts",
-      "sha256": "4a26ee3bb7534730221ed9bbc04d753a778a46362786ec3151f72d78a874f61c",
-      "bytes": 5243
-    },
-    {
-      "path": "admin/inertia/hooks/useServiceInstallationActivity.ts",
-      "sha256": "9e02b27d02e12ddd81dc115ccf056add5b45c34a53ebd7da3d1322fd74032146",
-      "bytes": 1723
-    },
-    {
-      "path": "admin/inertia/hooks/useServiceInstalledStatus.tsx",
-      "sha256": "8b5ca83678b7e4eb270a1d404a07ccb5ffaf92eb1ada4806a84e1d10ab2fe2d9",
-      "bytes": 1352
-    },
-    {
-      "path": "admin/inertia/hooks/useSystemInfo.ts",
-      "sha256": "d6932981684e101c8668014ec6e92ca1988f2edb6973738a45e81368ca285419",
-      "bytes": 1401
-    },
-    {
-      "path": "admin/inertia/hooks/useSystemSetting.ts",
-      "sha256": "28dfabad23b4d7f8236b5b76e85058a134770a6828e7e2061b5a88199b789bc0",
-      "bytes": 1422
-    },
-    {
-      "path": "admin/inertia/hooks/useTheme.ts",
-      "sha256": "c13438081bd65b879492333e8914e052083e859f51bf2e8b844635d794d92f2c",
-      "bytes": 2132
-    },
-    {
-      "path": "admin/inertia/hooks/useUpdateAvailable.ts",
-      "sha256": "4c82f35391edfa1d881befd0a6b7f3c8d6a78cbfac95cffebabb85f498b0740c",
-      "bytes": 1290
-    },
-    {
-      "path": "admin/inertia/layouts/AppLayout.tsx",
-      "sha256": "6639a60a383dba0b03ab3c9965729aacb73246404abf9e85bc69bf17024de892",
-      "bytes": 3350
-    },
-    {
-      "path": "admin/inertia/layouts/DocsLayout.tsx",
-      "sha256": "fb33b3a024826a2f548bc640c2068c3aacba2d5ddf2e42f5262345737a47765f",
-      "bytes": 1636
-    },
-    {
-      "path": "admin/inertia/layouts/MapsLayout.tsx",
-      "sha256": "8aed87f302a3bdd1474750e9c202d82f8214302f905b18d5319b460e39db8c6e",
-      "bytes": 1083
-    },
-    {
-      "path": "admin/inertia/layouts/SettingsLayout.tsx",
-      "sha256": "6f181c7b233292ef7b056027ef00a7d380323ea378ba338423a38183319cdaf7",
-      "bytes": 3536
-    },
-    {
-      "path": "admin/inertia/lib/api.ts",
-      "sha256": "87f4ff98868bec7e4740dc99212f487935956a4675b26b19807712974c329932",
-      "bytes": 40126
-    },
-    {
-      "path": "admin/inertia/lib/benchmarkScore.ts",
-      "sha256": "f09fbbeede134b3aac8fc14eddd0a7a6454cd2a31df346a44ffff418221ba8a9",
-      "bytes": 2018
-    },
-    {
-      "path": "admin/inertia/lib/builderTagWords.ts",
-      "sha256": "248e4011f882ba0710e8718aaa7797720e5db59cf17e8b1bcf8bd8b4473fbfad",
-      "bytes": 3255
-    },
-    {
-      "path": "admin/inertia/lib/classNames.ts",
-      "sha256": "ab474c346246ff8c8d3f2b3bec75d30e7d4bbf034d0c3199534d34dde840423f",
-      "bytes": 928
-    },
-    {
-      "path": "admin/inertia/lib/collections.ts",
-      "sha256": "681ad9c3fa677a225c773cf986f5516b8c2fffd25b0edfaf5a6048ade91e7ac4",
-      "bytes": 1762
-    },
-    {
-      "path": "admin/inertia/lib/global_map_banner.ts",
-      "sha256": "cbaf9904ae0ae5b5dd43a95810910cdd58f887c99839e39d50f56a403a39d7d3",
-      "bytes": 1091
-    },
-    {
-      "path": "admin/inertia/lib/icons.ts",
-      "sha256": "f58bfabd67236b9324c4e8c08c355c3a57bd9093d33bc63969c763f132a6ab5e",
-      "bytes": 3259
-    },
-    {
-      "path": "admin/inertia/lib/kb_file_grouping.ts",
-      "sha256": "515c39ad5d5b49e14a21aaeb5974a112a2d7e577fe87b3c5d56253d6baae2e81",
-      "bytes": 6727
-    },
-    {
-      "path": "admin/inertia/lib/kb_guardrail.ts",
-      "sha256": "b0a54019468909309e0195b13d70882c23dd9c6a232fff8e7ecc5653181de397",
-      "bytes": 3219
-    },
-    {
-      "path": "admin/inertia/lib/kb_job_health_display.ts",
-      "sha256": "9f0249953a1fa23680a0b6c21d631f744ae32294869c0f57b730672e9f250e47",
-      "bytes": 2810
-    },
-    {
-      "path": "admin/inertia/lib/navigation.ts",
-      "sha256": "28b361347a24bd80ae39fa3cb0c87192802c615deb5c15e5b3f36b926ce83f2b",
-      "bytes": 3194
-    },
-    {
-      "path": "admin/inertia/lib/util.ts",
-      "sha256": "560b39ef587abbd73e80f1e0dcdac0201f5dff540a4b75a22ff4628922217f59",
-      "bytes": 4100
-    },
-    {
-      "path": "admin/inertia/pages/about.tsx",
-      "sha256": "6b774e2b105a8b4fc03629a6104c4b93ae8fa6680efc946eefc3e7045120866f",
-      "bytes": 981
-    },
-    {
-      "path": "admin/inertia/pages/chat.tsx",
-      "sha256": "7530d33b58d05427c8a1378bf64760008048524f7d9edd350900ee6521cbd2a9",
-      "bytes": 1262
-    },
-    {
-      "path": "admin/inertia/pages/conditions/show.tsx",
-      "sha256": "3fea2678a5fa4e54927430b26ce1467a979558a335bef3a6b0f4de3641fde605",
-      "bytes": 9159
-    },
-    {
-      "path": "admin/inertia/pages/docs/show.tsx",
-      "sha256": "ec902b7ed8d58bb377118d83ee598ea847eaad1fa7913f5504fb8873cd0979dd",
-      "bytes": 1890
-    },
-    {
-      "path": "admin/inertia/pages/drug-reference/index.tsx",
-      "sha256": "4f08bf38fb60c4f0b1bba9c92039846d6ee40ba7964c8053cd65b8060f7b9325",
-      "bytes": 43993
-    },
-    {
-      "path": "admin/inertia/pages/drug-reference/interactions.tsx",
-      "sha256": "d0574a79877b1de24958aca70a65e01fb4657ee60af36d0a41a0480531fca9c4",
-      "bytes": 16660
-    },
-    {
-      "path": "admin/inertia/pages/drug-reference/show.tsx",
-      "sha256": "1d87e62ee741f9721c9ff7ebe73a5f69d3d4142cb897fd7dd84c9348d0e4b6d4",
-      "bytes": 9803
-    },
-    {
-      "path": "admin/inertia/pages/easy-setup/complete.tsx",
-      "sha256": "75eabac8348fa6cb09c452d7247c2453a0d68ef54096c7c2a51586fbe5f3ed03",
-      "bytes": 3042
-    },
-    {
-      "path": "admin/inertia/pages/easy-setup/index.tsx",
-      "sha256": "62224c28df8a22a51d2122a5098c61de59b602eb0b551ab670826d4cbbbf6319",
-      "bytes": 61620
-    },
-    {
-      "path": "admin/inertia/pages/errors/not_found.tsx",
-      "sha256": "65664772d44a37eb36555b826c4d87ce35c5b3325fcde26ccfd7e2c3df00beee",
-      "bytes": 1016
-    },
-    {
-      "path": "admin/inertia/pages/errors/server_error.tsx",
-      "sha256": "0f6942130670466ccb0656e0c5c1cc9cbd322559e31d28eb79a0d4943b8e0b46",
-      "bytes": 1034
-    },
-    {
-      "path": "admin/inertia/pages/home.tsx",
-      "sha256": "21957aefd7e50b41acedb9079e9aeff426f95c9d01fc85fae2c2a3662e49d4cd",
-      "bytes": 9681
-    },
-    {
-      "path": "admin/inertia/pages/maps.tsx",
-      "sha256": "bbcda39a65005496df7f22687ec1a6c8b2afa196ed99c274ef4eb2f5359e69d2",
-      "bytes": 4161
-    },
-    {
-      "path": "admin/inertia/pages/settings/advanced.tsx",
-      "sha256": "b8e0f72c5b582aa9326333124366be1af2b195231c2496b0d6e9613e9ad86e7e",
-      "bytes": 5840
-    },
-    {
-      "path": "admin/inertia/pages/settings/apps.tsx",
-      "sha256": "387e61db91de6d9117e96f2aae1aa31481a3aa3124a46650e4ee093d99cca26b",
-      "bytes": 17356
-    },
-    {
-      "path": "admin/inertia/pages/settings/benchmark.tsx",
-      "sha256": "7d5c2e8fa6ea0ce6ece878fc52ffb72bfcdfcb9fc8d52808a409d463a22ddc42",
-      "bytes": 48067
-    },
-    {
-      "path": "admin/inertia/pages/settings/creator-packs.tsx",
-      "sha256": "18831e3779c80fa86201988d3aaf3e46d4cb8f14508896440e3ef46c42057ba3",
-      "bytes": 2034
-    },
-    {
-      "path": "admin/inertia/pages/settings/legal.tsx",
-      "sha256": "c6a700cc082eddc90d9081fca5d5116f982a79da37ad25d579cb3999d95387b9",
-      "bytes": 9179
-    },
-    {
-      "path": "admin/inertia/pages/settings/maps.tsx",
-      "sha256": "08fb8cb2536682718a1b2d014fdf57c08982a1324f99126ee50866e4b448e066",
-      "bytes": 16820
-    },
-    {
-      "path": "admin/inertia/pages/settings/models.tsx",
-      "sha256": "4bdb457f544a0a72bcd9b2f01fa27bd35bda90122f2532e5906a561448e9c95b",
-      "bytes": 25070
-    },
-    {
-      "path": "admin/inertia/pages/settings/support.tsx",
-      "sha256": "a7869e94adcadff8f49c056484dd475cfe6875ffb32f57d4df05d4f6428edbec",
-      "bytes": 5142
-    },
-    {
-      "path": "admin/inertia/pages/settings/system.tsx",
-      "sha256": "04227252c9f21c960782cc54ea8fc65c208e02fe89e525cccdde87c88357205c",
-      "bytes": 15536
-    },
-    {
-      "path": "admin/inertia/pages/settings/update.tsx",
-      "sha256": "a20f07a9713b7fd14a985790f43c3a70940e59aee36baefb3004ac4c4625407e",
-      "bytes": 22727
-    },
-    {
-      "path": "admin/inertia/pages/settings/zim/index.tsx",
-      "sha256": "fdee40642998065f1b632f6c5e2995b2d2d39f98548827657562c6470298d1db",
-      "bytes": 9930
-    },
-    {
-      "path": "admin/inertia/pages/settings/zim/remote-explorer.tsx",
-      "sha256": "979790d5592a6311006c2cec128cf7f6ab834e32e675768749956674a61a7172",
-      "bytes": 38669
-    },
-    {
-      "path": "admin/inertia/pages/supply-depot.tsx",
-      "sha256": "08fccb8ff56a1cab4a20a43060e5f3acd7ba4fcbd0d2a00d6f49797b217caed8",
-      "bytes": 49247
-    },
-    {
-      "path": "admin/inertia/providers/ModalProvider.tsx",
-      "sha256": "c863cda41c50e413899873e5570905dcf5f36b35e38a3bccfd325601b9f3f5fb",
-      "bytes": 2248
-    },
-    {
-      "path": "admin/inertia/providers/NotificationProvider.tsx",
-      "sha256": "2d0056e77b5301fe756826608d6402bac24e4dca835fc547e4f26340a63a4683",
-      "bytes": 3444
-    },
-    {
-      "path": "admin/inertia/providers/ThemeProvider.tsx",
-      "sha256": "35051c31f785b712ab1b43b5ff69ee25b36320792c032fcfe3d779b62781adda",
-      "bytes": 1427
-    },
-    {
-      "path": "admin/providers/gpu_passthrough_remediation_provider.ts",
-      "sha256": "c52d9339705ca3a46fbc6dd3330b0fc73fdd1ec27152e2f313ceed2f482fde01",
-      "bytes": 5679
-    },
-    {
-      "path": "admin/providers/kiwix_migration_provider.ts",
-      "sha256": "76b359b0c821f418fa425eb785f32bcf7831f1cc7cc6e40db972d54ba1a98c03",
-      "bytes": 3599
-    },
-    {
-      "path": "admin/providers/map_static_provider.ts",
-      "sha256": "16b56e8494202ed8193c9268fc22dcbc26f012b07b9636447ab4dade4e90fe9d",
-      "bytes": 1872
-    },
-    {
-      "path": "admin/providers/qdrant_restart_policy_provider.ts",
-      "sha256": "82122c5009ff9feeadd4d6befd62369c32f2827380000f746b3559db6f152f4e",
-      "bytes": 3458
-    },
-    {
-      "path": "admin/providers/version_check_provider.ts",
-      "sha256": "d1cf276ff9be9b010b5f9f3fff777f81a51bd40afa72be6091b4a680204117b2",
-      "bytes": 3393
-    },
-    {
-      "path": "admin/public/cairn_logo.svg",
-      "sha256": "e66a126b7bf27bf65cffc01511d90ace8ea79421ff349d47363a4c3d47928fbf",
-      "bytes": 1506
-    },
-    {
-      "path": "admin/public/favicon.svg",
-      "sha256": "c8d17e3fe4773f778171830c441e9d601d41b2bf873101064c5ed3980d7cf067",
-      "bytes": 1203
-    },
-    {
-      "path": "admin/public/powered_by_crosstalk.svg",
-      "sha256": "ad8abb00d1a5892366e1e51e3cd74b702586604706074173e13855ad777a5945",
-      "bytes": 34042
-    },
-    {
-      "path": "admin/scripts/audit_catalog_ports.py",
-      "sha256": "59fc6ad3b5543bf91c280f50223b12cf1c3315901bd93bfec12772769f3547f5",
-      "bytes": 8887
-    },
-    {
-      "path": "admin/scripts/generate_curated_data.ts",
-      "sha256": "0f24f47bfdd07b6e467cb5d2b59db0df278255ba2848ef49b79383c61792e939",
-      "bytes": 3793
-    },
-    {
-      "path": "admin/start/env.ts",
-      "sha256": "c9fe42975dcc49915514f33a6d98bef151d0216900f4bbda24688155787476ca",
-      "bytes": 3796
-    },
-    {
-      "path": "admin/start/kernel.ts",
-      "sha256": "4340163127f4318e84e416a7dfbac5fff9697ad921a6e97bb7c4d117bcb52bd5",
-      "bytes": 2304
-    },
-    {
-      "path": "admin/start/openapi/documented.ts",
-      "sha256": "ddc735eb6277be958850dc21015e22203c9c28e19517aeb5c0cd564462b285e4",
-      "bytes": 3551
-    },
-    {
-      "path": "admin/start/openapi/generator.ts",
-      "sha256": "6d9994764843c3e64a3ede8ace6dcc1fbaec3643acbc34ca2d2486f48cf9cd4f",
-      "bytes": 8499
-    },
-    {
-      "path": "admin/start/routes.ts",
-      "sha256": "57cef6ee7bf3f8c9192428dbe704d3f8e5476c755d4eec42274ad14ea159f678",
-      "bytes": 34007
-    },
-    {
-      "path": "admin/tailwind.config.ts",
-      "sha256": "286c5df25c0d28c13b1c6674fa22bf657f29c28e1d244c3c6bd66c4321181e35",
-      "bytes": 1073
-    },
-    {
-      "path": "admin/tests/bootstrap.ts",
-      "sha256": "fe1ddec38e335f1e844d1738e41c7646a65ba97afa289b886fb5e4441624b4de",
-      "bytes": 1962
-    },
-    {
-      "path": "admin/tests/functional/openapi.spec.ts",
-      "sha256": "2e67267fae482cd4274446ed6fb311659f9aef39087b6591f9af39f8f689c4c1",
-      "bytes": 3231
-    },
-    {
-      "path": "admin/tests/standalone/conditions.standalone.ts",
-      "sha256": "be69bfe3fb7c5cd344669ab9a648357c5c86473f0bd55a15d138754458390684",
-      "bytes": 12446
-    },
-    {
-      "path": "admin/tests/standalone/curated_data_sync.standalone.ts",
-      "sha256": "7f1eb80244b6494f783eb21e42c118da1527ad8f14d7656f867fd016e7d73a6d",
-      "bytes": 2557
-    },
-    {
-      "path": "admin/tests/standalone/drug_ingest_status.standalone.ts",
-      "sha256": "88750e8d64642aaf525e21e218e733a2e3ab32c239d5c64511921937abe9000e",
-      "bytes": 9142
-    },
-    {
-      "path": "admin/tests/standalone/drug_interactions.standalone.ts",
-      "sha256": "ca616079a0e2a483abb96b2d3807dc2271005aa8f544edc28dab4f28e615e03f",
-      "bytes": 8000
-    },
-    {
-      "path": "admin/tests/standalone/drug_tier_rework.standalone.ts",
-      "sha256": "670cb026940b28aa57f085eb3559963bfd42752488b2634dc62c9951c108ef7b",
-      "bytes": 5056
-    },
-    {
-      "path": "admin/tests/standalone/natural_remedies.standalone.ts",
-      "sha256": "050eedf8033697020c205a7aacc2667654e2ab266e230c4aae73983353abc7bf",
-      "bytes": 13074
-    },
-    {
-      "path": "admin/tests/unit/amd_hsa_override.spec.ts",
-      "sha256": "df99270495d2c4f3ed4c715de9fbe241a864a422ba273fe59c7b4cb9836a2c91",
-      "bytes": 2087
-    },
-    {
-      "path": "admin/tests/unit/app_auto_update.spec.ts",
-      "sha256": "60e92c547aac522f8b3f5a24aa2bdf854c060c02a25bd14360f344aceac6770e",
-      "bytes": 5359
-    },
-    {
-      "path": "admin/tests/unit/cloud_metadata_url.spec.ts",
-      "sha256": "973017cb81b7b42351557c2cbf9e1cd9f5c05d733def7d3c4a23020449fe54a3",
-      "bytes": 2490
-    },
-    {
-      "path": "admin/tests/unit/content_auto_update.spec.ts",
-      "sha256": "0bb0e1fda4913e97c61bc370d13f343d12b6686b5da8494ec5117541e14d98d6",
-      "bytes": 8943
-    },
-    {
-      "path": "admin/tests/unit/content_auto_update_backoff.spec.ts",
-      "sha256": "0280b0429f634cd668bbf6799f852de2b14b793ec22172367af8079505e214c7",
-      "bytes": 4146
-    },
-    {
-      "path": "admin/tests/unit/content_reindex_decision.spec.ts",
-      "sha256": "a423af3ecc8918b6dcf04efc0e1a8d88a05c3d490a2088eb97674ff940a87644",
-      "bytes": 3132
-    },
-    {
-      "path": "admin/tests/unit/curated_resource_schema.spec.ts",
-      "sha256": "88c37844082d3b8e199c8dc653a37a4f9e5871e8adf09d9515ab9349d48f7edd",
-      "bytes": 3648
-    },
-    {
-      "path": "admin/tests/unit/custom_app_guard.spec.ts",
-      "sha256": "8dc1c62049a1c513671f961cc35614d10772427dfdf4908fa28c211985d10243",
-      "bytes": 5406
-    },
-    {
-      "path": "admin/tests/unit/drug_ingest_status.spec.ts",
-      "sha256": "c549996e325536c10f22fcbdf9ae5c0e9be61acbd9a07787d80e1d4a1866f973",
-      "bytes": 8903
-    },
-    {
-      "path": "admin/tests/unit/drug_interactions.spec.ts",
-      "sha256": "4654917808948c88a363e39b6415104f372db01bf23edcb5cd226aa4dd27e7ea",
-      "bytes": 4789
-    },
-    {
-      "path": "admin/tests/unit/drug_labels.spec.ts",
-      "sha256": "4de030b6d2799989c03f99153b46bde274f01981a7d3eb552af2c3dd66f309a6",
-      "bytes": 14164
-    },
-    {
-      "path": "admin/tests/unit/global_map_banner.spec.ts",
-      "sha256": "8ffbb30d89159f1bd924e7296f72aa11cd598abd60ce1fc5e62a354ee2dbaa2d",
-      "bytes": 1793
-    },
-    {
-      "path": "admin/tests/unit/kb_file_grouping.spec.ts",
-      "sha256": "2494a1b9647835d260d629edb78f1212361e121b79488b2ef1894116e4c85333",
-      "bytes": 9167
-    },
-    {
-      "path": "admin/tests/unit/kb_guardrail.spec.ts",
-      "sha256": "b051d171c61ba75532b56d28922089400aaaee14296de2b4a46d04b2371338f2",
-      "bytes": 4256
-    },
-    {
-      "path": "admin/tests/unit/kb_ingest_decision.spec.ts",
-      "sha256": "145be6c2ae9f425abc2291da8a25a8ea3867c962d7603b48346ff0b43c174882",
-      "bytes": 4024
-    },
-    {
-      "path": "admin/tests/unit/kb_job_health.spec.ts",
-      "sha256": "d221d8539abea7c4b21716d60db54b1ef60822b7c6abec67490e9c73799e307d",
-      "bytes": 3103
-    },
-    {
-      "path": "admin/tests/unit/kb_ratio_lookup.spec.ts",
-      "sha256": "30a4635531b43a8c73883955b5185706e71ff20ea26f26c8d7502cfaa0c10e3c",
-      "bytes": 6089
-    },
-    {
-      "path": "admin/tests/unit/kb_warning_decision.spec.ts",
-      "sha256": "cc3357e4c2a2ee8d4692779b338210b8246fe4e7fb1b99ab3453cba98cde12de",
-      "bytes": 4256
-    },
-    {
-      "path": "admin/tests/unit/platform_metadata.spec.ts",
-      "sha256": "8d7828eb44bd4973bc7c8d77d32424bdaa1401f847fb36020b25ae26941d7ea3",
-      "bytes": 3337
-    },
-    {
-      "path": "admin/tests/unit/private_url.spec.ts",
-      "sha256": "3441d67adf486f139f838e2391bacceeae4ee0670dc9bef26805bdb052252aa2",
-      "bytes": 2830
-    },
-    {
-      "path": "admin/tests/unit/superseded_resource.spec.ts",
-      "sha256": "e67c07d9bfdf115a7a85fa2dd0093ef77752d46336fb6b16081856dd05deef1f",
-      "bytes": 4355
-    },
-    {
-      "path": "admin/tests/unit/zim_download_resolution.spec.ts",
-      "sha256": "5c93f283b75f571522578331b3884c2e9477d03f84894735af8fc87992df22d5",
-      "bytes": 5063
-    },
-    {
-      "path": "admin/tests/unit/zim_filename.spec.ts",
-      "sha256": "488ab1cc37ae8c4c6d86a81f92aa6627009036ebbdaffc0d1c15c7a7131b3a4c",
+      "path": "admin\\app\\controllers\\home_controller.ts",
+      "sha256": "7099fd44aaa4b9efa168a4eb8b4008957dbd0334141aedb450cc0760f6ea45e5",
       "bytes": 3229
     },
     {
-      "path": "admin/tests/unit/zim_html.spec.ts",
-      "sha256": "1d3312620ea7c752571b3bb6ddbc89cbd095ad7b577b99225601ea3a4826bb7e",
-      "bytes": 4150
+      "path": "admin\\app\\controllers\\maps_controller.ts",
+      "sha256": "079f996dd0f7cbd71e3cb67522d5f212f0e8a46457c9052d6191c30d8b4ef5cc",
+      "bytes": 9106
     },
     {
-      "path": "admin/types/benchmark.ts",
-      "sha256": "be5a8e908c209b492095a14ba3f25109bb30576cf3a8d539f331ac888a6ed22b",
-      "bytes": 9640
+      "path": "admin\\app\\controllers\\ollama_controller.ts",
+      "sha256": "f546db054f7faea8c861498b955b6badeeaa51c751b42350165ac79f32947ae0",
+      "bytes": 23087
     },
     {
-      "path": "admin/types/chat.ts",
-      "sha256": "e2a9d2ad8b9117b2c9e3f0d09e229f9da677b196ae65f9ad43a82775dc3ea430",
-      "bytes": 1122
+      "path": "admin\\app\\controllers\\openapi_controller.ts",
+      "sha256": "d241c52cc4658a52ed18f16d04df3368b02f1fd2c0a3bcf128957b66b0a5d50c",
+      "bytes": 3157
     },
     {
-      "path": "admin/types/collections.ts",
-      "sha256": "04bdf3173df2c905394b610a92f3c913caeac1a8115bca9740776f2798a7ecc1",
-      "bytes": 5678
+      "path": "admin\\app\\controllers\\rag_controller.ts",
+      "sha256": "8d89ef4aa75c79b0cec01886861f7b6a0b7d33ce7250e50fa640dfe6c09e6d73",
+      "bytes": 10674
     },
     {
-      "path": "admin/types/conditions.ts",
-      "sha256": "1f8a084a5529b07d1c347a9263cd56a02be80997d9717c7ffce4f2580a369f99",
-      "bytes": 5813
+      "path": "admin\\app\\controllers\\settings_controller.ts",
+      "sha256": "149e64af1d6543289bd1ea1404fb9d84f15c6ed0b189d25a11f4f4bc4d8215a6",
+      "bytes": 6289
     },
     {
-      "path": "admin/types/docker.ts",
-      "sha256": "b63ea3fa61d6b3528b5b53323009fef260214269ad663c71841b7d06d7301582",
-      "bytes": 1026
+      "path": "admin\\app\\controllers\\supply_depot_controller.ts",
+      "sha256": "c084d793d66a155920dce28bafaa0d0cd1523dcb99f8484d80d6c300b393c05d",
+      "bytes": 1285
     },
     {
-      "path": "admin/types/downloads.ts",
-      "sha256": "65b8d7237fa5bafad279f1b30a7cd2cb3417c26d8735fcc40718ea9fe7b368c2",
-      "bytes": 3727
+      "path": "admin\\app\\controllers\\system_controller.ts",
+      "sha256": "efc3e1eea6081200f55f2274054c2f0bb81f51f21fee1cc07da12059013abadc",
+      "bytes": 38055
     },
     {
-      "path": "admin/types/drug_reference.ts",
-      "sha256": "7dcf86bc30d4b573bbf14bfba72ce04f4a2bfb8c70bc1eca60fbb99bade6982c",
-      "bytes": 10245
+      "path": "admin\\app\\controllers\\zim_controller.ts",
+      "sha256": "807886a51979dbcf33bf4456946f9375adbe1b175e21166841bc7aaacfc10760",
+      "bytes": 8342
     },
     {
-      "path": "admin/types/files.ts",
-      "sha256": "b91a9dc8b64ee3f65d6b202c48d37eeffd4f946698fe8e92a8f396953f4ecaf2",
-      "bytes": 1463
+      "path": "admin\\app\\data\\conditions.ts",
+      "sha256": "2f3e51c34e82076c0e558da68c4c4ffd0088d34db5e1bd6678e34b34bc324834",
+      "bytes": 11141
     },
     {
-      "path": "admin/types/kb_ingest_state.ts",
-      "sha256": "a7b4d3a81a74df55ad788004feb809f083fb07bae64bea5ab3afd36118641576",
-      "bytes": 991
+      "path": "admin\\app\\data\\home_remedies.ts",
+      "sha256": "02de7d806007e0b602004165b8b98b0dc16674672b5bdf86612e4d121d755307",
+      "bytes": 30793
     },
     {
-      "path": "admin/types/kv_store.ts",
-      "sha256": "3788f5763cea4dd4dafd888214a5b1badd94ae8bb1e1ca4d624afbb1ca6727a2",
-      "bytes": 4646
+      "path": "admin\\app\\data\\natural_remedies.ts",
+      "sha256": "3700f3ce830cf7bbf811ac6120c4c9469d96081b57f07292d826c142b7aa7146",
+      "bytes": 26731
     },
     {
-      "path": "admin/types/maps.ts",
-      "sha256": "ffb7c7f370ef964899be4d96034803e69d1288137e7cb85d2e0e141227ea3daf",
-      "bytes": 1786
+      "path": "admin\\app\\exceptions\\handler.ts",
+      "sha256": "a50b720e26bdd7dadd18cc497dbfbd15ffd37e135ffb7de7b836566e874443d0",
+      "bytes": 2413
     },
     {
-      "path": "admin/types/ollama.ts",
-      "sha256": "625a6953314a189b40acba51456d9dd50f919500ac302aa1a6ce1f8bcd63c997",
-      "bytes": 2095
+      "path": "admin\\app\\exceptions\\internal_server_error_exception.ts",
+      "sha256": "d7b1af563004460a807ca442fddf8c5544b72ac51a16c43ac4a38352354c02b7",
+      "bytes": 1003
     },
     {
-      "path": "admin/types/rag.ts",
-      "sha256": "c6f2bec05669c836643ae3a8e248b671b4dae815aea4e1398299d07680d130c9",
-      "bytes": 3431
+      "path": "admin\\app\\jobs\\app_auto_update_job.ts",
+      "sha256": "6ffd33efca19a83fbf302378830df83567ca041e90194e9c8890edb1349f70f0",
+      "bytes": 3415
     },
     {
-      "path": "admin/types/services.ts",
-      "sha256": "5c4a06a6b93a14174455ffcc297b85ed89f39088ae99f4261cf9188292969b55",
-      "bytes": 1251
+      "path": "admin\\app\\jobs\\auto_update_job.ts",
+      "sha256": "5dca33d8f9d792061a14fa23881736d291e69c870cdcf25c28f169722e17232f",
+      "bytes": 3428
     },
     {
-      "path": "admin/types/system.ts",
-      "sha256": "bec28496d50d7ceddeffd65d0855788490c40d950df34cc33fcef4e9a7ba4df3",
-      "bytes": 4538
+      "path": "admin\\app\\jobs\\check_service_updates_job.ts",
+      "sha256": "96303920f1ccb14466672df909be11869fa64a80a1bb721e6b3682c92b9e0df2",
+      "bytes": 5398
     },
     {
-      "path": "admin/types/util.ts",
-      "sha256": "38fd6e6f7693a3d85d5ca8e78461768dcdb6729a59c723574db224d53c65de86",
-      "bytes": 803
+      "path": "admin\\app\\jobs\\check_update_job.ts",
+      "sha256": "07a7f81b52761fa4a518a255cfceb93676217603d9edfb3d69619ea9483af631",
+      "bytes": 3036
     },
     {
-      "path": "admin/types/zim.ts",
-      "sha256": "a0c8e7ddeb98adaa4c7938319ce2dddc20a4c84ef58f3694e8e460bf0c4ab0f6",
-      "bytes": 3380
+      "path": "admin\\app\\jobs\\content_auto_update_job.ts",
+      "sha256": "81c25bc3ada9f52fc7e86d34cd877a9efa623c8f69cf92092b7e22c268ffd034",
+      "bytes": 3689
     },
     {
-      "path": "admin/util/compare_ids.ts",
-      "sha256": "99dcc9ced18106709552afef7afb551d2e1069ae9e59909df4b526f4d89d2ad8",
-      "bytes": 2412
+      "path": "admin\\app\\jobs\\download_drug_data_job.ts",
+      "sha256": "b46a3e365f6503bf913de0d23088dcdd3436dc0a217682b2524b0665429d9f30",
+      "bytes": 14441
     },
     {
-      "path": "admin/util/conditions.ts",
-      "sha256": "52277f8e6bc6cec27885457c6310d4f0c5cccb8e62d13a84cd1710dc0fffb7b4",
-      "bytes": 14501
+      "path": "admin\\app\\jobs\\download_model_job.ts",
+      "sha256": "59baa53bdd415269513dca1373afbcfb9c9e57d48d77d27a9905f7e2791826ef",
+      "bytes": 8598
     },
     {
-      "path": "admin/util/docs.ts",
-      "sha256": "dbf6beb7bbcacecebfbfbfe2393787b37966cb4f4e464385bf95897c4d4db40c",
-      "bytes": 1066
+      "path": "admin\\app\\jobs\\embed_file_job.ts",
+      "sha256": "093febc904205fe5f1d7456683338b8c53a65f0c2736a4f2269781501cca6b98",
+      "bytes": 24396
     },
     {
-      "path": "admin/util/drug_interactions.ts",
-      "sha256": "1151af026e5070b8db082b5176fdfac4dfab7b4d2f9d07b072a51cc99fbe5e72",
-      "bytes": 4923
+      "path": "admin\\app\\jobs\\ingest_drug_data_job.ts",
+      "sha256": "3c5ca09647895f9f1d432e4c17aa6a9fb809a4416d14389d1b2f0cada5f0ad26",
+      "bytes": 37279
     },
     {
-      "path": "admin/util/drug_labels.ts",
-      "sha256": "7767be169912565fe7a37cce3d2d814f1f8db324f083641251512e5aac68cc4a",
-      "bytes": 23162
+      "path": "admin\\app\\jobs\\run_benchmark_job.ts",
+      "sha256": "29a0e6b198f67b378ea72599de28fab99c2660ae68b40ae5a731710b96f227e7",
+      "bytes": 4012
     },
     {
-      "path": "admin/util/files.ts",
-      "sha256": "c202eeefd03c9004acbd476479b61fd1a4413d7f0a7e0c4000adde25169595e0",
-      "bytes": 2259
+      "path": "admin\\app\\jobs\\run_download_job.ts",
+      "sha256": "10beafd562814befd0495e2707865cd57682fe9662bf5bbf84124fa8d4f19c86",
+      "bytes": 18647
     },
     {
-      "path": "admin/util/zim.ts",
-      "sha256": "31de105a211d178d78057c8e498eba41e88eb09abc203aa3f67ebd4c51c594af",
-      "bytes": 1590
+      "path": "admin\\app\\jobs\\run_extract_pmtiles_job.ts",
+      "sha256": "ef2bce9fefa7a323caddbfdb488b968b5a645de978e923433e924c22760c868d",
+      "bytes": 11998
     },
     {
-      "path": "admin/vite.config.ts",
-      "sha256": "f7b9cf7a19790d9f339188e19690a0ab2f6dff07e345a82c156bafbf0c49cab9",
+      "path": "admin\\app\\middleware\\compression_middleware.ts",
+      "sha256": "81f70a5bd0f692918f33797ebd8f2747e1d04aedff548d93d961257d10b7da18",
+      "bytes": 2039
+    },
+    {
+      "path": "admin\\app\\middleware\\container_bindings_middleware.ts",
+      "sha256": "6dec6c769ffe8d8de29bb38e1145a4784a5627b3783ed11aab689f9379f30791",
+      "bytes": 1441
+    },
+    {
+      "path": "admin\\app\\middleware\\force_json_response_middleware.ts",
+      "sha256": "8a5564d3b789e73b0037cb7ab68daeafc8dac4906cb4cd595cb6b6fd81ad4b1e",
+      "bytes": 1366
+    },
+    {
+      "path": "admin\\app\\middleware\\maps_static_middleware.ts",
+      "sha256": "c8b3a5f565effa9872fb6390ecdae7f9c95759c3a1cd91dde49e3300b21d0486",
+      "bytes": 1460
+    },
+    {
+      "path": "admin\\app\\models\\benchmark_result.ts",
+      "sha256": "5b69932d245c2d375e80983c037beaf83f7bca9ea5c151bf79a94a9fca0a4bdc",
+      "bytes": 5147
+    },
+    {
+      "path": "admin\\app\\models\\benchmark_setting.ts",
+      "sha256": "a8c742a2da86776ac9571f6ac529b7518e832a7c1200f9fe8c961cc43fdbef77",
+      "bytes": 2603
+    },
+    {
+      "path": "admin\\app\\models\\chat_message.ts",
+      "sha256": "970014a9eb3f567ba4439b465e067c16dff9499f4422bb8d14aeeddadc2058d9",
+      "bytes": 1670
+    },
+    {
+      "path": "admin\\app\\models\\chat_session.ts",
+      "sha256": "6002e8a55ded562f94bc464c100739ba6184bc4f6f2d1a07e7a397c103eb7c9c",
+      "bytes": 1611
+    },
+    {
+      "path": "admin\\app\\models\\collection_manifest.ts",
+      "sha256": "f6b4b1ffe7b945cc700cdcb739e29bc4de975f0fcf27bc4acfc57ae1a894170d",
+      "bytes": 1468
+    },
+    {
+      "path": "admin\\app\\models\\custom_library_source.ts",
+      "sha256": "a53c9fb794e759603b2f4320c8f524db9d5586ce9c3b68426035e0fd6391a133",
+      "bytes": 1402
+    },
+    {
+      "path": "admin\\app\\models\\drug_label.ts",
+      "sha256": "6530acebde6b734275058e24a9ecac3d45835cf3c33b51ce71cb8eac7910ac6b",
+      "bytes": 4406
+    },
+    {
+      "path": "admin\\app\\models\\installed_resource.ts",
+      "sha256": "3df2ca48235c9c2af087535db98253fa3ca39e3f5523014beb1e1d04af353978",
+      "bytes": 2284
+    },
+    {
+      "path": "admin\\app\\models\\kb_ingest_state.ts",
+      "sha256": "c0f5e97dc9a5d36dae0b0a3d6539ec041c72e348f5ce6f9ddd352de094148145",
+      "bytes": 3419
+    },
+    {
+      "path": "admin\\app\\models\\kb_ratio_registry.ts",
+      "sha256": "8e8c2d4049d621cd07dd47356dd1735f3a143c6fbb41a55c1dfe7a56f5fdb2c2",
+      "bytes": 3523
+    },
+    {
+      "path": "admin\\app\\models\\kv_store.ts",
+      "sha256": "e2373c323bd59ae17222ebde0c98c4e48c6b1b6170638c18f98c60267ff7d5be",
+      "bytes": 2930
+    },
+    {
+      "path": "admin\\app\\models\\map_marker.ts",
+      "sha256": "243365ff0f542a67a34ef6a782e5285d503eec4b007dd4310fade94a0a377a1f",
+      "bytes": 1820
+    },
+    {
+      "path": "admin\\app\\models\\service.ts",
+      "sha256": "626629741b82246672836f7e879da1d9db82395c4fed9293e4a16eb8553c882e",
+      "bytes": 4795
+    },
+    {
+      "path": "admin\\app\\models\\wikipedia_selection.ts",
+      "sha256": "dd2c4cd674e8a9483c59a7eaecca5429b54c7861f9db05d28b3fdee3b26b9413",
+      "bytes": 1494
+    },
+    {
+      "path": "admin\\app\\services\\app_auto_update_service.ts",
+      "sha256": "6b007eae851f5d88cb54ef3dd086e5c7deb9858fad876f592764be169f5f5cb2",
+      "bytes": 16344
+    },
+    {
+      "path": "admin\\app\\services\\auto_update_service.ts",
+      "sha256": "dceb7c4d8de8384b305af6c268012cf5eee6f35dafdb636d4c8e1839ac2ebd45",
+      "bytes": 22768
+    },
+    {
+      "path": "admin\\app\\services\\benchmark_service.ts",
+      "sha256": "b96b4bc4e7fbeb6bf4a10443ad02ceb5918c688bbd6cfa0263c4ad5c52fe66f3",
+      "bytes": 78830
+    },
+    {
+      "path": "admin\\app\\services\\benchmark_telemetry.ts",
+      "sha256": "b9984ba1d8560725a533cedde83dd54754cb491d93897cea51ca36df757070d6",
+      "bytes": 4912
+    },
+    {
+      "path": "admin\\app\\services\\cairn_md_service.ts",
+      "sha256": "836c7e4195bb59fe2ee73a8caca207d88d76b283b61ec24295ae91ca5c29502c",
+      "bytes": 2720
+    },
+    {
+      "path": "admin\\app\\services\\chat_service.ts",
+      "sha256": "1876f073e37bb87aadb1f756e5eebc72d30faafa053dd8bda5272ef3638a3cbc",
+      "bytes": 10017
+    },
+    {
+      "path": "admin\\app\\services\\collection_manifest_service.ts",
+      "sha256": "eb4fc05b9e01b876a8c23be93fa45bf40a64cafaa57a165d00be78cc9594c47c",
+      "bytes": 22620
+    },
+    {
+      "path": "admin\\app\\services\\collection_update_service.ts",
+      "sha256": "ea4a57fb3888850efd6d21b6df86d51d229e3c79cc3cb59e749a2ffe834290e4",
+      "bytes": 9833
+    },
+    {
+      "path": "admin\\app\\services\\condition_service.ts",
+      "sha256": "c51e958cd74b2be54177f10f3a236d5917b0dbaf437fa079418403e6c2b17a75",
+      "bytes": 13404
+    },
+    {
+      "path": "admin\\app\\services\\container_registry_service.ts",
+      "sha256": "854374dca493c17608ea0681f5ff8f00fbc8dd33d763b8299d210c33cacaadce",
+      "bytes": 20550
+    },
+    {
+      "path": "admin\\app\\services\\content_auto_update_service.ts",
+      "sha256": "15f5e4c5a96515dbf3d893dccf2c035b13bfafa03b18a794cf38abcaac26b4d5",
+      "bytes": 26009
+    },
+    {
+      "path": "admin\\app\\services\\countries_service.ts",
+      "sha256": "878acde21b61b3cf2c49aa0777478580307aa821abbfc5d250fe5d6a76f59d55",
+      "bytes": 11162
+    },
+    {
+      "path": "admin\\app\\services\\creator_pack_service.ts",
+      "sha256": "85785fdc20b94c1c0734017f31c35f35180ad395d840a0b6a98aa1230bace5e3",
+      "bytes": 8331
+    },
+    {
+      "path": "admin\\app\\services\\custom_app_guard.ts",
+      "sha256": "61012e25f22ffb23566281be295c22539bd9c0c41d87d04e85f2af62dd6917bc",
+      "bytes": 7853
+    },
+    {
+      "path": "admin\\app\\services\\docker_service.ts",
+      "sha256": "5c7d0953292916d377fc745ea6e13a1aee8cc6e2b6dd9580ef6809f181a9019b",
+      "bytes": 98715
+    },
+    {
+      "path": "admin\\app\\services\\docs_service.ts",
+      "sha256": "d94b3b4836930e2c0ba9db6a2651366896cfc6834c85a0760babaed1f7385582",
+      "bytes": 6974
+    },
+    {
+      "path": "admin\\app\\services\\download_service.ts",
+      "sha256": "728cec05cef824e2fdedf0e2676680bf12e60c296ebc15c7cdf51c3b8c70c6aa",
+      "bytes": 19150
+    },
+    {
+      "path": "admin\\app\\services\\drug_reference_service.ts",
+      "sha256": "9bf95f5212e09c821f4c76eddf7b6c329fedbe5785469533f096f86891e71a1a",
+      "bytes": 33098
+    },
+    {
+      "path": "admin\\app\\services\\kiwix_catalog_service.ts",
+      "sha256": "552954511caa737da0c811a7ec8cfe215f2f4be0ae8134e99b68e9de999e34f7",
+      "bytes": 13209
+    },
+    {
+      "path": "admin\\app\\services\\kiwix_library_service.ts",
+      "sha256": "dfa30992fd60047f742f65f84047b1fa9ef76111bb1041924880ed263260a748",
+      "bytes": 13767
+    },
+    {
+      "path": "admin\\app\\services\\map_service.ts",
+      "sha256": "38320bfb166d24d72e7b4aede24336635950fc739c5488d0090fe44b143a2295",
+      "bytes": 36693
+    },
+    {
+      "path": "admin\\app\\services\\ollama_service.ts",
+      "sha256": "692c31f9ddfefa1896cdb31b24da78e0313a608a2a002f443bd586565a690467",
+      "bytes": 43721
+    },
+    {
+      "path": "admin\\app\\services\\queue_service.ts",
+      "sha256": "6124c29358feb3badbb059591aaec6b45d99acb1b430867fc28ce609f8b20de8",
+      "bytes": 1993
+    },
+    {
+      "path": "admin\\app\\services\\rag_service.ts",
+      "sha256": "881462c8f519166f992a59f171eb2deee0634ef02caca0331a31ea6a53530fe5",
+      "bytes": 91231
+    },
+    {
+      "path": "admin\\app\\services\\system_service.ts",
+      "sha256": "203ec4ecb79cc337377859a77ca505b44f58a709886b454de313179386c81f06",
+      "bytes": 46032
+    },
+    {
+      "path": "admin\\app\\services\\system_update_service.ts",
+      "sha256": "c4860414a5e101a5586c4589049b55d108c1fb6fbe24ffe9501f937be6ed4c5a",
+      "bytes": 4932
+    },
+    {
+      "path": "admin\\app\\services\\zim_extraction_service.ts",
+      "sha256": "3bb4b940c7a96cfebd5ebfb10e550d4c297e49d607de06e8d243ba9e18a18e10",
+      "bytes": 12028
+    },
+    {
+      "path": "admin\\app\\services\\zim_service.ts",
+      "sha256": "d58e817b787882393952383b9ace06c277b1e3888013a272a49bda48adf09387",
+      "bytes": 41636
+    },
+    {
+      "path": "admin\\app\\utils\\affirmative_remedies.ts",
+      "sha256": "fb073b26a00a390ef9122fd226dfc627ebbc5ee491f3721b25b2375fc57a4cde",
+      "bytes": 1967
+    },
+    {
+      "path": "admin\\app\\utils\\amd_hsa_override.ts",
+      "sha256": "c5b5a3c7ff133a2806aae05c0967c4129b12cbe2cb3da2cce277ef472e8bf7ef",
+      "bytes": 3595
+    },
+    {
+      "path": "admin\\app\\utils\\content_auto_update_backoff.ts",
+      "sha256": "3f1462a2347d91ad293b7603c971cbca0e060a0d4fb20476bd3db813ddaa5061",
+      "bytes": 3154
+    },
+    {
+      "path": "admin\\app\\utils\\content_reindex_decision.ts",
+      "sha256": "34cafbf6ec2070cbaa21f64ab85ef1fc2566a9bee4606365ae032a50eb0e18d7",
+      "bytes": 3733
+    },
+    {
+      "path": "admin\\app\\utils\\downloads.ts",
+      "sha256": "6aea001683016e9bb03a0ff8e0d03a5fd42dcf6035d44392bd42e0866bdeaf9a",
+      "bytes": 12908
+    },
+    {
+      "path": "admin\\app\\utils\\fs.ts",
+      "sha256": "7baab133943ab55639c392d983c9f24881ab679260cded0995ef7813c25ff872",
+      "bytes": 8007
+    },
+    {
+      "path": "admin\\app\\utils\\hosted_content.ts",
+      "sha256": "a1bb389c505eeb1929b7003aae543982397d91ed942584f11431df4b7f8a37b3",
+      "bytes": 1535
+    },
+    {
+      "path": "admin\\app\\utils\\hosted_content_auth.ts",
+      "sha256": "8218c705fd9c69089342e03b9493292c674d910e22865f9ca1ecff053d566227",
+      "bytes": 2657
+    },
+    {
+      "path": "admin\\app\\utils\\image_disk_preflight.ts",
+      "sha256": "0e8c9c24ccc445572c17e04b1a9918546bb7b3aa15ace098d1c22c4c6bb64c11",
+      "bytes": 3904
+    },
+    {
+      "path": "admin\\app\\utils\\kb_ingest_decision.ts",
+      "sha256": "5e1b90f78cb2259ec045a974955ae33c929d1ea0d003c901d92127cb9337d235",
+      "bytes": 3696
+    },
+    {
+      "path": "admin\\app\\utils\\kb_job_health.ts",
+      "sha256": "c1d5546952d1d0c8b9576e95074cc745ac14ca90f2deeec10f6dd710571fae6b",
+      "bytes": 2782
+    },
+    {
+      "path": "admin\\app\\utils\\kb_ratio_lookup.ts",
+      "sha256": "3211468fc2a368b78a17159eb469b7b980aaec991a396d603a5479889744a995",
+      "bytes": 4641
+    },
+    {
+      "path": "admin\\app\\utils\\kb_warning_decision.ts",
+      "sha256": "8cb72b7fd6e0d7d31ec7155f735151ad9db72f362ab8fc7a8cf21c60c88effcf",
+      "bytes": 3853
+    },
+    {
+      "path": "admin\\app\\utils\\misc.ts",
+      "sha256": "d5fdb920e0e8ecb90fc75e02704a13278ed82b0a6143671b11e8ceeb8573fa00",
+      "bytes": 1600
+    },
+    {
+      "path": "admin\\app\\utils\\platform_metadata.ts",
+      "sha256": "275ca16bdc5ed44da6c043cc9f38082522c00e39b0577cef3210d4c9045d32cc",
+      "bytes": 3599
+    },
+    {
+      "path": "admin\\app\\utils\\superseded_resource.ts",
+      "sha256": "148d2665800a66a213616be0e1be81582fc4bb8050fcb441e01250a06ecde7aa",
+      "bytes": 3977
+    },
+    {
+      "path": "admin\\app\\utils\\update_window.ts",
+      "sha256": "bb6fae4d6335cd1480b221b61d6705818380ca036bff3be6e26b5f4dff814fb7",
+      "bytes": 2102
+    },
+    {
+      "path": "admin\\app\\utils\\version.ts",
+      "sha256": "ca13dbef31088b4713eaf84b0529ab88f4994151c8488ca61aa865f43266c8c0",
+      "bytes": 2744
+    },
+    {
+      "path": "admin\\app\\utils\\zim_download_resolution.ts",
+      "sha256": "7bd090492c995469489c3ba38f5b2bcae9e1503502476755d13b52037999bbad",
+      "bytes": 2967
+    },
+    {
+      "path": "admin\\app\\utils\\zim_filename.ts",
+      "sha256": "7150b929f542ba8cb2d95f8877711da694662a813525573929c4f07e853bc023",
+      "bytes": 1878
+    },
+    {
+      "path": "admin\\app\\utils\\zim_html.ts",
+      "sha256": "e7db4a58f847154e7189dd26e69397c72c6667e173c02c68351146f5dd6337ec",
+      "bytes": 5216
+    },
+    {
+      "path": "admin\\app\\validators\\benchmark.ts",
+      "sha256": "785539d3e4adabc14ecf341db043ed87ea5de046d1a050f482c8e01a3b4ad13f",
+      "bytes": 1118
+    },
+    {
+      "path": "admin\\app\\validators\\cairn_md.ts",
+      "sha256": "5e02f412b2e007b5ceaea3f7d8bcb66b008f171fe9bc6555657a9d85ade87ea1",
+      "bytes": 1255
+    },
+    {
+      "path": "admin\\app\\validators\\chat.ts",
+      "sha256": "c6dc15f4763bb424f6eb5f6f93a951505d2c111a098f03d4223dedf0f82a7019",
+      "bytes": 1408
+    },
+    {
+      "path": "admin\\app\\validators\\common.ts",
+      "sha256": "c18a9139d54bfd227f25185b3fb43ac418347f60adf8ac01793b22e3c7decca6",
+      "bytes": 8956
+    },
+    {
+      "path": "admin\\app\\validators\\conditions.ts",
+      "sha256": "c70469060ccd1aed96cf1631128260fe87faa03f473cc20ca402a672f75e3e8a",
+      "bytes": 1727
+    },
+    {
+      "path": "admin\\app\\validators\\curated_collections.ts",
+      "sha256": "83933de1c2e07c108066fea477f0531f6b4ab6fc6c8d1874a822a9b9feeafe79",
+      "bytes": 4544
+    },
+    {
+      "path": "admin\\app\\validators\\download.ts",
+      "sha256": "2728d5f12f42e37a4818a6466c7fe214778998a546838dcd110ef2774bf4fc2f",
+      "bytes": 1097
+    },
+    {
+      "path": "admin\\app\\validators\\drug_reference.ts",
+      "sha256": "191f375b55eec142041e5c672a398cfb1872c797dd3d86ec16ac6124bf4bbd61",
+      "bytes": 2415
+    },
+    {
+      "path": "admin\\app\\validators\\ollama.ts",
+      "sha256": "faf0e68ffb1f9a91ed1c0a6424573e60532f5906d50476b354080e43a560d50f",
+      "bytes": 1922
+    },
+    {
+      "path": "admin\\app\\validators\\rag.ts",
+      "sha256": "4b15e457613cfffdc771153cb364cdfe58665be2f98c3c35edb6ff3a718f051d",
+      "bytes": 1628
+    },
+    {
+      "path": "admin\\app\\validators\\responses\\chat.ts",
+      "sha256": "c872eb7e3b111165d7a78849385f75ff91520d44880c5799c85831b50579d645",
+      "bytes": 1946
+    },
+    {
+      "path": "admin\\app\\validators\\responses\\common.ts",
+      "sha256": "b18ac15b2139ba8ce10d86f1a6d6b8aa9115a42fbb8aa54480e83827316f4834",
+      "bytes": 2003
+    },
+    {
+      "path": "admin\\app\\validators\\settings.ts",
+      "sha256": "043b96edc80a73e7ca81ca6dd6f6def14fcd4236e799363e5b6c227431b1da21",
+      "bytes": 3494
+    },
+    {
+      "path": "admin\\app\\validators\\system.ts",
+      "sha256": "c2bb4d27625647819dd62448cd90933e4fa10f04332bd370fe70c9fe1e38fd74",
+      "bytes": 6928
+    },
+    {
+      "path": "admin\\app\\validators\\zim.ts",
+      "sha256": "7c2f86649b849fc9294c26c22b5a87df639cffe34065ba5c000e0d81bc104135",
       "bytes": 1595
     },
     {
-      "path": "collections/CATEGORIES-TODO.md",
-      "sha256": "cac3d77d6ab8ba2f7a998ee243fcb7606bdb3601dbf43114215020a5905fe205",
-      "bytes": 3462
+      "path": "admin\\bin\\console.ts",
+      "sha256": "7485f404f5f42acc52fd2b746615eadcc0f9e8043fd44dcabaae5a52130d423d",
+      "bytes": 2188
     },
     {
-      "path": "collections/creator-pack-license.md",
-      "sha256": "b6bb98f60be49d9aab967300528d0b254cfede1d535aed2ac75e22da5385beec",
-      "bytes": 4566
+      "path": "admin\\bin\\server.ts",
+      "sha256": "042590897d66afd2e3c2d5cd25f43dc548a2af33bdccf8ba037928c2fde581a9",
+      "bytes": 2589
     },
     {
-      "path": "install/calibre-empty-library/README.md",
-      "sha256": "7f13288cf5bf32ae2b582481604ce8efc932b0e6f27319a0aa834966dcac83b9",
-      "bytes": 1729
+      "path": "admin\\bin\\test.ts",
+      "sha256": "2b10a4e37075277818606db7b6739deb995de6c944ae28bf9d4eec67e7b9ff51",
+      "bytes": 2589
     },
     {
-      "path": "install/collect_disk_info.sh",
-      "sha256": "7ee30a5ec8bb413355a591d278f166c53cb807031f3d7398c584f3eed98ef9dd",
+      "path": "admin\\commands\\app_auto_update\\dry_run.ts",
+      "sha256": "0759ebc79ce316a05b9a410849086cbc072ad8f06b017123d162937737f5be44",
+      "bytes": 8560
+    },
+    {
+      "path": "admin\\commands\\auto_update\\dry_run.ts",
+      "sha256": "12e486794baa2dd304cbc9f5de2a92104f779ff9cc4dc6d64e4585e351013509",
+      "bytes": 11327
+    },
+    {
+      "path": "admin\\commands\\benchmark\\results.ts",
+      "sha256": "69e11fb66f15f71141b13fa4c986e64d14010a6420445f6cff614d01a945491b",
+      "bytes": 4378
+    },
+    {
+      "path": "admin\\commands\\benchmark\\run.ts",
+      "sha256": "9bebe30e7e65398c94dd9619a78fd60c557c97c5b1ed0c6854c65371bb50dee6",
+      "bytes": 4859
+    },
+    {
+      "path": "admin\\commands\\benchmark\\submit.ts",
+      "sha256": "a303f1f4da65f9711a523af1f17490f446abf2c0c0d15ffc73dbb1137a62b7fa",
+      "bytes": 4943
+    },
+    {
+      "path": "admin\\commands\\content_auto_update\\dry_run.ts",
+      "sha256": "c7b5c5c75c163822a9f462d15e736545e9426deaf4a585d52b5b93f57739cd45",
+      "bytes": 9084
+    },
+    {
+      "path": "admin\\commands\\queue\\work.ts",
+      "sha256": "17b898c5f312346181a53817821fb37874c855e524f134030386e53be5b965c4",
+      "bytes": 12076
+    },
+    {
+      "path": "admin\\config\\app.ts",
+      "sha256": "4b8acaf44639913a2f5de16ef5d139b83cf99eea04156950d7c68caaed8b2eaf",
+      "bytes": 1925
+    },
+    {
+      "path": "admin\\config\\bodyparser.ts",
+      "sha256": "c7d704ef432ef0bf31a2b3b67c9974eb48a7b6680cf3351bf4d6e664dbe77e37",
+      "bytes": 2241
+    },
+    {
+      "path": "admin\\config\\cors.ts",
+      "sha256": "a94422a34728f82f56ca67b3e7d95771be305c9777058f238ea4ab3aea19408f",
+      "bytes": 1289
+    },
+    {
+      "path": "admin\\config\\database.ts",
+      "sha256": "e9b00a7aaf303ad4731200b73b45871deba3bcf5ef8a0e69e5bb1256d1db314d",
+      "bytes": 1650
+    },
+    {
+      "path": "admin\\config\\hash.ts",
+      "sha256": "401c98b1d10dcc4e9a5868756d607d048a9401cabf4de01513e4baaf7cf4d5ab",
+      "bytes": 1335
+    },
+    {
+      "path": "admin\\config\\inertia.ts",
+      "sha256": "bf8c840a2ff232d80a4a79695be4db333b9b60f3cb96b99c4a9aafa3e8d175fc",
+      "bytes": 2303
+    },
+    {
+      "path": "admin\\config\\logger.ts",
+      "sha256": "a535dc9e8b352154edf208260eda911a2ec0688714a91089f8a0f7f934d59406",
+      "bytes": 2442
+    },
+    {
+      "path": "admin\\config\\queue.ts",
+      "sha256": "50a9498559fd9ca6d5032ef80bc8d92797328bed19cf7fdbe0d678f72522a8bf",
+      "bytes": 2930
+    },
+    {
+      "path": "admin\\config\\session.ts",
+      "sha256": "ee936d8a25674c0634e6a3d68a831b69aac497f53a49aa2e6e027e9863433319",
+      "bytes": 2005
+    },
+    {
+      "path": "admin\\config\\shield.ts",
+      "sha256": "ecf014029c04e261f9835482e67a5d7d1d156fc9fbb51d13f2961bb9ce36b214",
+      "bytes": 1868
+    },
+    {
+      "path": "admin\\config\\static.ts",
+      "sha256": "33ec1bfe52eac496b546185071363081153c2626c5d75d3d7208621c45d8d9b9",
+      "bytes": 1264
+    },
+    {
+      "path": "admin\\config\\transmit.ts",
+      "sha256": "c7840bfff25055161aa66a704f8ba4447d460c7a3473376f02e7833a7c41932e",
+      "bytes": 1193
+    },
+    {
+      "path": "admin\\config\\vite.ts",
+      "sha256": "bd5e0dc41019263ee561e7a11a65f96ca2386bc45ec105c2045be505d66339fb",
+      "bytes": 1455
+    },
+    {
+      "path": "admin\\constants\\broadcast.ts",
+      "sha256": "1f1ac236a3b50dd34ede5600642a4fc21226cfb6dc1edc8105229215fd67695b",
+      "bytes": 1089
+    },
+    {
+      "path": "admin\\constants\\kb_collections.ts",
+      "sha256": "b57711b7c39dae8c874ccd5ab6cc356318e1e2abecded82bc20ab7236535a2d5",
+      "bytes": 2324
+    },
+    {
+      "path": "admin\\constants\\kiwix.ts",
+      "sha256": "4d12b8d671a14f1f561bee8ac2428dce122382f0845c60dab6d59551a2c33a3e",
+      "bytes": 1585
+    },
+    {
+      "path": "admin\\constants\\kv_store.ts",
+      "sha256": "1579a2d90421cc96bfc8ef18478a0bdc98c9fa4174a647623bbdb86019497838",
+      "bytes": 1635
+    },
+    {
+      "path": "admin\\constants\\map_regions.ts",
+      "sha256": "7778d8052042e51b42ed3b635a396f6cd5029de2c3c7c2dbbc6c56b749e5c698",
+      "bytes": 2143
+    },
+    {
+      "path": "admin\\constants\\misc.ts",
+      "sha256": "fb5ee3474c0a2acd03d9f8066992b6154c6ec90f748f8ebb1dbcd21fd12d2586",
+      "bytes": 879
+    },
+    {
+      "path": "admin\\constants\\ollama.ts",
+      "sha256": "352ccd43725eeb52a5c98c5d14e9b5378eda09c30abced7c630d6ab2c239a719",
+      "bytes": 7762
+    },
+    {
+      "path": "admin\\constants\\service_names.ts",
+      "sha256": "2427fe3f9b01c9b5318c1d45c125cfa065a629371c96748d7895bc39441c8507",
+      "bytes": 1512
+    },
+    {
+      "path": "admin\\constants\\supply_depot_docs.ts",
+      "sha256": "357ec2d0853ce67f021e6c708b65e30dda6bcd1b86d9cfe54eead64338ad3539",
+      "bytes": 2294
+    },
+    {
+      "path": "admin\\constants\\zim_extraction.ts",
+      "sha256": "3d4739f603b6703a74397aec2e15e1b0917751ee96fb8762b372c8853fb1b071",
+      "bytes": 1916
+    },
+    {
+      "path": "admin\\database\\migrations\\1751086751801_create_services_table.ts",
+      "sha256": "9cf8dd86463e617eb2547fa1ec1ce3ebc52ed8d7e17e69dfa6b7e7ef7096fd2f",
+      "bytes": 1724
+    },
+    {
+      "path": "admin\\database\\migrations\\1763499145832_update_services_table.ts",
+      "sha256": "cc6c4cbf6440b38800e57aaf76667daa803e0a6aec07058922651562388493bd",
+      "bytes": 1295
+    },
+    {
+      "path": "admin\\database\\migrations\\1764912210741_create_curated_collections_table.ts",
+      "sha256": "e8ad44a3d535217449da9e0a61d6905404fe325196e877fbb92f408d0100f7bf",
+      "bytes": 1458
+    },
+    {
+      "path": "admin\\database\\migrations\\1764912270123_create_curated_collection_resources_table.ts",
+      "sha256": "268db094f6333725a91c87f46a5c6554c18c86ec23464d1d5733fd9a089c1c54",
+      "bytes": 1598
+    },
+    {
+      "path": "admin\\database\\migrations\\1768170944482_update_services_add_installation_statuses_table.ts",
+      "sha256": "b3b951be08e282a0e1dd76070cf2a69162461304960a629f4bada6fd8e73d80b",
+      "bytes": 1243
+    },
+    {
+      "path": "admin\\database\\migrations\\1768453747522_update_services_add_icon.ts",
+      "sha256": "dbbd9af374bfa34e33aa68e588f338ab2e500dff3eab5ac8ff8baf66c77e7932",
+      "bytes": 1194
+    },
+    {
+      "path": "admin\\database\\migrations\\1769097600001_create_benchmark_results_table.ts",
+      "sha256": "b9e221c0b3cd1db7e0cad6e20f9d20161d282679f6ad5ad72341e8027be423cc",
+      "bytes": 2465
+    },
+    {
+      "path": "admin\\database\\migrations\\1769097600002_create_benchmark_settings_table.ts",
+      "sha256": "f09657c4bcedf81c1e4c3995ab4295768b6f4acd2f5a7a9a7e962f643e6c7310",
+      "bytes": 1304
+    },
+    {
+      "path": "admin\\database\\migrations\\1769300000001_add_powered_by_and_display_order_to_services.ts",
+      "sha256": "97b194b47cbb6b6376f7dc04ce1416024d4d2d07538be3d33fd9d6e6d53193b1",
+      "bytes": 1311
+    },
+    {
+      "path": "admin\\database\\migrations\\1769300000002_update_services_friendly_names.ts",
+      "sha256": "229b4b7fbff4a68d426209139d7739f15d37fc3bf8a1224956b3dc491dda60f0",
+      "bytes": 4129
+    },
+    {
+      "path": "admin\\database\\migrations\\1769324448000_add_builder_tag_to_benchmark_results.ts",
+      "sha256": "e9e5824dadb6329a60c9817f505d33481d8170e6eeb60f36729273a4dd972f7f",
+      "bytes": 1221
+    },
+    {
+      "path": "admin\\database\\migrations\\1769400000001_create_installed_tiers_table.ts",
+      "sha256": "ec33512f8b1161718741ba47c7ae74eed1e409c5a0b42e24ec9710807e11fc4d",
+      "bytes": 1330
+    },
+    {
+      "path": "admin\\database\\migrations\\1769400000002_create_kv_store_table.ts",
+      "sha256": "38fc4dbfccdb48f3b8fcd1d9c92b8db48d8739ec511ace7873d0005774868a73",
+      "bytes": 1292
+    },
+    {
+      "path": "admin\\database\\migrations\\1769500000001_create_wikipedia_selection_table.ts",
+      "sha256": "a1047bed359242c300d8ddcf511d4c2367adb377cbf015036f70dd88da7e55f8",
+      "bytes": 1450
+    },
+    {
+      "path": "admin\\database\\migrations\\1769646771604_create_create_chat_sessions_table.ts",
+      "sha256": "0f87f5f8c184eba53f9a39b4a6e6557d47e65627cf9744c80650fc6d310995c1",
+      "bytes": 1292
+    },
+    {
+      "path": "admin\\database\\migrations\\1769646798266_create_create_chat_messages_table.ts",
+      "sha256": "1b7feb00175d339ab45b1eae8de987210e5a6182f2399cb45c6a1b6f366fc694",
       "bytes": 1433
     },
     {
-      "path": "install/entrypoint.sh",
-      "sha256": "9eebc5121f811f89eaf4fb5a601a69c766ffb5c9b9623725416143dc1157cc6c",
-      "bytes": 2563
+      "path": "admin\\database\\migrations\\1769700000001_create_zim_file_metadata_table.ts",
+      "sha256": "3b9f9d789f5e8f6389dbda0e2ebdaa88e7513ddeb947d550256e0feb175f1559",
+      "bytes": 1453
     },
     {
-      "path": "install/install_cairn.sh",
-      "sha256": "ce07e2c80b4bbc64d9f8a4b7b4ef996c7c32b9448cdeb44bca13c6081533d6bf",
-      "bytes": 32626
+      "path": "admin\\database\\migrations\\1770269324176_add_unique_constraint_to_curated_collection_resources_table.ts",
+      "sha256": "e6757bacde5c552ae054e76fca8e8c3fb878dc8b47e90000c890fc50d02f4008",
+      "bytes": 1367
     },
     {
-      "path": "install/management_compose.yaml",
-      "sha256": "033d1291ee4c819bc068635ac11b027f9ded4cf8701fe44503b92f922470ba3d",
-      "bytes": 8821
+      "path": "admin\\database\\migrations\\1770273423670_drop_installed_tiers_table.ts",
+      "sha256": "b3164cef9aaaff193372eb9ad41b90d3728d958e310dea510cbb343cacf02aa0",
+      "bytes": 1410
     },
     {
-      "path": "install/migrate-disk-collector.md",
-      "sha256": "b1c07e0793db15f6911c50498a49059ae6495e911310ae4b0fe9b041e3003480",
-      "bytes": 4746
+      "path": "admin\\database\\migrations\\1770849108030_create_create_collection_manifests_table.ts",
+      "sha256": "a3d1d96682dc3abe229512692b1fa717be93d9db1b312cfffcad3a4b3732c5d8",
+      "bytes": 1341
     },
     {
-      "path": "install/migrate-disk-collector.sh",
-      "sha256": "210c2b5e7b5689f08b775b69aa13d006416747b9b7fbd88a0bdfe8c04953ce52",
-      "bytes": 10690
+      "path": "admin\\database\\migrations\\1770849119787_create_create_installed_resources_table.ts",
+      "sha256": "be13044bbb18a76d750ad02257107083bc21c9cb5b54168b4535dad88900afd9",
+      "bytes": 1612
     },
     {
-      "path": "install/run_updater_fixes.sh",
-      "sha256": "675fe436eb4767534a742b0794c80d918c25d919b64475ca8b5252eb78586b83",
-      "bytes": 10706
+      "path": "admin\\database\\migrations\\1770850092871_create_drop_legacy_curated_tables_table.ts",
+      "sha256": "2e65bcc93feb413dadbb0d6468444caec415b02eca01b6db614f09b7357afdd8",
+      "bytes": 1200
     },
     {
-      "path": "install/sidecar-disk-collector/Dockerfile",
-      "sha256": "9f4debd17ca63220d1cde33e2fe170e11ce2f042ee6aecb357cd56889854d22c",
-      "bytes": 1037
+      "path": "admin\\database\\migrations\\1771000000001_add_update_fields_to_services.ts",
+      "sha256": "59eda69c92fda076d0b10de8133e44170d09b97915dfa9f6c253c02474612742",
+      "bytes": 1428
     },
     {
-      "path": "install/sidecar-disk-collector/collect-disk-info.sh",
-      "sha256": "9725557ea36dc62c19b55640238d811d5b2a92aeacf77f5a1c24bbdecad72217",
-      "bytes": 4851
+      "path": "admin\\database\\migrations\\1771000000002_pin_latest_service_images.ts",
+      "sha256": "6b4087158e31dd6d9f6fe3af99257a0a9e6ac75cb47c1e924310f8bada83a913",
+      "bytes": 2976
     },
     {
-      "path": "install/sidecar-updater/Dockerfile",
-      "sha256": "3e658f668669b9e1403f459ae384ea3aba531a47cfaaeb36dc3d7a8cc93e4ca3",
+      "path": "admin\\database\\migrations\\1771100000001_migrate_kiwix_to_library_mode.ts",
+      "sha256": "5d09d3e70a3f701b4ef9234ab9e7cda21b2dac027100f42807bef8c5d6878737",
+      "bytes": 1655
+    },
+    {
+      "path": "admin\\database\\migrations\\1771200000001_create_map_markers_table.ts",
+      "sha256": "0c06827fb7fdcad106f920ee9104c2780078460c9c89a4b1a68de4d0ad29d63a",
+      "bytes": 1609
+    },
+    {
+      "path": "admin\\database\\migrations\\1772000000001_add_supply_depot_fields_to_services.ts",
+      "sha256": "2b2b2335f691053feb46e133fb99e5468d4c0c73271a17a253e508733d6762ec",
+      "bytes": 1988
+    },
+    {
+      "path": "admin\\database\\migrations\\1772000000002_add_user_modified_to_services.ts",
+      "sha256": "da276f59a63d7e58ca52fcede9be1bc3eab0d879412e1d7b10766d22525534c4",
+      "bytes": 1489
+    },
+    {
+      "path": "admin\\database\\migrations\\1772000000003_add_app_auto_update_fields_to_services.ts",
+      "sha256": "3a61e66407cde8f2ff8a14171cbf896d0482ca5a5deeb26204afe223129f1ee5",
+      "bytes": 2072
+    },
+    {
+      "path": "admin\\database\\migrations\\1775100000001_create_custom_library_sources_table.ts",
+      "sha256": "b71fbc716caccda4b786e5769d0a48602184be315e5a18913c262f498705e567",
+      "bytes": 2327
+    },
+    {
+      "path": "admin\\database\\migrations\\1776000000001_create_kb_ingest_state_table.ts",
+      "sha256": "3f2259ccdf0c33a2cc0a603b9552a9bc86b11e0dd25c916ea28e2c0b410766c8",
+      "bytes": 1754
+    },
+    {
+      "path": "admin\\database\\migrations\\1776100000001_create_kb_ratio_registry_table.ts",
+      "sha256": "83557797142bae4ed13347b0ef6514273a3ea7279fe4c1d1d47a0606cb182dda",
+      "bytes": 3607
+    },
+    {
+      "path": "admin\\database\\migrations\\1776200000001_add_content_auto_update_fields_to_installed_resources.ts",
+      "sha256": "117ca181f749e4cc45c610b42596d2b27d3fb48de454f9e87b2b95610b2ea4fd",
+      "bytes": 2577
+    },
+    {
+      "path": "admin\\database\\migrations\\1776200000001_add_custom_url_to_services.ts",
+      "sha256": "0532ee8a6d9948c2b4dfffec5277b800878986d010a3614f93c4f49d75275d33",
+      "bytes": 1666
+    },
+    {
+      "path": "admin\\database\\migrations\\1776300000001_deprecate_legacy_kolibri.ts",
+      "sha256": "024f3479f3e18f11fc717e0f2f10b5479aa823d632ccc17b31e0d7a4e2637e37",
+      "bytes": 2741
+    },
+    {
+      "path": "admin\\database\\migrations\\1776400000001_add_benchmark_harness_metadata.ts",
+      "sha256": "5dcdb4cd6e0efd7eb87beff3f9cf355643e11168b8c32260f46db5a4935a1862",
+      "bytes": 1579
+    },
+    {
+      "path": "admin\\database\\migrations\\1776400000001_add_collection_to_kb_ingest_state.ts",
+      "sha256": "6e413350f81428308558691dfcd4b23d16a618302eb1b0afab32711507f8ab52",
+      "bytes": 1221
+    },
+    {
+      "path": "admin\\database\\migrations\\1776400000001_sunset_meshtastic_daemon.ts",
+      "sha256": "1a549c4ffcb92f169fbb768017e8776f0e197da9cc98a2ee1608540a5a363c5d",
+      "bytes": 2660
+    },
+    {
+      "path": "admin\\database\\migrations\\1776400000002_add_benchmark_score_v2.ts",
+      "sha256": "b5d71751da4eccbfa038347badcbd54ed29c80158fd4c9de65d7b369e4b3696b",
+      "bytes": 3052
+    },
+    {
+      "path": "admin\\database\\migrations\\1776400000003_add_benchmark_platform_metadata.ts",
+      "sha256": "94ccb83fc44bbb0436dc5c5d2a014e12eefa73fb8d6beed58d14fe7f6474fb08",
+      "bytes": 1969
+    },
+    {
+      "path": "admin\\database\\migrations\\1778600000004_create_drug_labels_table.ts",
+      "sha256": "a2e012f2d688352990cea1dbfd381956a68689f468754a7bc8cc20da03bf19d8",
+      "bytes": 6827
+    },
+    {
+      "path": "admin\\database\\migrations\\1778600000006_add_indications_fulltext_index.ts",
+      "sha256": "dbf1e55c511b3149d6e7092308b0865c7c402c2a0f594d5ee47ff68bafb5979c",
+      "bytes": 2666
+    },
+    {
+      "path": "admin\\database\\migrations\\1778700000006_add_ingested_at_default_drug_labels.ts",
+      "sha256": "6a1cb27a97ea2ea5f52407913162d081cba5d43eb22047983896aece7d220d4b",
+      "bytes": 1278
+    },
+    {
+      "path": "admin\\database\\seeders\\service_seeder.ts",
+      "sha256": "84d3d6fab1b27b0bb6e91a6fb4e2b9708c539db48eb6a3b12c4a13eb52f63126",
+      "bytes": 25748
+    },
+    {
+      "path": "admin\\docs\\about.md",
+      "sha256": "ba0ccb2ca655a782aa81bb8f082357b17e9080c67ca51934e942251b98042d7d",
+      "bytes": 2414
+    },
+    {
+      "path": "admin\\docs\\api-reference.md",
+      "sha256": "8b57fb56be4652e893cf5c7f101af14a5b9445515e5e7d2b4158d9ffa8cdd2a1",
+      "bytes": 2005
+    },
+    {
+      "path": "admin\\docs\\community-add-ons.md",
+      "sha256": "937d9fb7addc6ad7e32afce9753f606ae98cb1d140f15c306c62957822da6295",
+      "bytes": 4018
+    },
+    {
+      "path": "admin\\docs\\drug-reference.md",
+      "sha256": "243405c9b94f1b9c6b0277380a4f0f103cc7bf7b1cf07cf4ce59ad655e68ee78",
+      "bytes": 5742
+    },
+    {
+      "path": "admin\\docs\\faq.md",
+      "sha256": "824b067f84c6eb3ae0f2443c33f45d3812755dede51f4822ee691fdced2dfa72",
+      "bytes": 15045
+    },
+    {
+      "path": "admin\\docs\\getting-started.md",
+      "sha256": "132e9e36d077c27875eb543c755b290872115a40d89a65413ac3cfbbf93ed52b",
+      "bytes": 12502
+    },
+    {
+      "path": "admin\\docs\\home.md",
+      "sha256": "3c0d8a0a31f20096a5b68a6cca5aa7c704fa37ec7d5461d473e0b02ec3b242f9",
+      "bytes": 4333
+    },
+    {
+      "path": "admin\\docs\\release-notes.md",
+      "sha256": "6a4a7dbc066fbbc36e04ca558bd5e46763be5488ab23323a721a1b1cd2511e3f",
+      "bytes": 1966
+    },
+    {
+      "path": "admin\\docs\\supply-depot-apps.md",
+      "sha256": "116e9eb226823c66d01579b55051af647f98d7f882e799fd21b911586713bc56",
+      "bytes": 34546
+    },
+    {
+      "path": "admin\\docs\\updates.md",
+      "sha256": "5c06f4ca1889823cbb2fc35bed76cc87f8dba873f7c9c49ba9b26e56258d47d3",
+      "bytes": 5514
+    },
+    {
+      "path": "admin\\docs\\use-cases.md",
+      "sha256": "da67723405e81b314d56414d747751f007ad7d4c9b812b4180d821658a2eb187",
+      "bytes": 7813
+    },
+    {
+      "path": "admin\\eslint.config.js",
+      "sha256": "6761fd540c46003e1340242e7453850894449e21b5f4fef9b67ee44d850e8d24",
+      "bytes": 988
+    },
+    {
+      "path": "admin\\inertia\\app\\app.tsx",
+      "sha256": "066ad3b7b2f69127c478e7cbc30e5b6b65f654c332b637197e82888b8a92e16f",
+      "bytes": 2933
+    },
+    {
+      "path": "admin\\inertia\\components\\ActiveDownloads.tsx",
+      "sha256": "bf1b20d2ec19caabd16d71bde15b2719a6b1de31fcafd6ca6abd6c136a566494",
+      "bytes": 14905
+    },
+    {
+      "path": "admin\\inertia\\components\\ActiveEmbedJobs.tsx",
+      "sha256": "b3bebfd3beb22a1564a1bb62f154728155b56208b9aee547d45726484c33ad33",
+      "bytes": 3978
+    },
+    {
+      "path": "admin\\inertia\\components\\ActiveModelDownloads.tsx",
+      "sha256": "9ddee29f6542d802e10ea09d1e67b291f58a845b3ad13155b50ad8965f17bcfc",
+      "bytes": 12571
+    },
+    {
+      "path": "admin\\inertia\\components\\Alert.tsx",
+      "sha256": "84f0ed3fd6faeabd20a45b486f5f20921a182376226edd8bec1d3e9758ee40d7",
+      "bytes": 8117
+    },
+    {
+      "path": "admin\\inertia\\components\\AppUrlModal.tsx",
+      "sha256": "591b2535ba29cd58925d2178f36c2f8f93b3e0cbfc13f3a0e4d2b6fb09d0e2ef",
+      "bytes": 5167
+    },
+    {
+      "path": "admin\\inertia\\components\\BouncingDots.tsx",
+      "sha256": "8f89caf15db0225bd0525d6dfcb0caee47cc77fffa814aa0b9b4aa1bb96b0ae8",
+      "bytes": 1772
+    },
+    {
+      "path": "admin\\inertia\\components\\BouncingLogo.tsx",
+      "sha256": "7febb9483ade82c722a19692180dcc92f8b95b8c328baf6ef0e02c245772e722",
+      "bytes": 1890
+    },
+    {
+      "path": "admin\\inertia\\components\\BuilderTagSelector.tsx",
+      "sha256": "afbf29dee9616e6f129d00b1d396b5b2b1d112f7a78925ae59954f7de2c04a84",
+      "bytes": 5117
+    },
+    {
+      "path": "admin\\inertia\\components\\CategoryCard.tsx",
+      "sha256": "2ec51b272fc2aa5c97544d28b7a9e58e86f6e4ac0f585225c2a307b3d72baa82",
+      "bytes": 5794
+    },
+    {
+      "path": "admin\\inertia\\components\\CountryPickerModal.tsx",
+      "sha256": "1aa2f74e28b0eb08d26839de4ba6e198d8818b36ba413611e7f5e4906a151ccc",
+      "bytes": 16217
+    },
+    {
+      "path": "admin\\inertia\\components\\CreatorPackCard.tsx",
+      "sha256": "80b66c578fddda3a3f020c5480b567582be8a9d4601cb6db879b1da461b97886",
+      "bytes": 5307
+    },
+    {
+      "path": "admin\\inertia\\components\\CreatorPacksSection.tsx",
+      "sha256": "87c9093aba6b318a4f8782d7445797ca1836a210ffb4d519b6920e5647423ca1",
+      "bytes": 7457
+    },
+    {
+      "path": "admin\\inertia\\components\\CuratedCollectionCard.tsx",
+      "sha256": "fc83464d5270aeda6528c1076b03a82b38080b78bff1e8a31db3b79eed427c1f",
+      "bytes": 3047
+    },
+    {
+      "path": "admin\\inertia\\components\\CustomAppModal.tsx",
+      "sha256": "1d9c7aef35d2c13e974a165a6e60f423cd7feef8c6fa28a729f7639a194a46ad",
+      "bytes": 21430
+    },
+    {
+      "path": "admin\\inertia\\components\\DebugInfoModal.tsx",
+      "sha256": "b5c44c94cc215b7e623ec2ca406f49aefb28d8d4d03ff657d18348a4519cf64b",
+      "bytes": 3911
+    },
+    {
+      "path": "admin\\inertia\\components\\DownloadURLModal.tsx",
+      "sha256": "4be25d67652a505ce6926d31b877cf5e68cc75ce3e276e7118549f4a0ac94ed7",
+      "bytes": 3811
+    },
+    {
+      "path": "admin\\inertia\\components\\DynamicIcon.tsx",
+      "sha256": "0f389968c29fe979748d0b2456634dc69be313bfcd4bae78be56661146c89fb9",
+      "bytes": 1460
+    },
+    {
+      "path": "admin\\inertia\\components\\Footer.tsx",
+      "sha256": "1170c162155627e2e6af962dc82892283a454bb286a474187cff657ffa8c2d3a",
+      "bytes": 1977
+    },
+    {
+      "path": "admin\\inertia\\components\\HorizontalBarChart.tsx",
+      "sha256": "623d1b69de9fef2babfe01617da9b9c4038db730c047ce72c59cc6634a9b36c4",
+      "bytes": 4654
+    },
+    {
+      "path": "admin\\inertia\\components\\InfoTooltip.tsx",
+      "sha256": "3ae547d2163777ba694277e5b940408a1ddb232b96ea271d6800b2286e5b7ac6",
+      "bytes": 3086
+    },
+    {
+      "path": "admin\\inertia\\components\\InstallActivityFeed.tsx",
+      "sha256": "aba14f3a49b8fc58cf4637b2fa6b4f71b3e95d39f9bafa1b06833e92944cfdc0",
+      "bytes": 4419
+    },
+    {
+      "path": "admin\\inertia\\components\\KbGuardrailModal.tsx",
+      "sha256": "c808d79fdb9b0ff58ec09477f1323928570e0a819bf40859a0f60a66e2dcd46e",
+      "bytes": 5676
+    },
+    {
+      "path": "admin\\inertia\\components\\LoadingSpinner.tsx",
+      "sha256": "de40a5c96ed1d8fb669688bc4d81a6e9a30d73bb5d551ace50a7248af72bd922",
+      "bytes": 2091
+    },
+    {
+      "path": "admin\\inertia\\components\\MarkdocRenderer.tsx",
+      "sha256": "ffb10dbda83734b8c133acc39852a342c41ab19ef655f55c11d2db7bfca917f0",
+      "bytes": 4645
+    },
+    {
+      "path": "admin\\inertia\\components\\MarkdownEditor.tsx",
+      "sha256": "695251a761d9dc1bcc473d5b407e9c684359f3ee2388e098a28e0cb2e069c49a",
+      "bytes": 3362
+    },
+    {
+      "path": "admin\\inertia\\components\\ProgressBar.tsx",
+      "sha256": "eb8371403862afbf74ee9c728f66d8080050f59ed0170d98516ede8ee2e0f3f8",
+      "bytes": 1561
+    },
+    {
+      "path": "admin\\inertia\\components\\ServiceLogsModal.tsx",
+      "sha256": "08e48e1bbd492ea8c38f035a99b44c406a6bc27216f2dfc1159f0c477b0fab3d",
+      "bytes": 2288
+    },
+    {
+      "path": "admin\\inertia\\components\\ServiceStatsModal.tsx",
+      "sha256": "d88fbb4e90194b5f1791f921fd6643d2623c56bb930aa4a595a214a9e4391ddf",
+      "bytes": 3865
+    },
+    {
+      "path": "admin\\inertia\\components\\StorageProjectionBar.tsx",
+      "sha256": "8ad648c0d9617184d4c32e91daf6f399dbd7675cf8abd1697b1afcb3ca244398",
+      "bytes": 5591
+    },
+    {
+      "path": "admin\\inertia\\components\\StyledButton.tsx",
+      "sha256": "6b6878d20fb432cd520aa27646ddc15a55de644f823739a8e058151d612b949d",
+      "bytes": 5894
+    },
+    {
+      "path": "admin\\inertia\\components\\StyledModal.tsx",
+      "sha256": "b0fab808c7cd0a1c16e60b7a17fd52f581473d7d31c6ae9ce6f98256b116adc3",
+      "bytes": 4579
+    },
+    {
+      "path": "admin\\inertia\\components\\StyledSectionHeader.tsx",
+      "sha256": "4d17465f18a7922fa342fb972de35a248fc2294087028435c6ea48144d15bce0",
+      "bytes": 1452
+    },
+    {
+      "path": "admin\\inertia\\components\\StyledSidebar.tsx",
+      "sha256": "3d8fe7a183f1a78028b285cc8ccf1f24df38dfc754cf8755edccd027a7e55f3a",
+      "bytes": 6236
+    },
+    {
+      "path": "admin\\inertia\\components\\StyledTable.tsx",
+      "sha256": "e14d6e80502e37f88cc4c2dd2c212592424cc879c60242a3e9cb5b7021b074e2",
+      "bytes": 8542
+    },
+    {
+      "path": "admin\\inertia\\components\\ThemeToggle.tsx",
+      "sha256": "cf69d9c7bfab0ee2c293e9bba56c924f596b7ceff949dc421f37362363464bc5",
+      "bytes": 1702
+    },
+    {
+      "path": "admin\\inertia\\components\\TierSelectionModal.tsx",
+      "sha256": "b03e4330a6f73812be6de0b9db390a83e0257320ba3eefe577051c6ccc459053",
+      "bytes": 18183
+    },
+    {
+      "path": "admin\\inertia\\components\\UpdateServiceModal.tsx",
+      "sha256": "80c409de6251fdbc4ca5d465bf24bc1a57717483332b8320f96b4af42ce6065e",
+      "bytes": 7756
+    },
+    {
+      "path": "admin\\inertia\\components\\WhatsNewBanner.tsx",
+      "sha256": "5cd118318a6071943b255f30e0cc537826080867df6aa1f0292da02462b48dcb",
+      "bytes": 4084
+    },
+    {
+      "path": "admin\\inertia\\components\\WikipediaSelector.tsx",
+      "sha256": "612715a5b80154d4f234bac8b49765fb0f39f71feef3b517bad7c079e7673b18",
+      "bytes": 8383
+    },
+    {
+      "path": "admin\\inertia\\components\\ZimUploader\\index.tsx",
+      "sha256": "3c7da54ee96596f51e7bc352c2c993d7f6070077c865828477e78f0746ae600b",
+      "bytes": 4357
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\BenchmarkRunView.tsx",
+      "sha256": "e51fe5ccb99838a2edc41ff2180169032c9e58a366b86833398b654247f8cee3",
+      "bytes": 9074
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\CoreGrid.tsx",
+      "sha256": "b00c0faa12595bc446a6e6848309e94a34beb9008c2d32d1d505eccfc88eb3f7",
+      "bytes": 2647
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\LiveReadout.tsx",
+      "sha256": "7f652bf4f4cc2ad8add68e80efad27f81f3c81683a7d12879a9b7622c7576c33",
+      "bytes": 1970
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\ResultsSoFar.tsx",
+      "sha256": "862d901bba331c2a929caa375c693ec1746c165b4585a9e1598874c16c7fb71a",
+      "bytes": 2257
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\ScoreReveal.tsx",
+      "sha256": "5832228dfaf0eec281a03fac0a0e418985c27ecd6f7005507734091efe50a3a6",
+      "bytes": 7348
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\Sparkline.tsx",
+      "sha256": "9a5656e229e985c7025ab7474e63811c1bb19b27ac218fecb23f269f55d13028",
+      "bytes": 2426
+    },
+    {
+      "path": "admin\\inertia\\components\\benchmark\\StageRail.tsx",
+      "sha256": "cbd7278631137e8aff0dbfd9e1e9352875ea6310589fda80a0b1ff7df9be30b2",
+      "bytes": 4372
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\CairnMdModal.tsx",
+      "sha256": "d0e788d90fff6e7878b1e7c56a408b58656338b30d2ca5ffa7a7e7c19e92df79",
+      "bytes": 5526
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\ChatAssistantAvatar.tsx",
+      "sha256": "d952a5ac9848585ff8d1576e3083e6e0a0fbaa50ed735f5e1f770fb5c11dd994",
+      "bytes": 1139
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\ChatButton.tsx",
+      "sha256": "8b996710774c2a52a57c35320fb36e25397ee71e18c290f590dd04a4ecfcd8d6",
+      "bytes": 1402
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\ChatInterface.tsx",
+      "sha256": "2063b376bd31c7a89197cc685abde00d7d08b8a0d1d85044f618c6484bbac18e",
+      "bytes": 10239
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\ChatMessageBubble.tsx",
+      "sha256": "4febfd8e705404d59310f75012faebd6a34e0db4c1f502d148dbbba05276ea72",
+      "bytes": 5630
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\ChatModal.tsx",
+      "sha256": "1075841aee66960f6e9d7226f3ca2fc7f40f119e6e1075fb3b62ae5a77c1b3fb",
+      "bytes": 2183
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\ChatSidebar.tsx",
+      "sha256": "c6c811b430bcd37b748f7075888c11e69388962d2f08ff3278a44c1d9e1caabb",
+      "bytes": 7173
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\CollectionCombobox.tsx",
+      "sha256": "06b8dd314451a2b6f26c52cd6e0175cf43e39a66dc2129900cdd1642c581bb0c",
+      "bytes": 7683
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\CollectionsManager.tsx",
+      "sha256": "892093f3a6cbd2b460589209817d1ef95e8d01efbf448318c85fb0bbb5bda838",
+      "bytes": 6422
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\KbPolicyPromptBanner.tsx",
+      "sha256": "e5af65e84e7c77c601b0df164abe771bce8ee89558effdb2b09a63ebd282bd86",
+      "bytes": 5993
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\KnowledgeBaseModal.tsx",
+      "sha256": "d5c2591b644f611fd84a1441ee2e299c24e41d2dfc4a537b3a04ab1f6e838e60",
+      "bytes": 50405
+    },
+    {
+      "path": "admin\\inertia\\components\\chat\\index.tsx",
+      "sha256": "4b2519e0029cf69056e945a4363ffc8af93c9eab9920ba526d642b1af6635573",
+      "bytes": 26788
+    },
+    {
+      "path": "admin\\inertia\\components\\conditions\\RemedySafetyNote.tsx",
+      "sha256": "340661b7b0dcde67d95983a1cb179c3ddb4aef62e90a236852f80402c3a0ae6b",
+      "bytes": 2549
+    },
+    {
+      "path": "admin\\inertia\\components\\conditions\\SafetyBanner.tsx",
+      "sha256": "c11d8f191999e0158e4ab09c72c166e9cb132066d9d77cab790c9ab4803a056b",
+      "bytes": 2541
+    },
+    {
+      "path": "admin\\inertia\\components\\drug-reference\\DrugDisclaimerModal.tsx",
+      "sha256": "5c5dce5a78089859a75b52ba64ad37766c5889c138160dd06070c1541af116a2",
+      "bytes": 5236
+    },
+    {
+      "path": "admin\\inertia\\components\\drug-reference\\DrugResultRow.tsx",
+      "sha256": "06343270aef9ca1cad59cb0210cc98e2dae5ee7a14e6c389d889965d9753adb7",
+      "bytes": 4239
+    },
+    {
+      "path": "admin\\inertia\\components\\drug-reference\\IngestStatus.tsx",
+      "sha256": "5dcdcd85e5fc7ddee27f67775dcef5e1312a0d5b3a9e7d59ed6cba2e684821e1",
+      "bytes": 10672
+    },
+    {
+      "path": "admin\\inertia\\components\\drug-reference\\IngredientGroup.tsx",
+      "sha256": "87f28101959a8c31288460478670abef32e7a11e53c6fbccc30a0791634b39f7",
+      "bytes": 3584
+    },
+    {
+      "path": "admin\\inertia\\components\\drug-reference\\InteractionColumn.tsx",
+      "sha256": "aa281cd519c857b6a78f94aa7eb67a34daac9fd50649247ec5122eea22e645a8",
+      "bytes": 3768
+    },
+    {
+      "path": "admin\\inertia\\components\\drug-reference\\LabelBlocks.tsx",
+      "sha256": "c738b7e7b71fa3262d86be84a2ac98bce98555403bae0203f8c860b92b3a1b06",
+      "bytes": 2671
+    },
+    {
+      "path": "admin\\inertia\\components\\file-uploader\\index.css",
+      "sha256": "42eda6b24a62db20ddcdc447757248398be436151afab6ece60c07b9ec543120",
+      "bytes": 892
+    },
+    {
+      "path": "admin\\inertia\\components\\file-uploader\\index.tsx",
+      "sha256": "64d69bd8c2f24b6eb7c2eaaca7791fc7b80a36506a090de7777d9d656fab95f1",
+      "bytes": 3439
+    },
+    {
+      "path": "admin\\inertia\\components\\inputs\\Input.tsx",
+      "sha256": "e0aab1f59995a7ff0c1e521109ed8872b5edb83bea3464937cc6e7cbb24c0b42",
+      "bytes": 2716
+    },
+    {
+      "path": "admin\\inertia\\components\\inputs\\Select.tsx",
+      "sha256": "9b2185afcb380a3b091652a6d209cab06e7fd3b285e90b3ce9a2d34ea066d123",
+      "bytes": 4551
+    },
+    {
+      "path": "admin\\inertia\\components\\inputs\\Switch.tsx",
+      "sha256": "ceb87f155b58a382ce4752da1c581de71a801edef200ad6aac254659cbae99c7",
+      "bytes": 2752
+    },
+    {
+      "path": "admin\\inertia\\components\\layout\\BackToHomeHeader.tsx",
+      "sha256": "8523cb64814df4ce09413e29bf0d85b098de0f82d98e15f52661544bcaa82480",
+      "bytes": 1591
+    },
+    {
+      "path": "admin\\inertia\\components\\maps\\CoordinateOverlay.tsx",
+      "sha256": "b77c57bd793dd1a366e95db0e0e4f1cf3167763c3136c22f499ffc247890c30f",
+      "bytes": 1350
+    },
+    {
+      "path": "admin\\inertia\\components\\maps\\MapComponent.tsx",
+      "sha256": "57f0ae20cee5ff4986452581950748ad4fee9ab03126d5a6fb6d3cef29be71f4",
+      "bytes": 14320
+    },
+    {
+      "path": "admin\\inertia\\components\\maps\\MarkerPanel.tsx",
+      "sha256": "356091c5af1f009cb6119728da941eae96fe6d1d176aaa0bf9a42367e6bb12ae",
+      "bytes": 5309
+    },
+    {
+      "path": "admin\\inertia\\components\\maps\\MarkerPin.tsx",
+      "sha256": "f9805f8485fcb07e818d3d832d06cf4fd385df8fe456ff2bdf4f3ed7fb8ef735",
+      "bytes": 1255
+    },
+    {
+      "path": "admin\\inertia\\components\\maps\\ScaleUnitToggle.tsx",
+      "sha256": "374f9f23cc2106a24d32e384ea4b5a790501f56059f3af5e524a56f46fd30fa0",
+      "bytes": 2088
+    },
+    {
+      "path": "admin\\inertia\\components\\markdoc\\Heading.tsx",
+      "sha256": "74da664a8a1ac4a4283ac27b444364f066f9fa0bafc9eb592a39311e5b5db18f",
+      "bytes": 1673
+    },
+    {
+      "path": "admin\\inertia\\components\\markdoc\\Image.tsx",
+      "sha256": "8109e7e436f32882304759c5ec68d2b66f115ccb90af51d726e2c336ad75560c",
+      "bytes": 1389
+    },
+    {
+      "path": "admin\\inertia\\components\\markdoc\\List.tsx",
+      "sha256": "b4bd86b12aaaafc054e66e9a587add1356a76094f95eb48182f1904004de3a8f",
+      "bytes": 1339
+    },
+    {
+      "path": "admin\\inertia\\components\\markdoc\\ListItem.tsx",
+      "sha256": "088388d6da77b65626aadd6ca3e649182c5668c230b0319ab4b112d1ded2ddf2",
+      "bytes": 975
+    },
+    {
+      "path": "admin\\inertia\\components\\markdoc\\Table.tsx",
+      "sha256": "8ab4fd498887d756e8352be2421d4ffaf72897ae7a91fa720eb7c587b417d330",
+      "bytes": 2014
+    },
+    {
+      "path": "admin\\inertia\\components\\systeminfo\\CircularGauge.tsx",
+      "sha256": "249a7dd4dc5471ea69b03c2491dd3218efa068707617cbf7cfc06d20a4eda4c8",
+      "bytes": 5974
+    },
+    {
+      "path": "admin\\inertia\\components\\systeminfo\\InfoCard.tsx",
+      "sha256": "e8a059ad53ab3867a7193b42f5b94de9af92a16f82084add55511994843903b8",
+      "bytes": 3414
+    },
+    {
+      "path": "admin\\inertia\\components\\systeminfo\\StatusCard.tsx",
+      "sha256": "8fab00859ce34401d8ae83e97b73ff4bdf13c7414a4701c265a9e61a3c56e9d5",
+      "bytes": 1399
+    },
+    {
+      "path": "admin\\inertia\\components\\updates\\AppAutoUpdateSection.tsx",
+      "sha256": "9a4ea0345b65bf0d7ddea3ac17a42e68d25a33c644315def5b5c9c6b72f03263",
+      "bytes": 5118
+    },
+    {
+      "path": "admin\\inertia\\components\\updates\\ContentAutoUpdateSection.tsx",
+      "sha256": "2042a14e8e2c8b8b33b978f8b46cb0fdf6b174051f12e58638f5f1d3653facc8",
+      "bytes": 11528
+    },
+    {
+      "path": "admin\\inertia\\components\\updates\\ContentUpdatesSection.tsx",
+      "sha256": "209eb696b2759eb93ff03cee35a2a3da5f95b523d5a22c972b236fcb0f03ecaf",
+      "bytes": 9242
+    },
+    {
+      "path": "admin\\inertia\\components\\updates\\CoreAutoUpdateSection.tsx",
+      "sha256": "0e0a8dc9413c80df376f715f776e3090fedd231cce3cf4abcd3d198a462913b3",
+      "bytes": 7936
+    },
+    {
+      "path": "admin\\inertia\\context\\ModalContext.ts",
+      "sha256": "d7e75587ec8132fc124fa898571b5d247ed876cc27dff69cba2f5d5fe1c3a6da",
+      "bytes": 1426
+    },
+    {
+      "path": "admin\\inertia\\context\\NotificationContext.ts",
+      "sha256": "c2fa80b879bea1099ae41b6bacafa749d503c0f5cdaf8d85ee7c019fd37cb385",
+      "bytes": 1571
+    },
+    {
+      "path": "admin\\inertia\\css\\app.css",
+      "sha256": "4cdd1a564c7fa14c7bfbee20fe01b64d64cca51a16da706c5237a3088ac15aaf",
+      "bytes": 5496
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useAppAutoUpdateStatus.ts",
+      "sha256": "aef6a5afbbc1dac1fa778710b8f65d05f144d3286089b773b18ccad396fa1f94",
+      "bytes": 1184
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useAutoUpdateStatus.ts",
+      "sha256": "dc125a30e1fdfa42e73715731746e4ee4098b0eedf5fec2db200e7eaddf6ece7",
       "bytes": 1168
     },
     {
-      "path": "install/sidecar-updater/update-watcher.sh",
-      "sha256": "fb4df029858731c472677dcb6f61c2fcfea4b6ba70f866bd2afda17cd19a7baa",
-      "bytes": 10788
+      "path": "admin\\inertia\\hooks\\useBenchmarkRerunBanner.ts",
+      "sha256": "0c7cd3627dc8184a0b89d6664c12320555e0e7ef43b05d3e9e282f305213b00d",
+      "bytes": 1336
     },
     {
-      "path": "install/start_cairn.sh",
-      "sha256": "88e5a91fc86c75af0a75935df3cb17728472d8fe0a8bcb9372883ddb2fc80c48",
-      "bytes": 1437
+      "path": "admin\\inertia\\hooks\\useBenchmarkRun.ts",
+      "sha256": "1d8f26d5debfa458a8e55c56ffb26a171c5991ab9b4699258e8299761d71a3b3",
+      "bytes": 7457
     },
     {
-      "path": "install/stop_cairn.sh",
-      "sha256": "a48af780369bac531b4baac8bb9aae0a77ac0bb18769ff9632e1f811529e1768",
-      "bytes": 1419
+      "path": "admin\\inertia\\hooks\\useContentAutoUpdateStatus.ts",
+      "sha256": "8768552fa233ab2f21ca79caca8ee15433041a1f92ec1f351554c074b020aef3",
+      "bytes": 1204
     },
     {
-      "path": "install/uninstall_cairn.sh",
-      "sha256": "a9a97bc7dba7016c59e6b3aca7b4a1b410abad7fe52325d9ae702d195fbec9ba",
-      "bytes": 9674
+      "path": "admin\\inertia\\hooks\\useCreatorPacks.ts",
+      "sha256": "4a902f0df519ba0707cd436b90f60e9dd793afdd1f92b384ddf8f478af2563f8",
+      "bytes": 2288
     },
     {
-      "path": "install/update_cairn.sh",
-      "sha256": "bbfdccf3450b34b30ac46ebc705ebf53824146755694b77d4d25ce912804dccc",
-      "bytes": 9325
+      "path": "admin\\inertia\\hooks\\useDebounce.ts",
+      "sha256": "71007b8e2be5d62468e1449c4e64e0f00af554a3554ba5222cb8b2555f8922cc",
+      "bytes": 1342
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useDiskDisplayData.ts",
+      "sha256": "d63b30274209e33830b2ac14f64c3c4ec47d2d1294b596bdf3a9cae88b5835f3",
+      "bytes": 5216
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useDownloads.ts",
+      "sha256": "d59617f96cd5f1ac8fe2fcf4d1d81ddc6f828182ae09e2ad83cccfc3862e0c54",
+      "bytes": 1900
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useEmbedJobs.ts",
+      "sha256": "9b2ef99c4f411bc2275b80a1f5c19e55f467fa05648ae881264ac449e6d9f7c8",
+      "bytes": 2048
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useErrorNotification.ts",
+      "sha256": "9e2afa19772a56eab9ca0e020b15a55ec4c2b2cb36deaab79276a04a3cd995b8",
+      "bytes": 1184
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useInternetStatus.ts",
+      "sha256": "09e4a33451d932c3309fd0ab73ec743cd71538431aacb0ad15f196a1af5c7791",
+      "bytes": 1918
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useMapMarkers.ts",
+      "sha256": "67af5e3d982ac42d2df6f2d196bfc653b2324653eef3320660497e7d99f85f2a",
+      "bytes": 3495
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useMapRegionFiles.ts",
+      "sha256": "9e3a2c7dcff8108bc63ed978983a08aedee404726fcefee6611e57dd958749e7",
+      "bytes": 1177
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useOllamaModelDownloads.ts",
+      "sha256": "5fd5fce4a42fac4e13618ae1458b38b852f94cd3a94c68848dfd76308f33a738",
+      "bytes": 5356
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useServiceInstallationActivity.ts",
+      "sha256": "b203c7f744e8fa90b32f7537c3812578f2d55da20c2a31bed99b3771eedd472b",
+      "bytes": 1759
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useServiceInstalledStatus.tsx",
+      "sha256": "7d5779f2d1fb9f3830c51ef88bbcab87ef01acf168f2ae4de7429a613c36b338",
+      "bytes": 1377
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useSystemInfo.ts",
+      "sha256": "035d6b9b849f32d82b346d0b19e4ea30e2ef26e8590423fbf2531fe8c8674106",
+      "bytes": 1427
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useSystemSetting.ts",
+      "sha256": "2c4a85361d4804d2d6dda9d01827ec13bea0de125f6fd6ea940e597ec6b432e9",
+      "bytes": 1451
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useTheme.ts",
+      "sha256": "332c5409ffd0d6d082370ae4066b5455da4c87b8990a99ee7934acbcf918f89b",
+      "bytes": 2186
+    },
+    {
+      "path": "admin\\inertia\\hooks\\useUpdateAvailable.ts",
+      "sha256": "51e41d5c6854fe2c6be89c3cb3d7d074f9eae0b06198e939355fe5e8b188c32b",
+      "bytes": 1311
+    },
+    {
+      "path": "admin\\inertia\\layouts\\AppLayout.tsx",
+      "sha256": "9c616b28c2bddd1fc8ae45af03dd015c7acf2c072e62af37e823aa634bfccb2f",
+      "bytes": 3435
+    },
+    {
+      "path": "admin\\inertia\\layouts\\DocsLayout.tsx",
+      "sha256": "b2b0c70bfe63c589b34bf5feada7939cc903cab3ea62a423d8525d2dea7c2880",
+      "bytes": 1673
+    },
+    {
+      "path": "admin\\inertia\\layouts\\MapsLayout.tsx",
+      "sha256": "c426faa9dee512c5dd0f7c0411c0fb6c482d87f63a6acafe1a9831a2f388f2d6",
+      "bytes": 1100
+    },
+    {
+      "path": "admin\\inertia\\layouts\\SettingsLayout.tsx",
+      "sha256": "01c848308ed92f6a7cdfc01000fcfa4f60871330ec783876b159f919e7fb594f",
+      "bytes": 3608
+    },
+    {
+      "path": "admin\\inertia\\lib\\api.ts",
+      "sha256": "9d57c90e74494f8a067f9932ef4cb36b8b55216a3d2f8c8f122727c1d55a7ecc",
+      "bytes": 41422
+    },
+    {
+      "path": "admin\\inertia\\lib\\benchmarkScore.ts",
+      "sha256": "fed1029105d22a25f5d6b4aa3ee5683a68e71d16e00c94fc22d865edca3f5d62",
+      "bytes": 2058
+    },
+    {
+      "path": "admin\\inertia\\lib\\builderTagWords.ts",
+      "sha256": "dc136948ef211b7338a3fd86340757d35f4683792d3863391221cfdb897788e7",
+      "bytes": 3407
+    },
+    {
+      "path": "admin\\inertia\\lib\\classNames.ts",
+      "sha256": "6769713825ab75388c86552db75e271b898ee38268229797941637ab6c65bb06",
+      "bytes": 938
+    },
+    {
+      "path": "admin\\inertia\\lib\\collections.ts",
+      "sha256": "1b921200942ad61058cbb32c03edc669603d94130b35edd1420adcdc678219ee",
+      "bytes": 1800
+    },
+    {
+      "path": "admin\\inertia\\lib\\global_map_banner.ts",
+      "sha256": "d5b12a6e88b46b1c77df7c1f49a7dbe7072af23591810f9d862d58511ead098b",
+      "bytes": 1108
+    },
+    {
+      "path": "admin\\inertia\\lib\\icons.ts",
+      "sha256": "f141c5d757fb6b2c137462f5236b62d18243654f529a36c0021446be5816d353",
+      "bytes": 3405
+    },
+    {
+      "path": "admin\\inertia\\lib\\kb_file_grouping.ts",
+      "sha256": "535333213e115fd73908716c02f0d414cfbb255763e770aeafe04467df28056d",
+      "bytes": 6899
+    },
+    {
+      "path": "admin\\inertia\\lib\\kb_guardrail.ts",
+      "sha256": "efa6e69bbdf0f0620a131461cf0e99fb0215fd1d43332d03968cc9809ea24d9c",
+      "bytes": 3300
+    },
+    {
+      "path": "admin\\inertia\\lib\\kb_job_health_display.ts",
+      "sha256": "c3f5e5608c95c31f4e4aa07ce4c8b6958c52fec7cfa41b2abed59262fdcd05c6",
+      "bytes": 2880
+    },
+    {
+      "path": "admin\\inertia\\lib\\navigation.ts",
+      "sha256": "90bb18ca5e9104392c4bfd02d01244bd68f112b07ffba4b2739d01e7195a3da7",
+      "bytes": 3260
+    },
+    {
+      "path": "admin\\inertia\\lib\\util.ts",
+      "sha256": "be72cdc1f26d92ed32e00b0c1d3616f3dc3500590913d0f46a6bce6a4f21e7c3",
+      "bytes": 4198
+    },
+    {
+      "path": "admin\\inertia\\pages\\about.tsx",
+      "sha256": "f2196dd195ba1c47941cfe5cc55947ef6aeda6c94959c31b8c3bca55289f722c",
+      "bytes": 997
+    },
+    {
+      "path": "admin\\inertia\\pages\\chat.tsx",
+      "sha256": "10d193dae2dcc4fc5361ea797537c66f455ecf506fdbef5d1930cab492fbb6f0",
+      "bytes": 1281
+    },
+    {
+      "path": "admin\\inertia\\pages\\conditions\\show.tsx",
+      "sha256": "93c4c8f4f9a0e5153a57ae514071d82a26b34e411be177fd8551378dea78e254",
+      "bytes": 9355
+    },
+    {
+      "path": "admin\\inertia\\pages\\docs\\show.tsx",
+      "sha256": "726a0ad0e2417db1c50c5607e8e377d73610421d635171ac85c0aceaa393745c",
+      "bytes": 1927
+    },
+    {
+      "path": "admin\\inertia\\pages\\drug-reference\\index.tsx",
+      "sha256": "46ac53492535ec654f9437638059d7ef494fe010279cb4a7d8557ac92bad7406",
+      "bytes": 44986
+    },
+    {
+      "path": "admin\\inertia\\pages\\drug-reference\\interactions.tsx",
+      "sha256": "16d910db42dbb2a0aab9a4b32921578504d8febd183db9e1a83c42bcd2b39fee",
+      "bytes": 17003
+    },
+    {
+      "path": "admin\\inertia\\pages\\drug-reference\\show.tsx",
+      "sha256": "bf2901b3cea36435b2cf7180ab62f36d74ae56fbbb37f6e1d4c48bb54121b983",
+      "bytes": 10029
+    },
+    {
+      "path": "admin\\inertia\\pages\\easy-setup\\complete.tsx",
+      "sha256": "800ad5bf424027d6455935a14b95f43fe45383fc305b135f973d5efe0980dfcb",
+      "bytes": 3102
+    },
+    {
+      "path": "admin\\inertia\\pages\\easy-setup\\index.tsx",
+      "sha256": "b223e52f35f8d2cc25202da918005b2dce4aa1ae89c204b9a1197882174042ec",
+      "bytes": 63122
+    },
+    {
+      "path": "admin\\inertia\\pages\\errors\\not_found.tsx",
+      "sha256": "9834082a92295bcbf57f0af72d998db17e8362cd6753d6756760fd72181a5ad1",
+      "bytes": 1033
+    },
+    {
+      "path": "admin\\inertia\\pages\\errors\\server_error.tsx",
+      "sha256": "e5640b2952ef459ed6b61851e28f200d48605f2a886f0cd5048743fe8341f316",
+      "bytes": 1051
+    },
+    {
+      "path": "admin\\inertia\\pages\\home.tsx",
+      "sha256": "f9fd8b69ab0502c66466809f7a1dce164b85ad8b182c8ee5fc00e4ce43b865d8",
+      "bytes": 9946
+    },
+    {
+      "path": "admin\\inertia\\pages\\maps.tsx",
+      "sha256": "9486ed6877fd05be085fb61e5ae76220d33dc6637c4bb78b5e710ae90a3abe2e",
+      "bytes": 4259
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\advanced.tsx",
+      "sha256": "00004ffe13582e65c4912b0f5592f1faf8957cb7c5524e650eca5ba6bb1ff009",
+      "bytes": 5977
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\apps.tsx",
+      "sha256": "776f57faed5be6e177d2fcf45e35744e687251b0c092a629534bac62b7537c39",
+      "bytes": 17811
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\benchmark.tsx",
+      "sha256": "21a0aedbe01c82965f3d447d6a9e98e728ad3e632b12acc22bb60bab14efadaa",
+      "bytes": 49060
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\creator-packs.tsx",
+      "sha256": "b1d6482fc0eb3c2d55d965e9bf89d8fa3bf69fcab0d2a3a9fd4e5b57c9388f25",
+      "bytes": 2078
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\legal.tsx",
+      "sha256": "3341be9192bcd2dd038b58dc335d58c5cb2bad476abb9bb875dbb77ce38fdf4f",
+      "bytes": 9333
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\maps.tsx",
+      "sha256": "28292c1223403b5ab5008e29f49817150327bd88dfff25e682c5852ea0b4fd97",
+      "bytes": 17283
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\models.tsx",
+      "sha256": "372b3c29084cdbf7a4696e508509055e85decf37f3bd259b9e3a2f43e645bc89",
+      "bytes": 25677
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\support.tsx",
+      "sha256": "66b956d59b43c152eaa93a86b518d9df1832e6e3de4b70c01a8f35ed62844f91",
+      "bytes": 5259
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\system.tsx",
+      "sha256": "5416034e1b6f29c4b6e97da63820dfcae3686e78eadb352519d0c760f3a3bd78",
+      "bytes": 15883
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\update.tsx",
+      "sha256": "66fae53f17fac78969c4b6eafdae1a453c3c815455e5841a512773dff3be92e2",
+      "bytes": 23267
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\zim\\index.tsx",
+      "sha256": "230427f0048b25f4547f408c0da91bdcd7bd268000b7e7b045fb2bb04001a667",
+      "bytes": 10187
+    },
+    {
+      "path": "admin\\inertia\\pages\\settings\\zim\\remote-explorer.tsx",
+      "sha256": "0dce044bc6b3f6ae98b2c45063e5a906a8daa375e7fedf4d32459dc09710fc49",
+      "bytes": 39622
+    },
+    {
+      "path": "admin\\inertia\\pages\\supply-depot.tsx",
+      "sha256": "44bdda4da36e71fdf544227fec05f65ea8ad3e0dc7155f3f538d695242508929",
+      "bytes": 50421
+    },
+    {
+      "path": "admin\\inertia\\providers\\ModalProvider.tsx",
+      "sha256": "cb28feeb17c0851eb290bfa7690a5107958e61d58bc897417b4150f402bf7008",
+      "bytes": 2309
+    },
+    {
+      "path": "admin\\inertia\\providers\\NotificationProvider.tsx",
+      "sha256": "ba1d1ba8e5cc993db8751fa974ea0b26a387550385003e8146b8e90ee5e3922d",
+      "bytes": 3533
+    },
+    {
+      "path": "admin\\inertia\\providers\\ThemeProvider.tsx",
+      "sha256": "164cdad05eb76d944442fb6ec52d254b3304a3c397c699c78b060e18a6240855",
+      "bytes": 1461
+    },
+    {
+      "path": "admin\\providers\\gpu_passthrough_remediation_provider.ts",
+      "sha256": "9e47ff60e6b110015d5fdae71b229d82834cc5020369621ce29167c4261164bc",
+      "bytes": 5808
+    },
+    {
+      "path": "admin\\providers\\kiwix_migration_provider.ts",
+      "sha256": "b1c136a125dde9794a7d19bc972bb569ef0fcda52ae9b7f8ad2fd70e10e23829",
+      "bytes": 3668
+    },
+    {
+      "path": "admin\\providers\\map_static_provider.ts",
+      "sha256": "02113a0279f2bdcf5feaab840cae28f10daad156aec1ae1b071ffcf67801ff83",
+      "bytes": 1905
+    },
+    {
+      "path": "admin\\providers\\qdrant_restart_policy_provider.ts",
+      "sha256": "51654e41f58fbd2a0d91634871b24434de74d3d99e4d467fe4246d73f42522c1",
+      "bytes": 3527
+    },
+    {
+      "path": "admin\\providers\\version_check_provider.ts",
+      "sha256": "86e8f3f11f137ba50ccdcb1f86fcd35c1386ea14b08419858c2053d537c0707e",
+      "bytes": 3456
+    },
+    {
+      "path": "admin\\public\\cairn_logo.svg",
+      "sha256": "448a340ee7ab523ee51d32a745201a64f9fbc17d31f5b4e15c5cc9dec41431e3",
+      "bytes": 1530
+    },
+    {
+      "path": "admin\\public\\favicon.svg",
+      "sha256": "86a4cdcc081c44d45227d18a2396d34bf37140d13abab59c8cd2f34782791158",
+      "bytes": 1219
+    },
+    {
+      "path": "admin\\public\\powered_by_crosstalk.svg",
+      "sha256": "6f2e6172258b4092f936f504ca0cc6e8579c4a66b5f38fe13ca268576e9ec44d",
+      "bytes": 34546
+    },
+    {
+      "path": "admin\\scripts\\audit_catalog_ports.py",
+      "sha256": "e88a867a99df6416f98da731557516be7a9f7d0ba84842109c1aaa065f8621b0",
+      "bytes": 9087
+    },
+    {
+      "path": "admin\\scripts\\generate_curated_data.ts",
+      "sha256": "8f4fc34b72b6ee59744a294db49201111024212294f4781d7d5e422bf3ce5058",
+      "bytes": 3879
+    },
+    {
+      "path": "admin\\start\\env.ts",
+      "sha256": "af731039da17fa09f2a6e1bd543954a13d2dd814092b8371c85651c96394bb7c",
+      "bytes": 3882
+    },
+    {
+      "path": "admin\\start\\kernel.ts",
+      "sha256": "67fb3fcfd123f1a9b634342fa5e4e3aa16cd61152d11cc2d3ff11cada7f4193b",
+      "bytes": 2360
+    },
+    {
+      "path": "admin\\start\\openapi\\documented.ts",
+      "sha256": "eb5b5f5a2fa2fe946d4f8f9fb1285757cef5f1003c074033e66e4a6ff0a38fbb",
+      "bytes": 3633
+    },
+    {
+      "path": "admin\\start\\openapi\\generator.ts",
+      "sha256": "0d3e0d064562d7cfb6470b5aed9829b774b889f2dc021a057ef60ba5d281bfc4",
+      "bytes": 8740
+    },
+    {
+      "path": "admin\\start\\routes.ts",
+      "sha256": "73126e4e53b1fe3e6d2193e83ccaee4fb6b41e809a772c13307e8399db4968d5",
+      "bytes": 34900
+    },
+    {
+      "path": "admin\\tailwind.config.ts",
+      "sha256": "8b835d2f1628d58a1b07579ac4985f34de5caa8764503afd529f94dcbcbea80f",
+      "bytes": 1093
+    },
+    {
+      "path": "admin\\tests\\bootstrap.ts",
+      "sha256": "1e709c701e12b2054d317b9d62d7d76700ae881c54cf0590e03dd4f4be66ebf3",
+      "bytes": 2006
+    },
+    {
+      "path": "admin\\tests\\functional\\openapi.spec.ts",
+      "sha256": "ee549064888dc15c128d2d1087ac6be63fd5b832ab1a84e2ea99a549a0211b86",
+      "bytes": 3308
+    },
+    {
+      "path": "admin\\tests\\standalone\\conditions.standalone.ts",
+      "sha256": "c64109687a89dcb2cf30280593548d6a760aa76a73e4ce3d0fe03da5d458de1f",
+      "bytes": 12747
+    },
+    {
+      "path": "admin\\tests\\standalone\\curated_data_sync.standalone.ts",
+      "sha256": "0516dc033f409ebc3afe40a2a3de697de20e5f104f3edb1407c16dff9604062e",
+      "bytes": 2610
+    },
+    {
+      "path": "admin\\tests\\standalone\\drug_ingest_status.standalone.ts",
+      "sha256": "6abddcb883fd3147b46cf21e6d509c81f58545c89fefb1bcce5d1f81e027cdaf",
+      "bytes": 9332
+    },
+    {
+      "path": "admin\\tests\\standalone\\drug_interactions.standalone.ts",
+      "sha256": "499900df263a3e71b62b9f7240f5d7bc715e17a2682d489abf38b1b712b1784d",
+      "bytes": 8160
+    },
+    {
+      "path": "admin\\tests\\standalone\\drug_tier_rework.standalone.ts",
+      "sha256": "600f0862170b3147539a8a778d69d222d78b7351b415e5b1598415b807740990",
+      "bytes": 5144
+    },
+    {
+      "path": "admin\\tests\\standalone\\natural_remedies.standalone.ts",
+      "sha256": "820e52fcdee5b0ff48df744be64794ece48647075b889fc535aa9739a5eec79f",
+      "bytes": 13413
+    },
+    {
+      "path": "admin\\tests\\unit\\amd_hsa_override.spec.ts",
+      "sha256": "86e4c1f21c973253f729aec7ebc9575ec40006dbff97aee682b237a9ca797922",
+      "bytes": 2126
+    },
+    {
+      "path": "admin\\tests\\unit\\app_auto_update.spec.ts",
+      "sha256": "d8dc6310a44200f0d468ac03e576e50fe126f41b28b1d3de0962c6c87d141b6a",
+      "bytes": 5509
+    },
+    {
+      "path": "admin\\tests\\unit\\cloud_metadata_url.spec.ts",
+      "sha256": "26b63e37630dd47d9942672609ed6cca82fbe865ab562f7c13c296a7f6307014",
+      "bytes": 2554
+    },
+    {
+      "path": "admin\\tests\\unit\\collection_update_traversal.spec.ts",
+      "sha256": "ff36163ea01601980621fb38b91f70743bbfd0873eb3f4a61ca320a29d1873c8",
+      "bytes": 6393
+    },
+    {
+      "path": "admin\\tests\\unit\\content_auto_update.spec.ts",
+      "sha256": "a31b4b676003fe9271f41ea472b2b66019046c9f3ccf3ab6d7b8a015ba0951ef",
+      "bytes": 9168
+    },
+    {
+      "path": "admin\\tests\\unit\\content_auto_update_backoff.spec.ts",
+      "sha256": "fbf5681ea77c5858e2106a0964c1d8d783eee15df5162ec49016bb21ae5f97b1",
+      "bytes": 4236
+    },
+    {
+      "path": "admin\\tests\\unit\\content_reindex_decision.spec.ts",
+      "sha256": "0d696668ed60e4670558c47b9dc134c1fabdc4e8bca56bde84580c6e25763b06",
+      "bytes": 3203
+    },
+    {
+      "path": "admin\\tests\\unit\\curated_resource_schema.spec.ts",
+      "sha256": "e141275f6e3e322e8da6f02df46cc7f9caf293a28d803773260a0fc5ffda4b6a",
+      "bytes": 3745
+    },
+    {
+      "path": "admin\\tests\\unit\\custom_app_guard.spec.ts",
+      "sha256": "7f305db82fc1ac95dd3d3d16e733dad4f29c44dfc629204adecf94a084f46684",
+      "bytes": 5662
+    },
+    {
+      "path": "admin\\tests\\unit\\drug_ingest_status.spec.ts",
+      "sha256": "b63d24882c71f947f2f20e99a40b0b7c41c0d7e9873dc7d537ff5c5ae5dc28d0",
+      "bytes": 9114
+    },
+    {
+      "path": "admin\\tests\\unit\\drug_interactions.spec.ts",
+      "sha256": "440337791cb85f8a8949d637857faec8c432e6ab83bc2ce983dabc441aa8292b",
+      "bytes": 4881
+    },
+    {
+      "path": "admin\\tests\\unit\\drug_labels.spec.ts",
+      "sha256": "aa6cdcc0569f82d3e7157485ec87ef6e388d28b895f813e268b8c7337ccdb502",
+      "bytes": 14523
+    },
+    {
+      "path": "admin\\tests\\unit\\global_map_banner.spec.ts",
+      "sha256": "c513e3eee894b348cf7cb4f2decb9c241507c171913539c767a545bcb87291ba",
+      "bytes": 1837
+    },
+    {
+      "path": "admin\\tests\\unit\\kb_file_grouping.spec.ts",
+      "sha256": "f2ba8328aa2661915a2744e2ab6f1434455f32c6ef1adb2948f52e412223ee4e",
+      "bytes": 9368
+    },
+    {
+      "path": "admin\\tests\\unit\\kb_guardrail.spec.ts",
+      "sha256": "adb0fba928bf9000b92e583d51d0cc82264ddd41b2bf858e176ffb2aaa3f0090",
+      "bytes": 4369
+    },
+    {
+      "path": "admin\\tests\\unit\\kb_ingest_decision.spec.ts",
+      "sha256": "5bfaa03e5444f27f2a4111d2610277d309c8eff48daa2028896375a9f3775bec",
+      "bytes": 4113
+    },
+    {
+      "path": "admin\\tests\\unit\\kb_job_health.spec.ts",
+      "sha256": "a88646c29e9135ec19c66e9be61da87553bfb289c3782e62e299254c169571a9",
+      "bytes": 3210
+    },
+    {
+      "path": "admin\\tests\\unit\\kb_ratio_lookup.spec.ts",
+      "sha256": "caa298873286985479147a6f96456a6a3dc2377413738672752f8e96d26dcc6e",
+      "bytes": 6235
+    },
+    {
+      "path": "admin\\tests\\unit\\kb_warning_decision.spec.ts",
+      "sha256": "cf1f04c9571f0b68c4cd7fb954ec78db18dae294ffce06e7e2571e1a2d888930",
+      "bytes": 4388
+    },
+    {
+      "path": "admin\\tests\\unit\\platform_metadata.spec.ts",
+      "sha256": "bc132c5d24c80391ab90478bfeaa6a1a7551907291fd27b5dd8be53601576b7a",
+      "bytes": 3401
+    },
+    {
+      "path": "admin\\tests\\unit\\private_url.spec.ts",
+      "sha256": "fd068a6f75e2ccc8d6ecbe7fe8eab2d4aba0e78214edf880459d0054d31e1a0f",
+      "bytes": 2890
+    },
+    {
+      "path": "admin\\tests\\unit\\superseded_resource.spec.ts",
+      "sha256": "1057bbe869544117331b6a2cd8812db1777ba892eb576493b84f3de6f4613ce2",
+      "bytes": 4480
+    },
+    {
+      "path": "admin\\tests\\unit\\zim_download_resolution.spec.ts",
+      "sha256": "4bf9fb6d248fa3b5ef9a4f35b5bd3b0c9f9c1bf43971487e72388241b004c5e9",
+      "bytes": 5197
+    },
+    {
+      "path": "admin\\tests\\unit\\zim_filename.spec.ts",
+      "sha256": "5f0ef01e427ba0d8746465d3b9383068901b2bab67605bce4545f0eb2bb62a39",
+      "bytes": 3309
+    },
+    {
+      "path": "admin\\tests\\unit\\zim_html.spec.ts",
+      "sha256": "08441b36762c8d6ea80dbead57980ee362284c87f1a8a48868164b0354fb7c40",
+      "bytes": 4256
+    },
+    {
+      "path": "admin\\types\\benchmark.ts",
+      "sha256": "e191891505581b080974c021c5fccffda88a8ffe53044eba0e1422df4b6defae",
+      "bytes": 9989
+    },
+    {
+      "path": "admin\\types\\chat.ts",
+      "sha256": "d9aa6b7da9ab293820d8eb7b06336c9649df4fc3926e8a566a9580428c4a3c43",
+      "bytes": 1146
+    },
+    {
+      "path": "admin\\types\\collections.ts",
+      "sha256": "ee38183423274565f2db7e10962f8f9a31ad32277dda70e88aa20bec36ca5c0b",
+      "bytes": 5854
+    },
+    {
+      "path": "admin\\types\\conditions.ts",
+      "sha256": "99e4040d78f064bf16d2aeaef027b25e839d53996b1a8a61491de1c8ab034f06",
+      "bytes": 5950
+    },
+    {
+      "path": "admin\\types\\docker.ts",
+      "sha256": "6ba972382a3d7a433556e67f418ed762f51c84901f5c0e94e096e0914720fbb5",
+      "bytes": 1042
+    },
+    {
+      "path": "admin\\types\\downloads.ts",
+      "sha256": "9d1b1f7d18df6f122fb6c57a272b13f63be4f1cfb1955d5a7d33355db7a0f725",
+      "bytes": 3839
+    },
+    {
+      "path": "admin\\types\\drug_reference.ts",
+      "sha256": "8925c392f2256f3aa3f7bd16159b5defabfbe0a7f311a3d60ac4822bc07cfda7",
+      "bytes": 10508
+    },
+    {
+      "path": "admin\\types\\files.ts",
+      "sha256": "5b65574504ddf957e44e0d04eaad5798e9a7241960b468b31ba17e262623e42a",
+      "bytes": 1501
+    },
+    {
+      "path": "admin\\types\\kb_ingest_state.ts",
+      "sha256": "81d06f48447ca1606f8ecbf776d17ed36682034edcc8aeef67fb102bf52b28db",
+      "bytes": 1007
+    },
+    {
+      "path": "admin\\types\\kv_store.ts",
+      "sha256": "a29b09b623c76e943b8c5beb1668eb4d9190048aec08162d6f55988e7cfd447e",
+      "bytes": 4727
+    },
+    {
+      "path": "admin\\types\\maps.ts",
+      "sha256": "964b0126fb2d0e6200d25fd2bd805645cedc4b1c6bc8249a24dcbb60034f764c",
+      "bytes": 1850
+    },
+    {
+      "path": "admin\\types\\ollama.ts",
+      "sha256": "b9c913ad3a81af82f56b91d53a179ae7c04a8f2b7990a2f3c5e296a9f11a8e8e",
+      "bytes": 2166
+    },
+    {
+      "path": "admin\\types\\rag.ts",
+      "sha256": "bcd336dbf3046f161941535382a48854b97e179248062e7422fe1fd6ce0e2c23",
+      "bytes": 3519
+    },
+    {
+      "path": "admin\\types\\services.ts",
+      "sha256": "8528ccee8d030466c5e3b14ff350d51bbce4dfaf849dd1028000828122d31518",
+      "bytes": 1281
+    },
+    {
+      "path": "admin\\types\\system.ts",
+      "sha256": "74c38034ce246686ca0dcdbe320860fdf16805bf5a6e1f20e49a8c48b351c169",
+      "bytes": 4707
+    },
+    {
+      "path": "admin\\types\\util.ts",
+      "sha256": "ca6367dccba59b725bdca096b8db08205c2cabf52fb6861a3879b055007492bd",
+      "bytes": 812
+    },
+    {
+      "path": "admin\\types\\zim.ts",
+      "sha256": "b3e0a12f898ed0f822a0283402dc61400cef08e1c0971bb595876ac155c6dec8",
+      "bytes": 3505
+    },
+    {
+      "path": "admin\\util\\compare_ids.ts",
+      "sha256": "1f020e7459e915416e26b5fd6bd9476be8cc17da85dfe10a1b746ec13efb6460",
+      "bytes": 2474
+    },
+    {
+      "path": "admin\\util\\conditions.ts",
+      "sha256": "349ea4b78a7ab2311f14262bb04d4320beb5afe90090758bec38ca7ddabeea46",
+      "bytes": 14864
+    },
+    {
+      "path": "admin\\util\\docs.ts",
+      "sha256": "f42ecdd05a3a7744906aec934f8a6d31ff4d74d00878575b94fa93fe81732234",
+      "bytes": 1080
+    },
+    {
+      "path": "admin\\util\\drug_interactions.ts",
+      "sha256": "a3d93b0e1558498bd87083752763ab23138b419070a61f0a6a8de63baddf8edc",
+      "bytes": 5046
+    },
+    {
+      "path": "admin\\util\\drug_labels.ts",
+      "sha256": "f9b6ba02b1e9e943e26207499e00d27a4c3a0c40fc0e2ff87a9d6c9e42242a93",
+      "bytes": 23727
+    },
+    {
+      "path": "admin\\util\\files.ts",
+      "sha256": "7cf80bb77d76e07b7eba742bfa845a4823235eb3a4ff0f5e0bd3f59ee80e3df9",
+      "bytes": 2302
+    },
+    {
+      "path": "admin\\util\\zim.ts",
+      "sha256": "e271505ec57eed484c7176287eba5651e41e75bb33a88eb915b3af75db712bca",
+      "bytes": 1620
+    },
+    {
+      "path": "admin\\vite.config.ts",
+      "sha256": "2a91614cf1696b0c2f6bd333ac4fdc17bbccc31501a4faa4fbc021cab693c566",
+      "bytes": 1626
+    },
+    {
+      "path": "collections\\CATEGORIES-TODO.md",
+      "sha256": "7cae292d61e78157a4065a818537a4d71e011f8a9f516d18e02dfe31cc9bddc2",
+      "bytes": 3576
+    },
+    {
+      "path": "collections\\creator-pack-license.md",
+      "sha256": "fc26e43c41be66b94b51ab97a4403a8311d365bcfafad1ea82ef7ec8be808b87",
+      "bytes": 4661
+    },
+    {
+      "path": "install\\calibre-empty-library\\README.md",
+      "sha256": "7db782eee7b97ce3bb411737790656016afd767ea2f7f6c5388fb76a4b8fd75f",
+      "bytes": 1755
+    },
+    {
+      "path": "install\\collect_disk_info.sh",
+      "sha256": "4f47284576001018ef80b251ba605d34ef8880449e893ca151fc1e1a42fd231b",
+      "bytes": 1459
+    },
+    {
+      "path": "install\\entrypoint.sh",
+      "sha256": "60d45087fc0b2b7896dd20819ac5f7605756553aafd3f97317c33e4afd4bf982",
+      "bytes": 2614
+    },
+    {
+      "path": "install\\install_cairn.sh",
+      "sha256": "741c90bd7ac665f8dfeb63373b27a0ea0c1d2165b43ad739ad7967acb0adb72a",
+      "bytes": 33206
+    },
+    {
+      "path": "install\\management_compose.yaml",
+      "sha256": "fcd0cad7481b2fb60275eb8bd22a47320ad135da4a83209304145e06acb579a8",
+      "bytes": 8963
+    },
+    {
+      "path": "install\\migrate-disk-collector.md",
+      "sha256": "4c87f37a10e60892e2e1e5cf72c6c6f1f143457a7a85c23ad06cbbf79094029b",
+      "bytes": 4792
+    },
+    {
+      "path": "install\\migrate-disk-collector.sh",
+      "sha256": "741c795c9618541be62f7ec4ff6fa2c5b5b271e0a66fdb7c72361b5af855bbfd",
+      "bytes": 10945
+    },
+    {
+      "path": "install\\run_updater_fixes.sh",
+      "sha256": "a5c16e3b728598c948e0fc613ce3d12b57630d26d7c666103a44f15b2ec408ce",
+      "bytes": 10951
+    },
+    {
+      "path": "install\\sidecar-disk-collector\\Dockerfile",
+      "sha256": "bfd9eba39e7d4168582e10fc5d659bbff618fb755b90546233de8a41b447085f",
+      "bytes": 1048
+    },
+    {
+      "path": "install\\sidecar-disk-collector\\collect-disk-info.sh",
+      "sha256": "6e5fbb7817311ee6563ff6fe305c5d3d006a4d5b76b891b9351ccaf193a4dfbb",
+      "bytes": 4948
+    },
+    {
+      "path": "install\\sidecar-updater\\Dockerfile",
+      "sha256": "322ad97ad30e7e6a9fa4465355e0b02c282fc525d401d099e8248a51056c1129",
+      "bytes": 1188
+    },
+    {
+      "path": "install\\sidecar-updater\\update-watcher.sh",
+      "sha256": "1b111ce672d8457aa3290f5404891eec10f7650724b4ae9a61e159f9cddab24d",
+      "bytes": 10960
+    },
+    {
+      "path": "install\\start_cairn.sh",
+      "sha256": "2d2d2a4a127f8136e65c125e39288faf2d0954ecf64cdd4a7eb3349b1e362ede",
+      "bytes": 1469
+    },
+    {
+      "path": "install\\stop_cairn.sh",
+      "sha256": "8a819818061755a3cf6d40eaaa16650d007c537c3c2072f4386cec33e927f154",
+      "bytes": 1450
+    },
+    {
+      "path": "install\\uninstall_cairn.sh",
+      "sha256": "628036db73921252104f0597acdf606e8859776e35f4d534b0e716c4559b9d10",
+      "bytes": 9841
+    },
+    {
+      "path": "install\\update_cairn.sh",
+      "sha256": "a6e1d2039948977fff5042332d96c913bad992fb4bd30edbf663d6fd7706a117",
+      "bytes": 9495
     }
   ]
 }
