@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌​‌​​​‌‌​​‌‌​‌​‌‌​​​​‌​​‌​‌‌​‌‌‌‌​​​​‌‌​‌‌‌​​‌‌​​‌‌‌​​‌‌‌​​‌​‌​​‌‌​​​‌‌​​​‌​​‌​‌​‌​‌​​‌‌​‌​​​‌‌‌‌​‌​​​‌‌‌​​‌​‌‌‌​​​‌​‌‌​‌​​​​​‌‌​‌‌​​​‌‌​​‌​​‌​​​​‌​​​‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌​​‌​​​​‌​​‌​‌‌‌‌‌​‌‌​​​‌‌​‌​‌​​‌‌​‌​​​‌‌​​‌​​‌​‌‌​‌​‌​‌‌​​‌‌​‌​​​​‌​​​​‌​​‌​​‌‌‌​​‌‌​​​‌​​‌​​‌​‌​​‌‌​‌​​‌​‌​‌‌​​‌​‌‌​‌‌​​​‌​‌​​​‌​‌​​‌‌​​​‌​‌‌​​‌​‌​​‌​​​​​‌‌​‌‌​​‌​‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.nnJ3XKxng9LbU4z9qh62B6
+ * Fingerprint: AMK1.RB_cSFKVhBNbJiYlQLYH6V
  */
 import logger from '@adonisjs/core/services/logger'
 import axios from 'axios'
@@ -11,11 +11,8 @@ import { DateTime } from 'luxon'
 import InstalledResource from '#models/installed_resource'
 import { RunDownloadJob } from '../jobs/run_download_job.js'
 import { ZIM_STORAGE_PATH } from '../utils/fs.js'
-import { join } from 'path'
-import type {
-  ResourceUpdateInfo,
-  ContentUpdateCheckResult,
-} from '../../types/collections.js'
+import { join, resolve, sep } from 'path'
+import type { ResourceUpdateInfo, ContentUpdateCheckResult } from '../../types/collections.js'
 import { KiwixCatalogService, reconcileResourceUpdateState } from './kiwix_catalog_service.js'
 import { CollectionManifestService } from './collection_manifest_service.js'
 
@@ -106,52 +103,62 @@ export class CollectionUpdateService {
     update: ResourceUpdateInfo,
     options?: { auto?: boolean }
   ): Promise<{ success: boolean; jobId?: string; error?: string }> {
-    // Check if a download is already in progress for this URL
-    const existingJob = await RunDownloadJob.getByUrl(update.download_url)
-    if (existingJob) {
-      const state = await existingJob.getState()
-      if (state === 'active' || state === 'waiting' || state === 'delayed') {
-        return {
-          success: false,
-          error: `A download is already in progress for ${update.resource_id}`,
+    try {
+      // Check if a download is already in progress for this URL
+      const existingJob = await RunDownloadJob.getByUrl(update.download_url)
+      if (existingJob) {
+        const state = await existingJob.getState()
+        if (state === 'active' || state === 'waiting' || state === 'delayed') {
+          return {
+            success: false,
+            error: `A download is already in progress for ${update.resource_id}`,
+          }
         }
       }
+
+      const filename = this.buildFilename(update)
+      const filepath = this.buildFilepath(update, filename)
+
+      const result = await RunDownloadJob.dispatch({
+        url: update.download_url,
+        filepath,
+        timeout: 30000,
+        allowedMimeTypes: update.resource_type === 'zim' ? ZIM_MIME_TYPES : PMTILES_MIME_TYPES,
+        filetype: update.resource_type,
+        title: update.resource_id,
+        totalBytes: update.size_bytes,
+        resourceMetadata: {
+          resource_id: update.resource_id,
+          version: update.latest_version,
+          collection_ref: null,
+          auto: options?.auto ?? false,
+        },
+      })
+
+      if (!result || !result.job) {
+        return { success: false, error: 'Failed to dispatch download job' }
+      }
+
+      logger.info(
+        `[CollectionUpdateService] Dispatched update download for ${update.resource_id}: ${update.installed_version} → ${update.latest_version}`
+      )
+
+      return { success: true, jobId: result.job.id }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unknown error during update dispatch'
+      logger.error(
+        `[CollectionUpdateService] Failed to dispatch update download for ${update.resource_id}: ${message}`
+      )
+      return { success: false, error: message }
     }
-
-    const filename = this.buildFilename(update)
-    const filepath = this.buildFilepath(update, filename)
-
-    const result = await RunDownloadJob.dispatch({
-      url: update.download_url,
-      filepath,
-      timeout: 30000,
-      allowedMimeTypes:
-        update.resource_type === 'zim' ? ZIM_MIME_TYPES : PMTILES_MIME_TYPES,
-      filetype: update.resource_type,
-      title: update.resource_id,
-      totalBytes: update.size_bytes,
-      resourceMetadata: {
-        resource_id: update.resource_id,
-        version: update.latest_version,
-        collection_ref: null,
-        auto: options?.auto ?? false,
-      },
-    })
-
-    if (!result || !result.job) {
-      return { success: false, error: 'Failed to dispatch download job' }
-    }
-
-    logger.info(
-      `[CollectionUpdateService] Dispatched update download for ${update.resource_id}: ${update.installed_version} → ${update.latest_version}`
-    )
-
-    return { success: true, jobId: result.job.id }
   }
 
   async applyAllUpdates(
     updates: ResourceUpdateInfo[]
-  ): Promise<{ results: Array<{ resource_id: string; success: boolean; jobId?: string; error?: string }> }> {
+  ): Promise<{
+    results: Array<{ resource_id: string; success: boolean; jobId?: string; error?: string }>
+  }> {
     const results = await Promise.all(
       updates.map(async (update) => {
         const result = await this.applyUpdate(update)
@@ -188,17 +195,43 @@ export class CollectionUpdateService {
     )
   }
 
-  private buildFilename(update: ResourceUpdateInfo): string {
+  buildFilename(update: ResourceUpdateInfo): string {
+    if (
+      !update.resource_id ||
+      update.resource_id.includes('..') ||
+      update.resource_id.includes('/') ||
+      update.resource_id.includes('\\')
+    ) {
+      throw new Error(`Invalid resource_id: "${update.resource_id}"`)
+    }
+    if (
+      !update.latest_version ||
+      update.latest_version.includes('..') ||
+      update.latest_version.includes('/') ||
+      update.latest_version.includes('\\')
+    ) {
+      throw new Error(`Invalid latest_version: "${update.latest_version}"`)
+    }
     if (update.resource_type === 'zim') {
       return `${update.resource_id}_${update.latest_version}.zim`
     }
     return `${update.resource_id}_${update.latest_version}.pmtiles`
   }
 
-  private buildFilepath(update: ResourceUpdateInfo, filename: string): string {
-    if (update.resource_type === 'zim') {
-      return join(process.cwd(), ZIM_STORAGE_PATH, filename)
+  buildFilepath(update: ResourceUpdateInfo, filename: string): string {
+    if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      throw new Error(`Invalid filename: "${filename}"`)
     }
-    return join(process.cwd(), MAP_STORAGE_PATH, 'pmtiles', filename)
+    const baseDir =
+      update.resource_type === 'zim'
+        ? resolve(join(process.cwd(), ZIM_STORAGE_PATH))
+        : resolve(join(process.cwd(), MAP_STORAGE_PATH, 'pmtiles'))
+    const fullPath = resolve(join(baseDir, filename))
+    if (!fullPath.startsWith(baseDir + sep)) {
+      throw new Error(
+        `Path traversal detected: target "${fullPath}" escapes storage root "${baseDir}"`
+      )
+    }
+    return fullPath
   }
 }

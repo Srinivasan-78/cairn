@@ -1,11 +1,11 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌​​​‌​‌​‌​​‌​‌‌​‌‌​‌​‌​​‌‌‌​‌​‌​​‌‌​​​‌​​‌‌​‌​‌​‌‌‌‌​​‌​‌‌‌‌​​​​​‌‌​‌‌​​‌​‌​‌​‌​‌​‌​​​​​‌‌​‌​‌​​​‌‌​‌‌​​​‌‌​‌​‌​‌‌‌‌​‌​​​‌‌​‌‌​​‌‌‌‌​‌​​‌‌​‌‌​​​‌‌‌‌​​‌​‌​​​​​‌​‌‌‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌​​‌​​​‌‌​​‌​​‌​​‌​‌​​​​‌​​‌‌‌​​​‌​‌‌​​​‌​​‌​‌‌​​‌​‌‌​​‌‌​​‌​​‌‌​‌​‌​​​​‌​​‌​​​‌​​​‌​‌​​‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌​​​​​‌​‌​​‌‌‌​​‌​‌​‌​​​‌‌‌​‌‌‌​‌​​‌‌‌‌​‌​‌​​‌​​‌‌‌​‌‌​​‌​​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.yEKju15yx6UPj65z6zlyAy
+ * Fingerprint: AMK1.JFIBqbYfMBDRcVANTwORvJ
  */
-import { dirname, normalize } from 'node:path'
+import { dirname, normalize } from 'node:path/posix'
 import env from '#start/env'
 
 /**
@@ -47,8 +47,8 @@ function isWithin(child: string, ancestor: string): boolean {
 
 /**
  * Evaluate user-supplied bind mounts. Hard-blocks the Docker socket, core system directories,
- * and any mount at or above cairn's own install tree (which would expose its code/data).
- * Warns on any host path outside the managed storage root.
+ * and any mount at or above cairn's own install tree (which would expose its code/data), as well
+ * as any host path outside the managed storage root.
  */
 export function evaluateBindMounts(
   volumes: { host_path: string; container_path: string }[]
@@ -78,7 +78,9 @@ export function evaluateBindMounts(
     // the checks below can't be bypassed by a parse-differential. (The validator blocks this too;
     // this keeps the guard self-defending for any caller that skips validation.)
     if (hostPath.includes(':') || containerPath.includes(':')) {
-      blocked.push(`Volume paths must not contain a colon (":"): "${hostPath}" → "${containerPath}".`)
+      blocked.push(
+        `Volume paths must not contain a colon (":"): "${hostPath}" → "${containerPath}".`
+      )
       continue
     }
 
@@ -98,16 +100,14 @@ export function evaluateBindMounts(
 
     // At or above cairn's own install tree (covers `/`, `/opt`, `/opt/cairn`).
     if (host === installRoot || isWithin(installRoot, host)) {
-      blocked.push(
-        `Mounting "${hostPath}" would expose cairn's own files and is not allowed.`
-      )
+      blocked.push(`Mounting "${hostPath}" would expose cairn's own files and is not allowed.`)
       continue
     }
 
-    // Anything outside the managed storage root is allowed but flagged.
+    // Hard-blocks any host path outside the managed storage root.
     if (!isWithin(host, storageRoot)) {
-      warnings.push(
-        `Volume "${hostPath}" is outside the managed storage root (${storageRoot}). Make sure you trust this image with access to that path.`
+      blocked.push(
+        `Volume "${hostPath}" is outside the managed storage root (${storageRoot}). Bind mounts outside the storage root are not allowed.`
       )
     }
   }

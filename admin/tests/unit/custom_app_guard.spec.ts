@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​‌​​‌​‌‌​​‌​‌‌​‌​‌​​‌‌​​‌‌‌​‌​​‌‌‌‌​‌​​‌​​​​‌​‌‌​‌​​‌‌‌​​‌​​‌‌​​​​‌​‌‌​​‌‌‌​‌​‌​​‌​​‌​‌​‌​‌​​‌‌‌​​‌​‌‌​‌‌‌​​​‌‌‌​​‌​​‌​‌‌​‌​‌​‌​​‌​​‌​‌​‌​​​​‌‌​‌​​​‌‌‌‌​‌​​‌​​‌‌​​​‌​​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌‌‌​‌​‌​‌​‌​‌‌‌​‌‌​​​‌‌​‌‌​‌‌​​​‌​​​‌‌‌​‌​​‌​‌​​‌‌‌‌​‌​​‌‌​​‌​​​‌​​‌‌​‌​‌​‌‌​‌​​‌‌‌​​‌‌​‌‌​‌​‌‌​‌‌‌​​‌‌​​‌‌​​​​​‌‌​‌​​​​‌‌​‌‌‌​​‌​‌​‌‌‌​​‌‌‌​​‌​‌‌​​​‌‌​‌​​​‌‌‌​‌‌​‌‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ZYjgOHZragRU9n9-RT4zLO
+ * Fingerprint: AMK1.XuWclGJzdMZsks0hnW9cGl
  */
 import * as assert from 'node:assert/strict'
 import { test } from 'node:test'
@@ -42,12 +42,13 @@ test('evaluateBindMounts allows paths under the storage root without warning', (
   assert.equal(warnings.length, 0)
 })
 
-test('evaluateBindMounts warns (but allows) paths outside the storage root', () => {
-  const { blocked, warnings } = evaluateBindMounts([
-    { host_path: '/home/user/data', container_path: '/data' },
-  ])
-  assert.equal(blocked.length, 0)
-  assert.equal(warnings.length, 1)
+test('evaluateBindMounts hard-blocks paths outside the storage root', () => {
+  for (const dir of ['/home/user/data', '/root', '/var/lib/docker', '/mnt/data']) {
+    const { blocked, warnings } = evaluateBindMounts([{ host_path: dir, container_path: '/data' }])
+    assert.equal(blocked.length, 1, `${dir} should be blocked`)
+    assert.equal(warnings.length, 0)
+    assert.match(blocked[0], /outside the managed storage root/)
+  }
 })
 
 test('evaluateBindMounts resolves .. before matching (no traversal escape)', () => {
@@ -68,9 +69,7 @@ test('evaluateBindMounts requires absolute container paths', () => {
 test('evaluateBindMounts hard-blocks a colon in the host path', () => {
   // Without this, Docker would re-split "/etc:foo" on the colon and mount /etc — bypassing the
   // system-directory block, which only matches the string as a whole path.
-  const { blocked } = evaluateBindMounts([
-    { host_path: '/etc:foo', container_path: '/data' },
-  ])
+  const { blocked } = evaluateBindMounts([{ host_path: '/etc:foo', container_path: '/data' }])
   assert.equal(blocked.length, 1)
 })
 
@@ -111,9 +110,7 @@ test('evaluateImageReference blocks a malformed reference', () => {
 })
 
 test('evaluateImageReference accepts a digest-pinned image without a moving-tag warning', () => {
-  const { blocked, warnings } = evaluateImageReference(
-    'ghcr.io/org/app@sha256:' + 'a'.repeat(64)
-  )
+  const { blocked, warnings } = evaluateImageReference('ghcr.io/org/app@sha256:' + 'a'.repeat(64))
   assert.equal(blocked.length, 0)
   assert.equal(warnings.length, 0)
 })
