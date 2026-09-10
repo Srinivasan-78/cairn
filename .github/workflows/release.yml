@@ -7,6 +7,9 @@ name: Release SemVer
 
 on: workflow_dispatch
 
+permissions:
+  contents: read
+
 jobs:
   check_authorization:
     name: Check authorization to release new version
