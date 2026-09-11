@@ -19,7 +19,15 @@ jobs:
     steps:
       - name: check-auth
         id: check-auth
-        run: echo "is_authorized=${{ contains(secrets.DEPLOYMENT_AUTHORIZED_USERS, github.triggering_actor) }}" >> $GITHUB_OUTPUT
+        env:
+          AUTHORIZED_USERS: ${{ secrets.DEPLOYMENT_AUTHORIZED_USERS }}
+          ACTOR: ${{ github.triggering_actor }}
+        run: |
+          if echo "$AUTHORIZED_USERS" | grep -qw "$ACTOR"; then
+            echo "is_authorized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_authorized=false" >> "$GITHUB_OUTPUT"
+          fi
   release:
     name: Release
     needs: check_authorization
@@ -72,10 +80,12 @@ jobs:
           steps.semver.outputs.new_release_published == 'true' &&
           steps.finalize-notes.outputs.has_notes == 'true' &&
           !contains(steps.semver.outputs.new_release_version, '-')
+        env:
+          COSMISTACKBOT_ACCESS_TOKEN: ${{ secrets.COSMISTACKBOT_ACCESS_TOKEN }}
         run: |
           git config user.name "cosmistack-bot"
           git config user.email "dev@cosmistack.com"
-          git remote set-url origin https://x-access-token:${{ secrets.COSMISTACKBOT_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
+          git config http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n "x-access-token:${COSMISTACKBOT_ACCESS_TOKEN}" | base64)"
           git add admin/docs/release-notes.md
           git commit -m "docs(release): finalize v${{ steps.semver.outputs.new_release_version }} release notes [skip ci]"
           git push origin main
