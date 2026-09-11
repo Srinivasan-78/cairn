@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌​​‌​​‌‌​​​‌​‌‌‌‌‌​‌​​‌‌​‌​‌‌​‌​‌‌​‌‌​​​‌​​‌​​‌​​‌​‌‌​‌‌‌‌​‌​‌‌​​​​‌​​‌​‌‌​‌‌‌​‌​‌​‌​​​​‌​​‌‌​​​​‌​​‌‌​​​​​​‌‌​‌‌​​‌‌‌​​‌‌​‌​‌‌​‌​​‌‌​‌​‌​​‌​‌​​‌‌​‌‌​​‌‌​​‌‌​​​‌​​​‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​‌​​‌‌‌​​​‌‌​​​‌​‌​‌​‌​​​‌​​​​‌‌​‌‌‌​‌‌‌​‌‌‌​​​‌​‌​‌​​‌​​‌‌‌​‌​‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​​​‌​‌​​‌‌​‌​​​‌​‌​​‌‌​‌‌‌​​​‌​​‌‌​‌‌​​‌‌‌​​​​​‌‌​‌​‌​​‌‌‌‌​​‌​‌‌​​​​‌​‌​​​‌​​​‌‌​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.fL_MkbIoXKuBa06sZjSfb6
+ * Fingerprint: AMK1.FN1TCwqRuNfE4Sq6pjyaDf
  */
 import { BaseSchema } from '@adonisjs/lucid/schema'
 

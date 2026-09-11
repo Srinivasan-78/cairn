@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌‌​‌​​‌​​‌‌​‌​‌​‌​​​‌​​​‌‌‌​​‌‌​‌​‌​​​‌​‌‌​​​‌​​​‌‌​​‌​​​‌‌​‌‌​​‌​‌​​‌​​‌​​‌​‌​​‌‌‌​​‌‌​‌​‌‌​​​​‌‌​​‌‌​​​‌‌​‌‌​​‌‌‌​‌‌​​‌‌‌​‌​‌​​‌‌​​​​​‌‌​‌​​​​‌​​​​​‌​​‌​‌‌​‌​‌‌‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌‌​‌‌‌​​‌‌‌‌​‌​​‌​​​​‌‌​‌​​​‌​​​​‌‌​​​‌​‌‌​‌​​‌​‌‌‌​​​​​​‌‌‌​​‌​‌‌​‌‌‌​​‌‌​​‌‌‌​‌‌​‌​‌‌​‌​​​‌​‌​‌​​​​‌‌​‌‌‌​​​​​​‌‌‌​​‌​‌‌‌​​​​​‌‌​‌​​​​‌‌‌​​‌‌​‌​​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.vi5DsQb26RJsXf6vu0hA-y
+ * Fingerprint: AMK1.6NMnzCD1ip9ngkECp9phsB
  */
 /**
  * Generates the curated drug-reference data modules

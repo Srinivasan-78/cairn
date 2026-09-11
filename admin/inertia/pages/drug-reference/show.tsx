@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​‌​​‌‌​​‌‌​‌​​‌‌​​​‌​​​‌​​​‌‌​‌‌​​​‌​‌‌​​​​​‌‌‌​​​​‌‌​‌​‌​​‌​​​​​‌​​‌‌‌​​​​‌​​​​‌‌​‌‌​​​‌​​‌‌‌​‌​​​‌‌‌​​​‌​‌​​‌‌​​​​‌‌​‌​​​​‌‌​‌​​​‌‌‌‌​‌​​‌‌‌​​​‌​‌‌​‌​‌‌​‌​​‌‌‌​​‌‌​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​‌​‌​​‌​‌‌​‌​​​‌‌​​‌‌‌​​‌‌​​‌‌​‌‌​​‌​​​‌​‌​‌​​‌​‌‌​​‌‌​‌​‌​‌‌​‌‌‌​​‌‌‌​​‌​​‌‌​​​​‌​‌​​​​‌​​‌‌‌​​‌‌​‌​‌‌‌‌‌​‌​​‌​​‌​‌​​​​‌​​​‌‌‌​​‌​​‌‌​​​‌​‌​​​​‌‌​‌‌​‌‌‌‌​​‌‌‌​​‌​‌‌​​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.q3LDlX8jA8CbtqL44zqkNo
+ * Fingerprint: AMK1.IKFs6EK5nraBs_IB91Co9a
  */
 import { Head, Link } from '@inertiajs/react'
 import AppLayout from '~/layouts/AppLayout'

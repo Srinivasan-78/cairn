@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​​​‌‌‌​‌‌‌​​‌​​‌​‌‌‌‌‌​​‌‌​‌​​​‌​​‌​​​​‌​​​‌‌‌​‌‌​​‌​​​‌‌‌​‌​​​‌​​‌‌‌​​‌‌‌​‌​​​‌​‌​​‌​​‌​​‌​‌‌​​‌‌​‌‌‌​‌​​‌‌‌‌​‌​‌​‌​​​‌​‌​​‌​​‌‌​‌​‌​​​‌‌​‌‌‌​‌‌​‌‌​​​‌‌​​‌​​​‌‌​​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌​​​​‌‌​‌​​​‌​​​‌‌​‌‌‌‌​‌‌​‌​​​​‌‌​​​‌‌​‌​​​‌​​​‌‌​​​​‌​‌‌​​‌​​​‌‌‌‌​‌​​‌​​​​‌​​‌​​‌​​‌​‌​​‌​‌​​​‌‌​‌​​​‌‌‌​​‌‌​​‌‌​‌‌‌​‌​​​​‌​​‌‌​‌‌​‌​‌​​​​‌​​‌​‌​‌‌​​‌​​‌‌​‌​‌‌​‌‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.sGr_4HGdtNtRK7OTRj7ldg
+ * Fingerprint: AMK1.cCDohcDadzBIJ4s7BmBVMl
  */
 import * as assert from 'node:assert/strict'
 import { test } from 'node:test'

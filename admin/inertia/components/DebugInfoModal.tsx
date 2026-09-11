@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​‌​‌‌‌‌​‌​​‌‌​​‌‌​​‌​‌‌‌‌‌​​‌‌‌​​‌​‌​‌​​​​​‌‌‌​​‌​​​‌‌​​‌​​‌‌‌​​​​​‌‌​‌​​​​‌​‌​​‌‌​‌‌​​‌‌​​​‌‌​​​​​​‌‌​​​​​‌​‌‌​​​​​‌‌‌​​​​‌‌‌‌​‌​​‌‌‌​‌​‌​‌‌​‌​​​​‌​​​‌​‌​‌​‌​​​​​‌​‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌​‌​​​​​‌‌​​​​‌​‌​‌‌​​​​‌​​‌​​‌​‌‌​​​‌​​‌​‌​‌​‌​‌‌‌‌​‌​​‌‌‌​​‌​​​‌‌​‌​​​‌‌‌​‌‌‌​‌‌‌​​‌​​‌​​​​‌‌​‌‌​‌​​​​​‌‌​​‌‌​‌​‌‌‌‌‌​​‌‌​​​‌​‌‌​​‌‌‌​‌​​‌​​​​‌‌‌​​​​​‌‌‌‌​‌​​​‌‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.qzf_9Pr2phSf00X8zuhEPT
+ * Fingerprint: AMK1.APaXIbUzr4wrCh3_1gHpz9
  */
 import { useEffect, useState } from 'react'
 import { IconBug, IconCopy, IconCheck } from '@tabler/icons-react'

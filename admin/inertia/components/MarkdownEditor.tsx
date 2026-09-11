@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​​‌‌​‌‌​​‌​‌​​‌​​​‌‌​​​‌​​‌​‌‌​‌​‌‌​​​‌​​​‌‌‌​​​​​‌‌‌​​​​‌‌​‌​​‌​‌​​‌​‌‌​‌‌‌‌​‌​​‌‌‌​​‌‌​‌​‌​​​‌​‌​​‌​‌​​‌​‌​​‌​​‌​‌​‌‌​​‌​‌​‌​‌​‌​‌​‌​‌​‌​​‌‌‌‌​‌‌​​‌‌‌​‌​​​​​‌​‌​‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​​‌‌​​​‌​‌​​​‌​​​‌‌‌​​‌‌​‌​‌​‌‌​​‌‌​‌‌‌‌​‌‌‌​‌‌​​‌‌​‌‌​​​‌​‌‌​​‌​‌​​​​‌‌​‌​​​‌​‌​‌‌​​‌‌‌​‌​​‌​‌‌​‌​‌​​​‌​‌​​​‌‌‌​‌‌‌​​​​​​‌‌​‌‌​​‌​​‌​‌‌​‌​‌‌​​‌​‌‌‌‌​‌​​‌‌‌​‌​‌​‌​​​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.j6R1-b88iKzsQJRVUUOgAX
+ * Fingerprint: AMK1.m1DsVovlYCEgKQGp6KYzuE
  */
 import { useEffect, useRef } from 'react'
 import { Compartment, EditorState } from '@codemirror/state'

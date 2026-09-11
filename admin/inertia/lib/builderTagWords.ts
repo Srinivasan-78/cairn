@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌​‌​‌‌​​‌‌‌​‌​​​‌‌‌​‌‌‌​‌​‌‌‌‌‌​‌‌​‌​‌​​‌​​‌​​​​​‌‌‌​​​​‌​​‌​​‌​‌‌​‌​​‌​‌‌​‌‌​‌​‌‌​​‌​‌​‌​​​‌​‌​​‌‌​​​‌​‌​​​‌‌‌​‌​‌​‌​​​‌​‌​‌‌‌​​‌‌​‌​‌​‌‌​​‌‌‌​‌​​‌​​‌​‌‌​​‌‌​​‌‌​​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​​​‌​‌​‌‌​​‌​​​‌​‌​​‌‌​​‌‌​‌​‌​‌‌​​‌‌​‌‌​‌​​‌‌‌​​​​‌​​‌‌‌‌​‌​​​‌‌​​‌​‌​​‌​​‌​‌​​​‌​‌​‌​​​​​‌‌‌​​‌​​​‌‌‌​​‌​​‌​‌‌​‌​‌​‌​‌​‌​‌‌‌​​‌‌​‌‌‌​‌​​​‌‌​​​‌‌​‌​‌​​​​​‌​​​‌‌​​​‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.yVtw_jH8IimeE1GTW5gIfg
+ * Fingerprint: AMK1.0VE3Vm8OFRQPr9-UstcPF7
  */
 // Builder Tag word lists for generating unique, Cairn-themed identifiers
 // Format: [Adjective]-[Noun]-[4-digit number]

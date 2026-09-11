@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​​‌‌​‌​‌​‌​‌‌​​‌​‌​‌‌​​‌​‌​​​​‌​​‌​​‌‌‌​​​‌‌​​‌​​​‌‌​​​‌​​‌‌​​‌​​‌​​​‌‌‌​‌‌‌​​​​​‌‌​​​‌​​‌‌‌​​​‌​‌​‌​​‌​​‌‌‌​‌‌​​​‌‌‌​​​​‌‌​‌​​‌​‌​​‌‌​​​​‌‌​​​‌​‌‌​​​‌​​‌​​​‌​‌​​‌​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌​​​​‌‌​‌​‌‌​​​​‌​​‌​‌‌​‌​‌‌​​​​‌‌​‌‌‌​​‌​‌​‌‌‌​​‌‌​​‌​​‌​​‌‌‌​​‌​​​‌​​​‌​​‌‌​‌​‌​​‌​​‌​‌​​‌‌‌‌​‌​​​‌​​​‌​​​​‌‌​​‌‌‌​​‌​‌​​‌‌‌​​‌‌‌​‌​‌​‌​‌​​‌‌​‌​‌‌​‌​​‌‌​​‌​​​​‌‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.p5YYBN212GpbqRv8iL1bE-
+ * Fingerprint: AMK1.LCXKXnW2NDMIODC9NuSZd3
  */
 import { formatBytes } from '~/lib/util'
 import DynamicIcon, { DynamicIconName } from './DynamicIcon'

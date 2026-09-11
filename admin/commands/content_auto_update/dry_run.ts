@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​‌​‌​​‌​​​​​‌‌​​​​​‌‌‌​‌​​​‌‌‌​​‌​​‌​​‌‌​‌​‌‌​‌‌​​​‌‌​​‌‌‌​‌‌‌​‌​​​‌‌‌‌​​​​‌​​​​‌​​​‌‌​‌‌‌​‌‌‌​‌​‌​‌​​​‌‌​​‌​‌​​​‌​‌‌‌‌​‌​​‌​​​​‌​​‌‌‌‌​​‌​‌‌​‌​‌‌​​‌‌‌​​​​​‌‌​​‌‌​‌‌‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​‌​​‌‌​‌​​​​‌‌​​​‌​‌‌​‌​​​​‌‌​‌‌‌​​‌​​​‌​​​‌‌​​‌​​​‌​‌‌​​‌​‌​‌‌​​‌​​‌‌​​‌​​‌​‌​‌‌‌​‌‌‌‌​​​​‌‌‌​‌​​​‌​​​​​‌​‌​​‌​‌‌​‌‌​​‌​​​‌​​‌​​​​​‌‌​​​​​​‌‌​​‌​​‌​‌​​​​​​‌​‌‌​‌​‌​​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.QH0trMlgtxB7uFQzByk83r
+ * Fingerprint: AMK1.I41hnDdYY2WxtAKdH02P-G
  */
 import { BaseCommand, flags } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'

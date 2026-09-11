@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌​‌‌​‌​​‌​​​‌‌‌​‌​‌‌​​​​​‌‌​​​‌​‌‌‌​​‌​​​‌‌‌​​​​‌​‌‌‌‌‌​‌‌​​‌‌‌​‌‌​​​​‌​‌‌‌​​​​​‌‌​‌‌‌‌​‌​‌​​​​​‌‌‌‌​​​​‌‌‌‌​​​​‌‌‌​‌​‌​‌​​‌‌​‌​​‌​‌‌​‌​‌​‌​​‌​​‌​‌‌​‌​​‌​​​​‌​​‌‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌‌​​​‌‌​‌‌​​​‌‌​‌‌​‌​‌‌​‌‌​​​‌​​‌‌​​‌‌‌​​‌‌​‌‌‌​‌​​‌‌​‌​‌‌‌‌​​​​‌‌​​‌‌​​‌‌​‌​​‌​‌​​‌​‌​​‌​​‌‌​‌​​‌‌‌​​​​‌​​​​​‌​‌‌‌​‌​​​‌​​‌​‌​​‌‌‌​‌​​​‌​‌​​​‌​‌​‌‌‌‌‌​‌‌​‌​‌‌​‌‌​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.-ZGX1r8_gapoPxxuM-RZBt
+ * Fingerprint: AMK1.Pcckbg7MxfiJM8AtJtQ_kj
  */
 import { test } from '@japa/runner'
 import { parseInteractions, isSectionHeader, type InteractionBlock } from '../../util/drug_interactions.js'

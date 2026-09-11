@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌​​‌‌‌​​‌‌​‌​​​​‌​​‌​‌‌​​​​‌​​​​‌​​​‌‌​​‌​​‌​‌‌‌‌‌​​‌‌​‌​​​‌‌​​‌‌​​‌​‌​​‌​​‌‌‌​​​‌​‌​​‌‌​​​‌​​‌​​​​‌​​​‌​‌​‌‌​‌​​‌​‌‌‌​​​​​​‌‌​​​‌​​‌​‌‌​‌​‌​​​​‌‌​‌​‌‌​‌​​‌‌‌​‌​‌​‌​‌‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌‌​‌​‌​​‌‌​‌​​​​‌​​​‌‌​​​​​‌​‌​‌‌‌​‌‌​​‌‌‌​‌‌​​​​‌​​‌‌​​​​​‌​‌​‌​​​‌‌​​​‌‌​​‌​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌‌​​​‌‌​‌​​​‌​​​​​‌​‌‌​​​​‌​‌​‌‌​‌​​​‌‌​‌​​​‌‌​‌‌​‌​‌‌​‌​‌‌​‌​‌‌​​‌​​‌‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.NsBXB2_4fRqLHEip1-CZuZ
+ * Fingerprint: AMK1.WSB0Wga0Tc-OV4AaZ4mkY9
  */
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 import Chat from './index'
