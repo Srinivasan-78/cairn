@@ -6,7 +6,10 @@
   "license": "MIT",
   "keyFile": "~/.authormark.key",
   "algo": "hmac",
-  "ignore": [],
+  "ignore": [
+    ".github",
+    "REUSE.toml"
+  ],
   "include": [],
   "reuse": false,
   "maxBytes": 2097152
