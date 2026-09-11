@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌​​‌​​​​​‌​‌​‌​‌‌‌​‌​​‌​​‌​‌​‌‌​​​​​‌‌​‌​‌​‌​‌​‌‌​​‌‌​​‌​​​‌‌‌‌​​​​‌‌‌‌​‌​​‌‌​​​​‌​‌​​‌‌‌‌​‌‌‌‌​​‌​‌‌​​‌‌‌​‌‌‌​‌​​​‌​‌​​​​​‌​​​‌‌​​‌‌​‌​‌​​‌​‌​​‌​​‌​‌​‌​​​​‌‌​​​‌​‌​​​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌​​​​‌​​​‌‌​‌​​​‌​‌​​‌​​​‌‌​‌‌‌​‌‌​​​‌​​‌‌​‌‌​​​‌‌​​‌‌​​‌‌​​‌​​​‌‌​‌‌​‌​‌​​​​‌​​​‌‌​​‌‌​‌​‌​​​​​‌‌​‌​​‌​‌​​‌​​​​‌‌‌​​‌​​‌‌‌‌​‌​​‌‌‌​​​​​‌‌​‌‌‌‌​​‌‌​‌​‌​‌‌‌​​‌‌​‌‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.JAWIX5VdxzaOygtPFjRT1F
+ * Fingerprint: AMK1.AB4R7blfdmB3PiHrzpo5sw
  */
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { ListRemoteZimFilesResponse, ListZimFilesResponse } from '../../types/zim'

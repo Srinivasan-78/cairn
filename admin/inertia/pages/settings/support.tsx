@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​‌​​‌‌​​​​​‌‌‌​​​​​‌‌‌‌​​‌​​‌‌​‌‌‌​‌‌​‌​​‌​‌‌‌‌​‌​​​‌‌​‌‌​​‌​‌​‌​​​‌‌​‌‌​​​‌​​​​​‌​‌‌​‌‌‌‌​‌​​‌‌​​​‌‌​‌​‌​​‌​‌​‌​​​‌​‌​​​‌​‌​‌​‌‌​​‌‌​‌‌​​​‌‌​​​‌​​‌​‌‌‌‌‌​‌‌‌​‌‌​​‌‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌​‌​​‌​​‌‌‌​‌‌‌​‌​​‌​​‌​‌​‌​‌‌​​‌‌​‌‌​​​​‌​‌‌​‌​‌​‌​‌​‌​‌‌​‌‌‌​​‌​​​‌​​​‌‌‌​​‌‌​‌‌​‌​‌​​‌​​​‌​​​‌‌​‌​‌​​‌‌‌​‌​‌​‌‌‌​‌‌​​‌​​​​‌‌​‌‌‌‌​‌​​‌​​‌‌‌​​​‌‌​​‌‌​‌​​‌​​​​‌‌​​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.e0py7iz6TlAoLjTQVlb_vx
+ * Fingerprint: AMK1.3RwIVl-UnDsjDjuvCzN3Ha
  */
 import { Head } from '@inertiajs/react'
 import { IconExternalLink } from '@tabler/icons-react'

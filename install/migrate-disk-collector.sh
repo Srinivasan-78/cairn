@@ -1,9 +1,9 @@
 #!/bin/bash
-# @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌​​‌​​‌​​​​‌‌​​​‌‌​​‌‌‌​​‌​‌‌‌‌​‌​​‌​‌​‌‌​​‌‌‌​‌​‌​‌‌​‌‌​‌​‌​​​‌‌‌​‌​‌​​‌‌​‌‌‌​‌‌‌​‌‌‌‌​‌​​‌‌​‌​​‌​‌​​‌​​‌​‌​‌​‌‌​​‌‌​​‌​​​‌​‌​​‌​​‌‌‌​​‌​​‌​‌​‌​‌​​‌‌​‌​​​​‌‌​‌‌‌​‌​‌​‌​​⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​‌​‌​​‌‌​‌​‌‌​‌​​​​‌‌​​​​‌​‌​​‌​​‌​‌‌​​‌‌​​‌‌‌​‌​​​‌‌‌​‌‌‌​​‌‌​​‌​​​‌‌​‌​‌​‌‌​‌‌‌​​‌‌​​‌​‌​‌​‌​‌​‌​​‌‌​​‌​​‌‌‌​​​‌​‌​​​‌‌​​‌​​‌​​​​‌​‌​​​​​‌​​‌‌​​​‌​​​​​‌​‌​​‌​‌​​‌​‌‌‌‌‌⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.bHc9zVumGSwziIVdRrU47T
+# Fingerprint: AMK1.QMhaIftw25neU2qFHPLAJ_
 
 # Cairn — Disk Collector Migration Script
 #

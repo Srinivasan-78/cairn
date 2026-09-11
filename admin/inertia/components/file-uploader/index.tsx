@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌​​‌​‌‌​‌​​​​​‌​‌​​‌‌​‌​​‌‌​‌​‌​‌‌‌​‌‌‌​‌​​‌‌‌‌​‌​​​​​‌​‌​‌‌​​​​‌​​‌​‌‌​‌​​‌​​‌​‌‌​‌​​‌​‌​‌‌​​​​‌‌​‌​​‌​​‌​‌‌​‌​​‌‌​​​‌​‌‌​​‌‌‌​‌‌‌​‌​‌​‌‌‌​‌​‌​‌​‌​‌‌​​​‌‌​‌‌‌​​‌‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌​‌​​​​​‌​​‌‌‌​​​‌‌​​‌​​‌‌​​‌​‌​‌​‌‌‌‌‌​‌​​​​​‌​‌‌​​‌​‌​‌‌‌​​​​​‌​‌‌​‌​​‌‌​‌‌‌​​‌‌​‌‌​‌​‌​​​​​‌​‌​‌​‌‌​​‌‌​​​‌​​‌​​​​‌‌​‌‌​​​​‌​‌‌​‌​‌​​‌​​‌​‌​​‌‌​​​​‌​‌‌​​‌​​​‌​​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.zKAM5wOAXKIiXi-1guuV77
+ * Fingerprint: AMK1.-PN2e_AepZnmAVbCajJadF
  */
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import Uppy from '@uppy/core'

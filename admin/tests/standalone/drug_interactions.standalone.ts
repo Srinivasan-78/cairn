@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​‌​‌​​‌‌​​‌‌​‌​‌​‌‌​​​‌‌​​‌‌​​​‌​​‌‌​‌​​​‌‌​​‌​​​‌​‌​​‌​​‌‌‌​​​​​‌​​​‌​​​​‌‌​‌‌‌​‌‌​​​​‌​​‌‌​‌​​​‌‌​​‌‌​​​‌‌​​‌‌​​‌‌​​‌‌​‌‌​​‌‌​​‌‌‌‌​​‌​‌​‌​‌​​​‌​​‌‌‌​​‌‌‌​‌‌‌​‌​‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​‌​​‌‌‌​​​​​‌‌​​​​‌​‌‌‌​‌​​​‌​‌‌​‌​​‌​​​​‌‌​‌‌‌‌​​​​‌​​‌‌​‌​‌​‌‌‌‌‌​‌​​‌‌‌​​​‌‌​​‌​​‌‌​​‌​‌​‌‌‌‌​​​​‌​​‌‌‌‌​‌‌​‌‌​​​​‌‌‌​​‌​‌‌​​​​‌​‌‌​​‌​‌​‌​​‌‌​​​‌​‌​​​​​‌​​‌​‌‌​‌​​‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.jS5c14dRpD7a4f33fyTNwY
+ * Fingerprint: AMK1.ZpatZCxM_N2exOl9aeLPKI
  */
 /**
  * Standalone gate test for the drug-interaction parser.

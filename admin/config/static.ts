@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​​‌‌​‌‌​​‌‌​​​‌‌​‌​‌‌​​‌​‌‌​‌‌​‌​‌‌‌​​​‌​‌​​​​​‌​‌​‌‌​​​​‌​​‌‌‌​​‌‌‌​​‌‌​‌‌‌​‌‌​​‌‌​​​​‌​​‌‌​‌‌​​‌‌‌‌​​​​‌​‌‌‌‌‌​‌​‌​‌‌‌​‌‌​‌‌‌‌​‌‌​‌‌‌​​‌‌​​​‌‌​‌​​​​‌‌​‌​‌​​‌‌​‌​​‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌‌​​​​‌​‌​​‌‌‌​​‌​​​​‌​​‌‌‌‌​‌​​‌‌‌​‌​‌​‌​‌​​‌‌​‌‌​‌‌‌‌​‌‌‌​‌​‌​‌​​​​‌​​‌‌‌​‌‌‌​‌‌‌​‌​​​‌‌​​​‌‌​​‌‌​​‌​​​‌‌​‌‌‌​‌‌​‌‌​‌​‌​‌‌​​‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​​‌‌​​‌​​‌​​‌‌‌​​​‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.x6cYmqAXNsva6x_WoncCSI
+ * Fingerprint: AMK1.zaNBzuSouBwtc27mYgo2N7
  */
 import { defineConfig } from '@adonisjs/static'
 

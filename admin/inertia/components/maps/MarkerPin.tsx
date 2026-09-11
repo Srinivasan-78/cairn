@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌​‌‌​‌​​‌​​‌​​‌​‌​‌​​‌‌​​‌‌​‌​​​​‌​‌‌​‌​‌​​‌‌‌​​‌‌‌‌​‌​​​‌‌​‌​‌​‌‌​‌​​‌​‌​​‌‌​‌​‌‌​​‌​​​​‌‌​‌‌​​‌​‌​​‌​​‌​‌​‌‌​​‌​​‌​​‌​‌‌​‌​​​​‌​​​‌​‌​‌‌​​‌​​​‌​‌​​​‌​‌​​‌​​‌​​‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌​‌‌‌‌‌​‌​​​‌​‌​‌‌‌​​‌​​‌​​​​‌​​​‌‌​‌​‌​​‌‌‌​​‌​‌​​​‌‌‌​‌​‌​​‌‌​‌‌​​​‌​​‌‌​​‌‌​​‌​​‌‌​‌​‌​​​‌​‌​‌​​​‌‌​​‌​‌​‌‌​​‌‌​​​‌​​‌‌‌‌​​​​‌​‌‌​​‌​‌‌​​‌‌​​‌‌‌​‌​‌​​‌‌‌​​​​‌‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.MZIS4-Nz5iMd6RVIhEdQI5
+ * Fingerprint: AMK1.G_ErB59GSbfMEFVbxYfu8t
  */
 import { IconMapPinFilled } from '@tabler/icons-react'
 

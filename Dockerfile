@@ -1,8 +1,8 @@
-# @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​‌​‌​​‌​‌‌​‌‌​‌​​​​‌‌‌​‌​‌​‌​​‌​‌‌​‌​‌​​​​​‌​‌‌‌‌‌​​‌‌​‌​​​‌‌​‌‌‌​​‌‌​‌​​​​‌‌​​​​‌​‌‌​‌‌‌​​‌​‌​​​‌​‌‌‌​​​‌​‌‌​‌‌​‌​‌‌​​​‌‌​‌‌‌​​‌‌​‌​​‌‌‌‌​‌​‌‌‌‌‌​‌‌​​‌‌‌​‌‌‌​​‌​​‌‌​‌​​​⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌​​​‌‌‌​​‌​‌‌‌​‌​​​‌​​​‌‌‌​‌​‌‌​​​​‌‌​‌‌​​​‌​‌​​‌​​‌​​‌​‌‌​‌‌​‌‌​​​‌​​‌​​​​​‌‌​​‌‌​​‌‌​‌​​​​‌‌​​​​​‌‌​​​​‌​‌​​‌‌​​​‌‌‌​​​​​​‌‌​​‌​​‌‌​​​​‌​‌‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌​‌​‌​​​‌‌‌⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.9KhuKP_4nhanQqmcsO_grh
+# Fingerprint: AMK1.n9tGXlRKlH340aLp2anm-G
 FROM node:22-slim AS base
 
 # Install bash & curl for entrypoint script compatibility, graphicsmagick for pdf2pic, and vips-dev & build-base for sharp 

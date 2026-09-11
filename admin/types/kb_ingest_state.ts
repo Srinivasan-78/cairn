@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​‌‌‌​​​‌​‌‌​‌​‌​​​‌‌​‌‌‌​‌​​‌‌​‌​​‌‌​​​​​‌‌‌​‌‌‌​‌‌‌​​​‌​‌‌​​‌‌​​​‌‌​​​​​​‌‌​‌‌​​‌​‌​‌‌‌​‌‌‌‌​​​​‌‌​‌​​​​‌​​‌‌​​​‌​​​‌​​​‌‌‌​‌​‌​​‌‌‌​​​​‌‌‌​​​​​‌‌‌‌​​​​‌​​​​‌‌​‌​​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​‌‌‌​‌‌​​‌​‌​‌‌‌​​‌‌​‌‌‌​​‌‌​‌‌‌​‌‌‌​‌‌​​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌​​​​‌​​‌‌‌​​‌‌​‌‌​​‌‌​​‌​‌​‌​‌​‌‌‌​‌‌​​​‌‌​​‌​​‌‌​‌‌​‌​‌​​​​‌‌​‌​​​‌‌​​‌‌‌​‌​‌​‌‌​‌​​‌​‌​​​‌‌​​​‌‌‌​​‌​​‌‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.gqj7M0wqf06WxhLDu8pxCO
+ * Fingerprint: AMK1.VvW77vkoBsfUv2mCFuiF93
  */
 export const KB_INGEST_STATES = [
   'pending_decision',

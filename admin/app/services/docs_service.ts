@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌‌​‌​‌​​​​​‌‌​‌‌‌​​‌​‌‌​‌​​‌‌​​​​‌​‌‌‌‌​‌​​‌​​‌​‌​​​‌‌​‌​‌​‌‌​‌‌​​​‌‌‌​‌​​​​‌‌​​​​​‌​​‌​​‌​​‌‌​‌‌​​‌​‌​‌‌​​‌‌​​‌‌‌​‌‌‌​​‌‌​​‌‌​‌‌​​​‌‌​​‌​​​‌‌​‌​‌​‌​​​‌​‌​‌​​‌‌‌‌​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌‌​‌‌​‌​​‌​‌‌​‌​‌‌​‌​​​​‌​‌​‌‌‌​‌‌​‌‌​‌​​‌‌​‌‌‌​‌‌​‌​‌‌​‌​‌‌​​‌​‌‌‌​‌​​​​‌‌​‌​​​‌‌​​​‌‌​‌​‌​​‌‌​​‌‌​‌‌​​‌​​‌‌‌​​‌​​​‌​​​‌​​‌​​​​‌‌​​‌‌‌​‌​‌‌​‌​​​‌‌​​‌‌​‌‌​​​‌​​​‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.7PnZazJ5lt0I6Vgs625EOP
+ * Fingerprint: AMK1.vm-hWm7kYt4cS6NDHgZ3b4
  */
 import Markdoc from '@markdoc/markdoc'
 import { streamToString } from '../../util/docs.js'

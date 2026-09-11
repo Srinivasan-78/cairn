@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌‌‌​​​​​‌​​‌​​‌​‌‌‌​‌‌‌​‌‌​‌​​​​‌​​‌‌​‌​‌​​‌‌‌‌​‌‌​‌‌​​​‌​​‌​​​​‌​​​‌​‌​‌‌‌‌​​​​‌‌​‌​​‌​‌​​​​‌​​‌‌‌‌​‌​​​‌‌​‌​‌​‌​​‌​​‌​‌​‌​‌​​​‌‌‌​‌‌​​​‌‌​‌​​​​‌‌‌​​‌​‌​‌​​‌​​‌​‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​‌‌​‌‌‌​​‌‌​‌​‌‌​‌‌​​‌​​​​‌‌​‌‌‌​‌‌‌​​​‌​‌​​​‌​‌​‌‌​​​​‌​‌​‌‌‌‌‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌​‌‌​‌​‌‌​‌​​​​‌​‌‌​​​​​‌‌‌​​‌​​‌‌‌​​​​‌​​​​‌‌​‌​​‌​‌​​‌​​‌​‌‌​‌​‌‌​​​​‌‌​‌‌‌​​‌​‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.6pIwhMOlHExiBz5ITv49RY
+ * Fingerprint: AMK1.Dnkd7qEa_humhX98CJKXnY
  */
 /**
  * Standalone gate test for the tier-rework pure helpers added in the

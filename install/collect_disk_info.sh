@@ -1,9 +1,9 @@
 #!/bin/bash
-# @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​‌‌​‌​‌‌​‌​‌‌​​​​​‌‌‌​​‌​‌‌​‌​‌‌​‌​‌​​‌‌​‌‌​‌‌​​​‌‌​‌​‌​​​‌‌​​​​​‌​​‌​‌‌​‌‌​​‌‌‌​‌‌​​​​‌​‌‌​​​​‌​‌‌​‌​‌​​‌​​‌‌​‌​‌‌‌​‌​‌​‌​‌​​​​​‌​‌​‌‌​​‌​‌​​‌‌​‌​​​‌‌‌​‌‌​‌‌​‌​​‌​‌‌​‌⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌‌​​‌‌‌​‌​‌‌​​‌​‌‌​‌‌​​​‌‌​‌​‌​​‌‌​​​​‌​‌​​‌​‌​​‌​​‌​‌​​‌​​‌‌​‌​‌‌​‌‌​‌​‌‌​​‌​​​‌‌‌​​​‌​​‌‌​‌​​​‌‌​​​‌​​​‌‌​‌‌‌​​‌‌​​‌‌​​‌‌​​‌​​‌​‌​​‌‌​‌​​‌‌​‌​​‌‌​​​‌​‌​​‌​​​​‌‌​‌‌​‌⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.jkX9kSlj0KgaajMuPVSGm-
+# Fingerprint: AMK1.8gYljaJJMmdq4b732SM1Hm
 
 while true; do
     DISK_LAYOUT=$(lsblk --json -o NAME,SIZE,TYPE,MODEL,SERIAL,VENDOR,ROTA,TRAN)

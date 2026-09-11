@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌‌​​​‌​​‌‌​‌​‌​​‌‌​‌​​‌​‌​​​‌​​​​‌‌​‌‌​​‌‌‌‌​​​​​‌‌​​​​​‌‌‌‌​​​​​‌‌‌​​​​‌​‌​‌‌‌​‌​​‌​​‌​​‌​‌‌​‌​​‌‌​​‌​​‌‌‌​​​‌​‌‌‌‌​​‌​‌​​‌‌​​​‌‌​‌​​​​‌‌‌​‌‌​​‌‌‌​​​‌​​‌‌​​​‌​‌​​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌‌‌‌​‌​​‌‌​‌‌​​​‌​‌​‌‌​​‌​‌​​​​​​‌‌​​​‌​‌​​​‌‌​​​‌‌​‌​‌​‌​‌‌​​​​‌​​​​‌​​​‌‌​​​​​‌​​​‌‌‌​‌​‌​‌​‌​‌​​‌​‌​​‌​‌‌​‌​​​‌​‌‌​‌​‌‌‌​​‌‌​‌​‌‌​​​​‌​‌​​​‌​‌​‌​​‌‌​‌​‌​‌‌‌​‌​‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.AbjiD6x0x8WI-2qyLhvq1H
+ * Fingerprint: AMK1.EzlVP1F5XB0GUJZ-sXQSWT
  */
 import logger from '@adonisjs/core/services/logger'
 import type { ContainerRegistryService } from '#services/container_registry_service'

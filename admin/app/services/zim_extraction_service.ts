@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​​​‌​​‌‌​‌​‌‌‌​‌​​​‌‌​​​‌​​‌‌​‌‌​‌​‌​​‌​‌​​‌​​‌‌‌‌​‌‌‌​‌‌‌​​‌‌‌​​‌​‌‌​​​​‌​‌‌​​‌​​​‌‌​‌​‌‌​‌‌​‌​​​​‌​‌‌‌‌‌​‌​​​​‌​​‌​​‌‌​​​‌​​‌​‌‌​‌​‌‌‌‌‌​‌‌​‌‌​‌​‌‌​​​​‌​‌​​‌​‌​​‌‌​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌​‌​‌‌​​‌​​‌‌​​​​‌‌‌​​‌​​‌‌‌​​‌​‌‌​‌‌‌​​‌​​‌‌​​​‌​‌​​‌​​​‌‌​‌​​​‌‌‌​‌‌​​‌​‌​‌​​​‌​‌‌​‌​​‌‌‌​​​‌​‌‌‌‌​​‌​‌‌​​‌‌‌​‌​‌​​​‌​‌​‌​​​​​‌​​‌​​‌​‌‌​​​‌​​‌‌​​‌​‌​​‌‌​​‌‌​‌‌​‌‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.HMtbmJOw9adkh_BLK_maJb
+ * Fingerprint: AMK1.zVL99nLR4vTZqygQPIbe3l
  */
 import { Archive, Entry } from '@openzim/libzim'
 import * as cheerio from 'cheerio'

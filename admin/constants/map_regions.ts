@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌​‌​​‌​‌‌​​‌​​​‌​‌‌​‌​​‌‌​​‌‌​​​‌‌​​‌‌​‌‌​​​‌‌​‌‌​​​​‌​‌​​​​‌‌​​‌‌‌​​​​‌‌‌‌​​‌​‌‌​‌​​‌​​‌‌​‌​‌​‌‌​‌​‌‌​‌​​‌‌‌‌​‌​​​‌​‌​‌‌‌​‌‌​​‌‌​‌‌​​​‌​​​​‌‌​​‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌‌‌‌​​‌​​‌‌​‌‌​​‌​​​‌​​​‌‌‌​​​​​‌​‌​‌​​​‌​‌‌‌‌‌​‌​​​‌​​​‌​​‌‌​​​​‌‌‌​​‌​‌‌‌​‌‌​​‌​‌‌‌‌‌​‌‌​​‌​​​‌​​​​‌‌​‌​​​‌‌‌​​‌‌​​‌‌​‌​​‌‌​‌​​‌‌​​​‌​‌​​‌​​​​​‌‌​​‌‌​‌‌​​‌‌​​​‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.shuidZf3caC8yi5kOEvlC0
+ * Fingerprint: AMK1.ry6DpT_DL9v_dCG3M1H3f1
  */
 export const PMTILES_BINARY_PATH = '/usr/local/bin/pmtiles'
 

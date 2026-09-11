@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌‌​‌‌‌​‌​​​‌‌​‌​‌​​​‌‌‌​​‌​‌​​​‌‌​​‌‌​​​‌‌​‌‌‌​‌‌‌​‌‌​​‌​​​‌‌​‌‌‌‌​‌​‌​‌‌‌​‌​​‌​​​​‌​‌‌​‌​​‌​​‌​​‌​‌‌‌​​‌​​‌‌​​​​‌​‌‌​​‌​‌​‌‌‌​‌‌‌​‌​​‌‌​​​‌‌​‌​‌​​​‌‌​​​​​​‌​‌‌​‌​‌​‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​‌​‌‌​‌‌‌​​​‌‌​‌​​​‌​​‌‌​​​‌​​‌‌​‌​‌‌​‌​​‌​‌‌‌​​‌‌​‌‌​‌‌​​​​‌‌‌​​​​​‌‌​‌‌​​‌​​‌‌‌​​‌‌​​‌‌‌​‌​​​‌​‌​‌​‌​‌​‌​‌​​‌‌‌​​‌‌‌​​​‌​‌‌‌​​​​​‌​​‌‌‌‌​‌‌​‌​‌‌​‌​‌‌​​​​‌‌​‌​​‌​‌‌​‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Ctj9FcwdoWHZIraewLj0-V
+ * Fingerprint: AMK1.1n4LMisl86NgEUNqpOkXii
  */
 /**
  * Curated starter tags shown in the collection picker. These are just

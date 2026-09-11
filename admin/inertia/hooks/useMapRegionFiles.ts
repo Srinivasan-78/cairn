@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​​‌‌​‌‌‌​‌‌‌​​‌‌​‌‌​​​‌​​‌​‌​​​‌​‌‌‌​​‌‌​​‌‌‌​​​​‌​​‌​‌‌​‌‌‌​‌​​​‌​​‌‌​​​‌​​​‌​​​‌​​‌​‌‌​‌​​​‌​​​‌‌​‌​​​​‌‌​‌​​‌​‌​‌​‌​‌​‌‌‌​‌​​​‌‌‌​‌‌​​‌​‌​‌​​​‌​​​‌‌‌​‌‌​‌‌‌‌​‌​​‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​‌‌‌​​​​​‌‌​​‌​​​‌‌​​‌‌​​‌​​​​​‌​​‌‌​‌​​​​‌‌​‌‌​​‌‌‌‌​‌​​‌​​‌‌‌‌​​‌‌​‌‌​​​‌​‌‌​‌​‌​​‌‌‌‌​‌‌‌​​​​​​‌‌​​‌‌​‌‌​‌‌‌​​‌​​‌​‌​​‌‌​‌‌‌‌​​‌‌‌​​​​‌‌​‌‌​​​‌​‌‌​‌​​‌‌​​‌‌‌​​‌‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.D7sbQs8KtLDKDhiUtvTGoJ
+ * Fingerprint: AMK1.mpdfA46zO6-Op3nJo8lZg8
  */
 import { useQuery } from '@tanstack/react-query'
 import { FileEntry } from '../../types/files'

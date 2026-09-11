@@ -1,9 +1,9 @@
 #!/bin/bash
-# @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌‌​​‌​‌‌​‌​‌‌‌‌​​​​‌‌​​‌​​​‌​​‌​‌‌​‌​‌​‌​‌​​‌‌​‌​​​‌‌​‌​‌‌​​‌‌​​​​​‌‌​​‌‌​​​‌‌‌​​‌​‌​‌​​​‌​‌‌​​​‌‌​​‌‌​​​​​​‌‌​​‌‌​‌‌‌​​​‌​‌​​​‌​​​‌​​​‌​​​‌‌​‌​‌‌​‌​​‌​‌​​‌‌​‌​‌‌​‌‌​‌‌​​⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​​‌‌‌​​​​‌​​​‌‌‌​​‌‌‌​​​​‌​​​​​‌​‌​​‌​‌​​‌‌‌​​​‌​‌​​​‌‌‌​​‌‌​​‌‌​‌‌‌‌​​‌​‌​​‌‌‌‌​‌​‌​​​‌​​‌‌​​‌‌​‌​​​‌‌​​‌‌‌​‌​‌​‌​​‌​​​​‌‌​​​‌‌​​‌‌​‌‌​​‌‌​​‌​​​‌​​​​‌‌​‌​​‌​​​​​‌‌​‌​‌⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.w-xdKU4k0f9Qc03qDDkJkl
+# Fingerprint: AMK1.j8G8AJqG3yOQ3FuHc6dCH5
 
 # Cairn - Disk Info Collector Sidecar
 #
