@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​‌​‌​​‌​‌​​‌​‌‌​​​​‌​​​‌‌‌​‌‌​​‌​​​‌‌​​‌‌‌​‌​‌​‌‌​​​‌‌‌​​‌​‌‌‌​​​‌​​‌‌​‌‌​​‌‌​​‌‌​​‌‌​‌​‌​​‌‌​​​‌​​‌​​‌​‌​​‌‌​‌‌‌​​‌‌​​​​‌​​‌‌​​‌‌​‌​‌​​​​​‌​​‌‌‌​​‌‌‌​​‌​​‌​​​‌​​​‌‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​‌‌​​‌​‌​‌​‌‌​‌​​‌‌​‌‌​‌​​‌‌​​​​​‌​​​‌​‌​‌‌​‌‌‌​​‌​‌‌​‌​​‌​‌​‌​‌​‌​​‌‌‌​​​‌‌​‌​​​‌‌‌​‌‌​​‌‌‌​‌​‌​‌‌​‌‌​​​‌‌‌​‌​‌​‌‌‌​‌‌​​‌​​​​‌​​‌​‌‌​‌​​‌‌​​‌‌​​‌‌​‌​‌‌​‌​​​‌​​​​‌‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.qJXGdgV9q6fjbJna3PNrDx
+ * Fingerprint: AMK1._eZm0EnZUN4vuluvBZfkD2
  */
 import vine from '@vinejs/vine'
 import { PRODUCT_TYPES } from '../../types/drug_reference.js'

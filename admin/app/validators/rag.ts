@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​‌​​‌‌‌‌​‌​‌‌​‌​​‌​​​‌‌‌​‌‌‌​‌​‌​‌‌‌​​​‌​‌​‌​‌​​​‌​​​‌‌‌​‌‌‌​​​‌​‌‌​‌​​​​‌‌​​‌​​​‌‌​​‌​‌​​‌‌​​​‌​‌‌‌​​​‌​‌‌​‌‌‌​​‌​​​‌​​​‌​​‌​‌‌​​‌‌​‌‌​​‌​​​​‌‌​‌‌‌​​‌​​‌​‌‌‌‌‌​‌‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​​‌‌‌​​​​‌‌​‌​​​​‌​​‌‌‌​​‌​​‌‌​‌​‌‌​‌‌​‌​​‌‌​​‌​​‌‌‌​‌​​​‌‌‌‌​​​​‌​​‌‌​​​‌​​​​‌‌​​‌‌​​‌​​‌​​‌​​‌​‌​​‌​​‌​‌‌‌​​​‌​‌​​‌​‌‌​‌‌‌​​‌‌​​‌‌​‌​‌​‌​​​‌​‌​​‌‌​​‌‌​​‌‌​‌​​​‌​​​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.pOZGuqTGqhde1qnDK6Cr_t
+ * Fingerprint: AMK1.u8hNMm2txLC2IIqKs5E34D
  */
 import vine from '@vinejs/vine'
 

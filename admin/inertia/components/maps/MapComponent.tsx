@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌​‌​‌‌‌​‌‌​‌‌‌‌​‌‌‌‌​​‌​‌‌​​‌‌​​‌‌​​‌‌​​‌​​‌​​‌​‌​​‌‌​​​‌​​​‌‌‌​​‌‌​‌‌‌​‌​‌‌​​‌​‌​‌‌​‌​​‌​​​​​‌​​‌‌‌​​‌​‌​‌​‌​‌​‌​​‌‌​​​‌​​​‌​‌​​‌‌​‌‌‌​‌‌‌​‌​​​​‌‌​​​‌​‌‌​‌​​‌​​‌​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌‌‌​‌​​​‌​‌‌​‌​​‌​‌‌​​​​‌​‌​‌‌​​‌​‌‌​​‌​‌​‌​​​‌​​‌‌​​‌​​‌​‌​​​​​‌​​‌‌​‌​‌​‌​‌​‌​​‌‌‌​​‌​‌​‌​‌‌​​​‌‌​‌​‌​‌‌​​‌​​​​‌‌​​​‌​‌​​​‌​‌​‌‌​‌‌​​​‌​​‌​​​​‌‌​​​‌​​‌​​​​‌​​​‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.uWoyffILG7YZA9ULE7t1i-
+ * Fingerprint: AMK1.ytZXVYQ2PMU9V5d1ElHbB4
  */
 import Map, {
   FullscreenControl,
@@ -14,7 +14,7 @@ import Map, {
   MapProvider,
 } from 'react-map-gl/maplibre'
 import type { MapRef, MapLayerMouseEvent } from 'react-map-gl/maplibre'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 import { Protocol } from 'pmtiles'

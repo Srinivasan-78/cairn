@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌‌​‌‌‌‌​​‌​‌​‌​​‌​​‌​‌​‌‌‌​‌​​‌‌​​​‌‌​‌​​​​‌‌​‌​‌‌​‌‌​‌​​‌​‌​​‌​​​​‌​​​‌​​​​‌​‌‌​‌​‌​​‌‌​‌​‌​‌‌‌‌‌​‌‌‌​‌‌​​‌‌‌​​‌​​‌‌​‌​‌​​‌‌​‌​​​​‌​‌​‌‌‌​​‌‌​‌​‌​‌​​‌​​‌​‌‌​‌​​​​‌‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌​‌​‌​​​‌​‌​​‌​​‌​​​​‌​​​‌‌‌​​​​‌‌‌​​​‌​‌‌​​‌‌‌​‌​‌‌‌‌‌​‌​​‌‌​​​‌​‌​‌​​​‌‌​​​‌​​‌‌​​‌‌‌​‌‌​‌​​‌​‌​‌​‌‌‌​‌‌‌​​​​​‌‌​​​‌​​‌‌‌​‌‌‌​‌​​​​‌​​‌‌‌​‌‌‌​‌‌‌​​​​​‌​​‌‌‌‌​‌‌​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.oyRWLhkiHD-M_vrjhW5Ihu
+ * Fingerprint: AMK1.rTRB8qg_LTbgiWpbwBwpOf
  */
 import { useEffect, useRef } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'

@@ -1,9 +1,9 @@
 #!/bin/sh
-# @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌​​​‌​‌​​‌‌​​‌​​​‌‌​​‌‌​‌​‌‌​​‌​‌​​​​​‌​​‌‌​‌‌​​‌​‌‌​​​​‌​​​‌‌​​‌​‌​​‌‌​​‌‌​​​‌​‌​‌‌‌‌‌​‌‌​​‌‌‌​‌​​‌‌‌‌​‌​​‌‌​‌​‌‌​​​‌​​‌‌​​‌‌‌​​‌‌​‌‌‌​‌​‌‌​​‌​‌‌‌​‌​‌​‌​​​​‌‌​​‌​‌‌​‌⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌‌​‌​‌​​​‌​​‌‌​‌​​​‌‌‌‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌​‌‌​​‌​​​‌‌‌​​​‌​‌​​‌​‌​​​‌‌​‌​‌​‌​‌‌​​​​​‌​‌‌​‌​‌‌‌‌​​‌​‌​‌‌​​​​‌‌​​‌​‌​‌‌​​​​‌​‌‌‌‌​​‌​‌​‌​​‌​​‌‌‌​‌‌​​​‌‌​‌‌‌​‌‌​​‌‌​​​‌‌​​‌‌⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.YE23YA6XFS1_gOMbg7YuC-
+# Fingerprint: AMK1.WQ4y95dqJ5X-yXeayRv7f3
 
 set -e
 

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌‌‌​‌‌​​‌​​‌‌​​​‌‌​​​​‌​​‌​‌‌​‌​​‌​‌‌​‌​‌​​‌​‌​​‌​‌​‌‌​​‌‌​​​​‌​‌​​​​​‌​​‌‌​‌‌​​‌​​‌‌​‌​‌​‌‌​​​​‌‌​​​‌​​‌‌​​‌‌​​‌​​​​‌‌​‌‌‌​‌‌‌​​‌‌​‌​​​‌​​‌​​‌​​‌​‌‌​‌​‌‌‌​‌​​​‌​​​​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌​​‌‌‌‌​​‌​‌​​​‌‌‌​‌‌‌​‌​​​‌​‌​‌‌‌​​‌‌‌​​​​‌​‌‌​​‌​‌​​‌‌​‌​​‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌​‌​​‌‌​​​​​​‌‌​​‌​​‌‌​​‌​‌​‌‌‌​​​​​​‌​‌‌​‌​‌​​‌​​‌​‌​‌​​​​​‌‌​​​​‌​‌‌​‌​‌​​​‌‌​​​‌​‌‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.yvLa--JVaA6MXbfCw4I-tC
+ * Fingerprint: AMK1.2yGtW8YM7cU02ep-IPaj1t
  */
 import { defineConfig } from 'vite'
 import { getDirname } from '@adonisjs/core/helpers'

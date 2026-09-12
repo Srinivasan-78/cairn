@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌​​‌‌​​​‌‌‌​‌​‌​​‌‌‌​​​​‌‌‌​​‌​​‌​‌‌​​‌​‌‌‌​​‌‌​‌‌​‌‌​​​​‌‌​‌​‌​‌​‌​‌‌‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌​‌​‌‌​​‌​‌‌​‌​‌​‌​​​​​‌‌‌‌​​​​​‌‌​‌​​​‌​‌​‌‌‌​​‌‌​​​‌​‌‌​​​​‌​​‌‌‌​​​​‌​‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌‌​‌‌​‌​‌‌​‌​​‌​‌​‌‌​​‌​‌​​​‌‌​​‌‌‌‌​​​​‌‌‌​‌‌​​‌​​‌​​‌​​‌‌​​‌‌​‌​​‌‌​​​​‌‌​‌​​​​‌‌​​​‌​‌​‌‌‌‌‌​‌​​​‌‌‌​‌‌‌​‌​​​‌​​​‌‌​​‌​‌​‌‌‌​​‌‌​​‌‌​‌​​‌‌​​​‌​​‌​​​​‌‌​‌‌​‌​‌‌‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.3Lu8rYsl5We-k-Px4W1a8U
+ * Fingerprint: AMK1.TmiYFxvI3L41_GtFW3LHmy
  */
 /**
  * Drug Reference v1 — types.

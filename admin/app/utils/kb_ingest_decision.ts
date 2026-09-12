@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​‌​​‌‌​​​‌​‌‌​‌​​‌‌​‌​​‌​‌‌​​​​‌​‌​​​‌‌​​‌​‌‌​​‌​‌‌​‌‌​​​‌‌‌​​​‌​‌‌‌‌​‌​​‌‌​​​​‌​‌‌‌​​‌‌​‌​​‌​​‌​‌‌‌​‌‌‌​​‌‌​​​‌​‌​‌​​​​​‌‌‌​‌​​​‌‌‌​‌​‌​‌​‌​‌‌​​‌​‌‌​​​​‌‌​​​‌​​‌​​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​​‌‌​​‌‌​‌‌​​‌​‌​‌​​​​‌‌​​‌‌​​‌​​‌‌​‌​​‌​‌‌‌​‌‌​​‌‌​​‌​​​‌​​​‌​​​​‌‌‌​​‌​‌​​‌‌​‌​‌‌​​​‌‌​‌‌​​‌​‌​‌​‌​‌‌​​‌​​​​​‌​‌​​​‌‌​​‌‌‌​​​‌​‌‌‌‌​​​​‌‌​​‌​‌​‌‌​‌‌​​​‌‌‌​‌​​​‌​‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.mLZiaFYlqzasIw1PtuVXbM
+ * Fingerprint: AMK1.F3eC2ivdD9MceVAFqxeltR
  */
 import type { KbIngestStateValue } from '../../types/kb_ingest_state.js'
 

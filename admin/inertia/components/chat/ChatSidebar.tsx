@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​​‌‌​‌​‌​‌​​​‌​‌​‌​​‌​‌‌​‌​‌​‌​‌​‌​‌‌‌‌‌​​‌‌​​​​​‌​‌​‌‌​​​‌‌‌​​​​‌‌​‌‌‌‌​​‌‌​‌​‌​​‌‌​​‌​​​‌‌​​​‌​‌‌‌​​​​​​‌‌​​‌​​‌‌​​‌​‌​‌​‌​‌​‌​‌‌​‌‌​​​‌‌​‌​‌‌​‌‌​​‌‌​​​‌‌​​​‌​‌​​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​​‌‌​​‌‌​‌​​‌​​​​‌‌​​​‌‌​‌​‌​​​‌​‌​‌‌​​​​‌‌​‌​​​​‌‌‌‌​​‌​‌​​‌‌‌​​‌​​​​​‌​​‌‌​​‌​​‌‌​​‌‌‌​​‌‌​​​‌​​‌‌​‌‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​​​​‌​​​​‌‌​‌‌​‌‌​​​‌‌​‌‌​​​​‌‌​​​‌​‌‌‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.P5EKU_0V8o521p2eUlkf1M
+ * Fingerprint: AMK1.43HcQXhyNA2g17SPPCll1v
  */
 import classNames from '~/lib/classNames'
 import StyledButton from '../StyledButton'

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​​‌‌​​‌‌​​‌‌​‌​‌​‌​‌‌​​‌​‌‌​‌​‌​​‌​​‌​‌​​‌​​​‌​‌​‌‌​​‌​​​​‌‌​‌​‌​‌​‌​‌‌‌​‌​‌​​‌‌​​‌‌‌​​‌​‌​‌‌​​‌​‌​​‌​​​​‌​​​​‌​​‌​​​​​‌​‌​​​‌‌​​‌​​​‌‌‌​‌​​​​‌​​‌‌​​​‌‌​​‌‌​​‌​​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​‌​​‌​​‌​‌​​‌​​​‌​‌​‌‌‌‌​‌​​‌​‌​‌​‌​​‌‌​‌​​​‌‌​‌‌​‌​‌​​‌​​​​‌‌​​​‌‌​‌‌​‌​​​​‌‌‌​​​​​‌​‌‌​​​​‌​​‌‌‌​​‌‌​​‌​‌​‌​‌​‌​‌​‌​‌​​​​​‌​​‌​​‌​​‌‌​‌‌‌​‌‌‌‌​‌​​‌​​‌​​​​‌​‌‌‌‌‌​‌‌​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.a35YjJEd5WS9YHBAFGBc2P
+ * Fingerprint: AMK1.ZJEzU4mHchpXNeUPI7zH_f
  */
 export function Image({ src, alt, title }: { src: string; alt?: string; title?: string }) {
   return (

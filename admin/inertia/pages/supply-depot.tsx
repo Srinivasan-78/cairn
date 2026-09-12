@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​‌​​‌‌​‌​‌​‌‌​​​‌‌​‌​​‌‌​‌​‌‌​​​‌​​‌‌‌‌​‌​​‌‌​‌‌​​​‌​‌‌​​​​‌​‌​‌‌​​‌​‌​‌‌‌​‌​​​‌‌‌​​‌‌​‌​​​​‌‌​​‌​​​‌‌​​​​​​‌‌​‌​​​‌​​​‌‌‌​‌​‌‌​​​​​‌‌​​‌‌​‌‌‌​‌​​​‌​​‌​‌​​‌​‌​​‌​​‌​‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​​‌‌​​‌‌​‌​‌‌​​‌​‌​‌​‌‌‌​‌​​​‌‌‌​​‌‌​​​​​‌​‌​‌‌‌​‌‌​‌‌​​​‌‌​‌​​‌​‌‌​​​​‌​‌​​‌​​​​​‌​‌‌​‌​‌‌​​‌‌‌​‌​​‌​​​​‌​​‌‌‌‌​​‌​‌‌​‌​‌‌​​‌‌​​​‌‌​​‌‌​‌‌​‌​‌​​‌​‌‌​​​​‌‌​‌‌​​​‌‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.q5cMbzlXVWG4204GX3tJRU
+ * Fingerprint: AMK1.D3YWG0WliaH-gHO-f3jXlt
  */
 import { Head, router } from '@inertiajs/react'
 import { useEffect, useRef, useState } from 'react'

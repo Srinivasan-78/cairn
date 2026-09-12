@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​​‌‌​‌​‌​‌​​​‌‌​​‌​​‌​‌‌​‌​‌​‌​​​‌​‌​​​​​‌​‌​‌‌​​‌​​‌​​‌​‌​​​‌​​​‌‌​​​‌‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌‌‌​​‌​​‌​‌‌‌‌‌​‌‌​​‌‌​​‌‌​‌​‌​​​‌‌​​‌‌​​‌‌‌​​​​​‌‌‌​​‌​​‌‌​‌​‌​‌​​​‌‌​​​‌‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌​​​‌‌‌​‌​​​​‌​​‌‌‌‌​​‌​​‌‌​‌‌‌​​‌‌‌​​​​‌‌‌​‌‌‌​‌​‌​‌​​​‌​‌‌‌‌‌​‌​​‌‌​‌​‌‌​‌‌‌‌​‌‌‌​​​‌​​‌‌​​​​​‌​‌‌​‌​​‌​‌‌​​​​‌​​‌​​​​‌​​​‌‌​​‌​​​‌​​​‌‌​‌‌​‌​‌‌​​‌‌​​​‌‌​​‌​​‌‌‌‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.v5FKTPVIDcOUr_fj3895F1
+ * Fingerprint: AMK1.PGBy78wT_Moq0ZXHFDmf2z
  */
 import clsx from 'clsx'
 

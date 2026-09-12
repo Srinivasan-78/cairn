@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​​‌‌​‌‌​​‌‌​‌​‌​​​‌‌‌​​​​‌​​​​‌​​‌​​​‌​‌​‌​​​‌‌​​‌‌‌​‌‌‌​​‌‌‌​​‌​​‌‌​​​​​‌‌​‌‌​‌​‌​​‌​​​​‌‌​​​‌‌​‌‌‌‌​​​​‌​​‌‌​​​‌‌​‌‌​​​​‌‌​‌‌​​‌​‌​‌​‌​‌​‌​​‌‌​​‌‌‌​​‌​​‌‌​​​​​‌​‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌‌​​‌​​​‌​​​​‌‌​‌​‌​​‌​​‌‌​‌​‌‌​‌​‌‌​​​​‌‌​‌‌‌‌​‌‌​​‌‌‌​​‌‌‌​​‌​​‌‌​​‌‌​‌‌​​​‌‌​‌​​‌‌‌​​​‌​‌‌​‌​‌‌​‌‌‌‌​‌​​‌‌​​​‌‌‌​‌​‌​‌​​​‌‌‌​‌‌‌‌​​​​​‌‌​‌​‌​‌​‌‌​​‌​‌‌​​‌​‌​‌​​​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.x6j8BEFw90mHcxLl6US90V
+ * Fingerprint: AMK1.AdCRkXog93cN-oLuGx5YeD
  */
 import { Head, usePage } from '@inertiajs/react'
 import ChatComponent from '~/components/chat'

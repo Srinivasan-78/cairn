@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​‌​​‌​​‌​​‌​‌​​‌​‌​​‌​​​​‌​​‌‌‌​​​​​‌​‌​​‌​​‌‌‌​‌​​​‌‌​‌​​‌​‌‌‌‌​‌​​​‌‌​‌​​​‌‌​​‌​‌​​‌‌​‌​‌​‌​‌‌​​‌​‌​​‌​‌‌​‌​​‌‌​‌​‌‌​​‌​‌​‌‌​‌​‌‌​‌​‌​​​‌​‌‌‌​​​‌​‌‌​​‌‌‌​‌​​‌​‌​​‌‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​​​‌​​​​​‌​‌​​‌‌‌‌​‌​‌‌​​‌​‌‌‌​‌​‌​‌​​​‌​‌​‌​‌​‌‌‌​‌‌‌​‌‌​​​‌‌​​‌​​‌‌​​‌​​​‌‌​‌​‌​​‌‌‌​‌‌‌​​‌‌​​​‌​‌​‌​‌‌​​‌​‌‌​​‌​‌​‌​​‌‌​‌‌​​‌‌​​‌​​‌‌‌​​‌​​‌​‌​​‌​​​​‌​​​‌‌​​‌‌​‌‌​‌‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ZIJBpRtiz4e5YKMekQqgJv
+ * Fingerprint: AMK1.0AOYuEWv2djw1VYSfNJB3n
  */
 import { DateTime } from 'luxon'
 import { BaseModel, column, SnakeCaseNamingStrategy } from '@adonisjs/lucid/orm'

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​‌‌‌​​​‌​‌​‌‌​‌​​​‌‌​​​​​​‌‌​​​‌​‌‌​‌‌​​​‌‌​‌‌‌​​‌​​‌‌‌​​​‌‌​​​​​​‌‌​‌‌‌​‌​‌‌​‌​​‌‌​​​‌​​‌‌‌​​​​​‌​‌​​​‌​‌‌​​‌‌​​‌​​​‌‌​​‌‌​​‌‌​​‌​​​​‌‌​‌‌​​​​‌​​‌‌​​​​​‌‌​​‌​‌​​‌‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​​‌‌​​​‌​‌‌​‌‌​‌​‌‌​‌​‌‌​‌​‌‌​​‌​​‌‌​​​​​‌‌​​​‌​​‌‌​​​‌​​‌‌​‌​​‌​‌​‌​‌‌​​‌‌‌‌​​​​‌‌​‌​​​​‌‌​‌​​‌​‌​‌​‌​​​‌‌‌​​‌​​‌‌​‌‌‌​​‌​‌​​​‌​‌​​​‌​​​‌‌‌‌​​‌​​‌‌​​‌‌​​‌‌​‌‌​​​‌‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.4qZ01lnN07ZbpQfFfCa0e7
+ * Fingerprint: AMK1.41mkY0bbiVxhiTrnQDy362
  */
 import { BaseSchema } from '@adonisjs/lucid/schema'
 import { DateTime } from 'luxon'

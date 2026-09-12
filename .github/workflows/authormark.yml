@@ -20,6 +20,6 @@ jobs:
         with:
           node-version: '20'
       - name: Verify authorship watermarks are intact
-        # ed25519 repos verify signatures here from the public key in
-        # .authormark.json; hmac repos fall back to a presence check (no secret in CI).
-        run: node .authormark/authormark.mjs check .
+        # Presence check here; full fingerprint verification runs in the
+        # provenance workflow's verify-authorship job on push to main.
+        uses: Srinivasan-78/authormark-watch@a9ec3a6a6a1047eca6fd2bada07ec27643ed632e  # main
