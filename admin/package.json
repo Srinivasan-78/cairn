@@ -44,7 +44,7 @@
     "@adonisjs/prettier-config": "1.5.0",
     "@adonisjs/tsconfig": "2.0.0",
     "@japa/assert": "4.2.0",
-    "@japa/plugin-adonisjs": "4.0.0",
+    "@japa/plugin-adonisjs": "5.2.0",
     "@japa/runner": "4.5.0",
     "@swc/core": "1.11.24",
     "@tanstack/eslint-plugin-query": "5.91.4",
