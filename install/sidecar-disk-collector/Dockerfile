@@ -3,7 +3,7 @@
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
 # Fingerprint: AMK1.XGDU14Z2bWP4dIvDf8LAc6
-FROM alpine:3.20
+FROM alpine:3.24
 RUN apk add --no-cache util-linux bash
 COPY collect-disk-info.sh /usr/local/bin/collect-disk-info.sh
 RUN chmod +x /usr/local/bin/collect-disk-info.sh && mkdir -p /storage
