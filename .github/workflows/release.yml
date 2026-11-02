@@ -45,7 +45,7 @@ jobs:
       - name: Sync tags
         run: git fetch --tags --force
       - name: semantic-release
-        uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90  # v6
+        uses: cycjimmy/semantic-release-action@ad51787758d9654d5a75150a89a6fa9b3ccef95e  # v6
         id: semver
         env:
           GITHUB_TOKEN: ${{ secrets.COSMISTACKBOT_ACCESS_TOKEN }}
