@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌​​‌‌​‌‌‌‌​‌‌​​‌​​​‌‌​‌​​‌​​‌‌‌​​​​‌‌​​‌​​​‌‌‌​​​‌​‌‌‌​‌‌‌​‌‌‌​‌‌​​‌​‌​​​​​‌​​​‌​‌​‌‌‌‌​​​​‌‌​‌​​‌​‌​‌​‌‌‌​‌‌‌‌​​​​‌​‌​​‌‌​‌​​​​​‌​‌‌‌​‌‌‌​‌​​‌‌​​​‌‌​​​​‌​‌​‌​​​​​‌‌​​‌‌​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.bodi8dqwvPExiWxSAwLaPf
- */
 import { SERVICE_NAMES } from './service_names.js'
 
 // In-app docs page (admin/docs/supply-depot-apps.md) served at /docs/supply-depot-apps.

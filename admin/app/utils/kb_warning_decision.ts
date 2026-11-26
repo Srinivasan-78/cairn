@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌​‌​‌‌‌​‌​‌​‌​‌​‌​​​​‌​​‌​‌​‌​‌​‌‌‌​​​​​‌‌​‌​‌‌​‌​​​‌​​​‌‌​‌‌​‌​‌‌​‌​‌‌​‌​‌​‌​​​‌​‌​​‌‌​‌‌‌​‌​‌​‌​​​‌‌‌​‌‌​‌​​​​‌​‌​​‌​​​‌‌‌​​​​​‌‌​‌​​​‌​‌‌‌‌‌​‌​​‌​‌‌​​‌‌‌​​​​‌​‌‌​​‌⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.6WUBUpkDmkTSuGhR84_K8Y
- */
 /**
  * Conditional warnings surfaced on Stored Files rows in the KB panel.
  * See RFC #883 §6 — these warnings appear ONLY when their triggering condition

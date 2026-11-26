@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​​‌‌​‌​​​‌​‌​​‌​​‌​​​‌‌​​‌‌‌​​​​​​‌‌​​‌​​‌‌‌​‌​​​‌‌​‌​‌​​​‌‌‌​​​​‌​​​​​‌​​‌‌‌​​​​‌​​‌‌​‌​​‌‌​​​​​‌​‌​‌‌​​​‌‌​​​‌​‌‌‌​‌​​​‌​​​​​‌​‌​‌​​​‌​‌​​​​‌​​‌‌​‌‌‌‌​‌‌​​‌​‌​‌‌​‌‌​​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.G4RFp2tj8A8M0V1tAQBoel
- */
 /**
  * Parse a flattened FDA label section (drug interactions, dosage, warnings,
  * contraindications, indications, ...) into ordered blocks for readable

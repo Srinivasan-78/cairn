@@ -1,11 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌​‌​‌‌​​‌‌​​‌​‌​‌​​‌​​‌​‌‌​​‌‌​​‌‌​​​‌‌​‌‌‌​‌‌‌​‌​‌​‌​​​‌‌​‌‌​‌​‌‌‌‌​​‌​​‌‌​‌‌​​‌‌​​​​‌​‌​‌​‌​​​​‌‌​‌‌​​‌‌‌‌​‌​​​‌‌​​‌‌​‌​‌​​‌‌​‌‌​‌​‌​​​‌‌​​‌​​‌​‌​‌‌‌​​‌‌​‌‌​​‌​​​​‌‌⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.PVeIfcwTmy6aT6z3Sj2W6C
- */
-
 export const KIWIX_LIBRARY_CMD = '--library /data/kiwix-library.xml --monitorLibrary --address=all'
 
 /** `browse.library.kiwix.org` is Kiwix's *human* browsing host. On 2026-08-29 it grew an

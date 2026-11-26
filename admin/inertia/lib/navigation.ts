@@ -1,11 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌​​​​​‌​​‌‌​‌​​​‌​​​​‌‌​‌‌​​‌​‌​‌‌​​​‌​​​‌‌​​‌​​​‌​‌‌​‌​‌​‌​‌‌‌​​‌‌​​‌​​‌​​‌‌​‌​‌​​‌​​‌​‌​‌​​‌​​‌​​‌​‌‌​‌‌‌​‌​​​‌‌​‌​‌​​‌​​​​​‌​‌​‌‌​​‌​‌‌​‌​​‌​‌​‌​​​‌​‌‌‌​​​‌​‌​‌​‌​​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.uA4Ceb2-W2MIRKtjAYiQqT
- */
-
 /**
  * Normalize a user-supplied custom app URL. Accepts a bare host ("jellyfin.lan",
  * "10.0.0.5:8096") or a full URL; when no scheme is present, http:// is prepended
