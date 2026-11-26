@@ -908,13 +908,14 @@ export class RagService {
         `[RAG] Searching for top ${searchLimit} semantic matches (threshold: ${scoreThreshold})`
       )
 
-      const searchResults = await this.qdrant!.search(RagService.CONTENT_COLLECTION_NAME, {
-        vector: response.embeddings[0],
+      const queryResponse = await this.qdrant!.query(RagService.CONTENT_COLLECTION_NAME, {
+        query: response.embeddings[0],
         limit: searchLimit,
         score_threshold: scoreThreshold,
         with_payload: true,
         ...(collection ? { filter: { must: [{ key: 'collection', match: { value: collection } }] } } : {}),
       })
+      const searchResults = queryResponse.points
 
       logger.debug(`[RAG] Found ${searchResults.length} results above threshold ${scoreThreshold}`)
 
