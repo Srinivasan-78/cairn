@@ -223,11 +223,12 @@ export default function MapComponent({
           initialViewState={initialViewState}
           onMoveEnd={(e) => {
             // Persist the view so a refresh restores where the user was, not the default.
-            const { longitude, latitude, zoom } = e.viewState
+            const center = e.target.getCenter()
+            const z = e.target.getZoom()
             try {
               localStorage.setItem(
                 SAVED_MAP_VIEW_KEY,
-                JSON.stringify({ lng: longitude, lat: latitude, z: zoom })
+                JSON.stringify({ lng: center.lng, lat: center.lat, z })
               )
             } catch {
               // ignore persistence failures (private mode, quota)
