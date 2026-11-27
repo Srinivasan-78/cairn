@@ -130,7 +130,7 @@ export function evaluateImageReference(image: string): GuardEvaluation {
     nameAndTag.includes('/') && (firstSegment.includes('.') || firstSegment.includes(':'))
   const registry = hasRegistryHost ? firstSegment.split(':')[0] : 'docker.io'
 
-  if (!TRUSTED_REGISTRIES.includes(registry)) {
+  if (!new Set(TRUSTED_REGISTRIES).has(registry)) {
     warnings.push(
       `Image is from "${registry}", which is outside cairn's trusted registries. Only install images you trust.`
     )

@@ -301,11 +301,17 @@ export function remediesForCondition(file: NaturalRemediesFile, slug: string): N
  */
 export function remedySourceName(remedy: { kind?: 'herb' | 'self-care'; sourceUrl: string }): string {
   if ((remedy.kind ?? 'herb') === 'herb') return 'NCCIH'
-  const url = remedy.sourceUrl.toLowerCase()
-  if (url.includes('cdc.gov')) return 'CDC'
-  if (url.includes('fda.gov')) return 'FDA'
-  if (url.includes('medlineplus.gov')) return 'MedlinePlus (NLM)'
-  if (url.includes('nih.gov')) return 'NIH'
+  let host = ''
+  try {
+    host = new URL(remedy.sourceUrl).hostname.toLowerCase()
+  } catch {
+    return 'US government source'
+  }
+  const matchesHost = (domain: string) => host === domain || host.endsWith(`.${domain}`)
+  if (matchesHost('cdc.gov')) return 'CDC'
+  if (matchesHost('fda.gov')) return 'FDA'
+  if (matchesHost('medlineplus.gov')) return 'MedlinePlus (NLM)'
+  if (matchesHost('nih.gov')) return 'NIH'
   return 'US government source'
 }
 
