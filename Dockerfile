@@ -1,4 +1,4 @@
-FROM node:22-slim AS base
+FROM node:25-slim AS base
 
 # Install bash & curl for entrypoint script compatibility, graphicsmagick for pdf2pic, and vips-dev & build-base for sharp 
 RUN apt-get update && apt-get install -y \
