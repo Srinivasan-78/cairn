@@ -41,18 +41,21 @@ const getSavedMapView = (): SavedMapView | null => {
     const raw = localStorage.getItem(SAVED_MAP_VIEW_KEY)
     if (!raw) return null
     const parsed = JSON.parse(raw)
-    if (
-      parsed &&
-      typeof parsed === 'object' &&
-      Number.isFinite(parsed.longitude) &&
-      Number.isFinite(parsed.latitude) &&
-      Number.isFinite(parsed.zoom) &&
-      parsed.latitude >= -90 &&
-      parsed.latitude <= 90 &&
-      parsed.longitude >= -180 &&
-      parsed.longitude <= 180
-    ) {
-      return { longitude: parsed.longitude, latitude: parsed.latitude, zoom: parsed.zoom }
+    if (parsed && typeof parsed === 'object') {
+      const lng = parsed.lng ?? parsed.longitude
+      const lat = parsed.lat ?? parsed.latitude
+      const z = parsed.z ?? parsed.zoom
+      if (
+        Number.isFinite(lng) &&
+        Number.isFinite(lat) &&
+        Number.isFinite(z) &&
+        lat >= -90 &&
+        lat <= 90 &&
+        lng >= -180 &&
+        lng <= 180
+      ) {
+        return { longitude: lng, latitude: lat, zoom: z }
+      }
     }
   } catch {
     // ignore — fall through to default
@@ -220,11 +223,12 @@ export default function MapComponent({
           initialViewState={initialViewState}
           onMoveEnd={(e) => {
             // Persist the view so a refresh restores where the user was, not the default.
-            const { longitude, latitude, zoom } = e.viewState
+            const center = e.target.getCenter()
+            const z = e.target.getZoom()
             try {
               localStorage.setItem(
                 SAVED_MAP_VIEW_KEY,
-                JSON.stringify({ longitude, latitude, zoom })
+                JSON.stringify({ lng: center.lng, lat: center.lat, z })
               )
             } catch {
               // ignore persistence failures (private mode, quota)
