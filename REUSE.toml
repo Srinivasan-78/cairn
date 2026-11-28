@@ -7,3 +7,9 @@ path = "**"
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>"
 SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["local-llm/teacher_pipeline/reports/**", "local-llm/teacher_pipeline/dataset/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Srinivasan Vijayaraghavan"
+SPDX-License-Identifier = "MIT"

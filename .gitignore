@@ -64,5 +64,6 @@ __pycache__/
 unsloth_compiled_cache/
 *.safetensors
 *.gguf
+local-llm/teacher_pipeline/dataset/rejected.jsonl
 !local-llm/profile/build/
 !local-llm/profile/build/**
