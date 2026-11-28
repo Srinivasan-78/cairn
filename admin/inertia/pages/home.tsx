@@ -242,7 +242,8 @@ export default function Home(props: {
             </div>
           )
 
-          return item.target === '_blank' ? (
+          const isExternal = item.target === '_blank' && !item.to.startsWith('/')
+          return isExternal ? (
             <a key={item.label} href={item.to} target="_blank" rel="noopener noreferrer">
               {tileContent}
             </a>

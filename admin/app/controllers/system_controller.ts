@@ -33,6 +33,7 @@ import {
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import logger from '@adonisjs/core/services/logger'
+import { safeJsonParse } from '../utils/misc.js'
 import Service from '#models/service'
 
 @inject()
@@ -298,12 +299,7 @@ export default class SystemController {
 
         // Extract host ports from container_config — the MySQL driver may return JSON columns
         // as an already-parsed object rather than a string, so guard before calling JSON.parse.
-        const rawConfig = service.container_config
-        const config = rawConfig
-            ? typeof rawConfig === 'object'
-                ? rawConfig
-                : JSON.parse(rawConfig as string)
-            : null
+        const config = safeJsonParse<Record<string, any> | null>(service.container_config, null)
         const portBindings: Record<string, [{ HostPort: string }]> =
             config?.HostConfig?.PortBindings ?? {}
         const hostPorts = Object.values(portBindings)
@@ -732,11 +728,7 @@ export default class SystemController {
             cpus?: number
         }
     ): { containerConfig: Record<string, any>; uiLocation: string | null } {
-        const parsed = existingRaw
-            ? typeof existingRaw === 'object'
-                ? existingRaw
-                : JSON.parse(existingRaw as string)
-            : {}
+        const parsed = safeJsonParse<Record<string, any>>(existingRaw, {})
         // Deep clone so we never mutate the parsed source.
         const containerConfig: Record<string, any> = JSON.parse(JSON.stringify(parsed ?? {}))
         containerConfig.HostConfig = containerConfig.HostConfig ?? {}
@@ -777,8 +769,7 @@ export default class SystemController {
 
     /** Inverse of buildCustomContainerConfig: turn a stored Service into the editable form-shape. */
     private parseCustomContainerConfig(service: Service) {
-        const raw = service.container_config
-        const config = raw ? (typeof raw === 'object' ? raw : JSON.parse(raw as string)) : {}
+        const config = safeJsonParse<Record<string, any>>(service.container_config, {})
         const hostConfig = config?.HostConfig ?? {}
 
         const ports = Object.entries(hostConfig.PortBindings ?? {}).map(([key, val]: [string, any]) => ({

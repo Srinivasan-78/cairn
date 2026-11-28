@@ -102,9 +102,9 @@ export default function ChatInterface({
                   <div className="mt-8">
                     <h4 className="text-sm font-medium text-text-secondary mb-2">Suggestions:</h4>
                     <div className="flex flex-col gap-2">
-                      {chatSuggestions.map((suggestion, index) => (
+                      {chatSuggestions.map((suggestion) => (
                         <button
-                          key={index}
+                          key={suggestion}
                           onClick={() => {
                             setInput(suggestion)
                             // Focus the textarea after setting input

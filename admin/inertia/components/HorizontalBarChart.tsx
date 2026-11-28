@@ -60,8 +60,8 @@ export default function HorizontalBarChart({
 
   return (
     <div className="space-y-6">
-      {items.map((item, index) => (
-        <div key={index} className="space-y-2">
+      {items.map((item) => (
+        <div key={item.label} className="space-y-2">
           <div className="flex justify-between items-baseline">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-desert-green">{item.label}</span>

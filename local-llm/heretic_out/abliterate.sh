@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Abliterate the srini-* lineup: refusal-direction ablation via heretic, exported
 # as PEFT LoRA adapters that teacher_pipeline/serve_adapter.py can serve.
 #

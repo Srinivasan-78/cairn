@@ -83,7 +83,17 @@ const WikipediaSelector: React.FC<WikipediaSelectorProps> = ({
           return (
             <div
               key={option.id}
+              role="button"
+              tabIndex={disabled || isCurrentDownloading ? -1 : 0}
+              aria-disabled={disabled || isCurrentDownloading || undefined}
               onClick={() => !disabled && !isCurrentDownloading && onSelect(option.id)}
+              onKeyDown={(e) => {
+                if (disabled || isCurrentDownloading) return
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onSelect(option.id)
+                }
+              }}
               className={classNames(
                 'relative p-4 rounded-lg border-2 transition-all',
                 disabled || isCurrentDownloading

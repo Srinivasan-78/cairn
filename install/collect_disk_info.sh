@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 while true; do
     DISK_LAYOUT=$(lsblk --json -o NAME,SIZE,TYPE,MODEL,SERIAL,VENDOR,ROTA,TRAN)

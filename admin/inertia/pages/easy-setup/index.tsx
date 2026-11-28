@@ -696,8 +696,8 @@ export default function EasySetupWizard(props: {
                   installed ? 'text-text-secondary' : selected ? 'text-white' : 'text-text-secondary'
                 )}
               >
-                {capability.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start text-sm">
+                {capability.features.map((feature) => (
+                  <li key={feature} className="flex items-start text-sm">
                     <span
                       className={classNames(
                         'mr-2',

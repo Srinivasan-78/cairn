@@ -54,9 +54,9 @@ export default function InfoCard({ title, icon, data, variant = 'default' }: Inf
       </div>
       <div className="p-6">
         <dl className="grid grid-cols-1 gap-4">
-          {data.map((item, index) => (
+          {data.map((item) => (
             <div
-              key={index}
+              key={item.label}
               className={classNames(
                 'flex justify-between items-center py-2 border-b border-desert-stone-lighter last:border-b-0'
               )}

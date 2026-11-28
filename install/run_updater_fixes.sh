@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Cairn - One-Time Updater Fix Script
 #

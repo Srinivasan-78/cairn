@@ -233,7 +233,15 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                       return (
                         <div
                           key={tier.slug}
+                          role="button"
+                          tabIndex={0}
                           onClick={() => handleTierClick(tier)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              handleTierClick(tier)
+                            }
+                          }}
                           className={classNames(
                             'border-2 rounded-lg p-5 cursor-pointer transition-all',
                             isSelected
@@ -268,8 +276,8 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                                   )}
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                  {ownResources.map((resource, idx) => (
-                                    <div key={idx} className="flex items-start text-sm">
+                                  {ownResources.map((resource) => (
+                                    <div key={resource.id || resource.title} className="flex items-start text-sm">
                                       <IconCheck size={14} className="text-desert-green mr-1.5 mt-0.5 flex-shrink-0" />
                                       <div>
                                         <span className="text-text-primary">{resource.title}</span>

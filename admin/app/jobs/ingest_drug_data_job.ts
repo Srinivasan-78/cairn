@@ -722,7 +722,7 @@ export class IngestDrugDataJob {
             batchWriter.on('error', reject)
             readStream.on('error', reject)
             jsonParser.on('error', reject)
-            pick.on('error', reject)
+            ;(pick as unknown as NodeJS.EventEmitter).on('error', reject)
             streamArray.on('error', reject)
 
             // Pipeline: readStream → jsonParser → pick → streamArray → batchWriter

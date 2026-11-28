@@ -499,8 +499,8 @@ export default function CustomAppModal({
         {/* Hard blocks — must be resolved before installing */}
         {hasBlocks && (
           <div className="space-y-2">
-            {blocked.map((b, i) => (
-              <Alert key={i} type="error" title="Not allowed" message={b} />
+            {blocked.map((b) => (
+              <Alert key={b} type="error" title="Not allowed" message={b} />
             ))}
           </div>
         )}
@@ -516,8 +516,8 @@ export default function CustomAppModal({
                 message={`Currently bound by: ${c.usedBy}. Installation may fail.`}
               />
             ))}
-            {resourceWarnings.map((w, i) => (
-              <Alert key={i} type="warning" title="Resource warning" message={w} />
+            {resourceWarnings.map((w) => (
+              <Alert key={w} type="warning" title="Resource warning" message={w} />
             ))}
             <label className="flex items-center gap-2 cursor-pointer select-none mt-1">
               <input

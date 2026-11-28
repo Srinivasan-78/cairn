@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # compare_adapters.sh - Grade every trained adapter against base, one rubric, one eval set.
 #
 # Answers "which lesson actually produced the best model", which per-lesson runs

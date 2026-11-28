@@ -75,8 +75,8 @@ export default function DrugResultRow({ result, brandFirst = false }: Props) {
 
         {subParts.length > 0 && (
           <div className="flex flex-wrap gap-x-3 mt-0.5 text-xs text-text-secondary">
-            {subParts.map((p, i) => (
-              <span key={i} className="truncate">
+            {subParts.map((p) => (
+              <span key={p} className="truncate">
                 {p}
               </span>
             ))}

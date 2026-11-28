@@ -80,9 +80,9 @@ const Select = <T,>({
                 "mt-1 focus:outline-none"
               )}
             >
-              {options.map((option, index) => (
+              {options.map((option) => (
                 <ListboxOption
-                  key={index}
+                  key={String(option.value)}
                   value={option.value}
                   disabled={option.disabled}
                   className={classNames(

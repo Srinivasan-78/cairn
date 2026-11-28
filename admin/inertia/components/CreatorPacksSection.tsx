@@ -125,7 +125,7 @@ const CreatorPacksSection: React.FC<CreatorPacksSectionProps> = ({ allowUninstal
               <a
                 href={LICENSE_URL}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="text-desert-green underline hover:no-underline"
                 onClick={(e) => e.stopPropagation()}
               >

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # setup_wsl_training.sh - Build the QLoRA training environment inside WSL2.
 #
 # Run from Windows:

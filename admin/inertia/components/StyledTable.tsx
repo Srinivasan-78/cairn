@@ -91,9 +91,9 @@ function StyledTable<T extends { [key: string]: any }>({
                 )}
               />
             )}
-            {columns.map((column, index) => (
+            {columns.map((column) => (
               <th
-                key={index}
+                key={column.accessor.toString()}
                 className={classNames(
                   'whitespace-nowrap text-left font-semibold text-text-primary',
                   compact ? `${leftPadding} py-2` : `${leftPadding} py-4  pr-3`
@@ -158,7 +158,7 @@ function StyledTable<T extends { [key: string]: any }>({
                     )}
                     {columns.map((column, index) => (
                       <td
-                        key={index}
+                        key={column.accessor.toString()}
                         className={classNames(
                           'relative text-sm whitespace-nowrap max-w-72 truncate break-words text-left',
                           column.className || '',

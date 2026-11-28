@@ -44,52 +44,26 @@ export default function useOllamaModelDownloads() {
         const unsubscribe = subscribe('ollama-model-download', (data: OllamaModelDownload) => {
             setDownloads((prev) => {
                 const updated = new Map(prev)
-
-                if (data.percent === -1) {
-                    // Download failed — show error state, auto-remove after 15 seconds
-                    updated.set(data.model, data)
-                    const errorTimeout = setTimeout(() => {
-                        timeoutsRef.current.delete(errorTimeout)
-                        setDownloads((current) => {
-                            const next = new Map(current)
-                            next.delete(data.model)
-                            return next
-                        })
-                    }, 15000)
-                    timeoutsRef.current.add(errorTimeout)
-                } else if (data.percent === -2) {
-                    // Download cancelled — clear quickly (matches the completion TTL).
-                    // Component-level optimistic removal usually beats this branch, but it's
-                    // here as a safety net for cases where the cancel comes from another tab
-                    // or another client.
-                    const cancelTimeout = setTimeout(() => {
-                        timeoutsRef.current.delete(cancelTimeout)
-                        setDownloads((current) => {
-                            const next = new Map(current)
-                            next.delete(data.model)
-                            return next
-                        })
-                    }, 2000)
-                    timeoutsRef.current.add(cancelTimeout)
+                if (data.percent === -2) {
                     updated.delete(data.model)
-                } else if (data.percent >= 100) {
-                    // If download is complete, keep it for a short time before removing to allow UI to show 100% progress
-                    updated.set(data.model, data)
-                    const timeout = setTimeout(() => {
-                        timeoutsRef.current.delete(timeout)
-                        setDownloads((current) => {
-                            const next = new Map(current)
-                            next.delete(data.model)
-                            return next
-                        })
-                    }, 2000)
-                    timeoutsRef.current.add(timeout)
                 } else {
                     updated.set(data.model, data)
                 }
-
                 return updated
             })
+
+            if (data.percent === -1 || data.percent === -2 || data.percent >= 100) {
+                const delay = data.percent === -1 ? 15000 : 2000
+                const t = setTimeout(() => {
+                    timeoutsRef.current.delete(t)
+                    setDownloads((current) => {
+                        const next = new Map(current)
+                        next.delete(data.model)
+                        return next
+                    })
+                }, delay)
+                timeoutsRef.current.add(t)
+            }
         })
 
         return () => {

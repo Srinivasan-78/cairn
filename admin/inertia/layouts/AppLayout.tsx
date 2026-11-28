@@ -39,11 +39,19 @@ export default function AppLayout({
           </Link>
         )}
       <div
+        role="button"
+        tabIndex={0}
         className={classNames(
           'flex cursor-pointer items-center justify-center',
           compact ? 'gap-3 p-3 flex-row' : 'gap-2 p-2 flex-col'
         )}
         onClick={() => router.visit('/home')}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            router.visit('/home')
+          }
+        }}
       >
         <img
           src="/cairn_logo.svg"

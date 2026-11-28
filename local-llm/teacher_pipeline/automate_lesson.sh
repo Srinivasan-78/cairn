@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # automate_lesson.sh - One unattended pass of the teach/train/grade loop.
 #
 # Runs entirely inside WSL2: environment check, QLoRA micro-epoch, then grading
