@@ -26,7 +26,7 @@ export default class EasySetupController {
   }
 
   async complete({ inertia }: HttpContext) {
-    return inertia.render('easy-setup/complete')
+    return inertia.render('easy-setup/complete', {})
   }
 
   async listCuratedCategories({}: HttpContext) {

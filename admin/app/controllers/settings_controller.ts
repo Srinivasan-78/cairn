@@ -36,11 +36,11 @@ export default class SettingsController {
   }
 
   async legal({ inertia }: HttpContext) {
-    return inertia.render('settings/legal')
+    return inertia.render('settings/legal', {})
   }
 
   async support({ inertia }: HttpContext) {
-    return inertia.render('settings/support')
+    return inertia.render('settings/support', {})
   }
 
   async maps({ inertia }: HttpContext) {
@@ -98,15 +98,15 @@ export default class SettingsController {
   }
 
   async zim({ inertia }: HttpContext) {
-    return inertia.render('settings/zim/index')
+    return inertia.render('settings/zim/index', {})
   }
 
   async zimRemote({ inertia }: HttpContext) {
-    return inertia.render('settings/zim/remote-explorer')
+    return inertia.render('settings/zim/remote-explorer', {})
   }
 
   async creatorPacks({ inertia }: HttpContext) {
-    return inertia.render('settings/creator-packs')
+    return inertia.render('settings/creator-packs', {})
   }
 
   async benchmark({ inertia }: HttpContext) {

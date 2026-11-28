@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite'
-import { getDirname } from '@adonisjs/core/helpers'
-import inertia from '@adonisjs/inertia/client'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 import adonisjs from '@adonisjs/vite/client'
 import tailwindcss from '@tailwindcss/vite'
 
 
 export default defineConfig({
-  plugins: [inertia({ ssr: { enabled: false } }), react(), tailwindcss(), adonisjs({ entrypoints: ['inertia/app/app.tsx'], reload: ['resources/views/**/*.edge'] })],
+  plugins: [react(), tailwindcss(), adonisjs({ entryPoints: ['inertia/app/app.tsx'], reload: ['resources/views/**/*.edge'] })],
 
   /**
    * Define aliases for importing modules from
@@ -15,7 +15,7 @@ export default defineConfig({
    */
   resolve: {
     alias: {
-      '~/': `${getDirname(import.meta.url)}/inertia/`,
+      '~/': `${dirname(fileURLToPath(import.meta.url))}/inertia/`,
     },
   },
   server: {

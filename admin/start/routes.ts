@@ -97,7 +97,7 @@ transmit.registerRoutes()
 
 router.get('/', [HomeController, 'index'])
 router.get('/home', [HomeController, 'home'])
-router.on('/about').renderInertia('about')
+router.on('/about').renderInertia('about', {})
 router.get('/chat', [ChatsController, 'inertia'])
 router.get('/maps', [MapsController, 'index'])
 router.get('/supply-depot', [SupplyDepotController, 'index'])
