@@ -1,0 +1,5 @@
+FROM qwen3.5:9b
+SYSTEM """"""
+PARAMETER temperature 0.3
+PARAMETER top_p 0.95
+PARAMETER num_ctx 16384

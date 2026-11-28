@@ -1,0 +1,265 @@
+{
+  "timestamp": "2026-11-22T11:59:40.122821+00:00",
+  "model": "qwen3.5:4b",
+  "eval_file": "E:\\LocalLLM\\teacher_pipeline\\dataset\\eval.jsonl",
+  "n_prompts": 10,
+  "n_errors": 0,
+  "overall_score": 0.426,
+  "pass_rate": 0.0,
+  "by_criterion": {
+    "accuracy": 0.317,
+    "reasoning": 0.607,
+    "formatting": 0.325,
+    "conciseness": 0.659
+  },
+  "by_skill": {
+    "agentic_planning": 0.485,
+    "localllm_ops": 0.295,
+    "python_stack": 0.66,
+    "structured_extraction": 0.689,
+    "supply_chain": 0.393,
+    "tool_call_format": 0.374
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "tool_call_format",
+    "supply_chain",
+    "agentic_planning",
+    "python_stack",
+    "structured_extraction"
+  ],
+  "mean_tokens_per_sec": 77.0,
+  "wall_seconds": 230.5,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.611,
+        "formatting": 1.0,
+        "conciseness": 0.595
+      },
+      "notes": {
+        "accuracy": "recall=0.43 nums=0.83",
+        "reasoning": "cov=0.44 nov=0.68 steps=45",
+        "formatting": "ok",
+        "conciseness": "padded (2.57x)"
+      },
+      "total": 0.66,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.9,
+      "student_answer": "Here is a review of the function and the necessary fixes.\n\n### Issues Identified\n\n1.  **Resource Leak (Critical):** The file handle `f` is opened but never closed. In Python, this leads to \"file descriptor leaks\" where resources aren't released properly, especially if an error occurs before the function ends.\n2.  **No Error Handling:** If the file doesn't exist or contains invalid JSON, the script will crash with a generic traceback. It should handle these cases gracefully.\n3.  **Missing Type Hints:** The function signature does not indicate what types of arguments it expects or what it returns. This makes it harder to use and maintain.\n4.  **No Documentation:** There is no docstring explaining the purpose, parameters, or return value.\n5.  **Encoding:** `json.load` reads text, so specifying an encoding (e.g., `'utf-8'`) is best practice to avoid platform-specific issues.\n\n### Fixed Code\n\n```python\nimport json\nfrom typing import Any\n\ndef load_config(path: str) -> dict[str, Any]:\n    \"\"\"\n    Load configuration data from a JSON file.\n\n    Args:\n        path (str): The file system path to the configuration file.\n\n    Returns:\n        dict: The parsed JSON configuration data.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file contains invalid JSON.\n    \"\"\"\n    try:\n        with open(path, 'r', encoding='utf-8') as f:\n            data = json.load(f)\n        return data\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"Config file not found at {path}\")\n    except json.JSONDecodeError:\n        raise ValueError(f\"Invalid JSON format in {path}\")\n```\n\n### Key Changes Explained\n\n1.  **`with open(...) as f:`**: This ensures the file is automatically closed, even if an error occurs during `json.load()`.\n2.  **`try...except` blocks**: Catches specific errors (`FileNotFoundError`, `JSONDecodeError`) and re-raises them with helpful context messages.\n3.  **`encoding='utf-8'`**: Explicitly tells Python how to han",
+      "student_thinking": "Here's a thinking process that leads to the suggested fixes:\n\n1.  **Analyze the Request:**\n    *   Input: A Python function `load_config`.\n    *   Task: Review the code and identify/fix issues.\n    *   Code Snippet:\n        ```python\n        def load_config(path):\n            f = open(path)\n            data = json.load(f)\n            return data\n        ```\n\n2.  **Identify Potential Issues (Code Review):**\n    *   **Resource Management:** The file `f` is opened but never explicitly closed. This leads to resource leaks (file handles staying open). While Python's garbage collector might eventually close it, it's bad practice. Using a context manager (`with` statement) is the standard solution.\n    *   **Error Handling:** There are no checks for:\n        *   File not found (`FileNotFoundError`).\n        *   Invalid JSON format (`json.JSONDecodeError`).\n        *   Path issues (permissions, etc.).\n        *   If `f` isn't closed properly on error.\n    *   **Type Hints:** The function signature doesn't specify types for arguments or return values. This makes it harder to use and maintain.\n    *   **Docstring:** There is no documentation explaining what the function does, inputs, outputs, or raises exceptions.\n    *   **Security (Potential):** If `path` comes from user input, opening a file directly could lead to path traversal attacks (though less critical for config files if trusted). It's worth noting as a best practice to sanitize paths.\n    *   **Modern Python Practices:** Usi"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.629,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.00 nums=0.00",
+        "reasoning": "cov=0.32 nov=1.00 steps=89",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.157,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 76.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested ranking of fixes:\n\n1.  **Analyze the User's Problem:**\n    *   **Model Size:** 4B parameters (approx. 32GB FP16, ~16GB INT8/FP4).\n    *   **Technique:** QLoRA (Quantized Low-Rank Adaptation). This implies the base model is quantized (usually 4-bit) and LoRA adapters are trained on top.\n    *   **Hardware:** 8 GB VRAM (This is very tight for a 4B model, even with QLoRA).\n    *   **Symptom:** Out Of Memory (OOM) at sequence length 2048, batch size 2.\n    *   **Goal:** Rank fixes by \"memory saved per unit of quality lost.\" This is the tricky part. It requires balancing technical feasibility against performance degradation.\n\n2.  **Understand QLoRA Memory Usage:**\n    *   Base Model: 4-bit weights (approx. 16GB for 7B, but for 4B it's roughly 8GB RAM). Wait, let's calculate: $4 \\times 10^9$ params $\\times$ 4 bits = 2 GB? No, that's raw storage. In memory, 4-bit weights usually take up more due to overhead and activation caching.\n    *   Activation Memory: The biggest killer of VRAM in LLM inference is activations (KV cache).\n    *   LoRA Weights: Small compared to base model.\n    *   Optimizer State: QLoRA uses AdamW, which stores gradients and optimizer states for the LoRA ranks.\n    *   Context Length (Sequence Length): Directly proportional to activation memory ($O(N)$).\n    *   Batch Size: Directly proportional to total activations processed at once.\n\n3.  **Evaluate Potential Fixes:**\n\n    *   *Fix A: Reduce Sequence Length"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.331,
+        "reasoning": 0.543,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.22 nums=0.60",
+        "reasoning": "cov=0.29 nov=0.74 steps=42",
+        "formatting": "missing code block",
+        "conciseness": "0.92x"
+      },
+      "total": 0.485,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.9,
+      "student_answer": "Here is the breakdown of how you should handle this situation, divided into what you report and what you do.\n\n### 1. What to Report\nYou must be transparent but clarify that your change did not introduce a regression.\n\n*   **State clearly:** \"I ran the test suite after my change. While there are 3 failing tests, these failures existed before my change.\"\n*   **Clarify impact:** \"My code change does not appear to have introduced any new regressions or breaking changes.\"\n*   **Highlight the issue:** \"The test suite has pre-existing flakiness or environmental issues that need to be addressed separately.\"\n\n**Do not say:** \"All tests passed\" (even if they didn't) or \"My code is fine, ignore the failures.\" Both are misleading.\n\n### 2. What to Do\nYour priority shifts from validating your code change to fixing the reliability of the test suite.\n\n*   **Investigate the root cause:** Determine why the tests were failing before. Was it a missing dependency? A network issue? An outdated environment? A race condition (flakiness)?\n*   **Fix the infrastructure:** If the failures are due to your local or CI environment, fix that first. You cannot trust a test suite that fails without cause.\n*   **Document known issues:** If you cannot immediately fix the tests, document them in an issue tracker (e.g., Jira, GitHub Issues) so the team knows they are pre-existing and not caused by your code.\n*   **Proceed with caution:** You can merge your change if it is safe to do so (and you have a plan to fix the test suite), but ensure your commit message explicitly states: *\"Fixes feature X; Note: 3 tests were failing prior to this change due to [reason].\"*\n\n### Summary\n**Report:** \"No new failures introduced by my change, but there are pre-existing test failures.\"\n**Do:** Fix the environment or document the known issues so the team does not waste time investigating them.",
+      "student_thinking": "Here's a thinking process that leads to the suggested advice:\n\n1.  **Analyze the Scenario:**\n    *   **Action:** Ran test suite after a code change.\n    *   **Result:** 3 tests failed.\n    *   **Context:** These same 3 tests *also* failed before the change (i.e., they were already broken).\n    *   **Question:** What do you report? What do you do?\n\n2.  **Determine the Core Issue:**\n    *   The goal of testing is to ensure code changes don't break existing functionality.\n    *   If tests fail before and after, the change didn't introduce a regression (assuming the tests are stable).\n    *   However, failing tests mean the test suite itself is unreliable or there's an underlying environmental issue.\n\n3.  **Formulate \"What to Report\":**\n    *   *To whom?* Usually stakeholders, managers, or team members.\n    *   *What is the truth?* The change did not break anything (regression-wise).\n    *   *What is the problem?* The test suite has pre-existing failures (known issues).\n    *   *Tone:* Professional, factual, transparent. Don't hide the fact that tests were failing; admit it.\n\n4.  **Formulate \"What to Do\":**\n    *   *Immediate Action:* Fix the environment or infrastructure causing the flaky/pre-existing failures.\n    *   *Short-term:* Document the known issues so others know not to panic.\n    *   *Long-term:* Investigate why tests were failing before (flakiness, outdated dependencies, missing setup).\n    *   *Next Steps:* Merge the code change if it's safe, but address the test fa"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 0.79,
+        "reasoning": 0.489,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.70 nums=1.00",
+        "reasoning": "cov=0.26 nov=0.77 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "0.50x"
+      },
+      "total": 0.578,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 77.9,
+      "student_answer": "read_file(path=\"src/repo2graph/cli.py\", start_line=40, end_line=80)",
+      "student_thinking": "The user wants me to use the `read_file` tool to read lines 40-80 of a specific file: `src/repo2graph/cli.py`.\n\nI need to format this as a tool call with the schema provided:\n- path: \"src/repo2graph/cli.py\" (required)\n- start_line: 40 (optional, but specified)\n- end_line: 80 (optional, but specified)\n\nThe user asked me to emit only the tool call, so I should not include any other text or explanation."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.291,
+        "reasoning": 0.566,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.23 nums=0.43",
+        "reasoning": "cov=0.36 nov=0.68 steps=54",
+        "formatting": "missing code block",
+        "conciseness": "0.84x"
+      },
+      "total": 0.472,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.8,
+      "student_answer": "**No, you should not raise the version cap yet.**\n\nAllowing this new major version would violate your core promise that \"building and querying make no network calls.\" Even if the download size is small (2.5 MB vs 33 MB), the fundamental behavior change—requiring a network connection on first use—breaks the reliability contract you have established with your users.\n\nHere is the breakdown of why, along with recommended next steps:\n\n### 1. The Contract Violation\nYour project promises **zero network calls** during build and query time. This is likely a critical feature for your target audience (e.g., offline-first tools, air-gapped environments, or strict security compliance).\n*   **The Risk:** If you allow this version, users running in an environment without internet will experience failures during their first execution.\n*   **The Trust Cost:** Violating a core promise damages trust more than the performance gain of a smaller wheel size.\n\n### 2. The \"First Use\" Ambiguity\nThe phrase \"downloaded on first use\" introduces uncertainty:\n*   **Is it build-time or runtime?** If the download happens during `make`/`build`, it breaks your promise immediately. If it happens only during a specific query command, you need to verify if that is considered part of the \"query\" promise.\n*   **Is there caching?** Does the dependency cache the grammar locally after the first download? While this helps subsequent runs, the initial run still requires network access.\n\n### 3. Recommended Action Plan\nInstead of raising the version cap immediately, take these steps:\n\n1.  **Verify the Behavior:** Test the new version in an offline environment to confirm exactly when and how the network call occurs.\n2.  **Check for Configuration:** Ask the dependency maintainers if there is a flag or configuration option to disable the download (e.g., `--no-network`, `offline_mode`). If they offer this, you might be able to allow the version *if* users configure it correctly, but you must document this requiremen",
+      "student_thinking": "Here's a thinking process that leads to the suggested advice:\n\n1.  **Analyze the Scenario:**\n    *   **Change:** A dependency (let's call it `lib`) has released a new major version.\n    *   **Impact on Dependency Size:** The wheel size dropped significantly (33 MB $\\rightarrow$ 2.5 MB).\n    *   **Reason for Change:** Grammars are now downloaded on first use instead of being compiled in the binary.\n    *   **Project Promise:** Building and querying make *no* network calls.\n    *   **Question:** Should we raise the version cap (i.e., allow this new major version)?\n\n2.  **Evaluate the Core Conflict:**\n    *   **The \"Promise\":** The project promises zero network calls during build/query time. This is a strong contract with users regarding performance, reliability, and offline capability.\n    *   **The Dependency's Change:** The dependency now downloads data (grammars) at runtime (first use).\n    *   **The Risk:** If the user builds or queries using this new version, they might violate their own promise because the dependency is making a network call.\n\n3.  **Analyze the \"Version Cap\" Mechanism:**\n    *   In many package managers (like npm, pip, cargo, maven), there's often a `version` constraint in dependencies or a CI policy that limits which versions are allowed.\n    *   Raising the version cap means allowing this new major version to be installed.\n    *   If we allow it, we risk breaking our own promise.\n    *   If we don't allow it, we might miss out on performance benefits (s"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.67,
+        "formatting": 0.25,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.00 nums=0.00",
+        "reasoning": "cov=0.40 nov=1.00 steps=52",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.218,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 76.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the User's Problem:**\n    *   **Context:** The user is trying to use an AI model (specifically `qwen3.5:9b`) via an API endpoint.\n    *   **Issue:** A client application is rejecting the model ID immediately (`[claude-code:unrecognized_model]`), even before sending a request.\n    *   **Error Message:** `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}`.\n    *   **Observation:** The user claims the endpoint is correct, but the error suggests the client itself doesn't recognize the model ID `qwen3.5:9b`.\n    *   **Goal:** Make the client accept a model ID it has never heard of.\n\n2.  **Identify the Core Misunderstanding:**\n    *   The error message `[claude-code:unrecognized_model]` is highly specific. It looks like an internal error format, possibly from a tool or framework (like `claude-code`) rather than a standard API response from a model provider (like Anthropic, Alibaba/Qwen, etc.).\n    *   Wait, the user mentions `qwen3.5:9b`. This is an Alibaba Cloud Qwen model.\n    *   The error says `[claude-code:unrecognized_model]`. \"Claude\" and \"Qwen\" are different companies (Anthropic vs. Alibaba).\n    *   *Hypothesis 1:* The user is using a tool that wraps Claude API but thinks it's talking to Qwen? No, the model ID is explicitly `qwen3.5:9b`.\n    *   *Hypothesis 2:* The error format `[claude-code:unrecognized_model]` suggests this isn't a standard HTTP response from the model provider, but rath"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.684,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.00 nums=0.00",
+        "reasoning": "cov=0.43 nov=1.00 steps=40",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.171,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 76.7,
+      "student_answer": "",
+      "student_thinking": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Tool: `grade_model`\n    *   Schema: `{\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (optional)}`\n    *   User Input: \"baseline the student, then I guess compare it to whatever we had before, at whatever temperature is stable\"\n    *   Task: Emit the tool call and one line on any judgement made.\n\n2.  **Determine Tool Parameters:**\n    *   `model`: The user didn't specify a model name explicitly (e.g., \"gpt-4\", \"mistral\"). However, in many contexts involving grading or evaluation tools, there's often an implicit default or the instruction implies I should use a specific one. Since it's not provided, I need to make a reasonable assumption or ask. But wait, this is a tool call generation task. Usually, if the model isn't specified, I might need to infer it from context or use a placeholder. However, looking at the schema, `model` is required. Without specific context about which model to run, I cannot fill this accurately. *Correction*: In many RLHF or evaluation pipelines, there's often a standard model used for grading (e.g., \"gpt-4-turbo\" or similar). Since I don't have external context, I should probably use a placeholder or the most common one if this is a simulated environment. Let's look at the instruction again: \"baseline the student\". This implies there might be a specific model associated with the grading task. Without that info, I'll have to make "
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.154,
+        "reasoning": 0.581,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.15 nums=0.15",
+        "reasoning": "cov=0.34 nov=0.78 steps=61",
+        "formatting": "missing code block",
+        "conciseness": "1.17x"
+      },
+      "total": 0.315,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.8,
+      "student_answer": "Here is a breakdown of what you should verify before serving your new model and exactly what the digest represents in this context.\n\n### 1. Verification Before Serving\n\nWhen you run `ollama create`, you are building a new image based on an existing GGUF file and your Modelfile configuration. Before deploying this to production, verify the following:\n\n#### A. Modelfile Integrity\n*   **Syntax:** Ensure there are no typos in the Modelfile (e.g., missing quotes, invalid parameters). You can test this with `ollama create --help` or by running a dry-run if your setup supports it.\n*   **Parameters:** Verify that parameters like `num_ctx`, `num_gpu`, and `quantization` match your hardware capabilities. If you set `num_gpu` too high for your VRAM, the model will crash immediately upon serving.\n*   **Tags:** Ensure the tags in your Modelfile are unique. If you overwrite an existing tag (e.g., `llama3:latest`), it will replace the previous version entirely.\n\n#### B. GGUF File Integrity\n*   **Checksum:** If you downloaded the GGUF from a public hub, verify its integrity against the checksum provided by the uploader (often listed in the file metadata or README). A corrupted GGUF will result in an unresponsive model.\n*   **Architecture Compatibility:** Ensure the GGUF architecture matches your hardware (e.g., don't run an `llama-3.1` GGUF on a CPU-only setup without enabling Ollama's fallback logic, which may be slower or unstable).\n\n#### C. Model Testing\n*   **Sanity Check:** Run a few prompts immediately after creation to ensure the model isn't \"hallucinating\" due to a corrupted Modelfile configuration (e.g., if you accidentally set `temperature` too high in the Modelfile).\n*   **Latency:** Measure the token generation time. If it is significantly slower than expected, your quantization level or context size may be misconfigured.\n\n#### D. Security\n*   **Source",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the User's Request:**\n    *   **Action:** The user pulled a GGUF model from a hub (e.g., Hugging Face, Ollama Hub) and is using `ollama create` with a Modelfile.\n    *   **Question 1:** What should they verify before serving it?\n    *   **Question 2:** What does a digest actually prove?\n\n2.  **Deconstruct Question 1: Verification Before Serving:**\n    *   *Context:* `ollama create` creates a new model from an existing one (usually a GGUF) and a Modelfile (which defines parameters like system prompt, quantization settings, etc.).\n    *   *Key Concerns:* Security, Integrity, Compatibility.\n    *   *Specific Checks:*\n        *   **Modelfile Content:** Does it match the intended use? (System prompts, context window).\n        *   **Model File Integrity:** Is the GGUF file actually valid? Did it get corrupted during download?\n        *   **Security/Supply Chain:** Who uploaded the GGUF? Is it malicious?\n        *   **Performance/Resource Fit:** Will this quantization fit in RAM/CPU? (Though `create` usually handles this, verification is good).\n        *   **Ollama Specifics:** Does the Modelfile syntax work?\n    *   *The \"Digest\" aspect:* The user specifically asks about digests later, implying they might be thinking about verifying integrity.\n\n3.  **Deconstruct Question 2: What does a digest prove?**\n    *   *Technical Definition:* A cryptographic hash (SHA-256 usually).\n    *   *Function:* It proves data"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.154,
+        "reasoning": 0.567,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.11 nums=0.25",
+        "reasoning": "cov=0.30 nov=0.81 steps=54",
+        "formatting": "ok",
+        "conciseness": "1.04x"
+      },
+      "total": 0.511,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.9,
+      "student_answer": "The error message \"It may not exist\" confirms that **the model name `qwen3.5:9b` is not found on your local Ollama instance.**\n\nHere is a breakdown of why this is happening and how to fix it, ranked from most likely to least likely cause.\n\n### 1. The Model Likely Doesn't Exist (Most Likely)\nAs of late 2024/early 2025, **Qwen 3.5 does not exist publicly.** The latest major version available on Ollama is typically **Qwen 2.5** (e.g., `qwen2.5:7b`, `qwen2.5:14b`).\n\n*   **The Issue:** You are trying to use a model tag (`qwen3.5`) that hasn't been pushed to the Ollama library yet, or you made a typo.\n*   **The Fix:** Check what models you actually have installed.\n\n**Run this command in your terminal:**\n```bash\nollama list\n```\nLook for the `NAME` column. If you see `qwen2.5:7b` or similar, that is the one you should use.\n\n### 2. You Need to Pull the Correct Model\nIf you don't have a Qwen model installed yet, you need to pull a valid version. Since `qwen3.5` doesn't exist, try pulling the latest available stable version (usually `qwen2.5`).\n\n**Run this command:**\n```bash\nollama pull qwen2.5:7b\n# OR if you prefer 14b\nollama pull qwen2.5:14b\n```",
+      "student_thinking": "Here's a thinking process that leads to the suggested troubleshooting steps:\n\n1.  **Analyze the User's Problem:**\n    *   **Environment:** The user is setting up Claude Code (an AI coding assistant) to talk to Ollama.\n    *   **Configuration:** They set `ANTHROPIC_BASE_URL=http://localhost:11434/v1`. This points to Ollama's API endpoint.\n    *   **Status:** Ollama is running, and the model is \"pulled\" (according to the user).\n    *   **Error Message:** \"There's an issue with the selected model (qwen3.5:9b). It may not exist or you may not have access to it.\"\n    *   **Core Issue:** The connection works, but the specific model `qwen3.5:9b` is not found or accessible via Ollama.\n\n2.  **Identify Potential Causes:**\n    *   **Model Name Mismatch:** This is the most likely culprit. Claude Code expects a specific model name format that matches what Ollama has available. The user mentioned `qwen3.5:9b`.\n    *   **Ollama Version/Compatibility:** Older versions of Ollama might not support certain models, or newer versions might have different naming conventions.\n    *   **Model Availability:** Is the model actually pulled on the local machine? \"Pulled\" in the UI doesn't always mean it's accessible via the API if there's a tag mismatch.\n    *   **API Endpoint:** `http://localhost:11434/v1` is correct for Ollama, but Claude Code might be expecting specific headers or parameters.\n    *   **Claude Code Configuration:** How is Claude Code configured to select models? Is it using the defaul"
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.903,
+        "reasoning": 0.732,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.92 nums=0.86",
+        "reasoning": "cov=0.55 nov=0.93 steps=41",
+        "formatting": "missing code block",
+        "conciseness": "0.83x"
+      },
+      "total": 0.689,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 77.3,
+      "student_answer": "{\"name\": \"qwen3.5:9b\", \"family\": \"qwen35\", \"params\": \"9.0B\", \"quant\": \"Q4_K_M\", \"context\": 262144, \"size_gb\": 6.1, \"tools\": true, \"vision\": true}",
+      "student_thinking": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A JSON object representing Ollama model information.\n    *   Output Format: Exactly `{\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": boolean, \"vision\": boolean}`.\n    *   Specific Constraint: `size_gb` must be bytes converted to gigabytes rounded to one decimal place.\n    *   Input Data: `{\"name\":\"qwen3.5:9b\",\"size\":6550825550,\"details\":{\"format\":\"gguf\",\"family\":\"qwen35\",\"parameter_size\":\"9.0B\",\"quantization_level\":\"Q4_K_M\",\"context_length\":262144},\"capabilities\":[\"completion\",\"vision\",\"tools\",\"thinking\"]}`\n\n2.  **Extract Fields from Input:**\n    *   `name`: \"qwen3.5:9b\" (from root)\n    *   `size`: 6550825550 (bytes, from root)\n    *   `details.family`: \"qwen35\" (Note: Input says \"qwen3.5:9b\", details say \"qwen35\". I should follow the input structure provided in `details`).\n    *   `details.quantization_level`: \"Q4_K_M\"\n    *   `details.context_length`: 262144\n    *   `capabilities`: [\"completion\", \"vision\", \"tools\", \"thinking\"]\n\n3.  **Map to Output Schema:**\n    *   `name`: \"qwen3.5:9b\"\n    *   `family`: \"qwen35\" (from `details.family`)\n    *   `params`: \"9.0B\" (from `details.parameter_size`) OR should it be derived from size? Usually, `params` refers to parameter count. The input has `parameter_size\":\"9.0B\"`. I will use that string.\n    *   `quant`: \"Q4_K_M\" (from `details.quantization_level`)\n    *   `context`: 262144 (from `details.context_l"
+    }
+  ]
+}

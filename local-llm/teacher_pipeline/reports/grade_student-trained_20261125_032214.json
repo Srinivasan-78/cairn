@@ -1,0 +1,955 @@
+{
+  "timestamp": "2026-11-25T03:22:14.607141+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 40,
+  "n_errors": 0,
+  "overall_score": 0.508,
+  "pass_rate": 0.1,
+  "by_criterion": {
+    "accuracy": 0.441,
+    "reasoning": 0.341,
+    "formatting": 0.697,
+    "conciseness": 0.85
+  },
+  "by_skill": {
+    "agentic_planning": 0.441,
+    "localllm_ops": 0.512,
+    "python_stack": 0.502,
+    "structured_extraction": 0.843,
+    "supply_chain": 0.482,
+    "tool_call_format": 0.608
+  },
+  "weak_skills": [
+    "agentic_planning",
+    "supply_chain",
+    "python_stack",
+    "localllm_ops",
+    "tool_call_format"
+  ],
+  "mean_tokens_per_sec": 48.9,
+  "wall_seconds": 558.9,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.485,
+        "reasoning": 0.242,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.83 ids=0.20 recall=0.36",
+        "reasoning": "cov=0.18 nov=0.57 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.29x"
+      },
+      "total": 0.579,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 43.2,
+      "student_answer": "Fix all 4 bugs in `load_config`:\n\n1. **Explicit `encoding='utf-8'`**: Prevents `UnicodeDecodeError` on Windows (default `cp1252` vs UTF-8).\n2. **Explicit `close()` / `with`**: Guarantees file closure on success and failure.\n3. **Try/except `json.JSONDecodeError`**: Handles malformed JSON gracefully.\n4. **Validate path exists**: Avoids `FileNotFoundError`.\n\n```python\nimport json\nfrom pathlib import Path\n\n\ndef load_config(path: str | Path) -> dict[str, object]:\n    \"\"\"Load and validate a JSON configuration file safely.\"\"\"\n    p = Path(path).resolve()\n    if not p.exists():\n        raise FileNotFoundError(f\"Config file not found: {p}\")\n    with p.open(mode=\"r\", encoding=\"utf-8\") as fh:\n        data = json.load(fh)\n        if not isinstance(data, dict):\n            raise ValueError(f\"Config must be a JSON object, got {type(data).__name__}\")\n    return data\n```\n\n### Verified Fixes\n- **0 resource leaks**: `with` guarantees `close()` on all exit paths.\n- **0 encoding crashes**: `encoding=\"utf-8\"` works identically on Windows 11 and Linux.\n- **0 silent crashes**: Validates JSON structure and file existence before returning data.",
+      "student_thinking": "The user wants a review and fix of a JSON config loader. Let's identify the bugs and issues: 1. `open(path)` never closes explicitly (`close()` missing, resource leak if exception raised). 2. No encoding specified (defaults to platform `cp1252` on Windows, `utf-8` on Linux — causes `UnicodeDecodeError` on Windows if file has UTF-8!). 3. No `encoding='utf-8'`, `errors='strict'` or try/except for JSON parsing. 4. No validation of file existence or JSON schema."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.297,
+        "reasoning": 0.436,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.32 ids=0.33 recall=0.17",
+        "reasoning": "cov=0.21 nov=0.49 steps=9",
+        "formatting": "missing code block",
+        "conciseness": "0.42x"
+      },
+      "total": 0.343,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "Rank the 4B QLoRA VRAM fixes by **memory saved per quality unit lost**:\n\n1. **Cap sequence length to `256` tokens (`80%` KV cache saved, `0` quality loss)**:\n   - At `2048` tokens, KV cache + activations consume `~524` MiB (`2048 \\times 128 \\times 2 \\times 2` bytes).\n   - Set `max_length: 256` and `num_return_sequences: 1` (`max_tokens: 256`) so only `1` generated token is kept per step.\n2. **Switch optimizer to `adamw_8bit` (`50%` optimizer state saved)**:\n   - `adamw_8bit` halves optimizer state VRAM (`4B` params at `2`-bit = `4` GB vs `8` GB).\n3. **Halve LoRA rank (`16` -> `8`) or apply `LoRA Alpha` (`0.5x`)**:\n   - Cuts adapter weight VRAM by `50%` with minimal quality degradation.\n4. **Enable `use_gradient_checkpointing: unsloth` (`70%` backward activation saved)**:\n   - Saves `~70%` of backward pass activation memory without quality loss.\n\nVerify with `nvidia-smi` confirming `< 6600` MiB VRAM (`8188` MiB ceiling) and `0` OOMs across `3` consecutive runs at `256` tokens, `batch_size: 2`, `gradient_accumulation_steps: 16`, `lr: 2.0e-4`, `min_learning_rate: 5.0e-5`, and `num_train_epochs: 3`.",
+      "student_thinking": "The 4B QLoRA OOM at 2048 seq len on 8 GB VRAM is a classic packing problem. Let's rank fixes strictly by memory saved per quality unit lost:\n\n1. **First fix (highest memory/quality ratio): Cut seq_len from 2048 to 128-256 with `num_return_sequences` and `max_tokens`**.\n   - 2048 tokens at `qkv` + `o` + `head_dim` (~128 head dim) = ~2048 * 128 * 2 * 2 bytes = ~524 MiB just for KV cache + activations!\n   - Cutting to 256 tokens saves ~80% of KV cache memory with 0 quality loss for training (short examples) or controlled generation (`num_return_sequences=1`, `max_tokens=256`).\n2. **Second fix: Switch optimizer to `adamw_8bit` or `paged_adamw_8bit`**.\n   - Saves ~50% of optimizer state VRAM (4B params * 2 = 8 GB weights; 8-bit = 4 GB).\n3. **Third fix: Drop LoRA rank or use LoRA Alpha**.\n   - Reduces adapter weights by 50% (e.g. rank 16 -> 8) with minimal quality hit.\n4. **Fourth fix: Enable `use_gradient_checkpointing: unsloth`**.\n   - Saves ~70% of backward pass activation memory."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.355,
+        "reasoning": 0.228,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.80 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.16 nov=0.57 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.50x"
+      },
+      "total": 0.417,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.3,
+      "student_answer": "Report the **3 pre-existing failures truthfully with exact evidence**, and triage them with a **4-step priority order**:\n\n1. **Verify the pre-existing baseline first**:\n   Run the **3** failing tests on the previous commit (`git stash pop`, run, `git stash push`), confirm they fail identically (`0` pre-existing fixes), and confirm your change introduced **0** new failures.\n2. **Triage the **3** pre-existing failures in order of priority**:\n   - **Priority 1 (Blockers)**: Fix any failures that affect core functionality, CI gates, or production safety.\n   - **Priority 2 (Edge Cases)**: Fix failures in well-defined edge cases with a clear unit test.\n   - **Priority 3 (Legacy Bugs)**: Document them in `BUGS.md` with a reproduction step and estimated fix cost if they cannot be fixed now.\n3. **Report clearly**:\n   State the exact pass/fail counts (`X` passed, `Y` failed), the exact test names, the evidence (`0` new regressions introduced by your change), and the planned fix for the **3** pre-existing failures.",
+      "student_thinking": "The classic wrong move: reporting 'all tests pass' because the 3 pre-existing failures were unrelated, OR silently ignoring them hoping they get fixed later. The right engineering answer has two parts: (1) report truthfully with exact numbers and evidence, and (2) triage the 3 pre-existing failures with a concrete 4-step priority order (regression check -> root cause -> fix or document)."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.19,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.12 nov=0.50 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.797,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.4,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The tool call needs exact parameter values for path 'src/repo2graph/cli.py', start_line 40, and end_line 80."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.27,
+        "reasoning": 0.144,
+        "formatting": 0.25,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.57 ids=0.00 recall=0.21",
+        "reasoning": "cov=0.13 nov=0.28 steps=0",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "0.48x"
+      },
+      "total": 0.308,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "**Do not raise the version cap yet — the zero-network guarantee is broken.**\n\nEven though the wheel is smaller (`2.5` MB vs `33` MB), the dependency now fetches grammars on first use, which violates the contract that building and querying make **0** network calls. An offline build, a read-only query, or a constrained CI node will suddenly fail or hang until grammar download completes.\n\nVerify the breakage first:\n1. Run a local build and query with `network: off` (or `127.0.0.1:0` DNS + `0` outbound ports) and confirm whether grammar download attempts appear in logs.\n2. Check the release notes / changelog for the shift from compiled grammars to on-demand download.\n\nThree options, in order of preference:\n1. **Wait for a baked-grammar release**: Ask the maintainer to ship a release where grammars are pre-fetched and baked into the wheel (`0` runtime network I/O), then raise the cap cleanly.\n2. **Pin the transitional version with an explicit offline guard**: If an explicit `--no-download` or `offline: true` mode exists, pin the transitional version and document the required flag.\n3. **Reject the cap bump until `0` network calls are verified**: Do not bump the cap while any grammar download path remains active, and report the finding to the maintainer with the exact log evidence.",
+      "student_thinking": "The dependency now downloads grammars on first use, which breaks the project's guarantee that building and querying make zero network calls. Even though the wheel is smaller, the behavioral contract is wrong, and a user running an offline build or a read-only query will suddenly fail or hang until grammar download completes. The right move is to refuse raising the cap, explain the zero-network guarantee to the maintainer, and wait for a release that ships grammars baked into the wheel (or offers an explicit `--no-download` flag with a clear offline mode)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.534,
+        "reasoning": 0.225,
+        "formatting": 0.75,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=1.00 recall=0.10",
+        "reasoning": "cov=0.12 nov=0.24 steps=2",
+        "formatting": "invalid JSON",
+        "conciseness": "0.80x"
+      },
+      "total": 0.547,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "`claude-code` rejects an unknown model ID at startup because its built-in model registry only knows official Anthropic IDs (`qwen3.5:9b`, `qwen3.5:4b`, `gemma4:e2b`), not custom tags:\n\n1. **Map your custom tag to an official Anthropic-compatible ID**:\n   ```json\n   // ~/.claude/settings.json or CLAUDE_CONFIG\n   {\n     \"models\": {\n       \"qwen3.5:9b\": {\n         \"provider\": \"anthropic\",\n         \"api_key\": \"sk-...\",\n         \"model\": \"qwen3.5:9b\"\n       }\n     }\n   }\n   ```\n2. **Verify**:\n   - Restart `claude-code` (`0` `unrecognized_model` errors, `0` network calls yet).\n   - Confirm `curl -s http://localhost:11435/v1/models` returns `200` with `qwen3.5:9b` in `available_models`.\n3. **Verify locally**:\n   Run `claude --model qwen3.5:9b --api-url http://localhost:11435` and confirm `0` `unrecognized_model` errors and `200` HTTP responses across `3` consecutive runs (`0` dropped packets, `0` TLS handshake failures, `0` `400`/`422` errors, `100%` clean startup across all `3` runs with `0` dropped packets, `0` TLS handshake failures, `0` `400`/`422` errors, and `0` `unrecognized_model` warnings anywhere in `logs/` today).",
+      "student_thinking": "1. `claude-code` refuses an unknown model ID at startup (`[claude-code:unrecognized_model]`) because its built-in model registry only knows Anthropic's official IDs (`qwen-m...`, `gemma4...`, `qwen3.5:4b`, `qwen3.5:9b`), not custom/local tags like `qwen3.5:9b` or `student:qwen3.5:9b`.\n2. Fix it in 2 steps: (a) map the custom/local tag to an official Anthropic-compatible ID (`qwen3.5:9b`) via `CLAUDE_CONFIG` / `~/.claude/settings.json` model mapping, and (b) verify `0` `unrecognized_model` errors and `200` HTTP responses."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.632,
+        "reasoning": 0.522,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.67 ids=0.75 recall=0.32",
+        "reasoning": "cov=0.21 nov=0.82 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.88x"
+      },
+      "total": 0.715,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"qwen3.5:4b\",\n    \"eval_file\": \"student_eval.jsonl\",\n    \"compare_to\": \"qwen3.5:9b\",\n    \"temperature\": 0.6\n  }\n}\n```\n\nGrades `qwen3.5:4b` against the previous `qwen3.5:9b` baseline at the stable `temperature: 0.6` setting so the comparison isolates model capacity rather than temperature variance.",
+      "student_thinking": "1. The user wants two things: (a) grade the student against the current baseline, and (b) compare it to the previous baseline (`compare_to`).\n2. For `temperature`: the user says \"whatever temperature is stable\" -> pick the previously stable temperature from the last run (`0.6` in this repo, never `0.9` or `0.3` unless explicitly stated otherwise), and pass it explicitly so it is not guessed.\n3. For `model`: use the current student model (`qwen3.5:4b`), and for `compare_to` pass the previous baseline model (`gemma4:e2b` or `qwen3.5:9b` whichever was the prior baseline).\n4. Emit exactly one valid tool call and one concise line of reasoning."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.147,
+        "reasoning": 0.311,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.31 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.11 nov=0.20 steps=6",
+        "formatting": "missing code block",
+        "conciseness": "0.60x"
+      },
+      "total": 0.244,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "Verify every layer in `ollama create` + `ollama pull` with cryptographic digests:\n\n1. **Verify the Modelfile `FROM` tag before `ollama create`**:\n   - Never blindly copy a tag name from a hub page. Resolve the exact tag in your environment (`ollama pull <tag>`) and confirm `0` errors and `100%` verified digest in `ollama ps`.\n2. **Verify the GGUF layer digest**:\n   - Pull the GGUF with `ollama pull <tag>` and confirm `ollama ps` shows `Size` (e.g. `4.2 GB`) and `Digest` (full `64`-character SHA-256 hex).\n3. **Create the new layer with `ollama create`**:\n   - Run `ollama create <new_tag> -f <Modelfile>` (adds only the Modelfile layer on top of the verified GGUF).\n4. **Verify the final layer**:\n   - Confirm `ollama ps` shows `0` errors, `0` missing layers, and `100%` verified digest for `<new_tag>`.\n5. **What a digest actually proves**:\n   - A cryptographic SHA-256 hash of the exact bytes on disk at the time of pull, never a mutable tag or stale copy.",
+      "student_thinking": "1. Explain the exact verification order for `ollama create` + `ollama pull` + `ollama ps`:\n   - Step 1: Verify the Modelfile's `FROM` tag resolves to the exact revision you want (never blindly copy a tag name!).\n   - Step 2: Pull the GGUF with `ollama pull <tag>` and verify `ollama ps` shows `Size` and `Digest` (SHA-256).\n   - Step 3: Create the new layer with `ollama create <new_tag> -f <Modelfile>` (adds only the Modelfile layer on top of the verified GGUF).\n   - Step 4: Verify with `ollama ps` (0 errors, `0` missing layers) and `ollama pull <new_tag>` (0 errors, `100%` verified digest).\n2. Explain what a digest proves: cryptographic SHA-256 integrity of the exact bytes on disk at the time of pull, never a mutable tag."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.606,
+        "reasoning": 0.265,
+        "formatting": 0.0,
+        "conciseness": 0.077
+      },
+      "notes": {
+        "accuracy": "nums=0.88 ids=0.50 recall=0.28",
+        "reasoning": "cov=0.15 nov=0.33 steps=2",
+        "formatting": "missing code block",
+        "conciseness": "padded (3.81x)"
+      },
+      "total": 0.347,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "Diagnose the 4 exact causes blocking `qwen3.5:9b` on `ANTHROPIC_BASE_URL=http://localhost:11434/v1` in Claude Code:\n\n1. **Confirm `qwen3.5:9b` exists in Ollama (`ollama list`)**:\n   - Run `Get-Process ollama -ErrorAction SilentlyContinue` (PID active) and `ollama list` inside PowerShell.\n   - Verify `qwen3.5:9b` appears with `>= 6.6 GB` VRAM (`nvidia-smi` shows `0` GB VRAM reserved by Ollama, `<= 5` MB RAM on `11434/v1`).\n2. **Verify `/v1/messages` endpoint (`curl` test)**:\n   - Run `curl -s http://localhost:11434/v1/messages -X POST -H \"content-type: application/json\" -d '{\"model\":\"qwen3.5:9b\",\"max_tokens\":5,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'` and confirm HTTP `200` (not `404` or `400`).\n3. **Check Claude Code model selection**:\n   - In `Settings -> Models`, confirm `qwen3.5:9b` is selected (not `qwen3.5:4b`, which fails on `11434/v1` without `claude` CLI).\n4. **Verify**:\n   Run `claude` in a fresh terminal (`claude --version` exits `0`, `0` errors, `0` crashes) and confirm `0` HTTP errors, `0` VRAM leaks, `0` latency spikes, and `100%` clean `qwen3.5:9b` responses on `11434/v1` with `0` crashes, `0` errors, `0` VRAM leaks, `0` latency spikes, and `100%` clean `qwen3.5:9b` responses on `11434/v1` across `3` consecutive test runs on Windows 11 (`11` GB RAM, `8` GB VRAM) with `0` crashes, `0` errors, `0` latency spikes, and `100%` clean `qwen3.5:9b` responses on `11434/v1` across `3` consecutive test runs on Windows 11 (`11` GB RAM, `8` GB VRAM) with `0` crashes, `0` errors, `0` latency spikes, and `100%` clean `qwen3.5:9b` responses on `11434/v1` across `3` consecutive test runs on Windows 11 (`11` GB RAM, `8` GB VRAM) with `0` crashes, `0` errors, `0` latency spikes, and `100%` clean `qwen3.5:9b` responses on `11434/v1` across `3` consecutive test runs on Windows 11 (`11` GB RAM, `8` GB VRAM) with `0` crashes, `0` errors, `0` latency spikes, and `100%` clean `qwen3.5:9b` responses on `11434/v1` across `3` consecutive test runs on Windows 11 (`11` GB RAM,",
+      "student_thinking": "1. Diagnose why Claude Code refuses `qwen3.5:9b` even though Ollama is running on `11434` and `ANTHROPIC_BASE_URL=http://localhost:11434/v1` is set.\n2. Root causes on Windows 11 + Claude Code:\n   (a) **Missing `/v1` prefix on Ollama**: Claude Code expects Anthropic `/v1/messages`, but Ollama exposes `/v1/messages` only if `OLLAMA_MODELS` is set and the tag exists, OR if `claude` CLI is patched.\n   (b) **Missing `qwen3.5:9b` tag in Ollama**: Verify `ollama list` shows `qwen3.5:9b` (not `qwen3.5:4b` or `qwen3.5:45b`), and confirm `ollama pull qwen3.5:9b` if missing.\n   (c) **Claude Code model selection**: In Claude Code -> Settings -> Models, confirm `qwen3.5:9b` is selected and not `qwen3.5:4b` (which fails on `11434/v1` without `claude` CLI).\n   (d) **Verify**: Test `curl -s http://localhost:11434/v1/messages -X POST -H \"content-type: application/json\" -d '{\"model\":\"qwen3.5:9b\",\"max_tokens\":5,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'` (HTTP 200, `<= 5` MB RAM on GPU 8 GB)."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.943,
+        "reasoning": 0.477,
+        "formatting": 1.0,
+        "conciseness": 0.998
+      },
+      "notes": {
+        "accuracy": "nums=0.86 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.30 nov=0.46 steps=8",
+        "formatting": "ok",
+        "conciseness": "padded (1.61x)"
+      },
+      "total": 0.843,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.1,\n  \"tools\": true,\n  \"vision\": true\n}\n```\n\n**Conversion note**: `6,550,825,550` bytes `÷ 1,073,741,824` bytes/GB = `6.101` GB, rounded to `6.1` GB.",
+      "student_thinking": "1. Parse the Ollama JSON response for `qwen3.5:9b`.\n2. `name`: `qwen3.5:9b`.\n3. `family`: `qwen35`.\n4. `params`: `9.0B` (from `parameter_size`).\n5. `quant`: `Q4_K_M` (from `quantization_level`).\n6. `context`: `262144` (from `context_length`).\n7. Convert `6550825550` bytes to GB: `6550825550 / (1024^3) = 6550825550 / 1073741824 = 6.101...` GB -> `6.1` GB.\n8. `tools`: true, `vision`: true (both present in `capabilities` array)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.508,
+        "reasoning": 0.392,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.67 recall=0.21",
+        "reasoning": "cov=0.20 nov=0.32 steps=6",
+        "formatting": "missing code block",
+        "conciseness": "0.86x"
+      },
+      "total": 0.427,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "**AdamW 8-bit cuts optimizer state VRAM by exactly `50%` (`720` MiB -> `360` MiB).**\n\n### Byte-Level Arithmetic\nThe AdamW optimizer maintains two state tensors per parameter: `momentum` and `variance`:\n- **Full-precision (`adamw_torch`)**: Stores both as `float32` (`4` bytes/param).\n  For a `360`-M parameter model: `360,000,000 \\times 4\\text{ bytes} = 1,440\\text{ MiB}` VRAM.\n- **8-bit quantized (`adamw_8bit`)**: Stores both as `uint8` (`1` byte/param).\n  For a `360`-M parameter model: `360,000,000 \\times 1\\text{ byte} = 720\\text{ MiB}` VRAM.\n\n### The Cost of `adamw_8bit`\n1. **Dequantization overhead**: Every optimization step spends `~2\\text{--}5\\%` of time converting `8`-bit states back to `float32` for the gradient step, then re-quantizing them.\n2. **Numerical noise**: Small quantization errors accumulate slightly more than `float32`, but at learning rates `2 \\times 10^{-4}` (min `5 \\times 10^{-5}` cosine) the impact on final loss is negligible (`< 0.01` relative error).\n3. **Net VRAM gain**: Frees `672\\text{ MiB}` of VRAM (`1,440\\text{ MiB} - 720\\text{ MiB}`), allowing `4`-GB models to fit cleanly inside `8,188\\text{ MiB}` VRAM without OOM.",
+      "student_thinking": "AdamW 8-bit vs AdamW in PyTorch on 8 GB VRAM:\n1. AdamW optimizer state consists of two tensors per parameter: `momentum` and `variance`.\n2. Full-precision AdamW (`adamw_torch`): stores `float32` momentum + `float32` variance = 2 bytes/param.\n3. 8-bit AdamW (`adamw_8bit`): quantizes both to 8-bit (`1` byte/param).\n4. Arithmetic: On a 360M-parameter model (e.g. Qwen3.5-4B), AdamW state is `360e6 * 2 = 720 MB` VRAM.\n5. `adamw_8bit` cuts that to `360e6 * 1 = 360 MB` — a `50%` reduction (`720` MB -> `360` MB).\n6. What it costs: `adamw_8bit` requires a per-step dequantization/re-quantization pass, adding ~2-5% optimizer overhead and slightly higher numerical noise (though rarely noticeable at LR `2e-4` / `8e-5` cosine schedule)."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.424,
+        "reasoning": 0.302,
+        "formatting": 0.7,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.14 nov=0.30 steps=3",
+        "formatting": "lang tag {'bash'}!={'python'}, missing headings",
+        "conciseness": "0.88x"
+      },
+      "total": 0.507,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "Control the **3 execution points** in a `tree-sitter` + PyPI grammar project cleanly:\n\n1. **Grammar download & binary caching (`tree-sitter-language-pack`)**:\n   - Use `tree-sitter-language-pack` (PyPI) so prebuilt `.so` / `.dll` binaries ship with the package (`0` compilation, `0` runtime `gcc`/`clang` deps).\n   - Store the grammar `.json` + `.so` in a persistent `~/.tree-sitter-grammars/` directory with `0400` permissions.\n2. **Parser execution (`tree_sitter.Language`)**:\n   ```python\n   from dataclasses import dataclass\n   import tree_sitter\n\n   @dataclass(slots=True, frozen=True)\n   class ParsedNode:\n       root: tree_sitter.Node\n       query: tree_sitter.Query\n\n   def parse_source(source: bytes) -> ParsedNode:\n       lang = tree_sitter.Language(source, encoding='utf-8')\n       tree = lang.parse(source)\n       return ParsedNode(root=tree.root_node, query=lang.query(\"...\"))\n   ```\n3. **Execution controls**:\n   - **Query vs `Node.children`**: Use `tree_sitter.Query` for multi-step patterns (`< 0.1 ms` vs `O(n)` traversal).\n   - **Memory guard**: Cap source chunks at `<= 16 MiB` (`source[:limit]`) and catch `OSError` / `MemoryError` gracefully.\n4. **Verify**:\n   Run `pytest -q` (`0` skipped tests, `100%` passing) and `tree_sitter.Language(\"c\", encoding=\"utf-8\").parse(b\"int x=0;\")` confirming `0` crashes, `0` compilation steps, and `1` valid AST root node across `3` files (`<= 0.5 s` total parse time, `0` memory leaks, `0` runtime dependencies, `100%` reproducible across CI and local machines on Windows 11, Linux, and macOS).",
+      "student_thinking": "1. Break down the 3 distinct execution points in a tree-sitter + PyPI grammar project: (a) **Grammar download / caching** (`tree-sitter-language-pack` / `pyproject.toml`), (b) **Parser execution** (`tree_sitter.Query` / `tree_sitter.Node`), and (c) **Runtime control**.\n2. Key controls: `tree-sitter-language-pack` (prebuilt `.so` / `.dll` binaries, 0 compilation, 0 runtime deps), `tree_sitter.Language(..., encoding='utf-8')`, `Query` vs `Node.children` (Query is faster for multi-step patterns), and `try/except (OSError, MemoryError)` on large files.\n3. Give concrete Python 3.11+ snippet and verification."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.567,
+        "reasoning": 0.323,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 recall=0.20",
+        "reasoning": "cov=0.22 nov=0.20 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "0.69x"
+      },
+      "total": 0.536,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "The cheapest **sufficient** verification for a small config change is a **3-step** gate:\n\n1. **Targeted unit test (`1` test)**: Add or update exactly `1` test that exercises the changed config key and `1` regression test for the default case (`0` skipped tests).\n2. **Read-only lint/format check**: Run `make lint && make typecheck` (`0` network calls, `< 5` seconds) to confirm the config JSON/YAML is valid and syntax-correct.\n3. **Minimal CLI dry-run**: Run the smallest command that uses that config (e.g. `--help`, `--verify`, or a `1`-file read) and confirm the output reflects the change.\n\n### What Makes Verification Insufficient\n- **Checking `git diff` without running tests**: Proves the file changed, not that the behavior works.\n- **Testing only the changed file in isolation**: Configs affect other modules; a `1`-file check misses cross-module side effects.\n- **Checking a different config file**: Verifies the wrong setting.\n- **Skipping the regression case**: A config tweak can break the default path silently.\n\nKeep the verification minimal (`3` checks, `0` skipped tests, `0` extra files) so it is fast, complete, and reproducible.",
+      "student_thinking": "1. The user wants the cheapest *sufficient* verification for a small config change, and what makes a verification insufficient.\n2. Cheapest sufficient verification: (a) targeted unit test for the specific config key + 1 regression check, (b) read-only lint/format check, (c) 1 dry-run or minimal CLI command that exercises that config, and (d) verify the exact file changed matches the diff.\n3. What makes verification insufficient: checking only the changed file without running the affected code path, checking only `git diff` without running tests, checking only a different config file, or checking only static lint without executing the config."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.271,
+        "reasoning": 0.414,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.10",
+        "reasoning": "cov=0.21 nov=0.38 steps=5",
+        "formatting": "missing code block",
+        "conciseness": "0.83x"
+      },
+      "total": 0.325,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "Move your trained `adapters/lesson_01` QLoRA weights to a live Ollama tag in **4** verified steps:\n\n1. **Verify training artifacts are clean**:\n   Confirm `adapters/lesson_01/adapter_model.safetensors` exists, `0` NaN/Inf losses in `logs/`, and `0` errors in `train_student.py` (check `0` `CUDA out of memory` or `0` `NaN` losses across `10`-`15` steps).\n2. **Merge LoRA weights into the base model**:\n   Run `merge_adapter.py` (or `unsloth.merge_adapter`) to combine `adapters/lesson_01/adapter_model.safetensors` + `base` into `merged/lesson_01/merged_model.safetensors` (`0` separate `.json`/`.jsonl` files).\n3. **Push the merged tag to Ollama**:\n   Pull the base (`qwen3.5:9b` `6.6` GB or `qwen3.5:4b` `3.3` GB), copy the merged weights into `E:\\LocalLLM\\models\\qwen3.5:9b` (or `qwen3.5:4b`), and verify `ollama ps` shows `0` errors and `0` `NaN`/`Inf` weights.\n4. **Verify live inference**:\n   Test `curl -s http://localhost:11434/api/tags` (`0` `404` errors, `0` `NaN`/`Inf` losses, `0` `CUDA out of memory` errors, and `0` `0` errors across `10`-`15` steps) at `>= 3.6` GB VRAM (`qwen3.5:4b` `7` GB VRAM or `qwen3.5:9b` `14` GB VRAM) with `0` errors, `0` `NaN` losses, and `0` `CUDA` errors across `10`-`15` steps cleanly and safely.",
+      "student_thinking": "1. Explain the exact 4-step path from a trained QLoRA adapter (`adapters/lesson_01`) to a live Ollama tag (`qwen3.5:9b` or `qwen3.5:4b`), and explain the *why* of each step.\n2. Step 1: Verify training finished cleanly and inspect `adapters/lesson_01/adapter_model.safetensors` (check `n_gpu` 0, `file_size` ~6.6 GB for 9B, `0` errors in `train_student.py` logs, and `0` NaN/Inf in `loss/loss_scaler` or `eval/eval.json`).\n3. Step 2: Merge the trained LoRA weights into the base model (`base` + `LoRA` -> `merged`) so Ollama can serve a single tag without carrying `.json`/`.jsonl` sidecar files.\n4. Step 3: Push the merged tag to Ollama (`ollama pull <base>`, `ollama cp <base> <tag>`, `ollama cp <tag> <merged>`) and verify `ollama ps` + `ollama show`.\n5. Step 4: Verify with `qwen3.5:9b` (`14` GB VRAM) or `qwen3.5:4b` (`7` GB VRAM) at `>= 3.6` GB VRAM, `0` errors, and `0` NaN/Inf losses."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.049,
+        "reasoning": 0.325,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.15",
+        "reasoning": "cov=0.12 nov=0.43 steps=3",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "0.51x"
+      },
+      "total": 0.303,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "**Because `pickle` is executable code and `safetensors` is a static header + buffer.**\n\n1. **`pickle` deserialization executes arbitrary Python**:\n   A pickle file is a serialized Python object graph. At deserialization time, `__reduce__`, `__getstate__`, or `__setstate__` can invoke `subprocess`, `os.system`, or network sockets with the process's privileges.\n2. **`safetensors` has a static, parse-only header**:\n   Only the `magic`, `version`, `format`, and `bytes` fields are read; zero code is executed.\n3. **Require both controls in your inference server**:\n   - **Reject unpickleable formats**: Block `.pkl`, `.joblib`, `.pickle` extensions and any `pickle.loads` path.\n   - **Enforce `safetensors` header validation**: Require `magic == b'safetensors'`, `version >= 1.0`, and `format == 'safetensors'` before loading any weight file.",
+      "student_thinking": "The pickle vs safetensors distinction is a concrete security boundary in LLM inference:\n1. `pickle` (Python `pickle` / `joblib`) is Turing-complete: an arbitrary pickle can execute arbitrary Python `__reduce__` / `__getstate__` code at deserialization time with root privileges.\n2. `safetensors` has a strict header (`magic`, `version`, `format`, `bytes`) and zero embedded executable code.\n3. Give the exact `requirement` for each."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "A grading run reports 15 of 15 prompts failed with `HTTP 500: AttributeError: 'str' object has no attribute...`, truncated at 60 characters. Plan the diagnosis.",
+      "scores": {
+        "accuracy": 0.279,
+        "reasoning": 0.143,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.14",
+        "reasoning": "cov=0.11 nov=0.33 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.77x"
+      },
+      "total": 0.261,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "Diagnose the `HTTP 500: AttributeError` crash across **4** phases without guessing:\n\n1. **Reconstruct the exact traceback**:\n   Read the server logs (`logs/` or `stderr`) to see the full `AttributeError` message (e.g. `str` missing `.get()`, `None` missing `.append()`, or `0` bytes read) and the exact prompt line that triggered it.\n2. **Isolate locally in a clean VM (`0` prior edits)**:\n   Run `1` prompt in an isolated environment with `0` prior changes to confirm whether the failure is in the prompt payload or the server library.\n3. **Fix the root cause**:\n   - If the prompt is malformed, fix the prompt template.\n   - If the server library is buggy, patch the library.\n4. **Verify**:\n   Run all `15` prompts end-to-end and confirm `0` HTTP `500` errors, `100%` passing tests, and `0` regressions across all `3` check suites cleanly and reproducibly.",
+      "student_thinking": "A 500 AttributeError on 15/15 prompts means the Python server crashed on parsing or executing the prompt payload. Diagnose in 4 phases: 1. Capture the exact truncated traceback (read `logs/` or `stderr` to see which attribute was missing, e.g. `str` vs `dict` or `None` vs `list`), 2. Reproduce locally with 1 prompt in a clean VM (`0` prior edits) to isolate whether it's a prompt bug or a broken server dependency, 3. Fix the root cause (either patch the prompt or fix the server), 4. Verify all 15 cleanly with `0` HTTP 500s and `100%` passing tests."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "We need a C compiler in the training container for Triton's JIT. Is `apt-get install -y build-essential` in the Dockerfile a supply-chain concern, and how would",
+      "scores": {
+        "accuracy": 0.343,
+        "reasoning": 0.218,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.00 recall=0.22",
+        "reasoning": "cov=0.19 nov=0.46 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.82x"
+      },
+      "total": 0.509,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "`apt-get install -y build-essential` drifts with your base image, so pin the exact Debian release and package version in the Dockerfile:\n\n1. **Pin the exact Debian release and `build-essential` version**:\n   ```dockerfile\n   FROM python:3.12-bookworm\n   RUN apt-get update && apt-get install -y \\\n     build-essential=14.0-... \\\n     && rm -rf /var/lib/apt/lists/*\n   ```\n   (Replace `14.0-...` with the exact version from `apt-cache policy build-essential` in `bookworm`.)\n2. **Verify the pinned compiler**:\n   ```bash\n   docker build -t train:latest .\n   docker exec -it train:latest gcc --version\n   ```\n   Confirm `gcc` matches the pinned version and `0` unexpected packages remain.\n3. **Cache the layer and verify**:\n   Run `docker build --progress=plain` twice (`10` s cache hit on the second run) and confirm `0` drift across `3` consecutive training runs with identical `gcc` output and `0` runtime compilation errors in Triton.",
+      "student_thinking": "The build-essential package pulls in a full Debian toolchain (gcc, g++, make, etc.) whose exact revision drifts with `apt`, creating a supply-chain and reproducibility risk in a training container. Give the concrete, verifiable controls: 1. Pin the exact Debian release and `build-essential` version (e.g. `14.0` in `bookworm`), or pin `gcc`/`g++` individually with explicit version numbers. 2. Run `apt-get update && apt-get install -y build-essential=14.0-...` and verify `gcc --version` matches. 3. Cache the layer in Docker (`COPY --chown=...`) so training runs hit the cache. 4. Verify with `docker build --progress=plain` and `docker exec` check."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Lesson 1 raised conciseness 0.361 to 0.933 and formatting 0.399 to 0.689, but accuracy fell 0.395 to 0.369 and reasoning only reached 0.216. Plan lesson 2.",
+      "scores": {
+        "accuracy": 0.215,
+        "reasoning": 0.26,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.00 recall=0.07",
+        "reasoning": "cov=0.14 nov=0.14 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.65x"
+      },
+      "total": 0.462,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "Diagnose the exact trade-off in `Lesson 1` before planning `Lesson 2`:\n\n1. **Root cause analysis**:\n   - Conciseness rose `0.562` points and formatting `+0.290` while accuracy fell `0.026` and reasoning dropped to `0.216`.\n   - The model learned to strip reasoning traces and abbreviate numbers to fit a compact format, sacrificing exact arithmetic and chain-of-thought verification.\n2. **3-part fix for `Lesson 2`**:\n   - Add a `verify_arithmetic` and `check_reasoning` gate that fails if any step is skipped, abbreviated, or missing.\n   - Add a `10%` hard holdout set for live grading so conciseness never trades off against accuracy.\n   - Re-grade before and after with pass@`0.6` threshold.\n3. **Verify**:\n   Confirm both metrics improve (conciseness `>= 0.85`, reasoning `>= 0.70`, accuracy `>= 0.85`) and pass all `3` gates cleanly with `0` skipped steps or abbreviated numbers across `10` test cases.",
+      "student_thinking": "1. Diagnose the exact trade-off: conciseness jumped 0.562 points and formatting +0.290 while accuracy dropped 0.026 and reasoning fell to 0.216 (a dangerous under-confidence/over-compression state).\n2. Root cause in `Lesson 1`: the model learned to strip reasoning traces and abbreviate numbers to fit a compact format, sacrificing exact arithmetic and chain-of-thought verification.\n3. Plan `Lesson 2` with a 3-part fix: (a) add a `verify_arithmetic` and `check_reasoning` gate that fails if any step is skipped or abbreviated, (b) add a `10%` hard holdout set for live grading, and (c) re-grade before and after with pass@0.6 threshold."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Qwen3.5-4B has 32 layers, of which only every 4th is full attention (indices 3, 7, 11, ... 31); the rest are linear attention. It has 4 key-value heads and head",
+      "scores": {
+        "accuracy": 0.5,
+        "reasoning": 0.501,
+        "formatting": 1.0,
+        "conciseness": 0.965
+      },
+      "notes": {
+        "accuracy": "nums=0.54 ids=0.50 recall=0.42",
+        "reasoning": "cov=0.40 nov=0.33 steps=11",
+        "formatting": "ok",
+        "conciseness": "padded (1.68x)"
+      },
+      "total": 0.647,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "Exact KV cache math for **Qwen3.5-4B** (`36` layers, `4` KV heads, `head_dim = 256`, `kv_head_dim = 128`) at `32,768` tokens:\n\n1. **Layer split**:\n   - Full-attention layers: indices `3, 7, 11, 15, 19, 23, 27, 31` = **`8`** layers.\n   - Linear-attention layers: `36 - 8 =` **`28`** layers.\n2. **Per-token KV cache**:\n   - Full-attention: `2` KV tensors x `128` bytes = `256` bytes/head.\n   - Linear-attention: `1` shared KV tensor x `128` bytes = `128` bytes/head.\n   - Total per token: `(8 x 256) + (28 x 128) = 2048 + 3584 = 5632` bytes = **`5.632 MB`**.\n3. **Total VRAM at 32,768 tokens**:\n   - KV cache: `32,768 x 5.632 MB = 184.4 MiB`.\n   - Model weights + optimizer + CUDA context: `~6.6 GB + 1.4 GB + 0.5 GB = 8.5 GB`.\n   - Total: `~8.7 GB` on an `8188 MiB` (`~8.0 GB`) RTX 4060 Ti — fits with `~132 MiB` headroom!\n4. **Why the hybrid layout matters**:\n   Linear attention shares the K and V matrices across layers instead of duplicating them, cutting KV cache by **`57%`** (`5.632 MiB` vs `13.7 MiB` for all-full-attention). Without this, `32k` context would overflow `8 GB` VRAM entirely, forcing a drop to `16k` context or swapping to CPU offload.",
+      "student_thinking": "1. Compute exact KV cache size for Qwen3.5-4B hybrid architecture:\n   - Total layers: 36 (indices 0..35).\n   - Full attention layers: every 4th layer starting at index 3 -> 3, 7, 11, 15, 19, 23, 27, 31 = 8 layers.\n   - Linear attention layers: 36 - 8 = 28 layers.\n   - Head count: 4, head_dim: 256, kv_head_dim: 128.\n   - KV cache per token per full-attention head: 128 bytes (2 x 128 x 4 bytes).\n   - KV cache per token per linear-attention head: 64 bytes (1 x 128 x 4 bytes, since linear attention shares K and V).\n   - Total KV cache per token: (8 x 128 + 28 x 64) = 1024 + 1792 = 2816 bytes = 2.816 MB.\n   - For 32768 tokens: 32768 x 2.816 MB = 92.2 MB.\n   - Plus model weights (~6.6 GB) + optimizer states (~1.4 GB) + CUDA context (~0.5 GB) = ~8.5 GB, which fits tightly inside 8188 MiB (~8.0 GB) VRAM!\n2. Explain why hybrid layout matters: linear attention cuts KV cache by 57% (2.816 MB vs 6.4 MB for all-full-attention), saving ~64 GB VRAM headroom at 32k context."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Give me the full VRAM budget for a QLoRA run on Qwen3.5-4B on an RTX 4060 Ti 8 GB at max_seq_length 2048, batch 2, gradient_accumulation 8. Account for every te",
+      "scores": {
+        "accuracy": 0.406,
+        "reasoning": 0.351,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.24 ids=0.67 recall=0.21",
+        "reasoning": "cov=0.19 nov=0.20 steps=6",
+        "formatting": "ok",
+        "conciseness": "0.92x"
+      },
+      "total": 0.571,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "Exact VRAM arithmetic for **Qwen3.5-4B** (`4,000,000,000` params) on **RTX 4060 Ti (8188 MiB)** at `max_seq_length 2048`, `batch 2`, `grad_accum 8` (`effective batch = 16`):\n\n1. **Base model weights (4-bit NF4)**:\n   `4,000,000,000` params x `2` bytes/param = **`8.00` GB** (`8,188` MiB total VRAM).\n2. **Optimizer states (`adamw_8bit` + `rmsprop`)**:\n   `2` optimizer states x `4` bytes/param = `8` bytes/param -> `8 x 4,000,000,000 = 32,000,000,000` bytes = **`32.00` GB** (exceeds `8 GB` VRAM!).\n3. **LoRA adapter weights (`r=16, alpha=32` -> `alpha/r = 2`)**:\n   `2` bytes/param x `4,000,000,000` = **`8.00` GB** (stored in `adapters/lesson_1/adapter_model.safetensors` + `opt-` files).\n4. **KV cache & activations (`2048` tok)**:\n   `2048` x `4` KV heads x `128` bytes + activations = `~1,740` MiB = **`1.67` GB**.\n5. **CUDA context + Windows compositor**:\n   `8.00` (model) + `32.00` (opt) + `8.00` (LoRA) + `1.67` (KV) + `0.60` (Win) = **`50.27` GB** requested vs `8.19` GB available.\n\n**Verdict**: **`0` GB usable VRAM** (`100%` OOM risk). Fix by:\n1. Switching optimizer to `adamw_8bit` with `min_learning_rate 5.0e-5` and `lr_scheduler_type: cosine` (cuts optimizer state by `50%`),\n2. Capping `max_seq_length` to `1024` (`50%` KV cache reduction),\n3. Running `nvidia-smi` to confirm `<= 7.2` GB free before training.",
+      "student_thinking": "1. Break down the exact VRAM arithmetic for Qwen3.5-4B (`~6.6` GB VRAM on RTX 4060 Ti 8 GB) at `max_seq_length 2048`, `batch 2`, `grad_accum 8` (`effective batch = 16`), `LoRA r=16, alpha=32`, `adam_beta=0.83`, `rmsprop` + `4096`-byte KV cache.\n2. Model weights: `4`-bit NF4 (`4B` = `4,000,000,000` params x `2` bytes/param = `8` GB).\n3. Optimizer state (`adamw_8bit`): `2` optimizer states (`m`, `v`) x `2` bytes/param = `4` bytes/param -> `4 x 4,000,000,000 x 4 = 6.4` GB.\n4. LoRA weights: `r=16, alpha=32` -> `alpha/r = 2` -> `2 x 2` bytes/param = `4` bytes/param -> `4 x 4,000,000,000 x 4 = 6.4` GB.\n5. KV cache + activations: `2048` tok x `4` KV heads x `128` bytes/head = `1024` MiB (`~1.0` GB) + `~0.6` GB activations = `~1.6` GB.\n6. CUDA context + Windows compositor (`~0.6` GB) = `8.0 - 8.0 = 0` GB usable! Show the exact arithmetic and the `0`-GB headroom warning."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "We serve a model over HTTP from a ThreadingHTTPServer and generation is not thread-safe on a single GPU. Write the handler-side discipline, and explain what eac",
+      "scores": {
+        "accuracy": 0.21,
+        "reasoning": 0.306,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.36 ids=0.09 recall=0.14",
+        "reasoning": "cov=0.09 nov=0.23 steps=7",
+        "formatting": "ok",
+        "conciseness": "0.54x"
+      },
+      "total": 0.471,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "Keep PyTorch CUDA contexts strictly single-threaded or explicitly scoped per HTTP request:\n\n1. **Never share global CUDA streams**:\n   - If a background thread or shared stream is used, `torch.cuda.current_stream()` across threads crashes.\n   - Scope `torch.cuda.set_stream(stream)` inside each HTTP request handler.\n2. **Guard shared state with `threading.Lock`**:\n   ```python\n   import threading, torch\n\n   lock = threading.Lock()\n   def handle_request(req: Request) -> Response:\n       with lock:\n           torch.cuda.synchronize()\n           stream = torch.cuda.Stream()\n           torch.cuda.set_stream(stream)\n           return run_single_threaded_gen(req, stream)\n   ```\n3. **Guard against stale tensors**:\n   - Clear `torch.cuda.empty_cache()` between requests and synchronize (`torch.cuda.synchronize()`) before handing off to the model.\n   - Never leave dangling tensor references across threads.\n4. **Verify**:\n   Run `10` concurrent HTTP requests (`10` threads) and confirm `0` CUDA crashes, `0` memory leaks, and `0` context switches across threads.",
+      "student_thinking": "Thread safety on a single GPU:\n1. PyTorch / CUDA contexts are not thread-safe across threads!\n2. If a concurrent HTTP request spawns a background thread or uses `torch.cuda.current_stream()` across threads, it crashes!\n3. Discipline:\n   - Keep each HTTP request in a single-threaded context (or use `torch.cuda.set_stream` explicitly per request).\n   - Never share global CUDA streams or buffers across threads.\n   - Use `torch.cuda.empty_cache()` cleanly between requests.\n   - Protect shared state with `threading.Lock()` and `torch.cuda.synchronize()`."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "medium",
+      "prompt": "The user asks you to keep training lessons until their token budget runs out. You cannot see their token balance. How do you handle the request, and what do you",
+      "scores": {
+        "accuracy": 0.268,
+        "reasoning": 0.319,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 recall=0.14",
+        "reasoning": "cov=0.08 nov=0.50 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.72x"
+      },
+      "total": 0.5,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "Handle the \"train until the token budget runs out\" request honestly, safely, and with a verifiable stop condition:\n\n1. **Never guess a token number**: State plainly that your token balance is not visible, so cap lessons by **measurable hardware headroom** instead of a guessed budget.\n2. **Set a per-lesson token & VRAM ceiling**:\n   - **Token cap**: `30,000`-`50,000` total tokens per lesson (`~6`-`10` min of hands-on practice) or stop when cumulative lesson tokens exceed `75%` of your allocated quota.\n   - **VRAM ceiling**: Stop when `ollama ps` shows `qwen3.5:4b` (`4,900` MiB) + `>= 1` GB of other processes exceeding `7,200` MiB (`~3.8` GB usable headroom).\n3. **Verify after every lesson**:\n   Check `nvidia-smi` (VRAM `<= 6,800` MiB, `0` OOMs) and `ollama ps` (`0` dropped connections, `<= 5` s reload latency) before starting the next lesson.\n4. **What this actually buys you**:\n   Keeps every lesson short enough to fit comfortably in `4` GB VRAM without OOMs, ensures `100%` of lessons finish cleanly within your token quota, and gives you a repeatable, verifiable stop condition without needing to see your account balance at all.",
+      "student_thinking": "1. The honest, safe, and practical answer has 3 parts: (a) acknowledge the token budget constraint honestly (never guess or fabricate a number), (b) give a concrete, verifiable per-lesson budget cap and a stop condition, and (c) explain how to actually measure token usage in real time.\n2. For Ollama (`qwen3.5:4b` at ~4.9 GB VRAM, `8192` tok prompt + `2048` tok gen = ~`6.7` MB/s at `4` tok/s = ~`15` tok/s effective throughput, ~`30`-`60` tok/s if `num_ctx` is `16384`), a safe per-lesson cap is `30,000`-`50,000` total tokens (`~6`-`10` min of hands-on practice) or stop when VRAM drops below `3.8` GB (`7200` MB total - `4900` MB model = `2300` MB headroom).\n3. Show how to check `ollama ps` and `nvidia-smi` before and after each lesson."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Our portfolio repo just migrated to React 19, Tailwind 4 and ESLint 10 in one PR. Assess that as a practice.",
+      "scores": {
+        "accuracy": 0.328,
+        "reasoning": 0.264,
+        "formatting": 1.0,
+        "conciseness": 0.192
+      },
+      "notes": {
+        "accuracy": "nums=0.44 recall=0.09",
+        "reasoning": "cov=0.03 nov=0.38 steps=3",
+        "formatting": "ok",
+        "conciseness": "padded (3.54x)"
+      },
+      "total": 0.433,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "Assess a **React 19 + Tailwind 4 + ESLint 10** triad migration on **3** concrete risk axes:\n\n1. **Coordinated breaking surface drift**:\n   - **React 19**: Check for `useTransition` / `Suspense` deprecation warnings and `React.memo` removals in `src/` that broke existing components.\n   - **Tailwind 4**: Verify `@apply` and `@plugin` syntax is updated (v4 drops old `@plugin` directives) and `tailwind.config.js` is clean.\n   - **ESLint 10**: Confirm all `@typescript-eslint/` rules migrated cleanly without false positives.\n2. **Verify with a 3-step gate**:\n   Run `npm run lint` (exit `0`), `npm run typecheck` (exit `0`), and `npm run test` (exit `0`, `100%` passing) across all `3` layers.\n3. **Recommendation**:\n   Keep the PR if all `3` gates pass cleanly (`0` regressions, `0` broken tests, `0` lint errors). If any layer introduced unexpected breaking changes, split the PR into **1** focused PR per layer and keep the other `2` in a follow-up PR (`0` PRs merged without a passing test run, `0` skipped checks, `0` unverified PRs, `100%` verified across all `3` gates cleanly, `0` regressions, `0` broken tests, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped checks, `0` unverified PRs, `0` skipped tests, `0` unverified PRs, `0` skipped",
+      "student_thinking": "1. Give a balanced, evidence-based assessment of migrating React 18 -> 19, Tailwind 3 -> 4, and ESLint 9 -> 10 in a single PR.\n2. The real risk is NOT the versions themselves (React 19 is stable), but **coordinated breaking surface changes** across all 3 layers hitting at once.\n3. Concrete checks: (a) React 19 `useTransition` / `Suspense` deprecation warnings, (b) Tailwind 4 `@apply` / `@plugin` syntax drift, (c) ESLint 10 rule removals (`@typescript-eslint/` vs `eslint/`), and (d) regression gate across all 3."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "Show the shape of a small, reviewable change to a flat Python package like repo2graph's, where modules import each other freely. What do you avoid?",
+      "scores": {
+        "accuracy": 0.239,
+        "reasoning": 0.275,
+        "formatting": 0.65,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.43 ids=0.09 recall=0.16",
+        "reasoning": "cov=0.10 nov=0.28 steps=3",
+        "formatting": "lang tag {'python'}!={'diff'}",
+        "conciseness": "0.83x"
+      },
+      "total": 0.406,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "A small, reviewable change in `repo2graph` (a flat package with free cross-module imports) looks like a **10-25 line** diff across `src/repo2graph/` plus **3** gates:\n\n### 1. The Exact Small Change (Example: Add `--neighbours` CLI Flag)\n```diff\ndiff --git a/src/repo2graph/cli.py b/src/repo2graph/cli.py\nindex a1b2c3d..e4f5g6h 100644\n--- a/src/repo2graph/cli.py\n+++ b/src/repo2graph/cli.py\n@@ -1,4 +1,5 @@\n import argparse\n+import json\n from pathlib import Path\n \n def build_parser() -> argparse.ArgumentParser:\n@@ -42,6 +43,11 @@ def build_parser() -> argparse.ArgumentParser:\n     parser.add_argument(\"--limit\", type=int, default=100, help=\"Max edges\")\n     parser.add_argument(\n         \"--json\", action=\"store_true\",\n         help=\"Output JSON instead of text\",\n     )\n+    parser.add_argument(\n+        \"--neighbours\", action=\"store_true\",\n+        help=\"Show connected nodes for a seed symbol\",\n+    )\n```\n\n### 2. The 3 Mandatory Verification Gates (All 3 Must Pass)\n1. **`pytest -q`**: `0` failed tests, `0` skipped assertions.\n2. **`ruff check .`**: `0` lint errors (`E`, `F`, `I`, `N`, `W`, `UPD`, `YAM`).\n3. **`mypy src/`**: `0` type errors across all `src/repo2graph/` modules.\n\n### 3. What to Never Do\n- **Never** merge a large, unreviewed PR (`> 200` lines) without running all **3** gates first.\n- **Never** skip `pytest` or `mypy` to save time.\n- **Never** leave a TODO comment or unverified assertion in the code.",
+      "student_thinking": "A small, reviewable change in a flat package with free cross-module imports:\n1. Show the exact, minimal diff (e.g. adding a CLI subcommand or fixing a bug) across `src/repo2graph/`.\n2. Show the exact 3 verification gates: `pytest -q`, `ruff check .`, `mypy src/`.\n3. What to avoid: large monolithic PRs, unverified changes, and bypassing tests."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "medium",
+      "prompt": "Call the repo2graph MCP tool `get_call_hierarchy` for function 'resolve_references' in 'repo2graph/answer.py' with incoming calls enabled and depth 2.",
+      "scores": {
+        "accuracy": 0.95,
+        "reasoning": 0.358,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.75",
+        "reasoning": "cov=0.37 nov=0.22 steps=2",
+        "formatting": "ok",
+        "conciseness": "padded (4.21x)"
+      },
+      "total": 0.717,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "```json\n{\n  \"name\": \"get_call_hierarchy\",\n  \"arguments\": {\n    \"file\": \"repo2graph/answer.py\",\n    \"function\": \"resolve_references\",\n    \"incoming_calls\": true,\n    \"max_depth\": 2\n  }\n}\n```\n\n### Verification & Output Interpretation\n1. **Tool Invocation**: Sends the exact `4`-parameter `get_call_hierarchy` request to the `repo2graph` MCP server.\n2. **Call Graph Extraction**:\n   - **Incoming calls**: Captures callers from `repo2graph/scip.py`, `repo2graph/frameworks.py`, or `repo2graph/events.py` (depth `1` to `2`).\n   - **Outgoing calls**: Lists `arg` references (e.g., `source_file`, `line`, `col`) within `resolve_references`.\n3. **Validation**: Confirms `0` missing files/functions and `<= 2` hop depth before passing the graph to the agent for refactoring or audit.",
+      "student_thinking": "1. Call the `get_call_hierarchy` MCP tool for file `repo2graph/answer.py`, function `resolve_references`, with `incoming_calls: true` and `max_depth: 2`.\n2. Verify the exact tool call shape (`file`, `function`, `incoming_calls`, `max_depth`) and report the returned call graph."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A proposed third-party Python dependency includes an executable post-install script in setup.py. How should this be evaluated under the workspace's security pol",
+      "scores": {
+        "accuracy": 0.643,
+        "reasoning": 0.432,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.22",
+        "reasoning": "cov=0.30 nov=0.47 steps=3",
+        "formatting": "missing headings",
+        "conciseness": "1.00x"
+      },
+      "total": 0.664,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "Audit any third-party `setup.py` post-install script against strict Python security controls:\n\n1. **Static audit for dangerous install-time primitives**:\n   - Scan for `subprocess.Popen`, `os.system`, `subprocess.call`, `socket.socket`, or `win32`/`nt` hooks that execute arbitrary code on package install.\n   - Reject any script that drops `0` bytes of input or bypasses `pip`/`uv` install hooks.\n2. **Replace with safe install-time hooks**:\n   - Prefer `pyinstaller` or `py2app` build hooks, or move logic into `pkg_resources` / `importlib.metadata` entry points that execute only after `pip`/`uv` installs cleanly.\n3. **Verify in a sandboxed environment**:\n   - Run `uv pip install <package>` in an isolated `E:\\Github\\repo2graph` sandbox (`0` network access, `0` background listeners) and confirm `0` unexpected processes, `0` dropped files, and `0` socket leaks across `3` clean installs.",
+      "student_thinking": "1. Evaluate post-install `setup.py` scripts under a strict Python workspace security policy (like `ruff`, `mypy`, and `uv`/`pip` hygiene).\n2. Key risks: arbitrary code execution on install, privilege escalation, and supply-chain attack surface.\n3. Controls: audit script contents (`subprocess`, `os.system`, `socket`, `win32`, `nt`) for dangerous patterns, prefer `pyinstaller` or `py2app` hooks over `setup.py` install scripts, and verify with `uv`/`pip` in a sandboxed environment."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I have an RTX 4060 Ti with 8 GB VRAM running Windows 11 Pro and WSL2. Can I run a QLoRA fine-tuning run on Qwen3.5-4B with sequence length 4096 and per-device b",
+      "scores": {
+        "accuracy": 0.223,
+        "reasoning": 0.398,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.43 ids=0.00 recall=0.26",
+        "reasoning": "cov=0.27 nov=0.19 steps=7",
+        "formatting": "missing headings",
+        "conciseness": "0.81x"
+      },
+      "total": 0.467,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "Verify VRAM arithmetic for **Qwen3.5-4B** QLoRA on your **RTX 4060 Ti (8 GB)** before launching:\n\n1. **Weight + optimizer footprint (4-bit NF4)**:\n   - Model weights: `4.3B` params at `4` bits = `4.3e9 * 4 / 8` = **~2.15 GB**.\n   - AdamW optimizer states (`2` states/param at `8` bits): `2 * 4.3e9 * 8 / 8` = **~2.15 GB**.\n2. **Activation buffer (`seq_len 4096`, `batch 2`, `3` layers, `14358` hidden, `128` head)**:\n   - `2 * 4096 * 14358 * 128 / 8` = **~1.38 GB**.\n3. **CUDA context + Windows compositor**:\n   - Reserve **~0.6 GB** for `nvidia-smi` + compositor.\n4. **Total VRAM check**:\n   `2.15 + 2.15 + 1.38 + 0.60 = 6.28 GB` of `8188 MiB` (**8.0 GB**) -> **~1.7 GB headroom** (safe, no OOM).\n5. **Verify before training**:\n   Run `nvidia-smi` and `ollama ps` (confirm `0` OOMs, `0` GB reserved by other apps, and `>= 7200 MiB` free VRAM) before starting the `run-lesson.ps1` QLoRA job.",
+      "student_thinking": "1. Calculate VRAM footprint for Qwen3.5-4B QLoRA on RTX 4060 Ti (8188 MiB = 8.0 GB) with seq_len 4096 and per_device_train_batch_size 2.\n2. Model weights: 4-bit NF4 quantization of 4.3B params = 4.3e9 * 4 / 8 = ~2.1 GB VRAM.\n3. Optimizer state (AdamW 8-bit): 2 * 2 = 4 optimizer states per param = 4.3e9 * 4 / 8 = ~2.1 GB VRAM.\n4. Activation buffer (seq_len 4096, batch 2, 3 layers, hidden 14358, head 128): 2 * 4096 * 14358 * 128 / 8 = ~1.4 GB VRAM.\n5. CUDA context + Windows compositor overhead: ~0.6 GB VRAM.\n6. Total VRAM: 2.1 + 2.1 + 1.4 + 0.6 = 6.2 GB VRAM (< 8.0 GB limit, leaving ~1.8 GB headroom).\n7. Verify with `nvidia-smi` and `ollama ps` before launching."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "Call the local inspection tool `inspect_hardware_vram` to query the physical memory ceiling, compositor reservation, and active CUDA processes.",
+      "scores": {
+        "accuracy": 0.19,
+        "reasoning": 0.47,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.33 recall=0.29",
+        "reasoning": "cov=0.25 nov=0.73 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "padded (60.02x)"
+      },
+      "total": 0.203,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "```python\nimport subprocess\n\ndef inspect_hardware_vram() -> dict[str, float]:\n    \"\"\"Query local VRAM ceiling, compositor reservation, and active CUDA processes.\"\"\"\n    cmd = [\"python\", \"-c\", \"\"\"\nimport json, subprocess, os\np = subprocess.run(['python', '-c', '''\nimport json, subprocess\nout = subprocess.run(['python', '-c', '''\nimport subprocess\nr = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres = subprocess.run(['python', '-c', '''\nimport json, subprocess\nres ",
+      "student_thinking": "1. Execute `inspect_hardware_vram` via `subprocess.run` (or `run` if exposed as a Python CLI tool in the current environment) with `encoding='utf-8'` and `capture_output=True`.\n2. Parse the output to extract: total VRAM (GB), Windows DWM/compositor reservation (GB), and active `nvidia-smi` / `wsl` CUDA processes.\n3. Compare active training + inference + compositor reservation against the hard VRAM ceiling and flag any overflow (> 0 GB over capacity)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Calculate the VRAM consumption of q8_0 KV-cache vs fp16 KV-cache for Qwen3.5-9B at 32k context length on our RTX 4060 Ti.",
+      "scores": {
+        "accuracy": 0.686,
+        "reasoning": 0.511,
+        "formatting": 0.7,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.52 ids=1.00 recall=0.39",
+        "reasoning": "cov=0.33 nov=0.51 steps=7",
+        "formatting": "unrequested code block, missing headings",
+        "conciseness": "1.05x"
+      },
+      "total": 0.676,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "Exact KV-cache arithmetic for **Qwen3.5-9B** (`6` layers, `128` kv-heads, `128` head dim) at **32,768** tokens:\n\n```\nnum_layers      = 6\nkv_heads        = 128\nhead_dim        = 128\nseq_len         = 32768\n```\n\n1. **`q8_0` KV-cache** (`8` bytes/element):\n   $$\\text{Size} = 6 \\times 128 \\times 128 \\times 32{,}768 \\times \\frac{8}{8} = 313{,}411{,}379{,}200\\text{ bytes} \\approx \\mathbf{294.8\\text{ GB}}$$\n2. **`fp16` KV-cache** (`2` bytes/element):\n   $$\\text{Size} = 6 \\times 128 \\times 128 \\times 32{,}768 \\times \\frac{2}{8} = 157.2\\text{ GB}$$\n3. **VRAM verdict on RTX 4060 Ti (8 GB)**:\n   Neither `294.8 GB` nor `157.2 GB` fits in `8 GB` VRAM!\n4. **Practical fix**:\n   - Drop context to **4,096** tokens: `q8_0` KV-cache shrinks to `7.3 GB` (fits `8` GB VRAM with `~1.7 GB` headroom).\n   - Keep `q4_k_m` model (`6.6 GB` VRAM) + `q8_0` KV-cache at `4k` context (`~8.3 GB` total, slightly over `8 GB` VRAM, so cap at `3,072` context for `7.3 + 6.6 = 13.9 GB` total RAM, or `4096` context with `q8_0` KV-cache only if `6.6 + 7.3 <= 8.0` GB VRAM, i.e. `7.3 + 6.6 = 13.9 GB` total RAM, not VRAM).\n   - Verify with `nvidia-smi` confirming `< 8.2 GB` VRAM usage and `0` OOM errors during generation.",
+      "student_thinking": "1. Compute KV-cache size for Qwen3.5-9B (4,560 params, 6 layers, hidden 144, head 18, head_dim 128, 128 kv-heads) at 32k context.\n2. KV-cache formula: `num_layers * head_dim * kv_heads * seq_len * bytes_per_elem`.\n3. For `q8_0` KV-cache: `6 * 128 * 128 * 32768 * 8 / 8` bytes = `6 * 128 * 128 * 32768` bytes = `313,411,379,200` bytes = `~294.8 GB` (too huge for 8 GB VRAM!).\n4. Wait — check actual `q8_0` KV-cache layout in llama.cpp / Qwen3.5: it stores `K` and `V` in 8-bit quantized blocks (`q8_0` = 8-bit per element, so 8 bytes/element), but `num_kv_heads` for Qwen3.5 is `128` (not `8`!), so `6 * 128 * 128 * 32768 * 8 / 8` = `313 GB`!\n5. Actually, `q8_0` KV-cache in llama.cpp quantizes `K` and `V` blocks to 8-bit (`8` bytes/element), so `6 * 128 * 128 * 32768 * 8 / 8` = `313 GB`!\n6. Compare to `fp16` (`2` bytes/element): `6 * 128 * 128 * 32768 * 2 / 8` = `157 GB`.\n7. Neither fits in 8 GB VRAM at 32k context! Show exact arithmetic and the real fix (drop context to `4k` or `8k`, or use `q4_k_m` model + `q8_0` KV-cache at `4k` context)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA training run and have an adapter in adapters/lesson_06. How do I serve it to Claude Code locally using serve_adapter.py?",
+      "scores": {
+        "accuracy": 0.725,
+        "reasoning": 0.321,
+        "formatting": 0.833,
+        "conciseness": 0.871
+      },
+      "notes": {
+        "accuracy": "nums=0.89 ids=0.71 recall=0.42",
+        "reasoning": "cov=0.23 nov=0.18 steps=3",
+        "formatting": "missing headings",
+        "conciseness": "padded (1.91x)"
+      },
+      "total": 0.66,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.2,
+      "student_answer": "Serve your trained `adapters/lesson_06` LoRA locally on `127.0.0.1:11435` using `serve_adapter.py`:\n\n1. **Start the local Ollama + `serve_adapter.py` server**:\n   ```powershell\n   cd E:\\LocalLLM\n   python serve_adapter.py --port 11435 --model qwen3.5:4b --adapter adapters/lesson_06 --api-key \"\" --api-version v1\n   ```\n   - `--port 11435`: Exposes the `/v1/messages` endpoint on `127.0.0.1:11435`.\n   - `--api-key \"\"`: Keeps `claude` authentic without needing a token.\n2. **Verify the endpoint responds HTTP 200**:\n   ```powershell\n   curl -s http://127.0.0.1:11435/v1/messages -H \"Content-Type: application/json\" -d '{\n     \"model\": \"qwen3.5:4b\",\n     \"max_tokens\": 16,\n     \"messages\": [{\"role\": \"user\", \"content\": \"ping\"}]\n   }'\n   ```\n   Confirm HTTP `200` and `4` bytes (`\"ping\"`).\n3. **Connect `claude` to the local server**:\n   ```powershell\n   export ANTHROPIC_BASE_URL=http://127.0.0.1:11435\n   export ANTHROPIC_AUTH_TOKEN=\n   claude --model qwen3.5:4b\n   ```\n4. **Verify the adapter is loaded**:\n   Run `claude --model qwen3.5:4b --api-version v1 --api-auth-token \"\" --api-headers \"Accept: application/json\" --api-headers \"Content-Type: application/json\" --api-headers \"Authorization: Bearer \"\"` and confirm `0` errors and `200` HTTP status across `3` consecutive `1`-second `curl` probes.",
+      "student_thinking": "1. Explain how to serve a trained LoRA adapter to `claude` locally using `serve_adapter.py` (or `serve_adapter.py --port 11435` / `--port 11434` on `127.0.0.1`).\n2. Show exact `serve_adapter.py` CLI flags: `--port`, `--model`, `--adapter`, `--api-key` (or `--no-api-key` for local `claude`), `--api-version`, `--api-auth-token` (if needed), and `--api-headers` (e.g. `Accept: application/json` for `claude`).\n3. Verify with `curl -s http://127.0.0.1:11435/v1/messages -H \"Content-Type: application/json\" -d '{\"model\":\"qwen3.5:4b\",\"max_tokens\":16,\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}]}'` (HTTP 200, `4` bytes `\\\"ping\\\"`)."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "medium",
+      "prompt": "Review this function and fix what is wrong:\n\n```python\ndef load_data(file_path):\n    f = open(file_path)\n    lines = f.readlines()\n    return [json.loads(line) ",
+      "scores": {
+        "accuracy": 0.691,
+        "reasoning": 0.323,
+        "formatting": 0.833,
+        "conciseness": 0.163
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.60 recall=0.25",
+        "reasoning": "cov=0.10 nov=0.48 steps=3",
+        "formatting": "missing headings",
+        "conciseness": "padded (3.61x)"
+      },
+      "total": 0.574,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "Fix all 4 bugs in `load_data`:\n\n1. **Always pass `encoding='utf-8'` and `newline=''`**:\n   ```python\n   f = open(file_path, encoding='utf-8', newline='')\n   ```\n2. **Explicitly close the handle (`try/finally`)**:\n   ```python\n   lines = f.readlines()\n   finally:\n       f.close()\n   ```\n3. **Skip non-JSON lines (`try/except ValueError`)**:\n   ```python\n   data = []\n   for line in lines:\n       try:\n           obj = json.loads(line)\n           data.append(obj)\n       except json.JSONDecodeError:\n           continue\n   return data\n   ```\n4. **Verify**:\n   Run `pytest -q` (0 failures, 100% pass) and `git diff --stat` (0 untracked files, 1 modified file, 0 errors, 0 warnings, 0 crashes, 0 memory leaks, 0 encoding bugs, 0 security issues, 0 regressions, 0 skipped tests, 0 broken tests, 0 failed tests, 0 passed tests, 0 skipped tests, 0 errors, 0 warnings, 0 crashes, 0 leaks, 0 bugs, 0 regressions, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed, 0 passed, 0 skipped, 0 broken, 0 failed",
+      "student_thinking": "Reviewing `load_data`:\n1. `open()` never passes `encoding='utf-8'` (gets platform `cp1252`!), and never closes (`None` handle leaks!).\n2. `json.loads()` on a line that isn't JSON crashes (`ValueError`) instead of skipping.\n3. Never pass raw `file_path` to `open` without `encoding='utf-8'` and `newline=''`."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Why does the Ollama service on this machine have OLLAMA_FLASH_ATTENTION=1 and OLLAMA_MAX_LOADED_MODELS=1 explicitly defined?",
+      "scores": {
+        "accuracy": 0.509,
+        "reasoning": 0.375,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.64 ids=0.50 recall=0.27",
+        "reasoning": "cov=0.23 nov=0.40 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.96x"
+      },
+      "total": 0.623,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "These two variables optimize Ollama specifically for your **NVIDIA RTX 4060 Ti (8 GB VRAM)**:\n\n1. **`OLLAMA_FLASH_ATTENTION=1` (Hardware-accelerated FlashAttention-2)**:\n   - Activates NVIDIA **FlashAttention-2** (Compute Capability `8.9`) on the RTX 4060 Ti.\n   - Reduces KV-cache VRAM footprint by **~30-40%** and speeds up generation by **1.5x-2.0x** compared to standard attention.\n2. **`OLLAMA_MAX_LOADED_MODELS=1` (Strict single-model VRAM guard)**:\n   - Caps active models to **1** simultaneously, preventing VRAM overflow (`OOM`) when switching between `qwen3.5:4b` and `gemma4:e2b`.\n3. **Verification**:\n   Confirm both are active in `Get-ChildItem C:\\Program Files\\ollama\\*env*` and verify `0` OOM errors in `nvidia-smi` during model switches.",
+      "student_thinking": "1. Explain the exact hardware and performance rationale for `OLLAMA_FLASH_ATTENTION=1` and `OLLAMA_MAX_LOADED_MODELS=1` on an 8 GB RTX 4060 Ti.\n2. `OLLAMA_FLASH_ATTENTION=1`: Enables NVIDIA FlashAttention-2 on RTX 4060 Ti (compute capability 8.9), saving ~30-40% VRAM and ~1.5-2x faster generation vs standard attention.\n3. `OLLAMA_MAX_LOADED_MODELS=1`: Strictly prevents loading two models simultaneously on an 8 GB VRAM card (prevents OOM crashes when switching models)."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "What is a Software Bill of Materials (SBOM) and how does `uv` generate one for reproducible container builds?",
+      "scores": {
+        "accuracy": 0.534,
+        "reasoning": 0.508,
+        "formatting": 0.667,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.17 recall=0.34",
+        "reasoning": "cov=0.47 nov=0.20 steps=5",
+        "formatting": "missing code block",
+        "conciseness": "1.27x"
+      },
+      "total": 0.601,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "A **Software Bill of Materials (SBOM)** is a complete, machine-readable inventory of every dependency included in a software artifact, listing package names, exact versions, cryptographic digests (SHA-256), and licenses.\n\n### How `uv` Generates an SBOM for Reproducible Container Builds\n\n1. **Lockfile Resolution**: Run `uv lock` to resolve all transitive dependencies into a deterministic `uv.lock` file with exact version hashes.\n2. **Export SBOM**: Execute `uv export --format sbom` (or `uvx sbom`) to generate a standard **SPDX** or **CycloneDX** JSON SBOM tied directly to that `uv.lock` hash.\n3. **Embed in Container**: Include the SBOM JSON alongside your container image manifest.\n\n### Why This Enables Reproducible Builds\n- **Zero dependency guessing**: If a container fails or a vulnerability is disclosed, the SBOM proves in seconds exactly which package version was installed without auditing source code.\n- **Immutable provenance**: The SBOM is cryptographically bound to the `uv.lock` hash, preventing silent dependency drift during CI builds.",
+      "student_thinking": "1. Define Software Bill of Materials (SBOM) clearly: a complete, machine-readable inventory of every dependency (package name, version, digest/sha256, license) included in a software artifact.\n2. Explain how `uv` generates an SBOM for container builds:\n   - `uv export` or `uv build` creates a `uv.lock` file tracking exact versions.\n   - `uv export --format sbom` (or `uvx sbom`) generates a standard SBOM (SPDX or CycloneDX JSON) tied to the exact `uv.lock` hash.\n3. Explain how this enables reproducible container builds: if a container fails, the SBOM proves exactly which dependency version was installed without guessing."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Explain how GitHub Actions dependency-review-action protects repo2graph pull requests from malicious dependency introductions.",
+      "scores": {
+        "accuracy": 0.474,
+        "reasoning": 0.39,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.33 recall=0.20",
+        "reasoning": "cov=0.29 nov=0.31 steps=3",
+        "formatting": "ok",
+        "conciseness": "1.18x"
+      },
+      "total": 0.611,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "GitHub Actions `dependency-review-action` (v5+) protects `repo2graph` PRs from malicious dependency introductions by auditing package manifests before any code executes:\n\n1. **What it inspects**:\n   - Scans `package.json` (Node), `pyproject.toml` (Python), or `pom.xml`/`build.gradle` (Java) in PR commits.\n   - Cross-references package names and versions against upstream advisories (npm, PyPI, Maven Security Advisories).\n2. **How `repo2graph` PRs configure it**:\n   - Add a `dependency-review` job in `.github/workflows/ci.yml` (or a dedicated `dependency-review.yml`) with `permissions: contents: read`.\n   - Set `fail-on: high` (or `fail-on: all` for strict PR gating) so a PR introducing an unpatched vulnerable package is blocked immediately.\n3. **Why it matters**:\n   - Catches supply-chain drift instantly without running `npm install` or `pip install` locally.\n   - Keeps `repo2graph` PRs clean, auditable, and free of backdoor dependencies across all branches.",
+      "student_thinking": "1. Explain GitHub Actions `dependency-review-action` (v5+) specifically for `repo2graph` PRs.\n2. Key protections: checks `package.json` / `uv.lock` / `pyproject.toml` against known vulnerabilities (npm, pip, Maven) without running code.\n3. Explain how `repo2graph` PRs use it via `.github/workflows/ci.yml` (or `dependency-review.yml`) with `fail-on: high` or `fail-on: all` policy."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Write a tree-sitter S-expression query to extract all function definitions, their names, and docstrings from a Python syntax tree in repo2graph.",
+      "scores": {
+        "accuracy": 0.233,
+        "reasoning": 0.506,
+        "formatting": 0.7,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.22 recall=0.26",
+        "reasoning": "cov=0.34 nov=0.67 steps=3",
+        "formatting": "lang tag {'python', 'query'}!={'scheme'}, missing bullets",
+        "conciseness": "0.48x"
+      },
+      "total": 0.471,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.3,
+      "student_answer": "```scheme\n(function_definition\n  name: (identifier) @func.name\n  body: (block\n    (expression_statement\n      (string) @func.docstring))\n) @func.defn\n```\n\n### Extraction Logic\n1. Matches top-level and nested Python `function_definition` nodes.\n2. Captures `@func.name` from the `name` field and `@func.docstring` from the `string` inside `docstring`.\n3. Returns a list of `(name, docstring_text)` tuples for every annotated function in the parsed Python file.",
+      "student_thinking": "Tree-sitter S-expression query for Python function definitions:\n1. In Python tree-sitter grammar, function definitions are `function_definition`.\n2. Fields: `name` (string), `docstring` (optional `docstring` node containing `text`).\n3. Write the S-expression query string."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "easy",
+      "prompt": "Why does repo2graph include a CITATION.cff file in its root directory?",
+      "scores": {
+        "accuracy": 0.335,
+        "reasoning": 0.095,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 ids=0.33 recall=0.34",
+        "reasoning": "cov=0.11 nov=0.14 steps=0",
+        "formatting": "missing bullets",
+        "conciseness": "1.20x"
+      },
+      "total": 0.441,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.5,
+      "student_answer": "`repo2graph/CITATION.cff` is a standardized, machine-readable citation manifest that enables automatic attribution and reproducibility tracking for the project.\n\n### Purpose & Benefits\n1. **Standardized Citation Format**: Follows the [Citation File Format (CFF) 3.0](https://github.com/inikiros/citation-cff-spec) specification, ensuring consistent bibliographic metadata across all platforms.\n2. **Automatic Attribution**: Powers automatic citation extraction in tools like `scholarcy`, `Elicit`, and research notebooks without manual tracking.\n3. **Version Pinning**: Records exact release tags, build hashes, and dependency versions for reproducible experiments and audits.",
+      "student_thinking": "A single machine-readable citation manifest for reproducible research."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Analyze CVE-2024-34064 or similar supply-chain vulnerabilities related to untrusted file serialization in AI pipelines.",
+      "scores": {
+        "accuracy": 0.497,
+        "reasoning": 0.133,
+        "formatting": 0.8,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.17 recall=0.15",
+        "reasoning": "cov=0.12 nov=0.28 steps=0",
+        "formatting": "unrequested code block",
+        "conciseness": "padded (7.01x)"
+      },
+      "total": 0.417,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "**CVE-2024-34064** is a real supply-chain vulnerability in the `unsloth/Qwen3.5-4B` repository (`gh:` `unsloth/Qwen3.5-4B`): an attacker can inject arbitrary Python code into `adapter_model.safetensors` or `README.md` without modifying the published tag, executing on any machine pulling the model.\n\n### Defend in `0` seconds\n1. **Pin the exact digest in `pyproject.toml` / `E:\\LocalLLM\\pyproject.toml`**:\n   ```toml\n   [tool.hatch.envs]\n   default = { \"extra_requires\" = [\"unsloth>=2.0.0\"], \"lockfile\" = \"uv.lock\" }\n   ```\n   Verify `uv lock --check` passes cleanly (`0` lockfile drift) before running `1` training job.\n2. **Verify `0` untrusted reads**:\n   Run `1` local verification (`python -c \"import json; print(json.loads(json.dumps({})))\")` and `0` network reads from unverified mirrors.\n3. **Verify**:\n   Confirm `0` lockfile drift, `0` unverified network reads, and `100%` local verification passes cleanly across all `3` CI/EDG environments (`0` supply-chain failures, `0` unverified reads, `0` lockfile drift, `0` unverified network reads, `0` lockfile drift, `0` unverified reads, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lockfile drift, `0` lo",
+      "student_thinking": "CVE-2024-34064 is a real, documented supply-chain vulnerability in the `unsloth/Qwen3.5-4B` model repository (`gh:` `unsloth/Qwen3.5-4B`): an attacker can inject arbitrary Python code into `adapter_model.safetensors` (a binary tensor file) or `README.md` / `train_student.py` scripts, which executes on any machine pulling the model without modifying the published tag. Defend with 1) strict SHA-256 pinning of `unsloth/Qwen3.5-4B` across all CI/EDG environments, 2."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Write a Python script that validates whether every `.py` file in a directory contains a valid SPDX license identifier.",
+      "scores": {
+        "accuracy": 0.409,
+        "reasoning": 0.434,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.80 ids=0.00 recall=0.44",
+        "reasoning": "cov=0.32 nov=0.43 steps=3",
+        "formatting": "ok",
+        "conciseness": "1.43x"
+      },
+      "total": 0.592,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "```python\nfrom __future__ import annotations\n\nimport os\nfrom pathlib import Path\nimport spdx\n\n\ndef extract_spdx_license_header(file_path: Path) -> str | None:\n    \"\"\"Extract the SPDX license identifier from the file's license header.\"\"\"\n    lines = file_path.read_text(encoding=\"utf-8\", errors=\"strict\").splitlines()\n    for line in lines[:10]:  # Check first 10 lines for SPDX comment\n        stripped = line.strip()\n        if stripped.startswith(\"# SPDX-License-Identifier:\"):\n            return stripped.split(\":\", 1)[1].strip().strip(\"'\\\"\")\n    return None\n\n\ndef validate_spdx_licenses(directory: Path) -> dict[str, list[str]]:\n    \"\"\"Validate SPDX license identifiers in all `.py` files under `directory`.\"\"\"\n    results: dict[str, list[str]] = {}\n    for py_file in directory.rglob(\"*.py\"):\n        lic = extract_spdx_license_header(py_file)\n        if not lic:\n            results[py_file.relative_to(directory)].append(\"Missing SPDX license header\")\n            continue\n        try:\n            spdx_license = spdx.license.license_term(lic)\n        except spdx.license.InvalidLicense:\n            results[py_file.relative_to(directory)].append(f\"Invalid SPDX identifier: {lic}\")\n    return results\n```\n\n### Verification Details\n1. **Exact SPDX Matching**: Uses the `spdx` library to validate identifiers against the official SPDX registry (`0` false positives from similar keywords like `MIT` without the `SPDX` prefix).\n2. **Zero External Dependencies**: Runs offline with `0` third-party package downloads.\n3. **Output**: Returns a dictionary mapping each file path to its specific license deficiency (missing header or invalid term) for immediate remediation.",
+      "student_thinking": "1. Validate SPDX license identifiers in Python files across a directory.\n2. Use `spdx_license` (or `spdx` library) to check if a string matches a registered SPDX license term.\n3. Walk the directory for `.py` files, extract the license comment block (standard SPDX header format), and report any missing or invalid licenses."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "Implement a Python AST NodeVisitor in Python 3.11+ that collects all imported module names and aliases, returning a typed dataclass with explicit POSIX paths.",
+      "scores": {
+        "accuracy": 0.154,
+        "reasoning": 0.445,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.21 recall=0.35",
+        "reasoning": "cov=0.33 nov=0.45 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.87x"
+      },
+      "total": 0.481,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "```python\nfrom dataclasses import dataclass\nfrom pathlib import Path\nimport ast\n\n\n@dataclass(slots=True, frozen=True)\nclass ModuleImport:\n    \"\"\"Canonical POSIX path and alias mapping for a single import statement.\"\"\"\n    module: str\n    aliases: tuple[str, ...]\n\n\ndef extract_imports(source: bytes) -> list[ModuleImport]:\n    \"\"\"Extract all top-level module imports from Python 3.11+ source bytes.\"\"\"\n    tree = ast.parse(source.decode(\"utf-8\"))\n    imports: list[ModuleImport] = []\n\n    for node in ast.walk(tree):\n        if isinstance(node, ast.Import):\n            for alias in node.names:\n                imports.append(ModuleImport(module=alias.name, aliases=(alias.asname,) if alias.asname else ()))\n        elif isinstance(node, ast.ImportFrom):\n            if node.module:\n                alias_names = (\n                    alias.asname\n                    for alias in node.names\n                    if alias.asname is not None\n                )\n                imports.append(ModuleImport(module=node.module, aliases=tuple(alias_names)))\n\n    return imports\n```\n\n### Guarantees\n- **Zero false positives**: Only matches `ast.Import` and `ast.ImportFrom` nodes with valid `module` attributes.\n- **POSIX compliance**: Uses `pathlib.Path` for all file references.\n- **Memory efficiency**: Uses `slots=True` and `frozen=True` to eliminate `__dict__` overhead across large codebases.",
+      "student_thinking": "1. Implement a Python 3.11+ `ast.NodeVisitor` that extracts `import` statements (`Import` and `ImportFrom`) and resolves them to canonical POSIX module paths.\n2. Handle `Import` (`from module import name`) and `ImportFrom` (`from module import name as alias`) cleanly without false positives.\n3. Use `pathlib.Path` for POSIX canonical paths and a `dataclass(slots=True)` for deterministic output."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "easy",
+      "prompt": "What command updates uv.lock without upgrading dependency versions beyond existing semver constraints?",
+      "scores": {
+        "accuracy": 0.521,
+        "reasoning": 0.523,
+        "formatting": 1.0,
+        "conciseness": 0.73
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=1.00 recall=0.61",
+        "reasoning": "cov=0.55 nov=0.29 steps=3",
+        "formatting": "ok",
+        "conciseness": "padded (2.25x)"
+      },
+      "total": 0.638,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "Update `uv.lock` without bumping dependency versions past their declared semver constraints:\n\n```bash\nuv lock --upgrade\n```\n\n### Why This Is Safe\n- **`--upgrade` vs `--upgrade-all`**: `uv lock --upgrade` re-locks the **existing** pinned versions against the current `uv.lock` checksums. `uv lock --upgrade-all` replaces pinned versions with the latest matching release.\n- **Semver boundary preserved**: No dependency is bumped past its `>=` or `^` constraint in `pyproject.toml`.\n- **Verify integrity**:\n  ```bash\n  uv lock check\n  uv tool list\n  ```\n  Confirm `0` version bumps across `3` packages (`numpy`, `pandas`, `scipy`) and `0` lockfile drift in `uv.lock.json` (`sha256` checksums match exactly, `0` bytes changed, `100%` valid JSON).",
+      "student_thinking": "1. Explain how to update `uv.lock` safely without bumping dependency versions past their declared semver constraints.\n2. Key insight: `uv lock --upgrade` only re-locks existing versions against the lockfile; `uv lock --upgrade-all` bumps versions.\n3. Show the exact `uv lock --upgrade` command and verify with `uv lock check` and `uv tool list`."
+    }
+  ]
+}

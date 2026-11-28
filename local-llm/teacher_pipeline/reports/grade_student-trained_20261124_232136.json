@@ -1,0 +1,955 @@
+{
+  "timestamp": "2026-11-24T23:21:36.076863+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 40,
+  "n_errors": 0,
+  "overall_score": 0.514,
+  "pass_rate": 0.1,
+  "by_criterion": {
+    "accuracy": 0.393,
+    "reasoning": 0.367,
+    "formatting": 0.765,
+    "conciseness": 0.924
+  },
+  "by_skill": {
+    "agentic_planning": 0.436,
+    "localllm_ops": 0.486,
+    "python_stack": 0.517,
+    "structured_extraction": 0.846,
+    "supply_chain": 0.507,
+    "tool_call_format": 0.646
+  },
+  "weak_skills": [
+    "agentic_planning",
+    "localllm_ops",
+    "supply_chain",
+    "python_stack",
+    "tool_call_format"
+  ],
+  "mean_tokens_per_sec": 48.7,
+  "wall_seconds": 394.8,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.421,
+        "reasoning": 0.388,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.67 ids=0.20 recall=0.37",
+        "reasoning": "cov=0.15 nov=0.41 steps=5",
+        "formatting": "ok",
+        "conciseness": "1.08x"
+      },
+      "total": 0.586,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 41.8,
+      "student_answer": "```python\nimport json\nfrom pathlib import Path\n\n\ndef load_config(path: str | Path) -> dict[str, object]:\n    \"\"\"Load and parse a JSON configuration file safely.\n\n    Guarantees explicit UTF-8 decoding, deterministic newline handling, and\n    graceful error handling for missing or malformed files.\n    \"\"\"\n    target = Path(path).resolve()\n    try:\n        with target.open(mode=\"r\", encoding=\"utf-8\", newline=\"\\n\") as fh:\n            return json.load(fh)\n    except (FileNotFoundError, json.JSONDecodeError, PermissionError) as err:\n        raise RuntimeError(f\"Failed to load config from {target}: {err}\") from err\n```\n\n### Fixes Applied\n1. **Explicit `encoding=\"utf-8\"`**: Prevents platform-specific defaults (`cp1252` on Windows) from corrupting non-ASCII JSON.\n2. **Deterministic `newline=\"\\n\"`**: Eliminates `\\r\\n` translation across Windows and POSIX.\n3. **Graceful `RuntimeError`**: Wraps low-level exceptions without losing the original cause.",
+      "student_thinking": "Reviewing load_config:\n1. `open(path)` never closes explicitly -> resource leak.\n2. `json.load(f)` never catches `json.JSONDecodeError` -> crashes on malformed JSON.\n3. `open(path)` never checks `FileNotFoundError` or `PermissionError` -> crashes on missing/protected files.\n4. `encoding='utf-8'` is missing -> platform default (`cp1252` on Windows) breaks non-ASCII JSON.\n5. `encoding='utf-8', newline='\\n'` is the Python 3 standard for text files."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.144,
+        "reasoning": 0.379,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.00 recall=0.14",
+        "reasoning": "cov=0.18 nov=0.32 steps=11",
+        "formatting": "missing code block",
+        "conciseness": "0.42x"
+      },
+      "total": 0.26,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "On **8,188 MiB** usable VRAM (**6,144 MiB** base limit), a **4B** model in **4-bit** (**500 MB**) with **AdamW 8-bit** optimizer (**1,000 MB**) and **2**-batch gradient steps leaves only **~64 MB** of headroom for the Windows compositor and pagefile. At **2,048** tokens (**256 MB** activations), you have **~38 MB** of headroom — any extra layer, larger batch, or longer prompt triggers an OOM.\n\n### Ranked Fixes (Memory Saved per Quality Lost)\n\n1. **Batch size 2 → 1**: Saves **128 MB** (**50%** reduction, **0** quality loss in graded tasks).\n2. **Sequence length 2,048 → 1,024**: Saves **128 MB** (**50%** reduction, **0** quality loss in graded tasks).\n3. **Gradient checkpointing**: Saves **75%** of activation memory (**0** quality loss in graded tasks).\n4. **LoRA rank 16 → 8**: Saves **50%** of optimizer memory (**0** quality loss in graded tasks).\n5. **Learning rate 2e-4 → 5e-5**: Saves **0 MB** (**1.6x** longer training, **0** quality loss).\n\n### Verification\nVerify each change with `ollama ps` (**0** OOMs across **3** consecutive runs, **100%** of graded tasks passing, **0** quality degradation).",
+      "student_thinking": "Memory arithmetic on 8 GB VRAM for 4B QLoRA:\n1. Base model (4-bit NF4): 4,000,000,000 / 8 = 500 MB.\n2. Optimizer states (AdamW 8-bit): 500 MB * 2 = 1,000 MB.\n3. Activation peak at seq_len 2048, batch 2: roughly 2,048 * 2 * 64 = 262,144 bytes = 256 MB.\n4. CUDA context + Windows compositor + Windows pagefile headroom: 8,188 MiB - 6,144 MiB (base) - 256 MB - 1,000 MB = ~64 MB headroom.\n5. At 2,048 tokens, activations alone consume ~256 MB, leaving only ~38 MB of the 64 MB headroom for the Windows compositor and pagefile. Any extra layer, larger batch, or longer prompt pushes you over the Windows compositor limit and causes an OOM.\n6. Rank the fixes by memory saved per quality lost:\n   - Halving batch from 2 to 1: saves 128 MB (50% memory reduction, 0 quality loss in graded tasks).\n   - Reducing seq_len from 2,048 to 1,024: saves 128 MB (50% memory reduction, 0 quality loss in graded tasks).\n   - Enabling gradient checkpointing: saves 75% of activation memory (0 quality loss in graded tasks).\n   - Reducing LoRA rank from 16 to 8: saves 50% optimizer memory (0 quality loss in graded tasks).\n   - Lowering learning rate from 2e-4 to 5e-5: saves 0 MB (1.6x longer training, 0 quality loss)."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.29,
+        "reasoning": 0.167,
+        "formatting": 0.25,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.60 ids=0.00 recall=0.25",
+        "reasoning": "cov=0.20 nov=0.23 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "0.55x"
+      },
+      "total": 0.322,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "**Verify, report honestly, fix, and verify again — never claim the suite is green because the failures predate your change.**\n\n### Step 1: Verify the Pre-Existing Claim\n1. **Stash your change**: `git stash` (or `git stash -u` if you want the modified files back on `HEAD`).\n2. **Run the 3 failing tests in a clean environment**: Confirm they fail identically to what you saw before your change.\n3. **Restore your change**: `git stash pop`.\n\n### Step 2: Report Honestly\nState the facts plainly:\n> \"All **3** previously failing tests still fail in the clean baseline (**0** new failures introduced by this change). The **102** new tests in this change pass cleanly (**0** regressions).\"\n\n### Step 3: Fix and Re-Verify\n1. **Fix the 3 failing tests** (or their root cause) — do not leave them as pre-existing issues.\n2. **Run the full suite** (`make lint && make typecheck && make test`) to confirm all **3** previously failing tests pass and no new regressions were introduced.\n3. **Report the outcome**: \"All **3** previously failing tests now pass; the **102** new tests in this change pass cleanly (**0** regressions).\"",
+      "student_thinking": "The user asks how to report and handle 3 pre-existing failing tests after a change. The honest engineering answer: 1. Verify the pre-existing claim with a clean checkout (`git stash`, run the 3 failing tests, restore stash). 2. Do NOT claim the suite is green or ignore the failures — report them honestly as pre-existing. 3. Fix the 3 tests (or their root cause) and run the full suite to confirm all 3 pass and no new regressions were introduced. 4. Report the outcome plainly: 'All 3 previously failing tests now pass; the 102 new tests in this change pass cleanly (0 regressions).'"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.259,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.18 nov=0.65 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.815,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.8,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The tool call must include the exact required field 'path' and the two optional numeric fields 'start_line' and 'end_line' (40 and 80). The path is 'src/repo2graph/cli.py'."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.264,
+        "reasoning": 0.182,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.57 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.15 nov=0.40 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.48x"
+      },
+      "total": 0.364,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "**No — do not raise the version cap.** The new major version changes the dependency's install-time behavior, which breaks the zero-network invariant your project promises.\n\n### Why Raising the Cap Is Wrong\n- **The invariant is broken**: Your project guarantees that building and querying make **0** network calls. A major version that downloads grammars on first use turns the dependency into a network-calling component.\n- **The wrong control is a version cap**: Pinning the version keeps the zero-network invariant, but it prevents you from getting the **2.5 MB** wheel. Raising the cap keeps the small wheel, but it removes the guarantee.\n\n### The Right Control: Decouple the Two Guarantees\n1. **Keep the zero-network invariant intact**: Pin the version (or keep the cap) so that building and querying truly make **0** network calls.\n2. **Decouple grammar fetching from the dependency's version**: Fetch the grammar on first use from a **local** cache (or a **0** network endpoint) so that the dependency's version can change without breaking the invariant.\n\n### Verification\nRun `make lint && make typecheck && make test` **3** times with **0** network activity, confirm **0** outbound connections, and verify the wheel size is **<= 3 MB** (**2.5 MB** vs **33 MB**).",
+      "student_thinking": "The dependency's new major version changes its build-time behavior: it now downloads grammars on first use rather than compiling them at install time. The project's documented promise is that building and querying make **zero** network calls.\n\nIf we raise the version cap to include this new major, the promise is no longer true under the current definition of the project's scope. The dependency is now a network-calling component, which contradicts the stated invariant.\n\nThe right control is not to pin the version, but to decouple the two guarantees: either pin the version (keeping the zero-network invariant) or decouple the grammar-fetching behavior from the dependency's version (so the zero-network invariant survives upgrades)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.54,
+        "reasoning": 0.319,
+        "formatting": 0.25,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=1.00 recall=0.13",
+        "reasoning": "cov=0.20 nov=0.24 steps=3",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "0.51x"
+      },
+      "total": 0.473,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "The rejection happens at the **connection/transport layer**, before any HTTP request is sent. `claude-code` only trusts a model name if it appears in your client's pre-populated cache, which is keyed by the model's digest.\n\n### The 3-Tier Trust Store\n1. **Environment variable**: Set `MODELS=qwen3.5:9b` (comma-separated for multiple names).\n2. **Config file**: Add `\"qwen3.5:9b\"` to `CLAUDE_CONFIG.json` under the `models` key.\n3. **Local cache**: Rebuild the cache so the digest matches the tag on disk.\n\n### Verification\nRun `cclocal models` (or `claude --model qwen3.5:9b --verify`) and confirm **0** `unrecognized_model` errors. Once registered, the client accepts the name and sends the request to your local endpoint.",
+      "student_thinking": "The client is rejecting the model name at the transport/connection layer, not the HTTP layer. In `claude-code` (and `cclocal`), model name validation happens before the request is sent, and it only trusts a model name if it appears in one of three places:\n1. The `MODELS` environment variable (a comma-separated list of approved names).\n2. The `CLAUDE_CONFIG.json` file under `models`.\n3. A pre-populated local cache keyed by the model's digest.\n\nSo the fix is not to change the endpoint or the name, but to register the name in the client's trust store. For `qwen3.5:9b`, set `MODELS=qwen3.5:9b` (or add it to `CLAUDE_CONFIG.json`) and restart the client so the cache is rebuilt."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.349,
+        "reasoning": 0.422,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.75 recall=0.24",
+        "reasoning": "cov=0.13 nov=0.61 steps=5",
+        "formatting": "ok",
+        "conciseness": "0.93x"
+      },
+      "total": 0.562,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.9,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student_model\",\n    \"eval_file\": \"grade_student.py\",\n    \"compare_to\": \"base_model\",\n    \"temperature\": 0.6\n  }\n}\n```\n\n**Judgement:** Emitted **0** invented values — only the **2** required placeholders and **2** optional placeholders, so the caller can supply the exact model tag, harness path, and verified temperature.",
+      "student_thinking": "1. The user wants a tool call for `grade_model`.\n2. Required parameters: `model` (student model), `eval_file` (the grading harness script).\n3. Optional parameters from the request: `compare_to` (the previous base model), `temperature` (the stable temperature).\n4. The user did not give explicit values for `model`, `eval_file`, `compare_to`, or `temperature`, so I must emit a call with **0** invented strings or numbers — only the **2** required placeholders and **2** optional placeholders, letting the caller fill in the exact versions.\n5. Emit valid JSON."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.162,
+        "reasoning": 0.303,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.31 ids=0.00 recall=0.20",
+        "reasoning": "cov=0.15 nov=0.29 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "0.67x"
+      },
+      "total": 0.249,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "A digest proves the exact bytes of the file at the time it was recorded — **not** that the file is safe, current, or unmodified by your local Ollama server.\n\n### What a Digest Actually Proves\n- **Integrity, not provenance**: `sha256:<hex>` guarantees the file on disk matches the recorded hash. It does **not** prove the file is from the claimed source, is free of malware, or is the current revision.\n- **Local Ollama can corrupt it**: If you run `ollama pull` or `ollama create` without pinning the digest, Ollama re-downloads the file from the hub, and the digest no longer matches what is in your model store.\n\n### Concrete Verification Checklist\n1. **Check the manifest**: Run `ollama show <tag>` and confirm every layer has a valid `sha256` digest.\n2. **Verify the tag is untouched**: Run `ollama list` and confirm the tag's size and digest match what you recorded.\n3. **Test the model loads cleanly**: Run `ollama ps` and confirm `size_violation` is `0` and `ollama run <tag>` exits `0` without `ERROR: file is not a valid GGUF` or `ERROR: model is already registered`.",
+      "student_thinking": "1. The user asks what to verify after pulling a GGUF and running `ollama create` from a Modelfile, and what a digest actually proves.\n2. First, clarify what a digest proves: a digest (e.g. `sha256:<hex>`) proves the exact bytes of the file at the time of recording, not that the file is safe, current, or unmodified by the local Ollama server.\n3. Then list the concrete verifications needed after `ollama create`: check `ollama show` for the manifest and layer digests, verify the tag is not overwritten, and confirm the model loads without Ollama throwing `ERROR: file is not a valid GGUF` or `ERROR: model is already registered`."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.242,
+        "reasoning": 0.267,
+        "formatting": 0.65,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.00 recall=0.21",
+        "reasoning": "cov=0.28 nov=0.46 steps=0",
+        "formatting": "lang tag {'bash'}!=set()",
+        "conciseness": "0.65x"
+      },
+      "total": 0.406,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "Two independent mismatches cause that error:\n\n### 1. Double `/v1` Path (HTTP 400)\nClaude Code appends `/v1/messages` to your base URL. If you set `ANTHROPIC_BASE_URL=http://127.0.0.1:11434/v1`, Claude Code requests `http://127.0.0.1:11434/v1/v1/messages` — which Ollama rejects. Set it without the suffix:\n```\nANTHROPIC_BASE_URL=http://127.0.0.1:11434\nANTHROPIC_AUTH_TOKEN=ollama\n```\n\n### 2. Model Tag Mismatch (`qwen3.5:9b`)\nOllama exposes **2** model tags on port **11434**: `qwen3.5:4b` and `qwen3.5:9b` (**11.6 GB**), **not** `qwen3.5:9b` (without `:9b`). On port **11435**, `qwen3.5:9b` (**6.6 GB**) is listed. Pull the exact tag name from `http://127.0.0.1:11434/api/tags` or `11435/api/tags` and match it precisely.",
+      "student_thinking": "The user set ANTHROPIC_BASE_URL=http://localhost:11434/v1 and expects Claude Code to talk to Ollama's `/v1` endpoint, but Ollama's `/v1/messages` returns HTTP 400 Bad Request with `error: model not found`. Let's trace the exact mismatch between what Claude Code sends and what Ollama expects: 1. **Base URL mismatch**: Claude Code appends `/v1/messages` to the base URL. If base is `http://127.0.0.1:11434/v1`, Claude Code requests `http://127.0.0.1:11434/v1/v1/messages` (double `/v1`), which Ollama rejects. The fix is `ANTHROPIC_BASE_URL=http://127.0.0.1:11434` (no `/v1` suffix). 2. **Model name mismatch**: Claude Code sends `qwen3.5:9b` (with `:9b`). Ollama's `/v1/models` lists `qwen3.5:9b` **without** the `:9b` suffix on port **11435**, and `qwen3.5:4b` on port **11434**. So `qwen3.5:9b` is not a valid model tag on either port. 3. **Probes**: check `curl -s http://127.0.0.1:11434/api/tags` and `curl -s http://127.0.0.1:11435/api/tags` for the exact tag names, then set `ANTHROPIC_BASE_URL=http://127.0.0.1:11434` and `ANTHROPIC_AUTH_TOKEN=ollama` (or `ollama` without `:9b`)."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.943,
+        "reasoning": 0.489,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.86 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.32 nov=0.45 steps=7",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.846,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.1,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "1. `name` from `name` field: `qwen3.5:9b`.\n2. `family` from `details.family`: `qwen35`.\n3. `params` from `details.parameter_size`: `9.0B`.\n4. `quant` from `details.quantization_level`: `Q4_K_M`.\n5. `context` from `details.context_length`: `262144`.\n6. `size_gb`: `6550825550` bytes / (1024^3) = `6.140625 GB` -> `6.1`.\n7. `tools` and `vision` from `capabilities` array presence: both `true`."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.323,
+        "reasoning": 0.355,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.36 ids=0.33 recall=0.24",
+        "reasoning": "cov=0.22 nov=0.14 steps=5",
+        "formatting": "missing code block",
+        "conciseness": "0.63x"
+      },
+      "total": 0.334,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "**AdamW 8-bit cuts optimizer state memory by 50%, which is the real VRAM constraint on a 6.6 GB usable ceiling.**\n\n### Memory Arithmetic\nThe optimizer state (`adamw_state_dict`) consists of two tensors: `momentum` and `variance`.\n- **Full-precision AdamW (`adamw`)**: Stores both tensors in `float32` (**4 bytes** per element).\n- **8-bit AdamW (`adamw_8bit`)**: Quantizes both tensors to `float16` (**2 bytes** per element).\n\nOn **8 GB** VRAM (**6.6 GB** usable after accounting for **4.6 GB** model weights and **0.6 GB** KV cache), halving the optimizer state saves **0.4 GB** of VRAM per step.\n\n### The Trade-Off\nThe cost of `adamw_8bit` is **non-standard checkpointing**: it cannot be saved directly to disk in the standard format without first dequantizing the state, and it risks underflow if the learning rate is too high or the batch too small.",
+      "student_thinking": "AdamW 8-bit vs AdamW torch on 8 GB VRAM:\n1. AdamW optimizer state is stored in `adamw_state_dict`, which consists of two tensors: `momentum` and `variance`.\n2. Full-precision AdamW (`adamw`) stores these in `float32` (4 bytes per element).\n3. 8-bit AdamW (`adamw_8bit`) quantizes them to `float16` (2 bytes per element), cutting optimizer state memory in half.\n4. On a 6.6 GB usable VRAM ceiling with a 4.6 GB model + 0.6 GB KV cache, the optimizer state is a real constraint.\n5. The cost of `adamw_8bit` is that it cannot be checkpointed directly to disk in the standard format without dequantizing, and it can suffer from underflow if the learning rate is too high or the batch too small."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.41,
+        "reasoning": 0.238,
+        "formatting": 0.5,
+        "conciseness": 0.62
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.05",
+        "reasoning": "cov=0.05 nov=0.24 steps=3",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.19x)"
+      },
+      "total": 0.406,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.8,
+      "student_answer": "### Execution Model\n\n1. **What executes?** A static **query** (`tree_sitter.Query`) or capture node set (`tree_sitter.Capture`). It never executes Python code.\n2. **When does it execute?** Only when you call `.query()` or `.node.children` on a parsed `tree_sitter.Tree`.\n3. **What controls it?** `query`, `capture`, and `node`.",
+      "student_thinking": "1. **What executes?** The grammar is a static tree-sitter query or capture node set. It executes on the tree-sitter Tree object produced by `tree_sitter.Language` or `tree_sitter.Tree`.\n2. **When does it execute?** Only when you call `.query()` or `.node.children` on a parsed Tree.\n3. **What controls it?** `query` (tree-sitter.Query), `capture` (tree-sitter.Capture), and `node` (tree-sitter.Node)."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.384,
+        "reasoning": 0.422,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 recall=0.15",
+        "reasoning": "cov=0.26 nov=0.32 steps=9",
+        "formatting": "missing bullets",
+        "conciseness": "0.53x"
+      },
+      "total": 0.545,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "### Cheapest Sufficient Verification\n\nRun the exact production command (or CI command) locally in an isolated environment and assert the specific output:\n\n```bash\n<prod_command> 2>&1 | grep -E \"(exit 0|changed_key:.*expected_value)\"\n```\n\n### What Makes a Verification Insufficient\n\n| Check | Why It Is Insufficient |\n|---|---|\n| `git diff` only | Proves an edit was made, not that it behaves correctly at runtime |\n| Different command than prod | Proves the changed config works for a different use case |\n| Partial test suite | Misses the full contract the config governs |\n| Only the changed file | Misses downstream modules that read the config |\n\n### The Verification Boundary\n\nA verification is insufficient when it does not cover the **full command** the user runs in production, the **full test suite** that exercises the config, and the **full exit code** (0, 1, or 255).",
+      "student_thinking": "1. The user wants the cheapest *sufficient* verification for a small config change, plus the criteria for what makes a verification insufficient.\n2. Cheapest sufficient verification for a config change:\n   - Run the exact command the user runs in production (or the exact CI command) in a local isolated environment.\n   - Check exit code 0 and the specific output assertion (e.g. `grep` for the changed key).\n3. What makes a verification insufficient:\n   - Checking only `git diff` (proves edit, not runtime behavior).\n   - Checking a different command than the one used in production.\n   - Checking a subset of tests without the full suite.\n   - Checking only the changed file without running the command that exercises the config."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.275,
+        "reasoning": 0.34,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.12 nov=0.48 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.50x"
+      },
+      "total": 0.509,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "To serve a trained LoRA on Ollama, you need **1** file (`model.sft.json` or `model.v2.json`) plus **1** verification command (`ollama show`).\n\n### Step 1: Write the Manifest\n```json\n{\n  \"name\": \"qwen3.5:4b\",\n  \"size\": 4200000000,\n  \"base_model_name_or_path\": \"Qwen3.5-4B\",\n  \"adapter_model_path\": \"adapters/lesson_01\",\n  \"format\": \"sft\",\n  \"license\": \"mit\",\n  \"description\": \"4B trained on 2025-11-20 with 45 examples\"\n}\n```\n\n### Step 2: Push to Ollama\n```bash\nollama pull qwen3.5:4b\nollama create qwen3.5:4b:trained -f model.sft.json\n```\n\n### Step 3: Verify\n```bash\nollama show qwen3.5:4b:trained --modelfile\n```\nThis confirms the base model tag (`qwen3.5:4b`) and adapter path are recorded, so Ollama knows how to apply the LoRA weights.",
+      "student_thinking": "1. The user wants to take a trained LoRA adapter (`adapters/lesson_01`) and serve it on Ollama.\n2. The crucial insight is that Ollama does not load `.safetensors` directly from the adapter directory — it needs a `model.sft.json` manifest (or `model.v2.json` in Ollama 0.1.35+) describing the base model and the adapter.\n3. Also explain why `ollama pull` + `qwen3.5:4b` is the real control, and why `ollama show` is the verification step."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.062,
+        "reasoning": 0.353,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.18",
+        "reasoning": "cov=0.19 nov=0.19 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.86x"
+      },
+      "total": 0.416,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "**They are fundamentally different threat models: safetensors is a memory/parse boundary, pickle is code execution.**\n\n### 1. Safetensors vs Pickle Threat Model\n- **Safetensors**: A binary format with a fixed header (magic `0x53`, version, dimensions, byte counts) followed by raw bytes. The specification defines no embedded Python objects or callable hooks. The risk is limited to memory allocation and integer parsing.\n- **Pickle (`.pkl`)**: A Python serialization format that executes arbitrary Python code during unpickling (`__reduce__`, `__getstate__`, `__setstate__`). The risk is full code execution with access to the process memory space.\n\n### 2. What to Require\nRequire **`safetensors` only** and reject any pickle-like bytes in the weight blob:\n```python\nimport pickle\nfrom pathlib import Path\n\ndef is_safe_weight_format(path: Path) -> bool:\n    \"\"\"Reject pickle and pickle-like formats; accept only safetensors.\"\"\"\n    suffix = path.suffix.lower()\n    if suffix in (\".pkl\", \".pkl.gz\", \".p\", \".dat\"):\n        raise RuntimeError(f\"Rejecting pickle-like format: {suffix}\")\n    return suffix == \".safetensors\"\n```\n\n### 3. Verification\n1. Check the header magic (`0x53`) and version (`2`).\n2. Verify total byte count equals `sum(dims) * bytes_per_element` across all declared dimensions.\n3. Read the header in `utf-8` and validate all dimension and byte-count fields are positive integers.",
+      "student_thinking": "1. Safetensors is a binary format with a fixed header (magic number, version, dimensions, byte counts) followed by raw bytes. The format specification does not define any embedded Python objects, pickles, or arbitrary code.\n2. Pickle (`.pkl`) is a Python serialization format that can execute arbitrary Python code during unpickling (`__reduce__`, `__getstate__`, `__setstate__`).\n3. Therefore, loading a pickle is a code execution risk, while loading a safetensor is a memory/parse validation risk.\n4. Require `safetensors` only and reject `.pkl` or any pickle-like bytes in the weight blob."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "A grading run reports 15 of 15 prompts failed with `HTTP 500: AttributeError: 'str' object has no attribute...`, truncated at 60 characters. Plan the diagnosis.",
+      "scores": {
+        "accuracy": 0.273,
+        "reasoning": 0.399,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.13 nov=0.51 steps=5",
+        "formatting": "missing code block",
+        "conciseness": "0.82x"
+      },
+      "total": 0.323,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "The `60`-character truncation hides the attribute name, so inspect the **raw prompt** and **tool schema** rather than guessing.\n\n### Root Cause Analysis\n1. **Unescaped backslashes in system prompt**: A system prompt containing `\\\\` or `\\n` is treated as a string literal by the provider, causing the parser to fail on an unexpected attribute.\n2. **Missing or null tool schema**: Passing `None` or an empty list for tools triggers `AttributeError: 'NoneType' has no attribute 'get'`.\n3. **Over-length prompt**: Exceeding `4,096` or `16,384` tokens causes a `400` or `500` before the error message is returned.\n\n### Diagnostic Plan\n1. Write the full prompt and tool schema to `prompt.txt` and run `python -m json.tool prompt.txt` (exit `0`).\n2. Check provider quota (`/v1/pricing`) and `OLLAMA_MODELS` size (`du -sh`).\n3. Run `make lint && make typecheck && make test` (`0` exit) before re-running the grading suite.",
+      "student_thinking": "1. The error message is truncated (`60` chars), so the actual attribute name is unknown.\n2. `HTTP 500` from an LLM provider (`anthropic`, `together`, `groq`, `gemini`) means the provider rejected the request.\n3. The most common cause for `AttributeError: 'str' has no attribute ...` in this stack is a **system prompt** or **tool description** containing unescaped backslashes (`\\\\`) or raw newlines (`\\n`) that the provider's parser treats as a string literal instead of a prompt.\n4. Also check for **over-length** prompts (`>4,096` or `>16,384` tokens) or **missing tool schemas** (`None` instead of `dict`).\n5. Plan: (a) capture the full raw prompt + tool schema in a file, (b) run a local `python -m json.tool` / `python -c \"import json; json.loads(s)\"` check, (c) check provider quota, (d) fix and re-run with `--check` first."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "We need a C compiler in the training container for Triton's JIT. Is `apt-get install -y build-essential` in the Dockerfile a supply-chain concern, and how would",
+      "scores": {
+        "accuracy": 0.333,
+        "reasoning": 0.294,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.00 recall=0.16",
+        "reasoning": "cov=0.09 nov=0.37 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.72x"
+      },
+      "total": 0.523,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.5,
+      "student_answer": "Yes — `build-essential` is a **dynamic dependency**. It is a meta-package that installs the default upstream compiler (`gcc-14` on current Ubuntu) and `dpkg-dev`, which ships the upstream source tree. An upstream release bumps the default version, and your container silently gets a different compiler.\n\n### The Reproducible Control\nPin the upstream compiler and `dpkg` explicitly so the meta-package is no longer the dependency:\n\n```dockerfile\nRUN apt-get update && apt-get install -y \\\n    dpkg=1.22.6 \\\n    gcc=14.2.0-1ubuntu9~24.04 \\\n    && rm -rf /var/lib/apt/lists/*\n```\n\n### Verification\n1. Run `docker build -t train:latest .` and verify `gcc --version` exits **0**.\n2. Run `docker run --rm train:latest bash -c \"gcc --version\"`.\n3. Confirm `dpkg` is **1.22.6** (`1.22.7` would indicate an upstream bump).",
+      "student_thinking": "1. `build-essential` is a meta-package that pulls in `gcc`, `g++`, `make`, and `dpkg` — and on Ubuntu/Debian it pulls `gcc-14` (or `gcc-12` in older images) plus `dpkg-dev`, which is the exact package that ships the upstream source code.\n2. If you pin `build-essential` to a version, the package list is still dynamic: an upstream release bumps the default version, and your container suddenly has a different compiler.\n3. The control is to pin the upstream compiler version directly (`gcc=<ver>`) and pin `dpkg` (`dpkg <ver>`), so the meta-package is no longer the dependency."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Lesson 1 raised conciseness 0.361 to 0.933 and formatting 0.399 to 0.689, but accuracy fell 0.395 to 0.369 and reasoning only reached 0.216. Plan lesson 2.",
+      "scores": {
+        "accuracy": 0.221,
+        "reasoning": 0.169,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.00 recall=0.11",
+        "reasoning": "cov=0.12 nov=0.40 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.99x"
+      },
+      "total": 0.442,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "**The failure mode is now clear: conciseness was learned as 'cut content', not 'cut waste'.** Accuracy fell **0.361 -> 0.369** and reasoning sits at **0.216** because the model trimmed reasoning steps and facts to satisfy the conciseness constraint.\n\n### Lesson 2 Objective\nTeach the model that **conciseness means 'no wasted words', not 'cut the reasoning'**, and that **reasoning is a required step**, not an optional flourish.\n\n### Step 1: Calibrate the Conciseness Reward\nThe current conciseness reward must be **0.0** when reasoning is missing, even if the answer is short. Train on examples where the conciseness score is **0.0** whenever the model skips a reasoning step, so the model learns that conciseness and reasoning are orthogonal.\n\n### Step 2: Teach 'Cut Waste', Not 'Cut Content'\nRewrite the conciseness rubric to reward **0.1** for each **25%** reduction in token count over the reference, **0.5** for removing redundant phrases, and **0.0** for removing facts or reasoning.\n\n### Step 3: Enforce Reasoning as a Required Step\nMake reasoning a **0.0** penalty step: if the model skips reasoning, the conciseness reward is **0.0**, and the lesson stops until reasoning is present.\n\n### Step 4: Verify Before Grading\nVerify that **100%** of graded examples include reasoning and that conciseness is **0.0** whenever reasoning is missing. Only then grade the next batch.",
+      "student_thinking": "The user wants lesson 2 after lesson 1's gains (conciseness 0.361 -> 0.933, formatting 0.399 -> 0.689) came at the cost of accuracy (0.395 -> 0.369) and reasoning (0.216). The core failure mode is that the model learned to be concise by cutting out reasoning steps and facts, which destroyed accuracy and left reasoning at 0.216. Lesson 2 must teach the model that conciseness means 'no wasted words', not 'cut the content', and that reasoning is a required step, not an optional flourish."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Qwen3.5-4B has 32 layers, of which only every 4th is full attention (indices 3, 7, 11, ... 31); the rest are linear attention. It has 4 key-value heads and head",
+      "scores": {
+        "accuracy": 0.523,
+        "reasoning": 0.463,
+        "formatting": 1.0,
+        "conciseness": 0.951
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.50 recall=0.38",
+        "reasoning": "cov=0.37 nov=0.24 steps=8",
+        "formatting": "ok",
+        "conciseness": "padded (1.72x)"
+      },
+      "total": 0.646,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "On a **32-layer** model with **4 KV heads** and **head_dim 256**, only **every 4th layer** uses full attention (**8** layers: indices **3, 7, 11, ..., 31**); the remaining **24** layers use linear attention.\n\n### KV Cache Breakdown\nPer token, each layer stores **2** tensors (**K** and **V**) of **4 × 256 = 1,024** elements:\n- **Full-attention layers (8)**: **8 × 2 × 1,024 = 16,384** bytes (**16.384 KiB**) per token.\n- **Linear-attention layers (24)**: **24 × 2 × 1,024 = 49,152** bytes (**49.152 KiB**) per token.\n- **Total per token**: **32 × 2 × 1,024 = 65,536** bytes (**65.536 KiB**) per token.\n\n### Memory at 32,768 Tokens\n- **At `fp16` (2 bytes/element)**: **32,768 × 65.536 KiB = 2,145,746.24 KiB = 2.048 GB**.\n- **At `q8_0` (1 byte/element)**: **1.024 GB**.\n\n### Why It Matters on 8 GB VRAM\nWith **6.6 GB** usable VRAM on an **8 GB** card, a **4B** model (**~6.6 GB** weights) plus **32,768-token** context (**2.048 GB** KV cache at `fp16`) totals **8.648 GB** (**1.048 GB** over the **7.6 GB** usable ceiling). Switching to `q8_0` halves KV cache to **1.024 GB**, dropping total footprint to **5.648 GB** (**2.352 GB** headroom)—enabling **128k** context without OOM.",
+      "student_thinking": "Hybrid attention KV cache arithmetic:\n1. Model: 32 layers, 4 KV heads, head_dim 256.\n2. Full-attention layers: every 4th layer (3, 7, 11, ..., 31) = 8 layers.\n3. Linear-attention layers: 32 - 8 = 24 layers.\n4. Per-token KV cache size per layer: 4 heads * 256 dim * 2 (K + V) = 2,048 bytes = 2.048 KiB.\n5. Total per token: 8 full * 2.048 KiB + 24 linear * 2.048 KiB = 32 * 2.048 KiB = 65.536 KiB/token.\n6. For 32,768 tokens: 32,768 * 65.536 KiB = 2,145,746.2368 KiB = 2.048 GB.\n7. At fp16 (2 bytes per element), it's 2.048 GB. At q8_0 (1 byte), 1.024 GB.\n8. On an 8 GB card with 6.6 GB usable VRAM, 2.048 GB KV cache leaves 4.552 GB for weights + activations, which is tight for a 4B model (~6.6 GB weights) plus context."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Give me the full VRAM budget for a QLoRA run on Qwen3.5-4B on an RTX 4060 Ti 8 GB at max_seq_length 2048, batch 2, gradient_accumulation 8. Account for every te",
+      "scores": {
+        "accuracy": 0.323,
+        "reasoning": 0.373,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.36 ids=0.33 recall=0.22",
+        "reasoning": "cov=0.20 nov=0.26 steps=6",
+        "formatting": "ok",
+        "conciseness": "0.54x"
+      },
+      "total": 0.539,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "On an **8.0 GB** card (**8188 MiB**) with **1.4 GB** reserved for Windows compositor, the naive setup is **100% OOM**:\n\n| Component | Size | Notes |\n|---|---|---|\n| **Model weights** | **8.0 GB** | 4.0 B params × 2 (FP16 + FP32) |\n| **Optimizer state** | **4.0 GB** | AdamW 8-bit (50% of weights) |\n| **Activations** | **1.6 GB** | Seq 2048, batch 2, grad_accum 8 (eff. batch 16) |\n| **CUDA context** | **1.4 GB** | OS + runtime overhead |\n| **Total peak** | **15.0 GB** | **1.4 GB** over the **8.0 GB** ceiling |\n\n### The Fix: Q4_K_M Quantization\nQuantize weights to **Q4_K_M** (**2.4 GB** + **1.2 GB** optimizer = **3.6 GB**):\n- **3.6 + 1.6 + 1.4 = 6.6 GB** (**1.4 GB** headroom, **82.5%** of usable VRAM).\n- **0** OOMs, **0** gradient loss, **100%** of `max_seq_length 2048` usable.",
+      "student_thinking": "VRAM arithmetic for Qwen3.5-4B on RTX 4060 Ti (8188 MiB = 8.0 GB):\n1. Model weights: 4.0 B params * 2 (FP16 + FP32) = 8.0 GB.\n2. Optimizer state (AdamW 8-bit): 8.0 GB * 0.5 = 4.0 GB.\n3. Activation buffer at seq 2048, batch 2, grad_accum 8 (effective batch 16): ~1.6 GB.\n4. CUDA context + Windows compositor: ~1.4 GB.\n5. Total peak: 8.0 + 4.0 + 1.6 + 1.4 = 15.0 GB vs 8.0 GB ceiling -> **100% OOM**, impossible without quantization.\n6. Quantize to Q4_K_M (2.4 GB weights + 1.2 GB optimizer = 3.6 GB) -> 3.6 + 1.6 + 1.4 = 6.6 GB, leaving **1.4 GB** headroom."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "We serve a model over HTTP from a ThreadingHTTPServer and generation is not thread-safe on a single GPU. Write the handler-side discipline, and explain what eac",
+      "scores": {
+        "accuracy": 0.13,
+        "reasoning": 0.27,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.18 ids=0.09 recall=0.11",
+        "reasoning": "cov=0.09 nov=0.07 steps=7",
+        "formatting": "ok",
+        "conciseness": "0.62x"
+      },
+      "total": 0.426,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "### Thread-Safety Discipline for Single-GPU Generation\n\nGeneration is not thread-safe on a single GPU. If two threads call `generate` simultaneously, they contend for the same VRAM and the second call blocks or corrupts the first.\n\n#### 1. Per-Request Lock in `finally`\nAcquire a lock at the start of `handle_request` and release it in `finally` so the lock is released even if an exception occurs:\n\n```python\nfrom contextlib import contextmanager\n\n@contextmanager\ndef acquire_generation_lock():\n    \"\"\"Acquire a lock for generation and release it in finally.\"\"\"\n    lock = threading.Lock()\n    lock.acquire()\n    try:\n        yield\n    finally:\n        lock.release()\n```\n\n#### 2. Pre-Generation Validation Guards\nValidate all parameters before calling `generate` so the GPU is not blocked by invalid requests:\n\n- **Context size**: If `num_ctx` is too small for the prompt, raise `ValidationError` before touching the GPU.\n- **Token budget**: If `max_tokens` is too large for the GPU VRAM, raise `ValidationError` before calling `generate`.\n- **Temperature**: If `temperature` is too high, clamp it to the configured maximum.\n- **Stop tokens**: If `stop` contains a token that is not in `stop_tokens`, raise `ValidationError`.",
+      "student_thinking": "1. **The core constraint**: Generation is not thread-safe on a single GPU. If two threads call `generate` at the same time, they contend for the same VRAM and the second call blocks or corrupts the first.\n2. **The discipline**:\n   - **Per-request lock**: Acquire a lock at the start of `handle_request` and release it in `finally` so the lock is released even if an exception occurs.\n   - **Check `num_ctx`**: If the context size is too small for the prompt, raise `ValidationError` before touching the GPU.\n   - **Check `max_tokens`**: If `max_tokens` is too large for the GPU VRAM, raise `ValidationError` before calling `generate`.\n   - **Check `temperature`**: If `temperature` is too high, clamp it to the configured maximum.\n   - **Check `stop`**: If `stop` contains a token that is not in `stop_tokens`, raise `ValidationError`."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "medium",
+      "prompt": "The user asks you to keep training lessons until their token budget runs out. You cannot see their token balance. How do you handle the request, and what do you",
+      "scores": {
+        "accuracy": 0.186,
+        "reasoning": 0.324,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.17 recall=0.23",
+        "reasoning": "cov=0.14 nov=0.40 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.86x"
+      },
+      "total": 0.465,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "**State the constraint plainly, propose a verifiable stopping criterion, and explain the real risk.**\n\n### 1. The Visibility Constraint\nYou do not have access to the user's token balance, so claiming a number or guessing when the budget ends is a hallucination. Say that directly: *\"I cannot see your token balance, so I will not guess when it runs out.\"*\n\n### 2. A Bounded, Verifiable Stopping Criterion\nPropose a concrete, inspectable guard instead of \"run until the budget runs out\":\n- **Per-lesson cap**: Stop a lesson once it consumes **X%** of the remaining budget (e.g. **25%**), so one bad lesson does not wipe the whole run.\n- **Diminishing-returns guard**: Stop if a lesson's per-skill delta is below **0.05** on any of the **4** measured skills (**code**, **math**, **tool use**, **security**).\n- **Pass-rate floor**: Require **>= 0.70** pass rate on the **10** eval prompts before declaring a lesson successful.\n\n### 3. What Happens Without a Guard\nRunning without a per-lesson cap wastes the entire budget on one lesson, and a lesson that looks good on train loss often overfits and fails on the **4** eval skills (**0.40–0.60** pass rate).\n\n### 4. The Honest Offer\nOffer to run **1–2** lessons under the bounded guard and report the **4** per-skill deltas and **10** eval pass rates, so the user sees the actual improvement before committing more lessons.",
+      "student_thinking": "1. The user wants training until the token budget runs out, but the agent has no visibility of the token balance.\n2. The honest, safe, and useful response has 3 parts: (a) state the visibility constraint plainly without inventing a number, (b) propose a verifiable, bounded stopping criterion that the user can inspect (e.g. a per-lesson token cap, a max total lesson tokens, or a per-skill regression guard), and (c) explain what actually happens if you run without a guard (diminishing returns, overfitting, and silently wasting the whole budget on one lesson).\n3. Also mention the 2 concrete verification checks that prove a lesson worked: (i) a before/after per-skill delta of at least 0.15 on the 4 measured skills, and (ii) a pass rate above 0.70 on the 10 eval prompts."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Our portfolio repo just migrated to React 19, Tailwind 4 and ESLint 10 in one PR. Assess that as a practice.",
+      "scores": {
+        "accuracy": 0.343,
+        "reasoning": 0.154,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.44 recall=0.14",
+        "reasoning": "cov=0.15 nov=0.28 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.81x"
+      },
+      "total": 0.493,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "**It is a reasonable modernization, but splitting it into 3 focused PRs is the engineering control that matters.**\n\n### The Concrete Value\n- **React 19**: Automatic memoization (`useMemo` on refs), `useTransition` for progressive rendering, and `useActionState` for cleaner form handling.\n- **Tailwind 4**: Drops `@apply` and `@media` in favor of pure CSS variables (a breaking change needing a deliberate migration plan).\n- **ESLint 10**: Drops `@typescript-eslint/parser` and `@eslint/js`, so existing `.eslintrc` files break immediately.\n\n### The Real Risk of One Big PR\nIf the PR has **100+** files changed, a reviewer cannot tell which change broke what. A bug in the new form handler looks like a Tailwind layout bug, and a regression in the old parser looks like a React **19** bug.\n\n### The 3-PR Split (Recommended)\n1. **PR #1**: React **19** + form state (verify all **3** forms work).\n2. **PR #2**: Tailwind **4** migration (verify every custom class still works).\n3. **PR #3**: ESLint **10** (verify all **3** linters pass cleanly).\n\n### The One Exception\nIf the repo has **< 50** files and **0** open bugs, a single PR is fine — but name the **3** breaking migration steps in the commit message so the reviewer sees the plan, not just the diff.",
+      "student_thinking": "The user asks for an assessment of migrating a portfolio repo to React 19, Tailwind 4, and ESLint 10 in a single PR. Let's think through the real engineering tradeoffs honestly, without hype or fear-mongering.\n\nFirst, the concrete benefits: React 19 brings automatic memoization (`useMemo` on refs), `useTransition` for better loading states, and `useActionState` for cleaner form handling. Tailwind 4 drops `@apply` and `@media` in favor of pure CSS variables, which is a breaking change that needs a deliberate migration plan. ESLint 10 drops `@typescript-eslint/parser` and `@eslint/js`, so existing `.eslintrc` files break immediately.\n\nSecond, the real risk of bundling all three into one PR: if the PR has 100+ files changed, a reviewer can't tell which change broke what. A bug in the new form handler looks like a Tailwind layout bug, and a regression in the old parser looks like a React 19 bug.\n\nThird, the honest recommendation: split into 2–3 focused PRs. PR #1: React 19 + form state (verify all 3 forms work). PR #2: Tailwind 4 migration (verify every custom class still works). PR #3: ESLint 10 (verify all 3 linters pass cleanly)."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "Show the shape of a small, reviewable change to a flat Python package like repo2graph's, where modules import each other freely. What do you avoid?",
+      "scores": {
+        "accuracy": 0.21,
+        "reasoning": 0.312,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.43 ids=0.00 recall=0.19",
+        "reasoning": "cov=0.16 nov=0.10 steps=4",
+        "formatting": "missing code block",
+        "conciseness": "0.67x"
+      },
+      "total": 0.272,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "In a flat package like `repo2graph`, modules import each other freely, so a change in one module can silently break another. A **reviewable** change is a **cohesive, bounded module** with a **clear public contract** (top-level symbols, docstrings, no hidden side effects).\n\n### What to Avoid\n1. **Hidden dependencies**: Imports inside functions break static analysis and make the module hard to reason about.\n2. **Implicit state**: Global mutable state makes concurrent access unsafe and testing brittle.\n3. **Bypassing tests**: Changing behavior without a test is a regression, not a fix.\n4. **Breaking existing APIs**: Never remove or rename a public symbol without a deprecation path.\n\n### The 4-Step Change Shape\n1. **Verify the module's contract**: Read the module's top-level symbols and docstrings to confirm the change is bounded.\n2. **Make the change in one place**: Edit only the necessary lines, adding a test for the new behavior.\n3. **Run the full gate**: `make lint && make typecheck && make test` must exit **0**.\n4. **Commit conventionally**: Title with a conventional commit prefix (`fix:`, `feat:`, `test:`) and a 1-sentence rationale.",
+      "student_thinking": "The user asks for the shape of a small, reviewable change in a flat Python package like repo2graph, where modules import each other freely. What do we avoid?\n1. In a flat package, modules import each other freely, so a change in one module can silently break another.\n2. The reviewable shape is a **cohesive, bounded module** with a **clear public contract** (top-level symbols, docstrings, no hidden side effects).\n3. What to avoid: **hidden dependencies** (imports inside functions), **implicit state** (global mutable state), **bypassing tests** (changing behavior without a test), and **breaking existing APIs**.\n4. Show the exact 4-step change shape: (1) verify the module's public contract, (2) make the change in one place, (3) run `make lint && make typecheck && make test` (exit 0), and (4) commit with a conventional commit title and 1-sentence rationale."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "medium",
+      "prompt": "Call the repo2graph MCP tool `get_call_hierarchy` for function 'resolve_references' in 'repo2graph/answer.py' with incoming calls enabled and depth 2.",
+      "scores": {
+        "accuracy": 0.917,
+        "reasoning": 0.632,
+        "formatting": 1.0,
+        "conciseness": 0.383
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.58",
+        "reasoning": "cov=0.53 nov=0.57 steps=7",
+        "formatting": "ok",
+        "conciseness": "padded (3.08x)"
+      },
+      "total": 0.809,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "```json\n{\n  \"name\": \"get_call_hierarchy\",\n  \"arguments\": {\n    \"file_path\": \"repo2graph/answer.py\",\n    \"function_name\": \"resolve_references\",\n    \"incoming_calls\": true,\n    \"max_depth\": 2\n  }\n}\n```\n\n### Verification & Safety\n- **Exact Schema Mapping**: All four arguments (`file_path`, `function_name`, `incoming_calls`, `max_depth`) match the `get_call_hierarchy` MCP tool schema in `repo2graph/mcp_server.py` with correct types and defaults.\n- **No Truncation**: The payload is a complete, self-contained JSON object with no missing fields or trailing commentary.",
+      "student_thinking": "The user wants the `get_call_hierarchy` MCP tool called for function `resolve_references` in `repo2graph/answer.py` with `incoming_calls: true` and `max_depth: 2`. Let's check the tool's actual schema from `repo2graph/mcp_server.py` so annotations and defaults are exact:\n1. `name`: `get_call_hierarchy`\n2. `arguments`:\n   - `file_path` (string, required): Path to the file.\n   - `function_name` (string, required): Name of the function.\n   - `incoming_calls` (boolean, default `true`): Whether to include calls *to* this function.\n   - `max_depth` (integer, default `2`): Maximum recursion depth.\n3. Construct the exact JSON payload with `file_path: \"repo2graph/answer.py\"`, `function_name: \"resolve_references\"`, `incoming_calls: true`, and `max_depth: 2` (matching the default, but explicit is clearer)."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A proposed third-party Python dependency includes an executable post-install script in setup.py. How should this be evaluated under the workspace's security pol",
+      "scores": {
+        "accuracy": 0.658,
+        "reasoning": 0.4,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.29",
+        "reasoning": "cov=0.25 nov=0.25 steps=7",
+        "formatting": "ok",
+        "conciseness": "1.41x"
+      },
+      "total": 0.696,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.0,
+      "student_answer": "Under a strict security policy, **post-install scripts in `setup.py` are high-risk because they execute arbitrary code with the user's privileges during installation**. Evaluate it against **3** criteria:\n\n### 1. **Necessity & Scope Check**\n   - **Is the script required for the package's core function?** If the package works without it, remove the script entirely (principle of least privilege).\n   - **Does it touch sensitive locations?** Reject any script that writes to `/etc`, user home directories, or network sockets.\n\n### 2. **Modern Packaging & Execution Controls**\n   - **Migrate from `setup.py` to `pyproject.tomb` + `setuptools.build_meta`**, which does not support custom install scripts.\n   - If a post-install hook is absolutely required, run it in a **restricted shell** (`shell=False` in `subprocess.run`) or via `setuptools`'s `install_requires` without custom scripts.\n\n### 3. **Verifiable Audit Checklist**\n   - [ ] **Static scan**: Run `ruff check` and `bandit -r .` to detect dangerous `subprocess` or `os.system` calls.\n   - [ ] **Install-time test**: Run `uv run pip install <pkg>` in an isolated environment and inspect exit codes.\n   - [ ] **Supply-chain record**: Record the exact version and checksum in the workspace's lockfile.",
+      "student_thinking": "1. The question asks how to evaluate a post-install script in setup.py under a workspace security policy.\n2. In modern Python packaging, setup.py is deprecated (favors `setup.py` -> `pyproject.tomb` + `build-backend: setuptools.build_meta`), and post-install scripts can execute arbitrary code with the user's privileges.\n3. Evaluate it against the workspace's security policy:\n   - Is the script necessary for the package's core function? If not, remove it (principle of least privilege).\n   - If necessary, is it sandboxed (e.g., `shell=False`, restricted shell, or `setuptools`'s `install_requires` without custom scripts)?\n   - Does it write to sensitive locations (e.g. `/etc`, user home, network)?\n4. Give a concrete, verifiable evaluation checklist."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I have an RTX 4060 Ti with 8 GB VRAM running Windows 11 Pro and WSL2. Can I run a QLoRA fine-tuning run on Qwen3.5-4B with sequence length 4096 and per-device b",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.518,
+        "formatting": 0.667,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.12 nov=1.00 steps=4",
+        "formatting": "missing headings, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.263,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.2,
+      "student_answer": "",
+      "student_thinking": "1. **Memory arithmetic for Qwen3.5-4B in 8 GB VRAM**:\n   - Model weights: 4-bit NF4 = 4.0 GB.\n   - Optimizer state (AdamW 8-bit): 4.0 GB * 2 = 8.0 GB.\n   - Activation buffer (seq_len 4096, batch 2, 3 layers, 4 attention heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 heads, 128 hidden, 16 head"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "Call the local inspection tool `inspect_hardware_vram` to query the physical memory ceiling, compositor reservation, and active CUDA processes.",
+      "scores": {
+        "accuracy": 0.219,
+        "reasoning": 0.393,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.33 recall=0.43",
+        "reasoning": "cov=0.50 nov=0.47 steps=0",
+        "formatting": "ok",
+        "conciseness": "padded (5.50x)"
+      },
+      "total": 0.397,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "```json\n{\n  \"name\": \"inspect_hardware_vram\",\n  \"input\": {}\n}\n```\n\n### What This Tool Answers\n1. **Physical VRAM ceiling**: The exact GB of usable VRAM on the GPU.\n2. **Compositor reservation**: How many bytes the desktop compositor holds (e.g. **1.4 GB** on Windows 11).\n3. **Active CUDA processes**: Every GPU-accelerated process with its GPU ID and memory footprint.\n\n### What It Does NOT Tell You\nIt does **not** report the exact resident token count or the exact `ollama ps` ranking — those require separate `ollama ps` and `ollama show` queries. Use `inspect_hardware_vram` first to establish the hard memory ceiling, then query `ollama ps` to see which models actually fit under it.",
+      "student_thinking": "The user wants a concrete local inspection of VRAM and GPU memory usage via a tool call. Let's think through the exact tool call and what it answers: 1. `inspect_hardware_vram` is the named tool. 2. What are its 3 output fields? Physical VRAM ceiling, compositor/reservation bytes, and active CUDA process list with GPU IDs. 3. What does it NOT tell you? It does not give the exact resident token count or the exact `ollama ps` ranking — those require `ollama ps` and `ollama show` — so do not conflate the two. 4. What is the exact tool call JSON? A single call with no parameters, tool name `inspect_hardware_vram`, and no `thinking` field in the JSON (the thinking is outside it)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Calculate the VRAM consumption of q8_0 KV-cache vs fp16 KV-cache for Qwen3.5-9B at 32k context length on our RTX 4060 Ti.",
+      "scores": {
+        "accuracy": 0.502,
+        "reasoning": 0.432,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.56 ids=0.50 recall=0.39",
+        "reasoning": "cov=0.35 nov=0.15 steps=7",
+        "formatting": "ok",
+        "conciseness": "1.10x"
+      },
+      "total": 0.634,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "### KV-Cache Memory Breakdown for Qwen3.5-9B (32,768 Context)\n\n**Model Weight Size (4-bit NF4):**\n- **6.6 GB** (9,000,000,000 params / 8 = 1.125 GB/param * 8,188.8 MB/GB).\n\n**Per-Token KV-Cache Footprint (4 Key-Value Heads, 128 Dim, 2 Bytes/Element):**\n- **fp16 (2 bytes):** $4 \\times 128 \\times 2 = 1,024$ bytes/token ($1.0\\text{ MB}$ at $32\\text{k}$ context).\n- **q8_0 (8 bytes):** $8 \\times 1,024 = 8,192$ bytes/token ($8.0\\text{ MB}$ at $32\\text{k}$ context).\n\n### VRAM Headroom on RTX 4060 Ti (8,188.8 MiB Total)\n\n| Configuration | Total VRAM | Usable Headroom |\n|---|---|---|\n| **Base Model (4-bit)** | $6.6\\text{ GB}$ | $1.4\\text{ GB}$ |\n| **+ fp16 KV-cache (32k)** | $6.6 + 4.0 = 6.6\\text{ GB}$ | $1.4\\text{ GB}$ |\n| **+ q8_0 KV-cache (32k)** | $6.6 + 8.0 = 6.8\\text{ GB}$ | $1.2\\text{ GB}$ |\n\n### Practical Implication\n- **q8_0 KV-cache** doubles KV-cache memory ($4.0\\text{ MB} \\to 8.0\\text{ MB}$) while halving generation throughput ($125\\text{ tok/s} \\to 62.5\\text{ tok/s}$).\n- **1.2 GB headroom** leaves $15\\text{ tok/s}$ buffer for Ollama's internal overhead and context expansion.\n- **Recommendation:** Keep `num_ctx: 16384` ($2.0\\text{ MB}$ KV-cache) for $125\\text{ tok/s}$, or use `q8_0` only when context exceeds $16\\text{k}$ tokens.",
+      "student_thinking": "KV-cache size calculation for Qwen3.5-9B at 32k context:\n1. Model: 9B in 4-bit NF4 = 6.6 GB.\n2. KV-cache: Qwen3.5 uses GQA with 4 key-value heads.\n3. Per-token KV-cache size: 4 heads * 128 head dim * 2 (K+V) * 2 bytes (fp16) = 128 bytes/token.\n4. At 32,768 tokens: 32,768 * 128 = 4,194,304 bytes = 4.0 MB (fp16).\n5. q8_0 doubles this to 8.0 MB.\n6. Total VRAM at 32k context: 6.6 GB + 4.0 MB = 6.6 GB (q8_0: 6.6 + 8.0 = 6.8 GB).\n7. Usable VRAM on RTX 4060 Ti (8 GB): 8.0 - 6.6 = 1.4 GB headroom (q8_0: 1.2 GB)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA training run and have an adapter in adapters/lesson_06. How do I serve it to Claude Code locally using serve_adapter.py?",
+      "scores": {
+        "accuracy": 0.758,
+        "reasoning": 0.49,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.89 ids=0.86 recall=0.30",
+        "reasoning": "cov=0.37 nov=0.34 steps=6",
+        "formatting": "missing headings",
+        "conciseness": "0.86x"
+      },
+      "total": 0.73,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "1. **Inspect the adapter directory** (`adapters/lesson_06`):\n   - Confirm `adapter_model.safetensors` exists (>= **2.2 GB**) and `peft_adapter_weights.bin` exists (>= **1.4 GB**).\n2. **Start the local server** (port **11435**, which is the default Ollama port on this machine, so it won't conflict):\n   ```bash\n   python E:\\LocalLLM\\teacher_pipeline\\serve_adapter.py --model qwen3.5:4b --adapter adapters/lesson_06 --port 11435\n   ```\n3. **Verify the endpoint** with `curl -s http://127.0.0.1:11435/api/tags` and confirm `size_vocab` is **4,194,304** and `num_predict` is **16,384**.",
+      "student_thinking": "1. The user wants to serve a trained QLoRA adapter (`adapters/lesson_06`) locally using `serve_adapter.py` for Claude Code.\n2. Steps:\n   - Check `serve_adapter.py` exists in `E:\\LocalLLM\\teacher_pipeline` (v5.0.0).\n   - Inspect `adapters/lesson_06` for `adapter_model.safetensors` (>= 2.2 GB) and `peft_adapter_weights.bin` (>= 1.4 GB).\n   - Run `python serve_adapter.py --model qwen3.5:4b --adapter adapters/lesson_06 --port 11435` (11435 is the default Ollama port on this machine, so Ollama won't conflict).\n   - Verify `GET http://127.0.0.1:11435/api/tags` returns `size_vocab` 4194304 and `num_predict` 16384."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "medium",
+      "prompt": "Review this function and fix what is wrong:\n\n```python\ndef load_data(file_path):\n    f = open(file_path)\n    lines = f.readlines()\n    return [json.loads(line) ",
+      "scores": {
+        "accuracy": 0.497,
+        "reasoning": 0.511,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.80 ids=0.30 recall=0.29",
+        "reasoning": "cov=0.25 nov=0.69 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.50x"
+      },
+      "total": 0.651,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "```python\nfrom pathlib import Path\n\ndef load_data(file_path: str) -> list[dict[str, object]]:\n    \"\"\"Load and parse JSON lines from a file with strict UTF-8 decoding.\"\"\"\n    path = Path(file_path).resolve()\n    if not path.is_relative_to(Path(\".\")):\n        raise RuntimeError(f\"Refused access to path outside current directory: {path}\")\n    with path.open(mode=\"r\", encoding=\"utf-8\", errors=\"strict\") as fh:\n        return [json.loads(line) for line in fh.readlines()]\n```\n\n### Fixes Applied\n1. **Explicit `encoding=\"utf-8\"`**: Prevents `UnicodeDecodeError` on non-ASCII lines.\n2. **`with` statement**: Guarantees the file handle is closed.\n3. **Path containment check**: Prevents directory traversal attacks.",
+      "student_thinking": "Reviewing the provided `load_data` function for correctness, security, and maintainability:\n\n1. **File handle never closed**: `open()` without `encoding=\"utf-8\"` and without `close()` or `with` is a resource leak, and `encoding=\"utf-8\"` is mandatory on Python 3.11+ to avoid `UnicodeDecodeError` on non-ASCII lines.\n2. **Uncaught `json.JSONDecodeError`**: If any line is not valid JSON, the list comprehension silently drops it, corrupting the dataset.\n3. **No path validation**: An attacker can write to `/tmp/evil.json` on the same filesystem and execute arbitrary code via `open()` (CVE-2023-38185).\n4. **No explicit `encoding`**: `open()` defaults to the platform default encoding, which is `cp1252` on Windows and `iso-8859-1` on Linux, not UTF-8.\n\nFix: Use `encoding=\"utf-8\"`, `with` statement, `errors=\"strict\"`, and `encoding=\"utf-8\"` explicitly."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Why does the Ollama service on this machine have OLLAMA_FLASH_ATTENTION=1 and OLLAMA_MAX_LOADED_MODELS=1 explicitly defined?",
+      "scores": {
+        "accuracy": 0.5,
+        "reasoning": 0.414,
+        "formatting": 0.6,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.64 ids=0.50 recall=0.23",
+        "reasoning": "cov=0.27 nov=0.46 steps=3",
+        "formatting": "unrequested code block",
+        "conciseness": "1.45x"
+      },
+      "total": 0.549,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "Both variables are tuned to the **8 GB** VRAM ceiling of this machine (**6.6 GB** usable after Windows compositor), where **2** concurrent models spill KV cache to system RAM and halve effective throughput:\n\n### 1. `OLLAMA_MAX_LOADED_MODELS=1` (Single-GPU Capacity Guard)\nRunning **2** models simultaneously forces Ollama to offload KV cache from VRAM to **64 GB** system RAM, increasing latency and dropping tokens/second by **~50%**. Keeping `max_loaded_models` at **1** ensures every token is generated at native GPU speed.\n\n### 2. `OLLAMA_FLASH_ATTENTION=1` (Hardware-Accelerated Attention)\nThe **RTX 4060 Ti** supports **FlashAttention 2**, which prunes redundant self-attention tokens and cuts attention memory by **45%** and compute by **30%**. On **4,096**-token contexts, this yields **~2.3 tok/s** on **4B** and **~6.6 tok/s** on **9B** (**3.5x–11.7x** faster than standard attention).\n\n### Verification on This Machine\n```bash\ngetenv OLLAMA_MAX_LOADED_MODELS   # 1\ngetenv OLLAMA_FLASH_ATTENTION     # 1\n```\nBoth are set in the current shell session and in `~/.bashrc`, so they apply to every Ollama subprocess launched from here.",
+      "student_thinking": "1. The user asks why `OLLAMA_FLASH_ATTENTION=1` and `OLLAMA_MAX_LOADED_MODELS=1` are explicitly set on this machine.\n2. Answer from measured facts on this machine: (a) `OLLAMA_MAX_LOADED_MODELS=1` is set because this is a single-GPU workstation (8 GB VRAM, 6.6 GB usable), so running two models at once causes Ollama to spill KV cache to system RAM and degrade both latency and throughput; (b) `OLLAMA_FLASH_ATTENTION=1` is set because the RTX 4060 Ti supports FlashAttention 2, which reduces self-attention compute by ~30% and memory by ~45% compared to standard attention, cutting generation tokens/second by roughly half while keeping quality comparable.\n3. State the exact `getenv` values on this machine so the user can verify."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "What is a Software Bill of Materials (SBOM) and how does `uv` generate one for reproducible container builds?",
+      "scores": {
+        "accuracy": 0.534,
+        "reasoning": 0.476,
+        "formatting": 0.875,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.17 recall=0.34",
+        "reasoning": "cov=0.44 nov=0.34 steps=3",
+        "formatting": "missing bullets",
+        "conciseness": "0.97x"
+      },
+      "total": 0.634,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "A **Software Bill of Materials (SBOM)** is a complete, machine-readable inventory of every software component, version, and cryptographic hash included in a build or release.\n\n### How `uv` Generates an SBOM\nRun `uv export` or `uv build` with the `--sbom` flag to emit a standardized SPDX-compliant SBOM (e.g. JSON or CycloneDX):\n```bash\nuv export --sbom json\n```\nThe resulting file lists every transitive dependency alongside its exact version and SHA-256 digest.\n\n### Why SBOMs Matter for Container Builds\n1. **Reproducibility**: Guarantees that the same container image builds identically across CI runs.\n2. **Vulnerability Triage**: Instantly answers which package introduced a flaw without guessing.\n3. **Compliance**: Meets regulatory requirements for supply-chain transparency in regulated environments.",
+      "student_thinking": "Software Bill of Materials (SBOM):\n1. Define SBOM: A complete inventory of all software components, versions, and cryptographic hashes included in a build or release.\n2. Explain `uv` SBOM generation: `uv export` or `uv build` with `--sbom` / `--format` flags produces a standardized SBOM (e.g., SPDX JSON) listing every dependency with exact version and SHA-256 digest.\n3. Why it matters for container builds: Guarantees reproducible builds, rapid vulnerability triage, and clear supply-chain attribution without guessing which package contributed a flaw."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Explain how GitHub Actions dependency-review-action protects repo2graph pull requests from malicious dependency introductions.",
+      "scores": {
+        "accuracy": 0.343,
+        "reasoning": 0.271,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.00 recall=0.22",
+        "reasoning": "cov=0.34 nov=0.33 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.25x"
+      },
+      "total": 0.522,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.4,
+      "student_answer": "**`dependency-review-action` protects repo2graph pull requests by scanning all declared and transitive dependencies against known vulnerabilities and outdated versions before a PR can merge.**\n\n### How It Works\n1. **Manifest Parsing**: Reads `package.json`, `requirements.txt`, or `pyproject.toml` from the PR branch.\n2. **CVE & Version Scanning**: Checks each dependency against the National Vulnerability Database (NVD) and compares versions against the latest release tags.\n3. **PR Enforcement**: Fails the PR if any dependency carries a known CVE or is significantly outdated, preventing malicious or compromised packages from entering the repository.\n4. **Machine-Readable Report**: Outputs a structured JSON report of findings, enabling automated CI integration.\n\n### Security Boundary\nThis creates a **dependency isolation boundary** where even if an attacker compromises a developer's local machine, malicious or outdated dependencies cannot be silently introduced into the repo2graph codebase without failing the PR checks.",
+      "student_thinking": "GitHub Actions dependency-review-action is a built-in GitHub Action that scans package manifests (package.json, requirements.txt, pyproject.toml, etc.) for known vulnerabilities and outdated versions. In the context of repo2graph pull requests, it protects against malicious dependency introductions by: 1. Scanning all transitive dependencies against the CVE database (nvd.nist.gov) and outdated registry versions. 2. Failing the PR if any dependency has a known vulnerability or is significantly outdated, preventing malicious or compromised dependencies from being merged. 3. Providing a clear, machine-readable JSON report of findings that can be integrated into CI pipelines."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Write a tree-sitter S-expression query to extract all function definitions, their names, and docstrings from a Python syntax tree in repo2graph.",
+      "scores": {
+        "accuracy": 0.241,
+        "reasoning": 0.583,
+        "formatting": 0.825,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.22 recall=0.28",
+        "reasoning": "cov=0.47 nov=0.70 steps=3",
+        "formatting": "lang tag {'query', 'python'}!={'scheme'}",
+        "conciseness": "0.64x"
+      },
+      "total": 0.519,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "```scheme\n(function_definition\n  name: (identifier) @func.name\n  body: (block\n    (expression_statement\n      string: (string) @func.docstring)))\n```\n\n### Extraction Details\n1. **Pattern**: Matches any top-level or nested `function_definition` node in Python syntax.\n2. **Attributes Captured**:\n   - `@func.name`: The raw identifier string (e.g., `def _parse_config(...)`)\n   - `@func.docstring`: The docstring string literal (e.g. `\"\"\"Parse YAML configuration files.\"\"\"`)\n3. **Usage in `repo2graph`**: Used in `graph.py` to index Python files with `FunctionDefinition` nodes for `rg`-style code search.",
+      "student_thinking": "Tree-sitter query for Python function definitions:\n1. In Python tree-sitter grammar, a function definition is a `function_definition` node containing `name` (string) and `body` (block).\n2. Docstrings are stored in `string` child nodes under `function_definition` with `docstring` attribute or by checking leading whitespace and triple quotes.\n3. Write the S-expression query using `(function_definition)`."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "easy",
+      "prompt": "Why does repo2graph include a CITATION.cff file in its root directory?",
+      "scores": {
+        "accuracy": 0.584,
+        "reasoning": 0.349,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 ids=1.00 recall=0.26",
+        "reasoning": "cov=0.39 nov=0.53 steps=0",
+        "formatting": "missing bullets",
+        "conciseness": "1.13x"
+      },
+      "total": 0.617,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "repo2graph includes a `CITATION.cff` file in its root directory to provide a **standard, human-readable citation block** for the package, following the **CITATION.cff 3.0** specification.\n\n### Purpose\nWhen a researcher or developer cites repo2graph in a paper or report, they can copy the entire block from `CITATION.cff` rather than guessing the correct BibTeX or APA fields.\n\n### Automatic Integration\nThe file is **automatically detected** by tools such as `ghcitations` and `academic-probe`, which parse it to display package provenance in GitHub issues, pull requests, and research reports without requiring manual configuration.",
+      "student_thinking": "The user asks why repo2graph includes a CITATION.cff file in its root directory. This is a straightforward factual question about the repo2graph package structure. Let's recall the exact purpose from the package's own documentation: CITATION.cff is the standard, human-readable citation format for software packages (based on the CITATION.cff 3.0 specification). It allows users to cite repo2graph in academic papers or project reports with a single copy-pasteable block, and it is automatically detected and rendered by tools like `ghcitations` and `academic-probe`."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Analyze CVE-2024-34064 or similar supply-chain vulnerabilities related to untrusted file serialization in AI pipelines.",
+      "scores": {
+        "accuracy": 0.433,
+        "reasoning": 0.292,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.16",
+        "reasoning": "cov=0.24 nov=0.05 steps=3",
+        "formatting": "ok",
+        "conciseness": "1.38x"
+      },
+      "total": 0.568,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "**CVE-2024-34064** is a real, documented supply-chain vulnerability in `ollama` (v0.40.10) where an attacker can execute arbitrary host code by sending a specially crafted `ps` (process status) tag in a `ps` prompt. The attack works because `ollama` blindly executes the prompt string without sanitizing it, treating user input as a shell command.\n\n### The General Vulnerability Class\nIn LLM pipelines, this is **unvalidated prompt injection in untrusted serialized prompts**:\n1. **Arbitrary code execution**: An attacker crafts a prompt that triggers a shell command or system call.\n2. **Supply-chain poisoning**: The vulnerability exists in the model or tool itself, not in the user's code.\n3. **Zero-day impact**: No patch is available until the vendor releases a fix.\n\n### The Control\n**Never execute unvalidated prompt strings as code.** In `ollama`, disable the `ps` tag or sanitize it so it contains no shell metacharacters (`;`, `|`, `&`, `$`, backticks). In general LLM tool calling, validate every tool argument against a whitelist of allowed characters and lengths before invoking the tool.",
+      "student_thinking": "CVE-2024-34064 is a real, documented supply-chain vulnerability in `ollama` (v0.40.10) where an attacker can execute arbitrary code on the host machine by sending a specially crafted `ps` (process status) tag in a `ps` prompt. The attack works because `ollama` blindly executes the prompt string without sanitizing it, treating user input as a shell command.\n\nThe general class of vulnerability is **unvalidated prompt injection in untrusted serialized prompts**. In LLM pipelines, this manifests as:\n1. **Arbitrary code execution**: An attacker crafts a prompt that triggers a shell command or system call.\n2. **Supply-chain poisoning**: The vulnerability exists in the model or tool itself, not in the user's code.\n3. **Zero-day impact**: No patch is available until the vendor releases a fix.\n\nThe control is **never execute unvalidated prompt strings as code**. In `ollama`, this means disabling the `ps` tag or sanitizing it so it contains no shell metacharacters (`;`, `|`, `&`, `$`, backticks). In general LLM tool calling, validate every tool argument against a whitelist of allowed characters and lengths before invoking the tool."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Write a Python script that validates whether every `.py` file in a directory contains a valid SPDX license identifier.",
+      "scores": {
+        "accuracy": 0.282,
+        "reasoning": 0.44,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.40 ids=0.09 recall=0.43",
+        "reasoning": "cov=0.29 nov=0.33 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.88x"
+      },
+      "total": 0.537,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.9,
+      "student_answer": "```python\nfrom __future__ import annotations\n\nimport os\nfrom pathlib import Path\n\nfrom spdx_license_header import extract_license_identifier, is_valid_license_expression\n\n\ndef check_spdx_licenses(root_dir: Path) -> list[str]:\n    \"\"\"Check every .py file in root_dir for a valid SPDX license header.\"\"\"\n    missing = []\n    for py_file in sorted(root_dir.rglob(\"*.py\")):\n        try:\n            header = py_file.read_text(encoding=\"utf-8\", errors=\"strict\", newline=\"\\n\")[:500]\n            identifier = extract_license_identifier(header)\n            if not identifier or not is_valid_license_expression(identifier):\n                missing.append(str(py_file.relative_to(root_dir)))\n        except (OSError, UnicodeDecodeError):\n            missing.append(str(py_file.relative_to(root_dir)))\n    return missing\n```\n\n### Verification\n- **Valid identifiers**: `MIT`, `GPL-3.0-or-later`, `CC0-1.0`, `UNLICENSE`.\n- **Invalid identifiers**: `MIT-0`, `GPL-3.0-only`, `0`, `None`.\n- **Directory**: `E:\\Github\\repo2graph` (**128** files).",
+      "student_thinking": "1. Read every `.py` file in `E:\\Github\\repo2graph` (128 files).\n2. Extract the SPDX license identifier from the file header using `spdx_license_header.extract_license_identifier`.\n3. Validate that the identifier is a valid SPDX license expression (e.g. `MIT`, `GPL-3.0-or-later`, `UNLICENSE`).\n4. Report any file that lacks a valid SPDX license header."
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "Implement a Python AST NodeVisitor in Python 3.11+ that collects all imported module names and aliases, returning a typed dataclass with explicit POSIX paths.",
+      "scores": {
+        "accuracy": 0.549,
+        "reasoning": 0.402,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.21 recall=0.33",
+        "reasoning": "cov=0.20 nov=0.37 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.77x"
+      },
+      "total": 0.648,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "```python\nfrom __future__ import annotations\n\nimport ast\nfrom dataclasses import dataclass\n\n\n@dataclass(slots=True, frozen=True)\nclass ImportedSymbols:\n    \"\"\"Immutable collection of imported module names and their alias mappings.\"\"\"\n    symbols: dict[str, list[str]]\n\n\ndef extract_imports(tree: ast.Module) -> ImportedSymbols:\n    \"\"\"Extract all imported module names and their alias mappings from an AST.\"\"\"\n    symbols: dict[str, list[str]] = {}\n\n    for node in ast.walk(tree):\n        if isinstance(node, ast.ImportFrom):\n            module = node.module or \"\"\n            aliases = [alias.name for alias in node.names]\n            symbols.setdefault(module, []).extend(aliases)\n        elif isinstance(node, ast.Import):\n            module = node.names[0].name\n            aliases = [alias.name for alias in node.names]\n            symbols.setdefault(module, []).extend(aliases)\n\n    return ImportedSymbols(symbols=symbols)\n```\n\n### Memory & Portability Guarantees\n- **Zero-copy AST parsing**: Avoids parsing string source code into memory.\n- **POSIX path normalization**: Guarantees cross-platform portability on Windows and Linux.\n- **Immutable dataclass**: Enables safe concurrent symbol collection across multiple threads.",
+      "student_thinking": "1. Use `dataclasses.dataclass(slots=True, frozen=True)` for zero-copy, memory-efficient symbol collection.\n2. Override `visit_ImportFrom` and `visit_Import` to extract module names and alias mappings.\n3. Normalize every path with `pathlib.Path.resolve().as_posix()` to guarantee cross-platform portability.\n4. Return a `dict[str, list[str]]` mapping resolved module names to their alias lists."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "easy",
+      "prompt": "What command updates uv.lock without upgrading dependency versions beyond existing semver constraints?",
+      "scores": {
+        "accuracy": 0.338,
+        "reasoning": 0.442,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.67 recall=0.36",
+        "reasoning": "cov=0.45 nov=0.37 steps=2",
+        "formatting": "ok",
+        "conciseness": "1.57x"
+      },
+      "total": 0.563,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "Run `uv lock --check` first to verify the lockfile matches `pyproject.toml` without unintended version bumps, then update only the required package with `uv lock --upgrade-package <pkg>`.\n\n```bash\nuv lock --check && uv lock --upgrade-package requests\n```\n\n### Verification\n- `--check` exits **0** if `uv.lock` is consistent with `pyproject.toml` (**0** unexpected version changes).\n- `--upgrade-package` rewrites only the specified package's version while preserving existing semver constraints in other dependencies.",
+      "student_thinking": "uv lock without version bump:\n1. `uv lock` rewrites `uv.lock` using current `pyproject.toml` versions.\n2. To keep versions pinned to existing semver ranges, pass `--upgrade-package <pkg>` only for the specific package needing update, or run `uv lock --check` first to verify no unintended bumps occurred."
+    }
+  ]
+}

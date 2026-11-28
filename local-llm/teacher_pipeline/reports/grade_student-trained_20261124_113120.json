@@ -1,0 +1,1404 @@
+{
+  "timestamp": "2026-11-24T11:31:20.263017+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "dataset/code_eval.jsonl",
+  "n_prompts": 60,
+  "n_errors": 0,
+  "overall_score": 0.731,
+  "pass_rate": 0.65,
+  "by_criterion": {
+    "accuracy": 0.551,
+    "reasoning": 0.768,
+    "formatting": 0.983,
+    "conciseness": 0.942
+  },
+  "by_skill": {
+    "code_facts": 0.731
+  },
+  "weak_skills": [],
+  "mean_tokens_per_sec": 46.1,
+  "wall_seconds": 162.8,
+  "results": [
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `file_of` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.94x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 16.6,
+      "student_answer": "`file_of` is defined in `repo2graph/parse.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `CheckResult` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.1,
+      "student_answer": "`CheckResult` is defined in `repo2graph/doctor.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `run_demo` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.2,
+      "student_answer": "`run_demo` is defined in `repo2graph/demo.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_export_hardening.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.26,
+        "reasoning": 0.744,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.00 recall=0.30",
+        "reasoning": "cov=1.00 nov=0.78 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.12x"
+      },
+      "total": 0.603,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.7,
+      "student_answer": "Hardening tests for the export path: memory-safety, concurrency, and integrity. It contains 10 test functions: `test_export_too_large_refuses_and_leaves_the_tree`, `test_export_too_large_does_not_crash`, `test_export_too_large_is_a_warning_not_an_error`, `test_export_too_large_is_a_warning_not_an_error_for_a_chunked_file`, `test_export_too_large_does_not_warn_on_a_normal_file`, `test_export_too_large_does_not_warn_on_a_file_under_the_ceiling`, `test_export_too_large_is_a_warning_not_an_error_for_a_chunked_file`, `test_export_too_large_is_a_warning_not_an_error_for_a_file_under_the_ceiling`, `test_export_too_large_is_a_warning_not_an_error_for_a_file_under_the_ceiling`, `test_export_too_large_is_a_warning_not_an_error_for_a_file_under_the_ceiling`.",
+      "student_thinking": "Count the test_ functions in tests/test_export_hardening.py and name them; the file has 10."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `parse_ref` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`parse_ref` is defined in `repo2graph/parse.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `run_batch()` in `repo2graph/parsepool.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.767,
+        "reasoning": 0.783,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.30",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "padded (46.15x)"
+      },
+      "total": 0.541,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.2,
+      "student_answer": "```python\ndef run_batch(files: Iterable[tuple[str, Path]], jobs: int, config: BuildConfig | None = None, *, max_memory_mb: float | None = None, max_cpu: float | None = None, max_file_mb: float | None = None, max_file_count: int | None = None, max_build_seconds: float | None = None, max_build_bytes: int | None = None, max_builds: int | None = None, max_concurrent_files: int | None = None, max_concurrent_bytes: int | None = None, max_concurrent_seconds: float | None = None, max_concurrent_builds: int | None = None, max_concurrent_memory_mb: float | None = None, max_concurrent_cpu: float | None = None, max_concurrent_file_mb: float | None = None, max_concurrent_file_count: int | None = None, max_concurrent_build_seconds: float | None = None, max_concurrent_build_bytes: int | None = None, max_concurrent_builds: int | None = None, max_concurrent_concurrent_memory_mb: float | None = None, max_concurrent_concurrent_cpu: float | None = None, max_concurrent_concurrent_file_mb: float | None = None, max_concurrent_concurrent_file_count: int | None = None, max_concurrent_concurrent_build_seconds: float | None = None, max_concurrent_concurrent_build_bytes: int | None = None, max_concurrent_concurrent_builds: int | None = None, max_concurrent_concurrent_concurrent_memory_mb: float | None = None, max_concurrent_concurrent_concurrent_cpu: float | None = None, max_concurrent_concurrent_concurrent_file_mb: float | None = None, max_concurrent_concurrent_concurrent_file_count: int | None = None, max_concurrent_concurrent_concurrent_build_seconds: float | None = None, max_concurrent_concurrent_concurrent_build_bytes: int | None = None, max_concurrent_concurrent_concurrent_builds: int | None = None, max_concurrent_concurrent_concurrent_concurrent_memory_mb: float | None = None, max_concurrent_concurrent_concurrent_concurrent_cpu: float | None = None, max_concurrent_concurrent_concurrent_concurrent_file_mb: float | None = None, max_concurrent_concurrent_concurrent_concurrent_file_count: i",
+      "student_thinking": "`run_batch` is defined at repo2graph/parsepool.py:120. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_bench_tables_match_artifacts.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.038,
+        "reasoning": 0.772,
+        "formatting": 1.0,
+        "conciseness": 0.096
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.19",
+        "reasoning": "cov=1.00 nov=0.89 steps=0",
+        "formatting": "ok",
+        "conciseness": "padded (3.77x)"
+      },
+      "total": 0.42,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "The 10 tables in `bench_tables.md` are the 10 artifacts the report lists. It contains 17 test functions: `test_bench_tables_are_the_10_artifacts`, `test_bench_tables_are_in_alphabetical_order`, `test_bench_tables_are_the_10_most_cited_artifacts`, `test_bench_tables_include_the_10_most_cited_artifact_names`, `test_bench_tables_include_the_10_most_cited_artifact_paths`, `test_bench_tables_include_the_10_most_cited_artifact_files`, `test_bench_tables_include_the_10_most_cited_artifact_modules`, `test_bench_tables_include_the_10_most_cited_artifact_packages`, `test_bench_tables_include_the_10_most_cited_artifact_repos`, `test_bench_tables_include_the_10_most_cited_artifact_authors`, `test_bench_tables_include_the_10_most_cited_artifact_issues`, `test_bench_tables_include_the_10_most_cited_artifact_prs`, `test_bench_tables_include_the_10_most_cited_artifact_commits`, `test_bench_tables_include_the_10_most_cited_artifact_labels`, `test_bench_tables_include_the_10_most_cited_artifact_issues_and_prs`, `test_bench_tables_include_the_10_most_cited_artifact_authors_and_repos`.",
+      "student_thinking": "Count the test_ functions in tests/test_bench_tables_match_artifacts.py and name them; the file has 17."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_doc_consistency.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.027,
+        "reasoning": 0.772,
+        "formatting": 1.0,
+        "conciseness": 0.933
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.14",
+        "reasoning": "cov=1.00 nov=0.89 steps=0",
+        "formatting": "ok",
+        "conciseness": "padded (1.76x)"
+      },
+      "total": 0.499,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.1,
+      "student_answer": "It contains 15 test functions: `test_docstring_formatting`, `test_docstring_coverage`, `test_docstring_coverage_edge_cases`, `test_docstring_coverage_fallback`, `test_docstring_coverage_no_match`, `test_docstring_coverage_no_match_fallback`, `test_docstring_coverage_no_match_no_fallback`, `test_docstring_coverage_no_match_no_fallback_no_docs`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index_no_index_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index_no_index_no_index_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index_no_index_no_index_no_index_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index_no_index_no_index_no_index_no_index_no_index`, `test_docstring_coverage_no_match_no_fallback_no_docs_no_index_no_index_no_index_no_index_no_index_no_index_no_index_no_index`.",
+      "student_thinking": "Count the test_ functions in tests/test_doc_consistency.py and name them; the file has 15."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `iter_chunks()` in `repo2graph/chunks.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.186,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.33 recall=0.26",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.58,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.5,
+      "student_answer": "```python\ndef iter_chunks(g: 'Graph', config: 'BuildConfig') -> Iterable[tuple[str, list[Record]]]\n```\n\n`g.nodes` as (chunk_id, records) for every chunk, in index order.",
+      "student_thinking": "`iter_chunks` is defined at repo2graph/chunks.py:121. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_security_negative.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.08,
+        "reasoning": 0.744,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.40",
+        "reasoning": "cov=1.00 nov=0.78 steps=0",
+        "formatting": "ok",
+        "conciseness": "padded (6.40x)"
+      },
+      "total": 0.422,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.9,
+      "student_answer": "Negative tests for security-related features. It contains 15 test functions: `test_a_non_ascii_bom_is_refused`, `test_a_non_ascii_line_seperator_is_refused`, `test_a_surrogate_escape_is_refused`, `test_a_surrogate_escape_in_a_line_is_refused`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line`, `test_a_surrogate_escape_in_a_line_is_not_a_line_break_for_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line_and_survives_a_surrogate_pair_in_a_line`.",
+      "student_thinking": "Count the test_ functions in tests/test_security_negative.py and name them; the file has 15."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `evidence` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.5,
+      "student_answer": "`evidence` is defined in `repo2graph/edgemeta.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `normalize()` in `repo2graph/edgemeta.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.429,
+        "reasoning": 0.767,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.43",
+        "reasoning": "cov=1.00 nov=0.87 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.11x"
+      },
+      "total": 0.685,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 46.6,
+      "student_answer": "```python\ndef normalize(meta: dict[str, Any]) -> dict[str, Any]\n```\n\n`meta` without secrets, paths, and anything a client cannot safely render.",
+      "student_thinking": "`normalize` is defined at repo2graph/edgemeta.py:39. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `render()` in `repo2graph/limits.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.25,
+        "reasoning": 0.782,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.25",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.69x"
+      },
+      "total": 0.608,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 46.2,
+      "student_answer": "```python\ndef render(limit: str, current: int, max: int) -> str\n```\n\nThe limit message, with the current value and the ceiling.",
+      "student_thinking": "`render` is defined at repo2graph/limits.py:108. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `previous_state()` in `repo2graph/changelog.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.863,
+        "reasoning": 0.767,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.59",
+        "reasoning": "cov=1.00 nov=0.87 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.74x"
+      },
+      "total": 0.88,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.3,
+      "student_answer": "```python\ndef previous_state(outdir: Path | str) -> dict[str, Any]\n```\n\nLoad the previous build's index state from the cache directory.",
+      "student_thinking": "`previous_state` is defined at repo2graph/changelog.py:102. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "In repo2graph, what is `repo2graph/scip.py` for?",
+      "scores": {
+        "accuracy": 0.048,
+        "reasoning": 0.784,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 recall=0.14",
+        "reasoning": "cov=1.00 nov=0.94 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.74x"
+      },
+      "total": 0.518,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 45.8,
+      "student_answer": "Read a `.scip` file produced by `scip` or `scip-py`.",
+      "student_thinking": "`repo2graph/scip.py` is one of 48 modules in the repo2graph package. Its module docstring states the purpose directly, so quote that rather than inferring from the filename."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_properties.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.038,
+        "reasoning": 0.744,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.19",
+        "reasoning": "cov=1.00 nov=0.78 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.53x"
+      },
+      "total": 0.503,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "Property tests for `repo2graph/properties.py`. It contains 10 test functions: `test_node_properties_exist_and_are_finite`, `test_node_properties_are_finite_for_every_node`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines_and_duplicate_chunks`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines_and_duplicate_chunks_and_duplicate_chunks`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks`, `test_node_properties_are_finite_for_every_node_in_a_chunked_file_with_duplicate_lines_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks_and_duplicate_chunks`.",
+      "student_thinking": "Count the test_ functions in tests/test_properties.py and name them; the file has 10."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "Which other repo2graph modules does `repo2graph/autobuild.py` import from?",
+      "scores": {
+        "accuracy": 0.7,
+        "reasoning": 0.689,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=1.00 recall=0.50",
+        "reasoning": "cov=1.00 nov=0.56 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.63x"
+      },
+      "total": 0.787,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.3,
+      "student_answer": "repo2graph/autobuild.py imports from 2 sibling modules: `events`, `integrity`.",
+      "student_thinking": "repo2graph is a flat package, so sibling imports are the real coupling. repo2graph/autobuild.py pulls from 2."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `resolve_shas` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.98x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 45.4,
+      "student_answer": "`resolve_shas` is defined in `repo2graph/edgemeta.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `grammar_fingerprint()` in `repo2graph/parse.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.788,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.36",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.96x"
+      },
+      "total": 0.85,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.1,
+      "student_answer": "```python\ndef grammar_fingerprint() -> str\n```\n\nDigest of the parser grammar, to detect changes without re-parsing.",
+      "student_thinking": "`grammar_fingerprint` is defined at repo2graph/parse.py:112. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `_WriterError` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.98x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 45.1,
+      "student_answer": "`_WriterError` is defined in `repo2graph/parse.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `default_embedder()` in `repo2graph/embed.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.487,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.50 recall=0.46",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.80x"
+      },
+      "total": 0.715,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.3,
+      "student_answer": "```python\ndef default_embedder() -> _Embedder\n```\n\nThe default, zero-dependency embedder: `sentence-transformers` via `ollama`.",
+      "student_thinking": "`default_embedder` is defined at repo2graph/embed.py:213. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `paths` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.04x"
+      },
+      "total": 0.747,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 45.0,
+      "student_answer": "`paths` is defined in `repo2graph/edgemeta.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_framework_edges.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.036,
+        "reasoning": 0.717,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.18",
+        "reasoning": "cov=1.00 nov=0.67 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.23x"
+      },
+      "total": 0.496,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.3,
+      "student_answer": "Tests for framework edge detection and framework name extraction (#381). It contains 13 test functions: `test_framework_edges_are_detected_for_known_frameworks`, `test_unknown_frameworks_are_not_detected`, `test_framework_name_extraction`, `test_framework_edges_are_not_detected_for_non_python_files`, `test_framework_edges_are_not_detected_for_binary_files`, `test_framework_edges_are_not_detected_for_generated_files`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence_0`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence_1`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence_2`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence_3`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence_4`, `test_framework_edges_are_not_detected_for_generated_files_with_confidence_5`.",
+      "student_thinking": "Count the test_ functions in tests/test_framework_edges.py and name them; the file has 13."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_language_coverage.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.161,
+        "reasoning": 0.744,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 ids=0.00 recall=0.14",
+        "reasoning": "cov=1.00 nov=0.78 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.08x"
+      },
+      "total": 0.558,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "Tests for language coverage, language detection, and language configuration (#383). It contains 13 test functions: `test_unsupported_language_is_declared`, `test_unknown_language_is_declared`, `test_language_detection_is_case_insensitive`, `test_language_detection_is_ambiguous_on_ambiguous_files`, `test_language_detection_is_ambiguous_on_binary_files`, `test_language_detection_is_ambiguous_on_non_ascii_files`, `test_language_detection_is_ambiguous_on_malformed_utf_16`, `test_language_detection_is_ambiguous_on_malformed_utf_32`, `test_language_detection_is_ambiguous_on_surrogateescape`, `test_language_detection_is_ambiguous_on_surrogateescape_windows`, `test_language_detection_is_ambiguous_on_surrogateescape_macos`, `test_language_detection_is_ambiguous_on_surrogateescape_linux`, `test_language_detection_is_ambiguous_on_surrogateescape_windows_py311`.",
+      "student_thinking": "Count the test_ functions in tests/test_language_coverage.py and name them; the file has 13."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `cmd_verify_rag` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.04x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.1,
+      "student_answer": "`cmd_verify_rag` is defined in `repo2graph/cli_inspect.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `remote_freshness` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`remote_freshness` is defined in `repo2graph/status.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `verify_rag` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.94x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`verify_rag` is defined in `repo2graph/verify.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `function_parameters()` in `repo2graph/frameworks.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.852,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.56",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.81x"
+      },
+      "total": 0.879,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.4,
+      "student_answer": "```python\ndef function_parameters(node: dict[str, Any]) -> list[str]\n```\n\nExtract parameter names from a function definition node.",
+      "student_thinking": "`function_parameters` is defined at repo2graph/frameworks.py:102. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_audit_cli.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.043,
+        "reasoning": 0.772,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.22",
+        "reasoning": "cov=1.00 nov=0.89 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.39x"
+      },
+      "total": 0.513,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "The repo2graph audit CLI (#367). It contains 18 test functions: `test_audit_cli_exits_zero_on_a_clean_repo`, `test_audit_cli_exits_nonzero_on_a_modified_file`, `test_audit_cli_exits_nonzero_on_a_new_file`, `test_audit_cli_exits_nonzero_on_a_deleted_file`, `test_audit_cli_exits_nonzero_on_a_added_file`, `test_audit_cli_exits_nonzero_on_a_renamed_file`, `test_audit_cli_exits_nonzero_on_a_modified_symbol`, `test_audit_cli_exits_nonzero_on_a_new_symbol`, `test_audit_cli_exits_nonzero_on_a_removed_symbol`, `test_audit_cli_exits_nonzero_on_a_modified_caller`, `test_audit_cli_exits_nonzero_on_a_new_caller`, `test_audit_cli_exits_nonzero_on_a_removed_caller`, `test_audit_cli_exits_nonzero_on_a_modified_call_site`, `test_audit_cli_exits_nonzero_on_a_new_call_site`, `test_audit_cli_exits_nonzero_on_a_removed_call_site`, `test_audit_cli_exits_nonzero_on_a_modified_call_chain`, `test_audit_cli_exits_nonzero_on_a_new_call_chain`, `test_audit_cli_exits_nonzero_on_a_removed_call_chain`.",
+      "student_thinking": "Count the test_ functions in tests/test_audit_cli.py and name them; the file has 18."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `cmd_verify_rag()` in `repo2graph/cli_embed.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.66,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.67 recall=0.65",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.96x"
+      },
+      "total": 0.793,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.1,
+      "student_answer": "```python\ndef cmd_verify_rag(args: argparse.Namespace) -> int\n```\n\nVerify the RAG path end-to-end: index, embed, chunk, retrieve, answer.",
+      "student_thinking": "`cmd_verify_rag` is defined at repo2graph/cli_embed.py:193. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_output_schema.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.025,
+        "reasoning": 0.772,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.12",
+        "reasoning": "cov=1.00 nov=0.89 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.05x"
+      },
+      "total": 0.504,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "The structured output schema (#307): it is complete, and nothing in it is wrong. It contains 12 test functions: `test_the_schema_is_valid_json_schema`, `test_every_field_is_declared_and_named`, `test_the_schema_is_fenced_and_loaded`, `test_the_schema_is_not_a_secret`, `test_the_schema_is_loaded_once_and_reused`, `test_the_schema_is_loaded_once_and_reused_across_runs`, `test_the_schema_is_loaded_once_and_reused_across_architectures`, `test_the_schema_is_loaded_once_and_reused_across_builds`, `test_the_schema_is_loaded_once_and_reused_across_git_history`, `test_the_schema_is_loaded_once_and_reused_across_checkout_depth`, `test_the_schema_is_loaded_once_and_reused_across_build_id`, `test_the_schema_is_loaded_once_and_reused_across_builds`.",
+      "student_thinking": "Count the test_ functions in tests/test_output_schema.py and name them; the file has 12."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `ConfigError` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`ConfigError` is defined in `repo2graph/config.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `parse_ref()` in `repo2graph/fetch.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.867,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.60",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.87x"
+      },
+      "total": 0.886,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.8,
+      "student_answer": "```python\ndef parse_ref(ref: str) -> tuple[str, str]\n```\n\nParse a git ref into (owner, name).",
+      "student_thinking": "`parse_ref` is defined at repo2graph/fetch.py:100. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `format_explain_retrieval()` in `repo2graph/explain.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.974,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.92",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.10x"
+      },
+      "total": 0.934,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.5,
+      "student_answer": "```python\ndef format_explain_retrieval(ex: dict[str, Any]) -> str\n```\n\nFormat an explanation of a retrieval result as human-readable text.",
+      "student_thinking": "`format_explain_retrieval` is defined at repo2graph/explain.py:150. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_audit.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.035,
+        "reasoning": 0.772,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.17",
+        "reasoning": "cov=1.00 nov=0.89 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.68x"
+      },
+      "total": 0.509,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "The audit log: one record per build, never a diff. It contains 10 test functions: `test_audit_log_is_a_list_of_dicts`, `test_audit_records_the_build_metadata`, `test_audit_records_the_graph_stats`, `test_audit_records_the_build_failure`, `test_audit_records_the_build_success`, `test_audit_records_the_build_duration`, `test_audit_records_the_build_id`, `test_audit_records_the_build_timestamp`, `test_audit_records_the_build_ref`, `test_audit_records_the_build_author`.",
+      "student_thinking": "Count the test_ functions in tests/test_audit.py and name them; the file has 10."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `parse_incremental` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 45.1,
+      "student_answer": "`parse_incremental` is defined in `repo2graph/parse.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "In repo2graph, what is `repo2graph/frameworks.py` for?",
+      "scores": {
+        "accuracy": 0.111,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.11",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.01x"
+      },
+      "total": 0.55,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 46.6,
+      "student_answer": "Framework detection and configuration for 40+ languages and 100+ toolchains.",
+      "student_thinking": "`repo2graph/frameworks.py` is one of 48 modules in the repo2graph package. Its module docstring states the purpose directly, so quote that rather than inferring from the filename."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `body_hashes()` in `repo2graph/graphdiff.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.471,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=1.00 recall=0.35",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.90x"
+      },
+      "total": 0.708,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.2,
+      "student_answer": "```python\ndef body_hashes(g: 'Graph') -> dict[str, set[str]]\n```\n\nBody text hashes per node, for diffing against a previous build.",
+      "student_thinking": "`body_hashes` is defined at repo2graph/graphdiff.py:128. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `LoadedGraph` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.04x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.5,
+      "student_answer": "`LoadedGraph` is defined in `repo2graph/graph.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `rerank()` in `repo2graph/rerank.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.13,
+        "reasoning": 0.782,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.39",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.65x"
+      },
+      "total": 0.554,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "```python\ndef rerank(results: list[dict[str, Any]], k: int, model: str | None = None) -> list[dict[str, Any]]\n```\n\nReorder `results` by a cross-encoder, returning the top `k`.",
+      "student_thinking": "`rerank` is defined at repo2graph/rerank.py:120. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `disambiguate_key()` in `repo2graph/parse.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.25",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.79x"
+      },
+      "total": 0.833,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 50.9,
+      "student_answer": "```python\ndef disambiguate_key(name: str) -> str\n```\n\n`name` is ambiguous if it contains a path separator or is a reserved keyword.",
+      "student_thinking": "`disambiguate_key` is defined at repo2graph/parse.py:101. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `clone` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.777,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "cov=1.00 nov=0.91 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.02x"
+      },
+      "total": 0.742,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.8,
+      "student_answer": "`clone` is defined in `repo2graph/answer.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `path()` in `repo2graph/export.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.667,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.67",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.77x"
+      },
+      "total": 0.796,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.6,
+      "student_answer": "```python\ndef path(name: str) -> str\n```\n\nThe output path for a named artifact.",
+      "student_thinking": "`path` is defined at repo2graph/export.py:142. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "Which other repo2graph modules does `repo2graph/store.py` import from?",
+      "scores": {
+        "accuracy": 0.711,
+        "reasoning": 0.689,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=1.00 recall=0.56",
+        "reasoning": "cov=1.00 nov=0.56 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.68x"
+      },
+      "total": 0.792,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.4,
+      "student_answer": "repo2graph/store.py imports from 1 sibling module: `integrity`.",
+      "student_thinking": "repo2graph is a flat package, so sibling imports are the real coupling. repo2graph/store.py pulls from 1."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `run_git` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.777,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=0.91 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.94x"
+      },
+      "total": 0.832,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.0,
+      "student_answer": "`run_git` is defined in `repo2graph/answer.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `MemoryGraphStore` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`MemoryGraphStore` is defined in `repo2graph/store.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `_SentenceTransformerEmbedder` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.95,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 43.9,
+      "student_answer": "`_SentenceTransformerEmbedder` is defined in `repo2graph/embed.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `load` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.98x"
+      },
+      "total": 0.747,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.0,
+      "student_answer": "`load` is defined in `repo2graph/graph.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `cite()` in `repo2graph/edgemeta.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.667,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.67",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.89x"
+      },
+      "total": 0.796,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.3,
+      "student_answer": "```python\ndef cite(edge: dict[str, Any]) -> str\n```\n\nFormat a citation string for an edge.",
+      "student_thinking": "`cite` is defined at repo2graph/edgemeta.py:101. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `stored_remote_source()` in `repo2graph/status.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.267,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.50 recall=0.33",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.90x"
+      },
+      "total": 0.616,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 46.6,
+      "student_answer": "```python\ndef stored_remote_source(outdir: Path) -> dict[str, Any]\n```\n\nRead the remote build result written by `build_remote.py`.",
+      "student_thinking": "`stored_remote_source` is defined at repo2graph/status.py:319. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "Which other repo2graph modules does `repo2graph/scip.py` import from?",
+      "scores": {
+        "accuracy": 0.725,
+        "reasoning": 0.689,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=1.00 recall=0.62",
+        "reasoning": "cov=1.00 nov=0.56 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.75x"
+      },
+      "total": 0.798,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.9,
+      "student_answer": "repo2graph/scip.py imports from 1 sibling module: `edgemeta`.",
+      "student_thinking": "repo2graph is a flat package, so sibling imports are the real coupling. repo2graph/scip.py pulls from 1."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Which checkout of repo2graph is authoritative, and what is it on?",
+      "scores": {
+        "accuracy": 0.044,
+        "reasoning": 0.14,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 recall=0.13",
+        "reasoning": "cov=0.15 nov=0.22 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.53x"
+      },
+      "total": 0.355,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 43.8,
+      "student_answer": "The GitHub Releases are authoritative, and they are built from the main branch.",
+      "student_thinking": "The repo2graph GitHub Releases are the authoritative ones, and they are built from the main branch."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_workflow_summaries.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.06,
+        "reasoning": 0.772,
+        "formatting": 1.0,
+        "conciseness": 0.464
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.30",
+        "reasoning": "cov=1.00 nov=0.89 steps=0",
+        "formatting": "ok",
+        "conciseness": "padded (2.89x)"
+      },
+      "total": 0.466,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.5,
+      "student_answer": "The workflow summary format, its defaults, and its JSONL export. It contains 12 test functions: `test_summary_contains_required_fields`, `test_summary_is_valid_json`, `test_summary_is_a_single_json_object`, `test_summary_has_no_secret_placeholders`, `test_summary_lists_every_tool_call`, `test_summary_records_the_tool_call_parameters`, `test_summary_records_the_tool_call_output`, `test_summary_records_the_tool_call_error`, `test_summary_records_the_tool_call_duration`, `test_summary_records_the_tool_call_id`, `test_summary_records_the_tool_call_name`, `test_summary_records_the_tool_call_description`.",
+      "student_thinking": "Count the test_ functions in tests/test_workflow_summaries.py and name them; the file has 12."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `make_embedder()` in `repo2graph/embed.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.788,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.36",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.65x"
+      },
+      "total": 0.85,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.3,
+      "student_answer": "```python\ndef make_embedder(config: BuildConfig) -> _Embedder\n```\n\nInstantiate the embedder from `config`.",
+      "student_thinking": "`make_embedder` is defined at repo2graph/embed.py:210. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `merge_by_rank` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.93x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.6,
+      "student_answer": "`merge_by_rank` is defined in `repo2graph/merge.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `diff_indexes` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.96x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`diff_indexes` is defined in `repo2graph/compare.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `read_statements()` in `repo2graph/neo4j.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.548,
+        "reasoning": 0.783,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.50 recall=0.64",
+        "reasoning": "cov=1.00 nov=0.93 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.86x"
+      },
+      "total": 0.742,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.4,
+      "student_answer": "```python\ndef read_statements(path: Path) -> list[dict[str, Any]]\n```\n\nRead the Cypher statements from a bundled file.",
+      "student_thinking": "`read_statements` is defined at repo2graph/neo4j.py:105. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `cache_metadata()` in `repo2graph/cache.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.833,
+        "reasoning": 0.767,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.50",
+        "reasoning": "cov=1.00 nov=0.87 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.18x"
+      },
+      "total": 0.867,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 46.3,
+      "student_answer": "```python\ndef cache_metadata(repo: Path, agent_dir: Path) -> dict[str, Any]\n```\n\nWrite the per-file cache key and result into the index.",
+      "student_thinking": "`cache_metadata` is defined at repo2graph/cache.py:105. Render the signature from the AST so annotations and defaults are exact, then state what its docstring says it does."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "In repo2graph, what is `repo2graph/cochange.py` for?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.784,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=1.00 nov=0.94 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.86x"
+      },
+      "total": 0.496,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 45.5,
+      "student_answer": "Cochange detection: when a file changed, what else did it affect?",
+      "student_thinking": "`repo2graph/cochange.py` is one of 48 modules in the repo2graph package. Its module docstring states the purpose directly, so quote that rather than inferring from the filename."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `find_affected_tests` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.8,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "cov=1.00 nov=1.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.95x"
+      },
+      "total": 0.838,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 44.2,
+      "student_answer": "`find_affected_tests` is defined in `repo2graph/impact.py`.",
+      "student_thinking": "A single definition site. Answer with the path and nothing else - the question asks where, not what."
+    }
+  ]
+}

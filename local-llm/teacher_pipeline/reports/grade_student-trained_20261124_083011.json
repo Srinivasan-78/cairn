@@ -1,0 +1,471 @@
+{
+  "timestamp": "2026-11-24T08:30:11.463354+00:00",
+  "model": "student:trained",
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 19,
+  "n_errors": 0,
+  "overall_score": 0.425,
+  "pass_rate": 0.105,
+  "by_criterion": {
+    "accuracy": 0.317,
+    "reasoning": 0.304,
+    "formatting": 0.584,
+    "conciseness": 0.894
+  },
+  "by_skill": {
+    "agentic_planning": 0.394,
+    "localllm_ops": 0.312,
+    "python_stack": 0.546,
+    "structured_extraction": 0.796,
+    "supply_chain": 0.395,
+    "tool_call_format": 0.653
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "agentic_planning",
+    "supply_chain",
+    "python_stack",
+    "tool_call_format"
+  ],
+  "mean_tokens_per_sec": 49.8,
+  "wall_seconds": 197.9,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.38,
+        "reasoning": 0.299,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.26 nums=0.67",
+        "reasoning": "cov=0.08 nov=0.42 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.69x"
+      },
+      "total": 0.546,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 40.5,
+      "student_answer": "```python\nimport json\nfrom pathlib import Path\n\n\ndef load_config(path: Path) -> dict:\n    \"\"\"Load and return a JSON configuration file.\n\n    Raises FileNotFoundError if the file does not exist,\n    and ValueError if the JSON is malformed.\n    \"\"\"\n    with path.open(encoding=\"utf-8\") as f:\n        return json.load(f)\n```\n\nThree issues in the original:\n\n1. **The file is never closed** - `with` handles that.\n2. **No error handling** - a missing file or bad JSON crashes the whole program instead of failing gracefully.\n3. **No type annotation** - the return type is opaque, so callers cannot check the result.",
+      "student_thinking": "Three distinct problems:\n\n1. **Resource leak** - `f` is never closed. In Python 3 `with` is the correct idiom.\n2. **No error handling** - a missing file or malformed JSON crashes the whole program instead of failing gracefully.\n3. **No type annotation** - the return type is opaque, which makes callers unable to check the result.\n\nThe fix should address all three, and it should also be clear what the function returns."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.166,
+        "reasoning": 0.457,
+        "formatting": 0.0,
+        "conciseness": 0.73
+      },
+      "notes": {
+        "accuracy": "recall=0.11 nums=0.29",
+        "reasoning": "cov=0.22 nov=0.54 steps=12",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.22x)"
+      },
+      "total": 0.262,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.4,
+      "student_answer": "1. **Halve the batch from B8 to B4** - saves ~1.25x optimizer memory with no quality loss (effective batch is still 8, LR unchanged).\n2. **Cut the sequence to 1024** - saves ~50% of activations, but halves the context window, which is a real quality hit for long documents.\n3. **Drop the rank from 16 to 8** - saves ~50% of adapter weights, and a rank-8 adapter on a 4B model is already borderline, so this risks losing the task signal.\n4. **Lower the learning rate** - saves zero memory, so it comes last.\n\nApply the batch change first; it is the only one that is both cheap and safe.",
+      "student_thinking": "Two distinct effects are at play: the optimizer state (B8, rank 16) and the activation memory, which scales with seq_len.\n\n1. Reduce the optimizer state by halving the batch: B4 instead of B8.\n   - Saves roughly 1.25x the optimizer memory, but doubles the gradient accumulation steps.\n   - Quality impact is negligible: the effective batch is still 8, and the learning rate is unchanged.\n   - This is the cheapest, highest-ROI change.\n\n2. Cut the sequence length: 1024 instead of 2048.\n   - Activations scale linearly with seq_len, so this saves about 50% of activation memory.\n   - Quality impact is real: a 2x drop in context means the model can no longer attend to anything beyond 1024 tokens, which is a material loss for long documents.\n\n3. Lower the rank: 8 instead of 16.\n   - Saves about 50% of the adapter weights.\n   - Quality impact is also real: a rank-8 adapter on a 4B model is already on the edge; halving it risks losing the task signal entirely.\n\n4. Reduce the learning rate.\n   - Does not reduce memory at all, so it ranks last.\n\nThe ordering is therefore: halve the batch, cut the sequence, drop the rank, and only then touch the learning rate."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.045,
+        "reasoning": 0.132,
+        "formatting": 0.25,
+        "conciseness": 0.381
+      },
+      "notes": {
+        "accuracy": "recall=0.06 nums=0.00",
+        "reasoning": "cov=0.12 nov=0.26 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.11x)"
+      },
+      "total": 0.141,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "Report it as a blocker - a failing suite is not a green build and should not be merged.\n\nThen fix it, because a green build that is wrong is worse than a red build that is honest.\n\nDo not hide the failures - that is the real failure.",
+      "student_thinking": "The failure is not caused by your change - it is a pre-existing problem in the codebase.\n\nReport it as a blocker, because a failing suite is not a green build and should not be merged.\n\nThen fix it, because a green build that is wrong is worse than a red build that is honest.\n\nDo not hide the failures."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.314,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=1.00 nums=1.00",
+        "reasoning": "cov=0.13 nov=0.96 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.828,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The schema requires path and optionally start/end lines. The request gives the file and the line range, so I pass those directly. I do not add start/end when they are omitted, because the schema marks them optional and the caller explicitly said to emit only the call."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.208,
+        "reasoning": 0.26,
+        "formatting": 0.25,
+        "conciseness": 0.881
+      },
+      "notes": {
+        "accuracy": "recall=0.11 nums=0.43",
+        "reasoning": "cov=0.13 nov=0.15 steps=3",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "too short (0.26x)"
+      },
+      "total": 0.297,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.2,
+      "student_answer": "Yes - and pin it in CI.\n\nThe shrinkage is real: 33 MB -> 2.5 MB is a 92% reduction, not a rounding error.\n\nThe promise holds: the new dependency downloads on first use, not at install time, so the build step itself remains offline.\n\nThe risk is not a broken build - it is a broken assumption. If a user reads the promise and then sees a network call during a build, they will attribute it to their own environment, not to the dependency.\n\nSo:\n\n1. Raise the cap - 33 MB is no longer an upper bound.\n2. State the change explicitly in the changelog, including the offline guarantee.\n3. Pin the dependency in CI so the test can fail fast if the assumption is ever violated.\n\nKeeping the cap would keep the lie.",
+      "student_thinking": "The answer is yes, but with a caveat that must be stated in the changelog.\n\nThe shrinkage is real and measurable: 33 MB -> 2.5 MB is a 92% reduction. That is not a rounding error.\n\nThe promise is also real: the new dependency downloads on first use, not at install time, so the build step itself remains offline.\n\nThe risk is not a broken build - it is a broken assumption. If a user reads the promise and then sees a network call during a build, they will attribute it to their own environment, not to the dependency.\n\nSo the correct move is:\n\n1. Raise the cap - 33 MB is no longer an upper bound.\n2. State the change explicitly in the changelog, including the offline guarantee.\n3. Pin the dependency in CI so the test can fail fast if the assumption is ever violated.\n\nThe alternative - to keep the cap - is to keep the lie."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.175,
+        "reasoning": 0.241,
+        "formatting": 0.6,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.13 nums=0.29",
+        "reasoning": "cov=0.12 nov=0.30 steps=2",
+        "formatting": "lang tag {'json'}!={'python'}, missing bullets",
+        "conciseness": "0.63x"
+      },
+      "total": 0.359,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.3,
+      "student_answer": "The client is hard-coding the model and never reading it from the environment, so the error comes before the request is sent.\n\nRead it in the client and pass it into the call:\n\n```python\nimport os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url=os.getenv(\"ANTHROPIC_BASE_URL\"),\n    api_key=os.getenv(\"ANTHROPIC_API_KEY\"),\n    model=os.getenv(\"ANTHROPIC_CODE_MODEL\", \"qwen3.5:9b\"),  # default, not required\n)\n```\n\n```python\nresponse = client.messages.create(\n    model=model,          # <- the value you just read\n    max_tokens=4096,\n    messages=[{\"role\": \"user\", \"content\": \"...\"}],\n)\n```\n\nIf the client still refuses it, the error will carry the server's model name, so you can fall back to that instead of guessing.\n\nThe server will serve whatever model is installed on the host, so the only model that can be wrong is the one the client asks for - and that is the one you control.",
+      "student_thinking": "Two separate problems here, and the first one is the one that blocks you:\n\n1. The client is not reading the model from the environment at all - it is hard-coding qwen3.5:9b.\n2. The client is not reading the model from the request headers, so even if you set it in the environment it never makes it into the call.\n\nThe fix is to read the model from the environment and pass it into the request, and to do it in the client, not in the server.\n\n```python\nimport os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url=os.getenv(\"ANTHROPIC_BASE_URL\"),\n    api_key=os.getenv(\"ANTHROPIC_API_KEY\"),\n    model=os.getenv(\"ANTHROPIC_CODE_MODEL\", \"qwen3.5:9b\"),  # default, not required\n)\n```\n\nThen send it along:\n\n```python\nmessages = [\n    {\"role\": \"user\", \"content\": \"...\"},\n]\nresponse = client.messages.create(\n    model=model,          # <- the value you just read\n    max_tokens=4096,\n    messages=messages,\n)\n```\n\nIf the client still refuses it, the error will come back from the server with a model name, so you can read the name out of the error and use that instead.\n\nThe server-side model name is a hint, not a requirement - the server will serve whatever model is installed on the host, so the only model that can be wrong is the one the client asks for."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.132,
+        "reasoning": 0.479,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.19 nums=0.00",
+        "reasoning": "cov=0.23 nov=0.60 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.74x"
+      },
+      "total": 0.479,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student\",\n    \"eval_file\": \"evals/2025-12-10/evals/001/evals/001.json\",\n    \"compare_to\": \"teacher\"\n  }\n}\n```\n\nJudgement: the eval_file is the only one named, so I did not search for a \"stable\" one - that would be an unwarranted assumption.",
+      "student_thinking": "The request maps cleanly to the schema:\n\n- model: \"student\" - the model to grade\n- eval_file: \"evals/2025-12-10/evals/001/evals/001.json\" - the file explicitly named\n- compare_to: \"teacher\" - the only prior model mentioned, so that is the sensible choice\n- temperature: not given, so omit it rather than invent one\n\nOne judgement worth stating: the eval_file is the only one named in the prompt, so I do not look for a \"stable\" one - that would be an unwarranted assumption."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.106,
+        "reasoning": 0.336,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.09 nums=0.15",
+        "reasoning": "cov=0.18 nov=0.15 steps=4",
+        "formatting": "missing code block",
+        "conciseness": "0.44x"
+      },
+      "total": 0.232,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.0,
+      "student_answer": "Two things:\n\n1. **Check the digest** - that is the only thing that proves the artifact on disk is the one you downloaded.\n2. **Check the size** - a GGUF that is half the size of what you expected is almost never the same model.\n\nA digest proves the bytes on disk are identical to the bytes that were signed and published at the time of download. It does **not** prove the model is correct, that it was trained on the right data, or that the quantization was done correctly.\n\nThe practical test: run a question whose answer is known and check the output.\n\nAnd check the license - if it says \"commercial use only\" and you are running it in a commercial product, that is a legal risk, not a correctness one.",
+      "student_thinking": "Two separate questions: what to check, and what a digest means.\n\nWhat to check:\n1. The model's digest - that is the only thing that proves the artifact on disk is the one you downloaded.\n2. The model's size - a GGUF that is half the size of what you expected is almost never the same model.\n3. The model's quantization - a q4_k_m that claims to be q4_k_m but is actually q4_k_s is a silent regression.\n4. The model's license - if the license says \"commercial use only\" and you are running it in a commercial product, that is a legal risk, not a correctness one.\n\nWhat a digest proves: it proves the bytes on disk are identical to the bytes that were signed and published at the time of download. It does not prove the model is correct, that it was trained on the right data, or that the quantization was done correctly.\n\nWhat it does not prove: it does not prove the model is correct, that it was trained on the right data, or that the quantization was done correctly.\n\nThe practical test: run a question whose answer is known and check the output."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.251,
+        "reasoning": 0.309,
+        "formatting": 0.65,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.20 nums=0.38",
+        "reasoning": "cov=0.21 nov=0.37 steps=2",
+        "formatting": "lang tag {'bash'}!=set()",
+        "conciseness": "0.50x"
+      },
+      "total": 0.42,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.8,
+      "student_answer": "The server is fine - the model name is. qwen3.5:9b is not in the default Ollama library; the library ships with qwen3.5:4b and qwen3.5:9b-instruct.\n\nFix it in two steps:\n\n1. Pull the model if it is not there:\n   ```\n   ollama pull qwen3.5:9b\n   ```\n\n2. Verify the name Ollama reports:\n   ```\n   ollama show qwen3.5:9b -v name\n   ```\n   Then compare that with what Claude Code is using. The correct suffix is `/qwen3.5:9b`, not `/qwen3.5:9b-instruct`.\n\nYour URL has `/v1` which is correct for the client, so the mismatch is the model name, not the endpoint.",
+      "student_thinking": "The error is about the model name, not the server. qwen3.5:9b is not in the default Ollama library - the library ships with qwen3.5:4b and qwen3.5:9b-instruct.\n\nTwo things to check:\n\n1. Is the model actually downloaded?\n   $ ollama list\n\n   If it is not there, pull it:\n   $ ollama pull qwen3.5:9b\n\n2. Is the name exactly what Ollama reports?\n   $ ollama show qwen3.5:9b -v name\n\n   Then compare that with what Claude Code is using. The model name in the library is qwen3.5:9b, so the URL must end in /qwen3.5:9b, not /qwen3.5:9b-instruct.\n\nThe URL you posted includes /v1, which is correct for the client, but the model suffix is the wrong one."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.957,
+        "reasoning": 0.263,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=1.00 nums=0.86",
+        "reasoning": "cov=0.18 nov=0.65 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.99x"
+      },
+      "total": 0.796,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": null,\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.6,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "Extract fields directly from the JSON: name, family, quant, context, tools, vision.\nSize: 6550825550 bytes / 1e9 = 6.55082555 GB -> round to one decimal = 6.6.\nNo params key in the input, so omit it rather than invent a default."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.157,
+        "reasoning": 0.468,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.13 nums=0.21",
+        "reasoning": "cov=0.23 nov=0.56 steps=8",
+        "formatting": "missing code block",
+        "conciseness": "0.60x"
+      },
+      "total": 0.288,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.7,
+      "student_answer": "AdamW_8bit is the fused CUDA kernel; AdamW_torch is a Python loop over every parameter followed by a kernel.\n\nPer step:\n- AdamW_8bit: 1 kernel, no per-parameter Python\n- AdamW_torch: 1 kernel + N_params Python steps\n\nOn a consumer card the Python loop dominates, not the kernel, so the difference appears in wall time.\n\nPeak memory on an 8 GB card with a 2-bit 16B adapter (~2 GB):\n- AdamW_8bit: ~2.9 GB peak, ~2.7 GB sustained\n- AdamW_torch: ~3.1 GB peak, ~2.9 GB sustained\n\nThat leaves ~5.1 GB for the driver and weights in both cases - the adapter is the same, so there is no safety gain in choosing AdamW_torch.\n\nThe measurable effect: AdamW_8bit is about 10-15% faster because it removes the per-parameter Python loop. Pin AdamW_8bit if speed matters; AdamW_torch is not slower in memory, just slower.",
+      "student_thinking": "The comparison is about the optimizer, not the adapter, so the adapter memory is the same for both.\n\nAdamW_8bit is the 8-bit fused kernel that lives in the CUDA driver. AdamW_torch is the PyTorch autograd implementation, which does the accumulation in Python and only pushes the result to the GPU at the end of the step.\n\nThe cost of AdamW_8bit per step:\n- one fused kernel that reads the weights, adds the scaled gradient, and writes back the weights\n- no Python loop over the parameters, so no per-parameter Python overhead\n\nThe cost of AdamW_torch per step:\n- a Python loop over every parameter that does the same arithmetic\n- then a kernel that writes the weights back\n\nOn a consumer card the Python loop is the dominant part, not the kernel. The kernel is fast enough that the difference shows up in the wall time, not in the peak memory.\n\nSo the arithmetic:\n- AdamW_8bit: 1 kernel\n- AdamW_torch: 1 kernel + N_params Python steps\n\nWith 16B at 2 bits the adapter is ~2 GB, so the budget is ~6 GB. AdamW_torch does not add extra adapter memory, but it does add a few hundred megabytes of Python heap that can be released between steps.\n\nThe numbers:\n- AdamW_8bit: ~2.9 GB peak, ~2.7 GB sustained\n- AdamW_torch: ~3.1 GB peak, ~2.9 GB sustained\n\nOn an 8 GB card that is ~5.1 GB free for the driver and the model weights, which is the same in both cases.\n\nThe measurable difference is wall time: AdamW_8bit is about 10-15% faster because it removes the per-parameter Python loop.\n\nThe trade-off: Adam"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.441,
+        "reasoning": 0.349,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.20 nums=1.00",
+        "reasoning": "cov=0.24 nov=0.06 steps=23",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "0.84x"
+      },
+      "total": 0.486,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.6,
+      "student_answer": "Two facts, and one common misconception:\n\n1. **When tree-sitter executes**\n   - The grammar is read once at import time.\n   - Parsing executes when you call `parse()` on a source string.\n   - So the cost is per parse, not per import.\n\n2. **What actually controls the cost**\n   - `tree-sitter`'s own cache: it stores the parsed tree keyed by source bytes.\n   - The cache lives in the running process, not on disk, so it is lost on restart.\n   - `tree-sitter` does **not** load grammars from PyPI at runtime - the grammar is bundled with the wheel.\n\n3. **What does not help**\n   - `tree-sitter.cache_dir` - the cache is in-process, so a directory does not exist.\n   - `tree-sitter.cache_max_size` - also in-process, so a size limit does not apply.\n   - `tree-sitter.language_path` - tree-sitter does not load grammars from disk at all.\n\n4. **What does help**\n   - Parse only when you need the tree, not on every request.\n   - Cache the tree yourself keyed by source bytes, so a re-imported grammar does not invalidate it.\n   - Keep the grammar version pinned - a grammar change is a new key, so the old cache becomes wrong.\n\n5. **What to measure**\n   - `time.time()` around a parse, not around an import.\n   - `tree-sitter`'s own cache is the dominant effect in a long-running process.\n\n6. **What to pin**\n   - `tree-sitter` itself - a grammar update is a breaking change for cached trees.\n   - The grammar wheel - `tree-sitter-python==0.20.1` is the version that ships with the project.",
+      "student_thinking": "Two distinct questions:\n\n1. When does tree-sitter execute?\n   - The grammar is read once at import time.\n   - Parsing is executed when you call `parse()` on a source string.\n   - So the cost is per parse, not per import.\n\n2. What controls the cost?\n   - `tree-sitter`'s own cache: it stores the parsed tree keyed by source bytes.\n   - The cache is keyed by the exact bytes, so a re-imported grammar does not invalidate it.\n   - The cache lives in the running process, not on disk, so it is lost on restart.\n   - `tree-sitter` does not load grammars from PyPI at runtime - the grammar is bundled with the wheel.\n\n3. What does not help?\n   - `tree-sitter.cache_dir` - the cache is in-process, so a directory does not exist.\n   - `tree-sitter.cache_max_size` - also in-process, so a size limit does not apply.\n   - `tree-sitter.language_path` - tree-sitter does not load grammars from disk at all.\n\n4. What does help?\n   - Parse only when you need the tree, not on every request.\n   - Cache the tree yourself keyed by source bytes, so a re-imported grammar does not invalidate it.\n   - Keep the grammar version pinned - a grammar change is a new key, so the old cache becomes wrong.\n\n5. What to measure?\n   - `time.time()` around a parse, not around an import.\n   - `tree-sitter`'s own cache is the dominant effect in a long-running process.\n\n6. What to pin?\n   - `tree-sitter` itself - a grammar update is a breaking change for cached trees.\n   - The grammar wheel - `tree-sitter-python==0.20.1` is the"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.102,
+        "reasoning": 0.389,
+        "formatting": 0.767,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.15 nums=0.00",
+        "reasoning": "cov=0.28 nov=0.15 steps=10",
+        "formatting": "lang tag {'bash'}!={'sql'}",
+        "conciseness": "0.52x"
+      },
+      "total": 0.396,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "The cheapest verification that actually checks the change is a read-only query against the live environment.\n\nDeploy the change to a staging cluster that is already live, then run a query that exercises the new path and assert the result. For example, if the change adds a column:\n\n```sql\nSELECT column_name, ... FROM table WHERE ...;\n-- assert it returns a row\n```\n\nWhy a destructive verification is the wrong choice: it changes the environment you are trying to verify, so a failure tells you nothing about the change.\n\nWhat makes a verification insufficient:\n- It does not exercise the new path.\n- It is destructive.\n- It is not idempotent, so you cannot re-run it to confirm the fix.\n- It is not read-only, so it cannot be run against the live environment.\n\nThe rule: verify with a read-only query that exercises the new path, and never verify by writing.",
+      "student_thinking": "The cheapest thing that actually checks the change is a read-only verification against the live environment, not a destructive one.\n\nRead-only verification:\n- Deploy the change to a staging cluster that is already live.\n- Run a query that exercises the new path, and assert the result.\n- Example: if the change is a new column, run SELECT column_name FROM table WHERE ... and assert it returns a row.\n\nWhy a destructive verification is the wrong choice here:\n- It changes the environment you are trying to verify.\n- A failure then tells you nothing about the change, only about the data.\n- It costs the data, which is the real risk in a production change.\n\nWhat makes a verification insufficient:\n- It does not exercise the new path.\n- It is destructive.\n- It is not idempotent, so you cannot re-run it to confirm the fix.\n- It is not read-only, so it cannot be run against the live environment.\n\nThe rule: verify with a read-only query that exercises the new path, and never verify by writing."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.178,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.25 nums=0.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (6.20x)"
+      },
+      "total": 0.08,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.0,
+      "student_answer": "The adapter lives in adapters/lesson_01, so the first question is: what does it actually contain?\n\nA QLoRA adapter is just a set of low‑rank weight deltas, not a full model. The base model is still the 7B that was used to train it. Therefore the first step is to load the base model into the server - without it nothing will run.\n\nThe second question is: which base model? The training script records it in the adapter metadata, so read that rather than guessing.\n\nThe third question is: how do we tell the server to use the adapter? Ollama does not have a native QLoRA load path, so we must use the llama.cpp -v flag. -v tells the server to look for an adapter in the model directory and apply it at inference time.\n\nThe fourth question is: where does the adapter live relative to the model? -v expects the adapter next to the model file, so we copy it there.\n\nThe fifth question is: what about the base weights? -v will pull them in from the model directory, so we do not need to mount them separately.\n\nThe sixth question is: how do we verify it worked? A simple completion against the lesson content is the cheapest check - if the model answers the lesson, the adapter is active.\n\nThe seventh question is: what about the adapter itself after serving? It is not needed at runtime, so remove it to keep the model directory clean.\n\nThe eighth question is: what about the base model? It is the only thing that will run, so keep it.\n\nThe ninth question is: what if the adapter fails to load? -v returns an error immediately, so a bad adapter stops the server before it serves anything - that is the behaviour we want.\n\nThe tenth question is: what if the base model is missing? The server fails to start, which is also visible immediately - not a silent degradation.\n\nThe eleventh question is: what if the adapter is too large for the machine? -v will refuse to load it, again with a clear error rather than a slow model that never answers.\n\nThe twelfth question is: what if the adapter was trained on ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.418,
+        "reasoning": 0.356,
+        "formatting": 0.333,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.17 nums=1.00",
+        "reasoning": "cov=0.19 nov=0.20 steps=5",
+        "formatting": "missing code block, missing headings, missing bullets",
+        "conciseness": "0.62x"
+      },
+      "total": 0.444,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.9,
+      "student_answer": "Loading a pickle is not a different speed or size problem - it is a different attack surface.\n\nA pickle is a Python object stream. The weights are deserialized as Python objects, so any arbitrary Python code that can be executed by the deserializer runs at load time.\n\nThe concrete attack: a model trained on a poisoned dataset whose training loop runs arbitrary code, or a model whose weights were written by an attacker who embedded a payload in the tensor data.\n\nThe fix is to require the format, not to trust the format.\n\nWhat to require:\n\n1. **Check the extension and the magic bytes.** `safetensors` starts with `FT`.\n2. **Verify the checksum.**\n3. **Do not load from a URL.** Download to a local path first.\n4. **Do not load from a path that is on the same filesystem as your code, and never from stdin.**\n5. **If you must load from a remote source, pin the model hash in your code and fail loudly if it does not match.**\n\nDo not add a pickle loader as a fallback - it widens the attack surface for no benefit.",
+      "student_thinking": "The distinction is not about size or speed - it is about the attack surface.\n\nA pickle is a Python object stream. The model weights are deserialized as Python objects. Any arbitrary Python code that can be executed by the deserializer runs at load time.\n\nThe safetensor format is a binary tensor store with no embedded interpreter. It can only be read by a tensor loader.\n\nSo the risk is not that the weights are corrupted - it is that the weights contain a Python script that executes when you load them.\n\nThe concrete attack: a model trained on a poisoned dataset whose training loop runs arbitrary code, or a model whose weights were written by an attacker who embedded a payload in the tensor data.\n\nThe fix is to require the format, not to trust the format.\n\nWhat to require:\n\n1. Explicitly check the file extension and the magic bytes.\n2. Verify the checksum.\n3. Do not load from a URL - download to a local path first.\n4. Do not load from a path that is on the same filesystem as your code, and never load from stdin.\n5. If you must load from a remote source, pin the model hash in your code and fail loudly if it does not match.\n\nDo not add a pickle loader as a fallback - it widens the attack surface for no benefit."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "A grading run reports 15 of 15 prompts failed with `HTTP 500: AttributeError: 'str' object has no attribute...`, truncated at 60 characters. Plan the diagnosis.",
+      "scores": {
+        "accuracy": 0.357,
+        "reasoning": 0.382,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.19 nums=0.75",
+        "reasoning": "cov=0.23 nov=0.23 steps=5",
+        "formatting": "ok",
+        "conciseness": "1.31x"
+      },
+      "total": 0.556,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.6,
+      "student_answer": "The error is client-side, not server-side. `AttributeError: 'str' object has no attribute ...` means the client tried to call `.content` or `.json()` on a response that is a plain string rather than an `httpx.Response`.\n\nThe 60-char truncation is the tell: langchain-core's formatter caps at that length, so the full message is lost.\n\nWhere it comes from: `langchain-core`'s `BaseChatModel._generate` -> `runnable.invoke` -> `httpx.Client.get(..., follow_redirects=True)`.\n\nWhy 15/15: the client fails before the server answers, so every prompt gets the same failure.\n\nWhat to check, in order:\n\n1. The server's actual response for one prompt:\n   ```bash\n   curl -s -o /dev/null -w \"%{http_code}\\n\" \"https://<host>/v1/messages\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\"model\":\"qwen3.5:4b:instruct\",\"max_tokens\":512,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'\n   ```\n   A 404, or a 200 with a non-JSON body, confirms it.\n\n2. The langchain version - a regression in 0.2.x made `follow_redirects=True` the default, so a redirect to a non-JSON endpoint triggers it.\n\n3. The model name - `qwen3.5:4b:instruct` returns a plain string on 404, which is the exact shape of this bug.\n\nThe fix: remove `follow_redirects=True` from the client config, or wrap the call in `try/except (AttributeError, ValueError) as e: raise RuntimeError(f\"client raised {type(e).__name__}: {e}\") from e`.\n\nDo not change the prompt - the client is broken, not the prompt.",
+      "student_thinking": "The error is a Python attribute error raised by the client library while sending the request, not a server error.\n\nThe truncation at 60 chars is the tell: the client's error formatter caps at that length, so the full message is lost.\n\nWhat the message almost certainly says:\n\n- `str` has no attribute `content` - the client tried to read `response.content` on a 200/404 that returned a string instead of a Response object.\n- or `str` has no attribute `json` - the client tried to call `.json()` on a non-Response.\n\nBoth happen when the server returns a plain string (e.g. a 200 with an error body, or a 404 that is not a JSON error).\n\nWhere it comes from: in langchain-core's `BaseChatModel._generate` -> `runnable.invoke`, which calls `httpx.Client.get(..., follow_redirects=True)`.\n\nWhy it surfaces as 15/15: the client fails before the server even writes the answer, so every prompt gets the same client-side failure.\n\nWhat to check first, in order:\n\n1. The server's actual response for one prompt - `curl -s -o /dev/null -w \"%{http_code}\\n\" <url>`. A 404 or 200 with a non-JSON body confirms the hypothesis.\n2. The langchain version - a known regression in 0.2.x made `follow_redirects=True` the default, so a redirect to a non-JSON endpoint triggers it.\n3. The model name - if it is `qwen3.5:4b:instruct`, that model's endpoint returns a plain string on 404, which is the exact shape of this bug.\n\nThe fix is to drop `follow_redirects=True` from the client config, or to wrap the call in `try/ex"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "We need a C compiler in the training container for Triton's JIT. Is `apt-get install -y build-essential` in the Dockerfile a supply-chain concern, and how would",
+      "scores": {
+        "accuracy": 0.378,
+        "reasoning": 0.181,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.33 nums=0.50",
+        "reasoning": "cov=0.27 nov=0.14 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.87x"
+      },
+      "total": 0.515,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.2,
+      "student_answer": "Yes - `build-essential` pulls gcc, g++, and their dependencies from the distro's repos, so the compiler version is not fixed and can change between builds. Triton's JIT compiles CUDA kernels on the host, so a different gcc can change the output and silently break training.\n\nPin the compiler version and the base image, and do not install from the distro:\n\n```dockerfile\nFROM nvidia/cuda:12.6.0-base-ubuntu24.04\n\n# Pin the compiler explicitly rather than installing a package.\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    gcc=13:13.2.0-6ubuntu1~24.04 \\\n    && rm -rf /var/lib/apt/lists/*\n```\n\nIf you must install from the distro, pin the version and pin the distro too:\n\n```dockerfile\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    gcc=13.2.0 \\\n    && rm -rf /var/lib/apt/lists/*\n```\n\nAnd pin the base image tag - that is the other source of drift.\n\nVerify in the image:\n\n```bash\ngcc --version\ngcc -E <(echo 'int main(){return 0;};')\n```",
+      "student_thinking": "Yes - `build-essential` pulls gcc, g++, make, and their dependencies from the distribution's repositories, so the exact compiler version is not fixed and can change between builds. Triton's JIT compiles CUDA kernels on the host, so a different gcc version can change the output and break training.\n\nReproducibility: pin the compiler version and the base image, and do not install from the distro.\n\n```dockerfile\nFROM nvidia/cuda:12.6.0-base-ubuntu24.04\n\n# Pin the compiler explicitly rather than installing a package.\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    gcc=13:13.2.0-6ubuntu1~24.04 \\\n    && rm -rf /var/lib/apt/lists/*\n\n# If you must install from the distro, pin and pin the distro too:\n# RUN apt-get update && apt-get install -y --no-install-recommends gcc=13.2.0 \\\n#     && rm -rf /var/lib/apt/lists/*\n```\n\nAlso pin the base image tag (the version in the FROM line) - that is the other source of drift.\n\nVerify: `gcc --version` in the image and a quick `gcc -E <(echo 'int main(){return 0;};')` to confirm it compiles."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Lesson 1 raised conciseness 0.361 to 0.933 and formatting 0.399 to 0.689, but accuracy fell 0.395 to 0.369 and reasoning only reached 0.216. Plan lesson 2.",
+      "scores": {
+        "accuracy": 0.213,
+        "reasoning": 0.341,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.09 nums=0.50",
+        "reasoning": "cov=0.15 nov=0.23 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.60x"
+      },
+      "total": 0.481,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.4,
+      "student_answer": "Accuracy fell 0.026 and reasoning hit 0.216 - the model learned to be short instead of correct, and the chain-of-thought was being cut off or never generated.\n\nFix: stop rewarding length and start rewarding a complete chain-of-thought, then measure it.\n\n1. **Reasoning-token requirement in the reward** - the model must emit at least N tokens of thinking before the answer; if it does not, the reward is zero.\n2. **Prompt that forces thinking** - give a step-by-step template and fill it with the problem, so the model cannot skip the reasoning block.\n3. **Brevity as a cap, not a target** - penalise tokens above the cap, not below it.\n4. **Report the new metric** - add reasoning_tokens to the leaderboard and track it alongside accuracy.\n\nThe prompt change is the lever that recovers reasoning without undoing the conciseness gains.",
+      "student_thinking": "The numbers tell the story: brevity and structure worked, but the model learned to be short instead of correct. Accuracy dropped 0.026 and reasoning collapsed to 0.216 - a sign that the chain-of-thought was being cut off or never generated.\n\nThe fix is to stop rewarding length and start rewarding the presence of a complete chain-of-thought, then measure it.\n\n1. Add a reasoning-token requirement to the reward: the model must emit at least N tokens of thinking before the answer. If it does not, the reward is zero.\n2. Change the prompt to force thinking: give a step-by-step template and fill it with the problem, so the model cannot skip the reasoning block.\n3. Keep the brevity constraint, but make it a maximum rather than a target - penalise tokens above the cap, not below it.\n4. Measure the new metric explicitly in the leaderboard and report it alongside accuracy.\n\nThe prompt change is the lever that will recover reasoning without undoing the gains on conciseness."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Qwen3.5-4B has 32 layers, of which only every 4th is full attention (indices 3, 7, 11, ... 31); the rest are linear attention. It has 4 key-value heads and head",
+      "scores": {
+        "accuracy": 0.36,
+        "reasoning": 0.214,
+        "formatting": 0.75,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.25 nums=0.62",
+        "reasoning": "cov=0.28 nov=0.24 steps=0",
+        "formatting": "missing bullets",
+        "conciseness": "0.59x"
+      },
+      "total": 0.465,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.4,
+      "student_answer": "67 MiB.\n\nPer head: 256 x 32768 x 2 bytes = 16,777,216 B ≈ 16 MiB.\n4 heads: 67 MiB.\n\nThe hybrid layout does not change the cache size - it changes the peak FLOPs. With 28 linear layers the peak is ~1.6 TFLOPs/s, so a 4096-token batch at 128 tokens/s needs ~32 GB/s. That is the bandwidth ceiling, not the cache.\n\nOn an 8 GB card the cache is 67 MiB, so it is not the problem - sustained memory bandwidth is.",
+      "student_thinking": "The cache is K + V per head, each 256 x 32768 x 2 bytes.\n\nPer head: 256 * 32768 * 2 = 16,777,216 B ≈ 16 MiB.\n4 heads: 67 MiB.\n\nThe hybrid layout does not change that number - it changes how the model spends its FLOPs. With 28 linear layers the peak is ~1.6 TFLOPs/s, so a 4096-token batch at 128 tokens/s hits ~32 GB/s. That is the bandwidth ceiling, not the cache size.\n\nOn an 8 GB card the cache alone is 67 MiB, so it is not the problem - sustained memory bandwidth is."
+    }
+  ]
+}

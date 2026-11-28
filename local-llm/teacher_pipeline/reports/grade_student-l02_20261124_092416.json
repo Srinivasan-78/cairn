@@ -1,0 +1,494 @@
+{
+  "timestamp": "2026-11-24T09:24:16.737068+00:00",
+  "model": "student:l02",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 20,
+  "n_errors": 0,
+  "overall_score": 0.443,
+  "pass_rate": 0.1,
+  "by_criterion": {
+    "accuracy": 0.291,
+    "reasoning": 0.33,
+    "formatting": 0.647,
+    "conciseness": 1.0
+  },
+  "by_skill": {
+    "agentic_planning": 0.366,
+    "localllm_ops": 0.401,
+    "python_stack": 0.563,
+    "structured_extraction": 0.833,
+    "supply_chain": 0.358,
+    "tool_call_format": 0.702
+  },
+  "weak_skills": [
+    "supply_chain",
+    "agentic_planning",
+    "localllm_ops",
+    "python_stack"
+  ],
+  "mean_tokens_per_sec": 47.2,
+  "wall_seconds": 207.0,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.401,
+        "reasoning": 0.33,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.67 ids=0.20 recall=0.27",
+        "reasoning": "cov=0.21 nov=0.27 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.70x"
+      },
+      "total": 0.563,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 15.4,
+      "student_answer": "```python\nimport json\nfrom pathlib import Path\n\n\ndef load_config(path: Path) -> dict:\n    with open(path, encoding=\"utf-8\") as f:\n        return json.load(f)\n```\n\nThree issues in the original:\n\n1. **File never closed** - `open()` returns a handle that must be closed, or a context manager used.\n2. **No error handling** - a missing or non-JSON file raises an uncaught exception.\n3. **No encoding** - on Windows `open()` defaults to cp1252, so UTF-8 configs fail with a cryptic error.\n\nAlso worth noting: `Path` is the standard way to handle paths in Python 3.6+, so it is a style improvement as well as a convenience.",
+      "student_thinking": "Three concrete problems:\n\n1. **File never closed** - `open()` returns a handle that must be closed, or a context manager used.\n2. **No error handling** - a missing file or a non-JSON file raises an exception that stops the whole program.\n3. **No encoding specified** - on Windows `open()` defaults to cp1252, so UTF-8 configs fail silently or with a cryptic error.\n\nThe fix is to use `pathlib` and `with`, and to pass `encoding='utf-8'`."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.212,
+        "reasoning": 0.346,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.35 ids=0.11 recall=0.13",
+        "reasoning": "cov=0.21 nov=0.13 steps=10",
+        "formatting": "missing code block",
+        "conciseness": "0.45x"
+      },
+      "total": 0.282,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 44.1,
+      "student_answer": "**1. Cut sequence length in half** - this is the only change that scales with the training loop. Every token in the context window is paid for twice: once in the forward, once in the backward. Halving seq_len cuts the peak forward by exactly 50% and the backward by roughly the same, with no quality penalty.\n\n**2. Lower learning rate** - the optimizer holds a momentum buffer and a running average. Shrinking lr does not shrink those buffers, so the saving is tiny and it is a quality risk.\n\n**3. Reduce batch size** - the backward is the expensive part. A smaller batch reduces the peak backward, but the forward still pays the full seq_len.\n\n**4. Lower rank** - the trainable adapter is a few megabytes compared to the forward/backward, so it is the last resort.\n\n**5. Lower fp16 grad accumulation** - a quality risk and does not save much, so it goes last.\n\n**The numbers for a 4B at seq_len 2048, batch 2, fp16:**\n\n- forward: ~2.0 GB\n- backward: ~1.4 GB\n- optimizer: ~0.2 GB\n- adapter: ~0.04 GB\n- overhead: ~0.1 GB\n\nTotal ~3.7 GB, so there is ~4.3 GB to spare.\n\nWith seq_len 1024 the peak forward drops to ~1.0 GB and the backward to ~0.7 GB, leaving ~5.0 GB free. That is the fix that buys the most quality.",
+      "student_thinking": "The ranking must be ordered by the memory saved per quality point, not by the raw megabytes.\n\n1. **Reduce sequence length** - this is the only one that scales with the training loop. Every token in the context window is paid for twice: once in the forward, once in the backward. Halving seq_len cuts the peak forward by exactly 50% and the backward by roughly the same, with no quality penalty at all.\n\n2. **Lower lr / reduce optimizer steps** - the optimizer holds a momentum buffer and a running average. Shrinking lr does not shrink those buffers, so the saving is tiny and it is a quality risk.\n\n3. **Reduce batch size** - the backward is the expensive part. A smaller batch reduces the peak backward, but the forward still pays the full seq_len.\n\n4. **Lower rank** - the trainable adapter is a few megabytes compared to the forward/backward, so it is the last resort.\n\n5. **Lower fp16 grad accumulation** - this is a quality risk and does not save much, so it goes last.\n\nThe numbers for a 4B at seq_len 2048, batch 2, fp16:\n\n- forward: ~2.0 GB\n- backward: ~1.4 GB\n- optimizer: ~0.2 GB\n- adapter: ~0.04 GB\n- overhead: ~0.1 GB\n\nTotal ~3.7 GB, so there is ~4.3 GB to spare.\n\nWith seq_len 1024 the peak forward drops to ~1.0 GB and the backward to ~0.7 GB, leaving ~5.0 GB free. That is the fix that buys the most quality."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.117,
+        "reasoning": 0.338,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.20 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.23 nov=0.04 steps=10",
+        "formatting": "missing code block",
+        "conciseness": "0.38x"
+      },
+      "total": 0.337,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.7,
+      "student_answer": "Report them as failures, not regressions.\n\nA regression is a new failure caused by your change. These failed before your change, so they are pre-existing and not your fault.\n\nWhat to report:\n- State the fact: 3 tests fail.\n- State the cause: they failed before your change, so they are pre-existing.\n- Give the evidence: show the green/red before and after your change.\n- Link to the original issue: where did they break, and when?\n\nWhat to do:\n- Fix the pre-existing failures first, before merging.\n- Then run the suite again to confirm the green/red flips.\n- Do not merge with them red.\n\nWhat not to do:\n- Do not call it a regression.\n- Do not ignore them because they are old.\n\nThe point of the test suite is to catch new failures, not to certify that old failures do not exist.",
+      "student_thinking": "The right answer is: report them as failures, not as regressions.\n\nA regression is a new failure caused by your change. These failed before your change, so they are pre-existing and not your fault.\n\nWhat to report:\n- State the fact: 3 tests fail.\n- State the cause: they failed before your change, so they are pre-existing.\n- Give the evidence: show the green/red before and after your change.\n- Link to the original issue: where did they break, and when?\n\nWhat to do:\n- Fix the pre-existing failures first, before merging.\n- Then run the suite again to confirm the green/red flips.\n- Do not merge with them red.\n\nWhat not to do:\n- Do not call it a regression.\n- Do not merge with them red.\n- Do not ignore them because they are old.\n\nThe point of the test suite is to catch new failures, not to certify that old failures do not exist."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.267,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.10 nov=0.84 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.817,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.0,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The schema requires path and optionally start/end line. The request gives the file and the line range, so I pass those directly. start_line and end_line are integers, so no quotes around them."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.026,
+        "reasoning": 0.116,
+        "formatting": 0.25,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.13",
+        "reasoning": "cov=0.14 nov=0.15 steps=0",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "0.33x"
+      },
+      "total": 0.191,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "Do not raise the cap.\n\nThe cap is a hard constraint on the build environment, not a soft guideline. A 33 MB wheel contains the whole grammar tree baked in, so the tree must be present before any grammar is ever used. A 2.5 MB wheel that downloads on first use succeeds with an empty tree, and the tree appears only when the first grammar is queried.\n\nIf the cap is raised, the build passes with an empty tree, and the first query after installation hangs until the network comes back. That is a silent failure: the user sees a slow query, not an error, and the symptom is indistinguishable from a slow database.\n\nThe right move is to keep the cap at 33 MB and reject the new wheel, then file an issue against the dependency.\n\nPinning the old wheel is not the answer - the old wheel is the one that actually satisfies the promise that building and querying make no network calls.",
+      "student_thinking": "The cap is a hard constraint on the build environment, not a soft guideline.\n\nA 33 MB wheel is the size of a full grammar tree, so it is the whole tree baked into the wheel. That means the build machine must have the tree available before any grammar is ever used. If the tree is not present, the build fails.\n\nA 2.5 MB wheel that downloads on first use is a different contract: the build succeeds with an empty tree, and the tree appears only when the first grammar is queried.\n\nIf the cap is raised, the build passes with an empty tree, and the first query after installation hangs until the network comes back. That is a silent failure: the user sees a slow query, not an error, and the symptom is indistinguishable from a slow database.\n\nThe right move is to keep the cap at 33 MB and reject the new wheel, then file an issue against the dependency.\n\nThe alternative - pinning the old wheel - is not the answer, because the old wheel is the one that actually satisfies the promise."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.134,
+        "reasoning": 0.228,
+        "formatting": 0.6,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.00 recall=0.10",
+        "reasoning": "cov=0.18 nov=0.11 steps=2",
+        "formatting": "lang tag {'json'}!={'python'}, missing bullets",
+        "conciseness": "1.12x"
+      },
+      "total": 0.337,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "The error is not about the endpoint - it is about the model name not being in the client's model registry.\n\nThe registry is populated from the model list that the client downloads at startup. If that list is stale, or if the client was built against an older SDK, or if the model was added after the client was built, the name will be rejected before any request is sent.\n\nSo the fix is to refresh the model list, not to change the model name.\n\n```python\nimport asyncio\nfrom anthropic import AsyncAnthropic\n\nasync def refresh_models(client: AsyncAnthropic) -> None:\n    \"\"\"Download the model list from the server. Must run before any tool call.\"\"\"\n    await client._client._models._model_list()\n\nasync def main() -> None:\n    async with AsyncAnthropic(base_url=\"http://localhost:11434\") as client:\n        await refresh_models(client)          # <-- refresh here\n        await client.tools.run(...)          # <-- now safe\n```\n\nAnd in the SDK - the registry is a module-level constant in `anthropic/__init__.py` and is not reloaded on subsequent imports:\n\n```python\n# anthropic/__init__.py\nfrom anthropic._models import model_list as _model_list\n\nMODEL_LIST = _model_list()   # evaluated at import time\n```\n\nChange it to a lazy function:\n\n```python\nfrom anthropic._models import model_list as _model_list\n\ndef _get_model_list() -> list[dict[str, str]]:\n    return _model_list()\n\nMODEL_LIST = _get_model_list()\n```\n\nThen call `_get_model_list()` again in `refresh_models`.\n\nThe model name itself is not the problem - `qwen3.5:9b` is the canonical name on the server - so do not try to rename it.",
+      "student_thinking": "The error is not about the endpoint - it is about the model name not being in the client's model registry.\n\nThe registry is populated from the model list that the client downloads at startup. If the list is stale, or if the client was built against an older SDK, or if the model was added after the client was built, the name will be rejected before any request is sent.\n\nSo the fix is to refresh the model list, not to change the model name.\n\nRefresh the list in two places:\n\n1.  In the client's startup code, so a fresh list is available for every run.\n2.  In the SDK's `__init__.py` - the registry is a module-level constant there, and it is not reloaded on subsequent imports.\n\nThe refresh must be done before any tool call, and it must be awaited so the download completes.\n\n```python\nimport asyncio\nfrom anthropic import AsyncAnthropic\n\nasync def refresh_models(client: AsyncAnthropic) -> None:\n    \"\"\"Download the model list from the server. Must run before any tool call.\"\"\"\n    await client._client._models._model_list()\n\nasync def main() -> None:\n    async with AsyncAnthropic(base_url=\"http://localhost:11434\") as client:\n        await refresh_models(client)          # <-- refresh here\n        await client.tools.run(...)          # <-- now safe\n```\n\nAnd in the SDK:\n\n```python\n# anthropic/__init__.py\nfrom anthropic._models import model_list as _model_list\n\nMODEL_LIST = _model_list()   # evaluated at import time\n```\n\nChange `MODEL_LIST` to be a lazy function:\n\n```python\nfrom anthropic"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.365,
+        "reasoning": 0.486,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.75 recall=0.32",
+        "reasoning": "cov=0.28 nov=0.54 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.93x"
+      },
+      "total": 0.586,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student\",\n    \"eval_file\": null\n  }\n}\n```\n\nJudgement: `compare_to` was not a concrete name, so omit it and let the tool compare against its own baseline - that is what the user asked for. `temperature` was also not a number, so omit it and use the tool's default, which is the temperature that has been running stably.",
+      "student_thinking": "Two pieces of information are not in the utterance, so they must be supplied from the context:\n\n1. model - the student model is the only one mentioned, so that is the model to grade.\n2. eval_file - not named, so the default is the one the tool uses when omitted.\n\nThe two options that are named:\n\n- compare_to - \"whatever we had before\" is not a concrete name, so it cannot be filled. The correct move is to omit it and let the tool compare against its own baseline, which is exactly what the user asked for.\n- temperature - \"whatever is stable\" is not a number, so it cannot be filled. The correct move is to omit it and let the tool use its default, which is the temperature that has been running stably.\n\nThe judgement is therefore: do not invent a name for compare_to; omit it and accept the tool's baseline as the comparison."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.154,
+        "reasoning": 0.317,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.31 ids=0.00 recall=0.15",
+        "reasoning": "cov=0.19 nov=0.04 steps=7",
+        "formatting": "missing code block",
+        "conciseness": "0.63x"
+      },
+      "total": 0.249,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "Two things, and they are not the same.\n\n**What a digest proves**\nIt is a cryptographic hash of the file bytes. If the bytes change, the digest changes. It does **not** prove the file came from the claimed source, nor that it was not tampered with in transit - that requires a signed artifact and a trusted verifier.\n\n**What to verify before serving**\n\n1. **The digest against the file on disk** - so the download did not corrupt.\n2. **The model family and revision against the hub entry** - so the file is the one you think it is.\n3. **The quantization and context length against the Modelfile** - a 4k model served with an 8192 context will fail to load.\n4. **The base model name** - so an adapter loads against the right foundation.\n5. **The adapter's training data provenance if it is not open** - so you are not serving data you did not consent to use.\n\nThen run a real prompt through the server and check the output - a model that loads but says nothing is the failure mode a digest alone does not catch.",
+      "student_thinking": "Two distinct things.\n\n1. What a digest proves: it is a cryptographic hash of the file bytes. If the bytes change, the digest changes. It does not prove the file came from the claimed source, nor that it was not tampered with in transit - that requires a signed artifact and a trusted verifier.\n\n2. What to verify before serving:\n   - the digest against the file on disk (so the download did not corrupt)\n   - the model family and revision against the hub entry (so the file is the one you think it is)\n   - the quantization and context length against the Modelfile (so the server will not choke on a 4k model with an 8192 context)\n   - the base model name (so the adapter, if any, loads against the right foundation)\n   - the adapter's training data provenance if it is not open (so you are not serving data you did not consent to use)\n\nThen run a real prompt through the server and check the output - a model that loads but says nothing is the failure mode that a digest alone does not catch."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.128,
+        "reasoning": 0.197,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.25 ids=0.00 recall=0.14",
+        "reasoning": "cov=0.19 nov=0.37 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.32x"
+      },
+      "total": 0.407,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.4,
+      "student_answer": "The URL points to the OpenAI-compatible prefix `/v1`, but Ollama exposes `/api/v1`. The client is therefore talking to the wrong endpoint, and the generic \"model not found\" message is the symptom of that mismatch.\n\nRemove the trailing `/v1`:\n\n```bash\nexport ANTHROPIC_BASE_URL=http://localhost:11434\n```\n\nThen retry - the model should be reached immediately.",
+      "student_thinking": "The URL points to /v1, which is the OpenAI-compatible prefix. Ollama's server exposes /api/v1, so the client is talking to the wrong endpoint.\n\nThe error message is generic - it does not say \"model not found\" - which is exactly why the URL mismatch is the most likely cause.\n\nFix: remove the trailing /v1 from the base URL."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.333,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.32 nov=0.63 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.833,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.4,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.6,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "Name and family are in the root and details. Quant is the quantization_level string. Context is the context_length integer. Size_gb: 6550825550 bytes / 1e9 = 6.55082555, round to one decimal -> 6.6. Tools and vision are booleans from capabilities."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.072,
+        "reasoning": 0.399,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.14 ids=0.00 recall=0.08",
+        "reasoning": "cov=0.19 nov=0.38 steps=4",
+        "formatting": "missing code block",
+        "conciseness": "0.34x"
+      },
+      "total": 0.232,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "AdamW_8bit costs the quantized gradient accumulator: 0.4 GB at fp16. It does not add the 0.8 GB that some sources attribute to it - that is the adapter library, not the optimizer.\n\nMemory:\n- Adapter weights: 2.7 GB (fp16)\n- Optimizer state: 1.4 GB (fp16)\n- Gradient accumulator: 0.4 GB (fp16)\n- **Total: 4.5 GB** - well under 8 GB.\n\nThe real cost of a QLoRA run is the adapter library holding weights at fp16. AdamW_8bit only adds the 0.4 GB accumulator.",
+      "student_thinking": "The comparison is about the optimizer, not the adapter library. AdamW_8bit is the 8-bit variant of the optimizer that stores weights in fp16 and applies 8-bit quantization to the gradient accumulator, so it does not change the adapter library's memory footprint.\n\nMemory:\n- Adapter weights: 2.7 GB at fp16.\n- Optimizer state: 1.4 GB at fp16.\n- Gradient accumulator: 0.4 GB at fp16.\n- Total: 4.5 GB, well under 8 GB.\n\nAdamW_8bit costs the quantized gradient accumulator, which is 0.4 GB. It does not add the 0.8 GB that some people attribute to it, because that figure comes from the adapter library, not the optimizer.\n\nThe real cost of a QLoRA run is the adapter library, which holds the weights at fp16. AdamW_8bit only adds the 0.4 GB gradient accumulator."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.443,
+        "reasoning": 0.324,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.22",
+        "reasoning": "cov=0.18 nov=0.10 steps=8",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "0.71x"
+      },
+      "total": 0.48,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "The risk is not the parser - it is the grammar. A grammar can call into the host process, read environment variables, or execute shell commands.\n\nWhen it runs: tree-sitter reads the grammar on import, so the first import of any grammar you use is the attack surface.\n\nWhat actually helps\n\n1. **pin the exact version** in requirements.txt - tree-sitter releases change the loader, and a change can add a new call.\n2. **run in a sandbox that blocks network and shell**:\n   - Linux: a read-only Docker container with no shell, or a user namespace.\n   - Windows: Windows Sandbox.\n3. **install from the official releases folder**, not from pypi in the repo - so the wheel is what you signed.\n4. **keep the grammar set small and audit it** - a Python grammar is not the same as one that parses a custom DSL.\n\nWhat does not help\n\n- **running the parser in a subprocess** - the grammar still loads in the parent, which is where the call happens.\n- **a permissive sandbox** - if the sandbox can read the grammar file, it can execute it.\n\nThe real control is the principle of least privilege: do not load tree-sitter in a process that can read the grammar. Load it in a read-only, no-shell process, and keep the grammar set to the languages you actually need.",
+      "student_thinking": "The dangerous part is not the grammar - it is the grammar's author. A grammar can call into the host process, read environment variables, or execute shell commands.\n\nWhen it runs: tree-sitter reads the grammar on import, so the first import of any grammar you use is the attack surface.\n\nWhat controls:\n\n1. pin the exact package version in requirements.txt - tree-sitter releases change the grammar loader, and a change can add a new call.\n2. run with a sandbox that blocks network and shell:\n   - on Linux: run inside a Docker container with --read-only and without a shell, or use a user namespace.\n   - on Windows: run under Windows Sandbox.\n3. never install tree-sitter from pypi in the repo - install from the official releases folder so the wheel is what you signed.\n4. keep the grammar set small and audit it - a grammar that parses Python is not the same as one that parses a custom DSL.\n\nWhat does not help:\n\n- running the parser in a subprocess - the grammar still loads in the parent, which is where the call happens.\n- a permissive sandbox - if the sandbox can read the grammar file, it can execute it.\n\nThe real control is the principle of least privilege: do not load tree-sitter in a process that can read the grammar. Load it in a read-only, no-shell process, and keep the grammar set to the languages you actually need."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.056,
+        "reasoning": 0.331,
+        "formatting": 0.767,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 recall=0.17",
+        "reasoning": "cov=0.31 nov=0.04 steps=3",
+        "formatting": "lang tag {'bash'}!={'python'}",
+        "conciseness": "0.48x"
+      },
+      "total": 0.361,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "Write a test that reads the setting from the running server and asserts it is what the config says.\n\n```python\ndef test_setting_is_loaded():\n    assert get_setting() == \"prod\"\n```\n\nWhat makes a verification insufficient:\n\n- **Asserting the source file** - the file can be edited by anyone with write access, so a passing test proves nothing about what the server actually serves.\n- **Asserting the build output** - the build is a separate step that can fail independently of the config, so a passing test only proves the build pipeline, not the configuration.\n- **Asserting a behaviour that exercises the setting** - that is the correct kind of test, but it is more expensive than a read-only check.\n\nThe cheapest thing that is still a verification is a read-only check against the live system.",
+      "student_thinking": "The cheapest thing that is still a verification is a read-only check against the live system, not a write.\n\nWrite a test that reads the setting and asserts it is what the config says.\n\nWhat makes a verification insufficient:\n\n- Asserting the source file: the file can be edited by anyone with write access, so a passing test says nothing about what the server actually serves.\n- Asserting the build output: the build is a separate step that can be broken independently of the config, so a passing test only proves the build pipeline, not the configuration.\n- Asserting a behaviour that exercises the setting: that is the correct kind of test, but it is more expensive than a read-only check.\n\nSo the cheapest sufficient verification is: read the live setting and assert it."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.373,
+        "reasoning": 0.249,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.06 recall=0.25",
+        "reasoning": "cov=0.29 nov=0.37 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.09x"
+      },
+      "total": 0.53,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "1. **Merge the adapter into the base model** - the adapter weights are ~30 MB, so the base model must carry them. Merging writes a new checkpoint rather than editing the adapter in place.\n\n```bash\npython -m peft.models.peft_model import_model_from_adapter(\n    model,\n    adapter_name=\"lesson_01\",\n    output_dir=\"models/lesson_01\",\n    merge_and_unload=True,      # unload the adapter immediately\n    max_seq_length=4096,        # match your training setting\n)\n```\n\n2. **Quantize to 4-bit** - the base model is ~4 GB and will not fit in the 8 GB Ollama container. `q4_k_m` is the standard choice here: quality is close to fp16 for a chat model, and the size drops to ~2 GB.\n\n```bash\ntransformers.trainer.trainer_quantize(\n    model,\n    output_dir=\"models/lesson_01\",\n    bits=4,\n    group_size=32768,\n    quantization_method=\"q4_k_m\",\n)\n```\n\n3. **Register in Ollama** - give it a name that does not collide with anything you already have, and pass an absolute path.\n\n```bash\nOLLAMA_HOST=0.0.0.0:11434 ollama create lesson_01 -f models/lesson_01/lesson_01.safetensors\n```\n\n4. **Verify before exposing** - prompt with a question that the adapter was trained on. If the answer is still generic, the merge failed and you must re-run with the correct `base_model_name_or_path`.\n\n```bash\ncurl -s http://localhost:11434/api/generate \\\n  -H \"content-type: application/json\" \\\n  -d '{\"model\":\"lesson_01\",\"prompt\":\"What is the capital of France?\",\"max_tokens\":100}'\n```\n\n**Do not train on the merged model.** Training on top of a merged adapter is not supported by peft, so the adapter would be discarded after the first step.",
+      "student_thinking": "The adapter lives in adapters/lesson_01 - that is the output of QLoRA, so it is not a trained model yet. It must be merged into the base, then quantized to fit in Ollama's 4-bit window, then registered in Ollama.\n\nStep 1 - merge: the adapter weights are tiny compared to the model, so the base model must carry the weights. Merging is done with peft, and it writes a new checkpoint rather than editing the adapter in place.\n\nStep 2 - quantize: Ollama serves 4-bit models. A full base model is ~4 GB, so it will not fit in the 8 GB container. Quantizing to q4_k_m shrinks it to ~2 GB and keeps the quality close to fp16 for this use case.\n\nStep 3 - register: Ollama needs the model name and path. The path must be absolute, and the name must not collide with anything already installed.\n\nStep 4 - test: verify the adapter actually changed the behaviour before exposing it to users.\n\nThe adapter is not trainable after merging - training on top of a merged adapter is not supported by peft - so do not train on it."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.077,
+        "reasoning": 0.401,
+        "formatting": 0.333,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.23",
+        "reasoning": "cov=0.32 nov=0.11 steps=5",
+        "formatting": "missing code block, missing headings, missing bullets",
+        "conciseness": "0.84x"
+      },
+      "total": 0.302,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "Two different failure modes.\n\n| Format | What the bytes are | What can go wrong |\n|--------|--------------------|-------------------|\n| **Pickle** | A Python object graph | **Arbitrary Python execution**. A malicious model can run code on your machine with whatever privileges your process has. |\n| **Safetensors** | Tensors + metadata | **Wrong answers only**. The only way to corrupt it is to change the numbers, which shows up as a bad output, not a running program. |\n\nWhat to require:\n\n1. **Verify the model's hash against a published value.** That catches a swapped file, a zero-day in the model repo, and a man-in-the-middle.\n2. **Load with the non-pickle format.** If the file is a pickle, **refuse it** - do not try to unpickle it yourself, because the verification has already passed and you now have an executable in your process.\n3. **Keep the model in memory**, not on disk. A model on disk survives a reboot and is harder to audit.\n4. **Run under a sandbox**: Docker with a non-root user, a seccomp profile, and a read-only filesystem. That limits the damage if a pickle does run.\n5. **Do not trust the model's own provenance.** The model file is not the model; the model is the weights you verified.\n\nThe practical rule: if the file ends in `.pkl` or contains a pickle header, abort loading and report it - a verified pickle is worse than an unverified safetensor.",
+      "student_thinking": "Two different failure modes.\n\nPickle: the bytes are a Python object graph. Anyone who can read the bytes can execute arbitrary Python, so a malicious model can run on your machine with whatever privileges your process has. That is a code-execution risk, not a model-integrity risk.\n\nSafetensors: the bytes are tensors and metadata. There is no interpreter to run, so the only way to corrupt the model is to change the numbers, which shows up as a wrong answer, not a running program.\n\nWhat to require:\n\n1. Verify the model's hash against a published value. That catches a swapped file, a zero-day in the model repo, and a man-in-the-middle.\n2. Load with the non-pickle format. If the file is a pickle, refuse it - do not try to unpickle it yourself, because the verification has already passed and you now have an executable in your process.\n3. Keep the model in memory rather than streaming it to disk. A model on disk is a persistent threat that survives a reboot.\n4. Run the model under a sandbox (e.g. Docker with a non-root user, a seccomp profile, and a read-only filesystem). That limits the damage if a pickle does run.\n5. Do not trust the model's own provenance. The model file is not the model; the model is the weights you verified.\n\nThe practical rule: if the file ends in .pkl or contains a pickle header, abort loading and report it - a verified pickle is worse than an unverified safetensor."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "A grading run reports 15 of 15 prompts failed with `HTTP 500: AttributeError: 'str' object has no attribute...`, truncated at 60 characters. Plan the diagnosis.",
+      "scores": {
+        "accuracy": 0.299,
+        "reasoning": 0.379,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.24",
+        "reasoning": "cov=0.22 nov=0.24 steps=9",
+        "formatting": "missing code block",
+        "conciseness": "1.13x"
+      },
+      "total": 0.329,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "The error is a Python `AttributeError` raised by the server, not a network failure - so the client did reach the endpoint and the server threw an exception. The truncation at 60 chars is just the client's `...` when it cannot read the full body; the real message lives in the server logs.\n\nWhy 15/15: the same code path ran for every prompt, so the defect is in the prompt template or how it is assembled, not in the model.\n\nWhere to look, in order:\n1. Server logs - that is the only place that will show the attribute name.\n2. The prompt template - a stray backslash, an unescaped newline, or an `f\"...{var}...\"` where `var` contains a newline will break `json.loads` and produce exactly this error.\n3. The model call - if the prompt is assembled there, verify the variable is a plain `str`, not `bytes` or a model output that has already been decoded.\n\nWhat to do next:\n- Pin the server to the commit that passed locally - a local change will otherwise hide the bug.\n- Re-run with the full traceback logged to stdout - far easier to read than a log file.\n- If the model is the source, pass the raw bytes and decode in the caller, not in the template.\n\nDo not \"make it look nicer\" - a prompt that looks correct but fails is the most dangerous kind of bug.",
+      "student_thinking": "The message is a Python AttributeError, not a network error, so the client hit the server and the server raised an exception.\n\nThe truncation at 60 chars is the usual `...` that the client adds when it cannot read the full body, so the real message is still in the server logs.\n\nThe pattern - 15/15 - means the same code path ran for every prompt, so the bug is in the prompt template or the way it is assembled, not in the model.\n\nWhere to look:\n1. Server logs for the full traceback - that is the only place that will show the attribute name.\n2. The prompt template - a stray backslash, unescaped newline, or a string built with `f\"\"` and a variable containing a newline will break `json.loads` and produce exactly this error.\n3. The model call - if the prompt is assembled there, check that the variable is a plain string, not a bytes object or a model output that has already been decoded.\n\nWhat to check first in the template:\n- Any `f\"...{var}...\"` where `var` comes from the model or from user input.\n- Raw newlines or tabs inside the prompt string.\n- A trailing backslash that the shell interprets as an escape.\n\nWhat to do next:\n- Pin the server to the commit that passed locally, so a local change does not hide the bug.\n- Re-run with the full traceback logged to stdout, which is far easier to read than a log file.\n- If the model is the source, pass the raw bytes and decode in the caller, not in the template.\n\nDo not change the prompt to \"look nicer\" - a prompt that looks right but fai"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "We need a C compiler in the training container for Triton's JIT. Is `apt-get install -y build-essential` in the Dockerfile a supply-chain concern, and how would",
+      "scores": {
+        "accuracy": 0.361,
+        "reasoning": 0.42,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.25 ids=0.50 recall=0.30",
+        "reasoning": "cov=0.33 nov=0.16 steps=5",
+        "formatting": "ok",
+        "conciseness": "1.20x"
+      },
+      "total": 0.567,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.8,
+      "student_answer": "Yes - `build-essential` is a meta-package that pulls in `gcc`, `g++`, `make`, `dpkg` and their dependency tree. The versions are pinned by the distro, so they are reproducible *for that distro*, but they are not the compiler you would get on a different distro or a different base image.\n\nIs it the right compiler for Triton's JIT?\nTriton's C++ JIT compiles against the host's C++ standard library. On Debian 12 that is libc++12, which is the version Triton was tested against. So it is the correct one, not a version mismatch.\n\nReproducible Dockerfile:\n\n```dockerfile\nFROM python:3.12-bookworm          # pin the rolling tag - that is the real risk\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    build-essential=14.2.0-1~2404 \\\n    && rm -rf /var/lib/apt/lists/*\n```\n\nPinning the compiler version is the wrong move: it breaks the distro's own reproducibility guarantees and makes the image non-reproducible across distro upgrades.\n\nVerify in the image:\n\n```bash\npython --version\ngcc --version\npython -c \"import triton; print(triton.__version__)\"\ngcc -v               # confirm libc++12 on Debian 12\n```\n\nThe real risk is not the compiler, but the base image: `python:3.12-slim` is a rolling tag, so every build gets a different compiler. Pin `python:3.12-bookworm` and pin the distro explicitly - that is what makes the build reproducible.",
+      "student_thinking": "Two separate issues:\n\n1. Is it a supply-chain concern?\n   Yes - `build-essential` is a meta-package that pulls in `gcc`, `g++`, `make`, `dpkg`, and a whole dependency tree. The versions are pinned by the distro, so they are reproducible *for that distro*, but they are not the compiler you would get on a different distro or a different base image.\n\n2. Is it the right compiler for Triton's JIT?\n   Triton's C++ JIT compiles against the host's C++ standard library. On Debian 12 that is libc++12, which is the version Triton was tested against. So it is the correct one, not a version mismatch.\n\nReproducibility: pin the base image and the distro, and do not pin the compiler - the distro pins it for you.\n\n```dockerfile\nFROM python:3.12-slim-bookworm\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    build-essential=14.2.0-1~2404 \\\n    && rm -rf /var/lib/apt/lists/*\n```\n\nPinning the compiler version is the wrong move: it breaks the distro's own reproducibility guarantees and makes the image non-reproducible across distro upgrades.\n\nWhat to check instead:\n- `python --version` and `gcc --version` in the image - verify they match the docs.\n- `python -c \"import triton; print(triton.__version__)\"` - verify the Triton version you are building against is the one the docs claim.\n- `gcc -v` - confirm the C++ standard library version (libc++12 on Debian 12).\n\nThe real risk is not the compiler, but the base image: `python:3.12-slim` is a rolling tag, so every build gets a dif"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Lesson 1 raised conciseness 0.361 to 0.933 and formatting 0.399 to 0.689, but accuracy fell 0.395 to 0.369 and reasoning only reached 0.216. Plan lesson 2.",
+      "scores": {
+        "accuracy": 0.185,
+        "reasoning": 0.223,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.40 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.12 nov=0.02 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.52x"
+      },
+      "total": 0.439,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "The gains were real - conciseness and formatting moved the needle - but accuracy and reasoning are now the bottleneck. Accuracy fell 0.026 and reasoning is at 0.216, which is the floor for a model that has not yet seen its own outputs.\n\nThe fix is to stop editing the prompt and start editing the outputs.\n\n1. **Inject a self-critique step** that scores the draft against the rubric before it is sent to the user.\n2. **Give the model a rubric, not a vague instruction** - the rubric is what will hold the score.\n3. **Keep the prompt lean** - the new step is the work, not more noise.\n\nA rubric that names the failure modes - hallucination, missing a constraint, a step that does not exist - is what will stop the regression.",
+      "student_thinking": "The gains were real - conciseness and formatting moved the needle - but accuracy and reasoning are now the bottleneck. Accuracy dropped 0.026 and reasoning is at 0.216, which is the floor for a model that has not yet seen its own outputs.\n\nThe fix is to stop editing the prompt and start editing the outputs.\n\n1. Inject a self-critique step that scores the draft against the rubric before it is sent to the user.\n2. Give the model a rubric, not a vague instruction - the rubric is what will hold the score.\n3. Keep the prompt lean - the new step is the work, not more noise.\n\nA rubric that names the failure modes - hallucination, missing a constraint, a step that does not exist - is what will stop the regression."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Qwen3.5-4B has 32 layers, of which only every 4th is full attention (indices 3, 7, 11, ... 31); the rest are linear attention. It has 4 key-value heads and head",
+      "scores": {
+        "accuracy": 0.304,
+        "reasoning": 0.507,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.54 ids=0.00 recall=0.44",
+        "reasoning": "cov=0.42 nov=0.31 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.92x"
+      },
+      "total": 0.563,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "About 2 GB at fp16.\n\nThe cache is K and V only, one per head per layer, each 256 x 32768 x 2 bytes:\n\n4 heads * 256 * 32768 * 2 = 67,108,864 B = 63.1 MiB per layer  \n63.1 MiB * 32 layers = 2,019 MiB ≈ 2 GB\n\nWhy that hybrid layout is useful on an 8 GB card:\n\n- **75% smaller than a full-attention 32-layer 4B.** A full-attention model of this size would need roughly 3 GB for the cache alone, which plus weights and a batch would exceed 8 GB.\n- **Contiguous and in the same address space as the weights**, so it does not fragment VRAM.\n- **Linear layers do not read K/V**, so they are faster per token - the whole point of the design.",
+      "student_thinking": "The cache is stored as K and V only, one per head per layer, each 256 x 32768 x 2 bytes.\n\nPer layer: 4 * 256 * 32768 * 2 = 67,108,864 B = 63.1 MiB.\n32 layers: 63.1 * 32 = 2,019 MiB.\n\nSo about 2 GB at fp16.\n\nWhy the hybrid layout matters on an 8 GB card:\n\n- It cuts the attention footprint by 75% compared to a full-attention model of the same size.\n- That 2 GB is contiguous and sits in the same address space as the weights, so it does not fragment VRAM.\n- At 2 GB the model plus a typical batch plus the OS still fits with headroom, whereas a full-attention 32-layer 4B would need roughly 3 GB for the cache alone, which would push a 8 GB card over the edge once the batch is loaded.\n- The cost is that the non-attention layers are linear: they do not read K/V, so they are faster per token, which is the whole point of the design."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Give me the full VRAM budget for a QLoRA run on Qwen3.5-4B on an RTX 4060 Ti 8 GB at max_seq_length 2048, batch 2, gradient_accumulation 8. Account for every te",
+      "scores": {
+        "accuracy": 0.122,
+        "reasoning": 0.402,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.24 ids=0.00 recall=0.13",
+        "reasoning": "cov=0.19 nov=0.40 steps=5",
+        "formatting": "ok",
+        "conciseness": "0.49x"
+      },
+      "total": 0.456,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "7.6 GB used on an 8.0 GB card, so ~0.4 GB for the OS/driver.\n\nBreakdown:\n\n| term | size |\n|---|---|\n| model weights (fp16) | 4.5 GB |\n| optimizer (8-bit Adam, accumulated) | 2.5 GB |\n| activations (seq 2048, batch 2, fp16) | ~0.5 GB |\n| kernel/overhead | ~0.1 GB |\n| **total** | **7.6 GB** |\n\nWhat does not accumulate: the optimizer state, so it is the term that grows with batch size - raise batch and the peak creeps up.\n\nWhat does not accumulate into the peak: gradients, because accumulation 8 merges them into the optimizer state before the step.\n\nThe margin is the one that vanishes when you increase seq_length or batch - the first to hit is activations, at seq ~2800 for these hyperparameters.",
+      "student_thinking": "The budget is dominated by the model weights, not the optimizer state, so the optimizer terms are worth checking but will not drive the result.\n\n1. Weights: fp16 Qwen3.5-4B is ~4.5 GB.\n2. Optimizer: AdamW with 8-bit Adam is ~2.5 GB.\n3. Activations: at seq 2048, batch 2, fp16 this is ~0.5 GB.\n4. Gradients: fp16 gradients are ~2.0 GB, but with gradient accumulation 8 they are accumulated into a single optimizer step, so they do not appear in the resident peak - they are merged into the optimizer state.\n5. Kernel/overhead: ~0.1 GB.\n\nSum: 4.5 + 2.5 + 0.5 + 0.1 = 7.6 GB on an 8.0 GB card, leaving ~0.4 GB for the OS and the driver's reserved region. That is the margin that disappears when you raise seq_length or increase batch.\n\nThe optimizer term is the one that does not accumulate, so it is the term that grows with batch size - increase batch and the peak creeps up."
+    }
+  ]
+}

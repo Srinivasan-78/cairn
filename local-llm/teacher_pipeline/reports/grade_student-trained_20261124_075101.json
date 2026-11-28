@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-11-24T07:51:01.958320+00:00",
+  "model": "student:trained",
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 15,
+  "n_errors": 0,
+  "overall_score": 0.452,
+  "pass_rate": 0.133,
+  "by_criterion": {
+    "accuracy": 0.369,
+    "reasoning": 0.216,
+    "formatting": 0.689,
+    "conciseness": 0.933
+  },
+  "by_skill": {
+    "agentic_planning": 0.392,
+    "localllm_ops": 0.329,
+    "python_stack": 0.607,
+    "structured_extraction": 0.903,
+    "supply_chain": 0.392,
+    "tool_call_format": 0.631
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "agentic_planning",
+    "supply_chain",
+    "python_stack",
+    "tool_call_format"
+  ],
+  "mean_tokens_per_sec": 49.7,
+  "wall_seconds": 168.3,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.45,
+        "reasoning": 0.417,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.29 nums=0.83",
+        "reasoning": "cov=0.17 nov=0.50 steps=5",
+        "formatting": "ok",
+        "conciseness": "1.36x"
+      },
+      "total": 0.607,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 43.6,
+      "student_answer": "```python\nimport json\nimport os\n\n\ndef load_config(path):\n    \"\"\"Load a JSON configuration file.\n\n    Args:\n        path: Path to the configuration file.\n\n    Returns:\n        The parsed configuration as a dict.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file is not valid JSON.\n        ValueError: If the path is None or not a string.\n    \"\"\"\n    if path is None or not isinstance(path, str):\n        raise ValueError(\"path must be a non-None string\")\n\n    if not os.path.isfile(path):\n        raise FileNotFoundError(f\"Configuration file not found: {path}\")\n\n    with open(path, encoding=\"utf-8\") as f:\n        return json.load(f)\n```\n\n**What was fixed:**\n\n1. **File not closed** - now uses a `with` statement, so the file is closed even if an exception occurs\n2. **No error handling** - `FileNotFoundError`, `json.JSONDecodeError`, and `ValueError` are all raised so the caller knows exactly what went wrong\n3. **No path validation** - checks that `path` is a non-None string before attempting to open it\n4. **No encoding specified** - explicitly uses UTF-8, which is the standard for JSON and avoids the Windows encoding problem",
+      "student_thinking": "The function has several issues:\n\n1. **File not closed** - `f` is never closed, which is a resource leak\n2. **No error handling** - `open()` can fail, `json.load()` can fail, and neither is caught\n3. **No path validation** - if `path` is `None` or a string, `open()` will fail\n4. **No encoding specified** - on Windows, `open()` defaults to the system encoding, which may not be UTF-8\n5. **No context manager** - the file should be opened and closed in a `with` statement\n\nThe fix should address all of these."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.17,
+        "reasoning": 0.171,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.12 nums=0.29",
+        "reasoning": "cov=0.18 nov=0.29 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.63x"
+      },
+      "total": 0.219,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.8,
+      "student_answer": "**Ranking by memory saved per quality lost:**\n\n1. **Reduce sequence length to 1024** - This is the only fix that addresses the actual bottleneck. At seq_len=2048, the KV cache is consuming ~3.5GB of your 4.7GB, which is the dominant memory consumer. Halving it saves ~1.7GB with minimal quality loss. This is the fix worth doing.\n\n2. **Reduce rank to 8** - Saves ~0.4GB, but has a more complex quality impact. At 16 bits, the model is already at the quality limit for this hardware, so further reduction would be quality-degrading, not just memory-saving. Worth considering only if you have a specific quality threshold to meet.\n\n3. **Reduce batch to 1** - Saves ~0.1GB per request, but trades memory for throughput. This is the least efficient fix because it reduces one resource while keeping the other fixed. Worth doing only if you're serving and latency is the constraint.\n\n4. **Accept the current configuration** - This is the right answer for a production system. You're already at the quality limit, so the fixes are about accepting constraints, not improving quality.\n\n**Why the ranking is what it is:** The KV cache is the actual bottleneck, not the batch. At seq_len=2048, the cache is consuming ~3.5GB, which is the dominant memory consumer. Increasing batch further would not help because the bottleneck is the cache size, not the batch. And the quality limit is already reached, so the fixes are about accepting constraints, not improving quality.\n\n**The real question is:** what are you optimizing for? If it's quality, the answer is \"don't do this.\" If it's throughput, the answer is \"add more GPUs.\" If it's serving a single user, the answer is \"reduce sequence length.\"",
+      "student_thinking": "The question is about the tradeoff between memory and quality. The ranking should be ordered by the ratio of memory saved to quality lost, not by memory saved alone.\n\nThe key insight is that the current configuration is already at the quality limit for this hardware. At seq_len=2048, batch=2, the model is already at the point where the KV cache is consuming the majority of VRAM. Increasing batch size further would not help because the bottleneck is the KV cache, not the batch.\n\nSo the ranking should start with the fix that addresses the actual bottleneck: reducing sequence length. This saves the most memory per quality lost because it directly reduces the KV cache size, which is the dominant memory consumer.\n\nThe second fix is to reduce the rank, which saves memory per token but has a more complex quality impact. At 16 bits, the model is already at the quality limit, so reducing rank further would be quality-degrading, not just memory-saving.\n\nThe third fix is to reduce batch size, which saves memory per request but at the cost of throughput. This is the least efficient fix because it trades one resource for another.\n\nThe fourth fix is to accept the current configuration, which is the right answer for a production system.\n\nI should also note that the KV cache is the actual bottleneck, not the batch, which is why increasing batch size doesn't help. And I should mention that the quality limit is already reached, so the fixes are about accepting constraints, not improving qualit"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.303,
+        "reasoning": 0.145,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.18 nums=0.60",
+        "reasoning": "cov=0.10 nov=0.36 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.52x"
+      },
+      "total": 0.373,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.1,
+      "student_answer": "**Report nothing.**\n\nThese are not bugs. They are pre-existing failures that your change did not cause, so reporting them as bugs would be wrong.\n\n**Do this instead:**\n\n1. **Diagnose the cause.** Check logs, error messages, and the actual failing assertions. The failure is likely environmental, a flaky test, or a pre-existing bug in the code being tested.\n\n2. **Fix the root cause.** If it's a flaky test, make it deterministic. If it's a real bug, fix it. If it's an environment issue, document it.\n\n3. **Document the lesson.** Write a note about what you learned: \"Test X fails intermittently because of Y, so I added Z to make it stable.\" This is the real value, not the test passing.\n\n**What not to do:**\n\n- **Don't report them as bugs.** That wastes time and misrepresents the situation.\n- **Don't ignore them.** Unexplained failures are a red flag worth investigating.\n- **Don't fix them without understanding.** A quick patch hides the real problem.\n\nThe goal isn't to make the tests pass; it's to understand why they fail and fix the underlying issue.",
+      "student_thinking": "The question is a test engineering decision, not a bug report. The tests are failing for reasons unrelated to the change, so reporting them as bugs would be wrong. The right action is to diagnose the cause and fix it, then document what was learned. The answer should be the reasoning, not the action."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.287,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=1.00 nums=1.00",
+        "reasoning": "cov=0.10 nov=0.92 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.822,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.4,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The schema specifies path as required, so it must be included. Start and end are optional, so they are not required. The path is absolute, so no path prefix is needed."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.107,
+        "reasoning": 0.078,
+        "formatting": 0.767,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.15 nums=0.00",
+        "reasoning": "cov=0.13 nov=0.02 steps=0",
+        "formatting": "lang tag {'toml'}!=set()",
+        "conciseness": "0.45x"
+      },
+      "total": 0.321,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "**No. The promise is about the build, not the run-time.**\n\nThe build promise is still intact: the dependency is still compiled at build time, so the build still makes a network call. The fact that the call happens at runtime instead of compile time is a different contract, and it is a **breaking change**.\n\nA project that promises \"no network calls\" is making a guarantee about its own build process, and that guarantee is now false. Raising the cap would be lying about the build, which is worse than the dependency lying about the run-time.\n\n**The right move is to keep the cap at 33 MB and document the new behaviour.**\n\nIf the project needs the new behaviour, it must accept the build-time cost, and it can do so by updating its own build to fetch the grammar at build time. That is a deliberate choice, not a side effect.\n\n```\n# Before: grammar compiled at build time, no network at run time\n# After:  grammar compiled at build time, network at run time\n\n# The project's build must be updated to fetch at build time:\n#   pip download <dependency> --no-cache-dir -d .build/\n```\n\nKeeping the cap is the correct choice because it is the honest answer about what the project actually does.",
+      "student_thinking": "The answer is no, and the reason is that the promise is about the build, not the run-time.\n\nThe build promise is still intact: the dependency is still compiled at build time, so the build still makes a network call. The fact that the call happens at runtime instead of compile time is a different contract, and it is a breaking change.\n\nA project that promises \"no network calls\" is making a guarantee about its own build process, and that guarantee is now false. Raising the cap would be lying about the build, which is worse than the dependency lying about the run-time.\n\nThe right move is to keep the cap at 33 MB and document the new behaviour. If the project needs the new behaviour, it must accept the build-time cost, and it can do so by updating its own build to fetch the grammar at build time. That is a deliberate choice, not a side effect."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.154,
+        "reasoning": 0.103,
+        "formatting": 0.9,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.10 nums=0.29",
+        "reasoning": "cov=0.16 nov=0.06 steps=0",
+        "formatting": "missing bullets",
+        "conciseness": "0.43x"
+      },
+      "total": 0.375,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "The error is client-side validation, not an endpoint error. The client is checking the model against a known set and rejecting anything outside it, so the fix is to update that set, not the model name.\n\n```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"version\": \"4.5\"\n}\n```\n\nAdd the model to the client's known set, using the canonical name, and make the client trust the server's response rather than its own list.\n\n```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"version\": \"4.5\"\n}\n```\n\nThe canonical name is what the server returns, so it must be used, not a nickname. The server is correct, so the error is not about the endpoint.",
+      "student_thinking": "The error is a client-side validation, not an endpoint error, so the fix must be client-side. The client is checking the model against a known set and rejecting anything outside it, so the set must be updated, not the model name. The endpoint is correct, so the error is not about the server. The model name is the canonical one, so it must be used, not a nickname. The fix is to add the model to the client's known set, using the canonical name, and to make the client trust the server's response rather than its own list."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.17,
+        "reasoning": 0.258,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.24 nums=0.00",
+        "reasoning": "cov=0.21 nov=0.56 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.79x"
+      },
+      "total": 0.441,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student\",\n    \"eval_file\": \"baseline\",\n    \"temperature\": null\n  }\n}\n```\n\nOmitting `compare_to` is the right call here: the user said \"whatever we had before\" without naming it, so inventing a name would be a hallucination rather than a reasonable interpretation.",
+      "student_thinking": "The user wants to baseline the student model, so model is the student and eval_file is the baseline file. The comparison target is unspecified, so I leave compare_to out rather than inventing a name. Temperature is unspecified, so I leave it out rather than picking a value. The judgement is that omitting an optional argument is the correct choice here, since the user did not specify a value and inventing one would be a hallucination."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.242,
+        "reasoning": 0.194,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.21 nums=0.31",
+        "reasoning": "cov=0.13 nov=0.49 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.84x"
+      },
+      "total": 0.257,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "**What to verify, in order of importance:**\n\n1. **Base matches the Modelfile** - `cat Modelfile | grep FROM` must point to the exact GGUF you pulled. A mismatched base is the single most common failure mode.\n\n2. **The actual inference path works** - run the prompt you intend to use, with the temperature and stop sequences you specified. Those are what users interact with, not the build process.\n\n3. **Stop sequences are effective** - if you set `stop` but the model ignores them, your truncation is useless. Test with a prompt that should be cut off at the stop token.\n\n4. **Context window is what you expect** - verify the `num_ctx` in the model metadata, not the number of tokens in your test prompt.\n\n**What a digest actually proves:**\n\nA digest proves the **file content at a specific point in time**, not the model's behavior. It is a hash of bytes, not a test of the model.\n\nThis distinction matters because:\n\n- A model can be corrupted **after** the digest was computed\n- The Modelfile can change while the digest stays the same\n- The base can be replaced while the digest stays the same\n\nSo a digest is a **provenance claim**, not a quality claim. It answers \"did this file match what I recorded?\" rather than \"does this model work?\"\n\n**The provenance claim is the one worth keeping.** The verification steps are the ones worth doing.",
+      "student_thinking": "The user is asking about two distinct but related things: the practical verification steps for a freshly created model, and the cryptographic meaning of a digest.\n\nFor the practical part, I should focus on what actually fails in production, not what looks good in a terminal. The most common failure mode is a mismatch between the base and the Modelfile, so that's the first thing to check. Then the actual inference path - the prompt, the temperature, the stop sequences - because those are what users actually interact with.\n\nFor the digest part, I need to be precise about what it proves and what it doesn't. A digest proves the file content at a specific point in time, not the model's behavior. That distinction matters because a model can be corrupted after the digest was computed, or the Modelfile can change while the digest stays the same.\n\nThe response should be structured to separate these concerns cleanly, since they answer different questions."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.249,
+        "reasoning": 0.152,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.14 nums=0.50",
+        "reasoning": "cov=0.15 nov=0.28 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.44x"
+      },
+      "total": 0.45,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.6,
+      "student_answer": "The model is pulled, so the server is fine. The name is wrong. The server is reporting a different name than what you typed.\n\nCheck what the server actually calls it:\n\n```bash\ncurl -s http://localhost:11434/v1/models | jq '.results[].name'\n```\n\nThe server's list is the source of truth, not what you typed. If the server lists `qwen3.5:4b` but you typed `qwen3.5:9b`, that's the bug.\n\nThen fix the name in the `.vscode/settings.json` model field to match exactly what the server reports.",
+      "student_thinking": "The error is about the model name, not the server. The model is pulled, so the server is fine. The name is wrong. The model is qwen3.5:9b, but the error says it doesn't exist. That means the server is reporting a different name than what I typed. I need to check what the server actually calls it. The server's list is the source of truth, not what I typed."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.957,
+        "reasoning": 0.69,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=1.00 nums=0.86",
+        "reasoning": "cov=0.55 nov=0.76 steps=17",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.903,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 50.2,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.1,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "The input is a JSON object with a nested details block. I need to extract fields from the top level and the nested details, plus the capabilities array.\n\nTop level:\n- name: \"qwen3.5:9b\"\n- size: 6550825550 bytes\n- details is a nested object with:\n  - format: \"gguf\"\n  - family: \"qwen35\"\n  - parameter_size: \"9.0B\"\n  - quantization_level: \"Q4_K_M\"\n  - context_length: 262144\n- capabilities is an array with four items\n\nMapping to the required keys:\n- name: from top level\n- family: from details.family\n- params: from details.parameter_size (keep the string as-is)\n- quant: from details.quantization_level\n- context: from details.context_length as an integer\n- size_gb: from size, converted to GB, rounded to one decimal\n- tools: from capabilities array, checking if \"tools\" is present\n- vision: from capabilities array, checking if \"vision\" is present\n\nFor size_gb: 6550825550 / (1024^3) = 6550825550 / 1073741824 = 6.101... which rounds to 6.1\n\nFor tools and vision: both \"tools\" and \"vision\" appear in the capabilities array, so both should be true.\n\nThe format field is not in the required output, so I omit it."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.203,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.20 nums=0.21",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (6.71x)"
+      },
+      "total": 0.091,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.1,
+      "student_answer": "The question is about two different things, so the first step is to separate them. AdamW_torch is the optimizer, and AdamW_8bit is a quantized version of it. They are not interchangeable, so comparing them directly is a category error. The real comparison is between AdamW_torch at full precision and AdamW_8bit at 8-bit, because that is what the hardware constraint actually limits.\n\nThe constraint is 8 GB, which is the working set, not the model. A 7B model at full precision is 14 GB, so it does not fit. At 4-bit it is 4 GB, so it fits with room to spare. At 8-bit it is 8 GB, so it fits exactly, which means no room for anything else. That is the hard constraint.\n\nAdamW_torch at full precision is not an option, because the model does not fit. So the comparison is between AdamW_torch at 4-bit and AdamW_8bit at 8-bit. The difference is the weight precision, not the optimizer. The optimizer is the same, so the cost is the same, and the benefit is the weight precision.\n\nThe arithmetic is about memory, not about the optimizer. AdamW_torch at 4-bit uses the same memory as AdamW_8bit at 8-bit, because the weights are the same, and the optimizer state is negligible. So the memory cost is zero. The benefit is that 8-bit weights are twice as accurate as 4-bit weights, so the model is twice as good.\n\nThe cost is the model quality, which is the benefit of the other option. So the trade is not memory, because memory is the same. The trade is accuracy for nothing, which is the wrong direction.\n\nThe real question is whether the model is already good enough at 4-bit. If it is, then the cost is the only thing that matters, and it is the accuracy, so the answer is no. If it is not, then the answer is yes, because the benefit is the accuracy, and it is worth it.\n\nThe model is already good enough at 4-bit, because the user is running a QLoRA run, which means they are fine-tuning, and the weights are not the final product. The final product is the adapter, and the adapter is trained on th",
+      "student_thinking": ""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.411,
+        "reasoning": 0.151,
+        "formatting": 0.575,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.16 nums=1.00",
+        "reasoning": "cov=0.21 nov=0.15 steps=0",
+        "formatting": "lang tag {'bash'}!={'python'}, missing headings, missing bullets",
+        "conciseness": "1.03x"
+      },
+      "total": 0.438,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.7,
+      "student_answer": "**When:** Loading at import. A grammar is a Python module, so importing it runs its `__init__`. Many tree-sitter packages run code there, and that code runs every time you import the package, even if you never parse anything. That is a load every import, which is a load every line of code in a large project. The fix is to load on first parse, not at import.\n\n**What controls the load:** `load_language` is the one that loads the grammar. `parse` does not load it. The distinction is the key. If you call `parse` at import, you are not loading the grammar, so the symptom is real but the cause is wrong. The fix is to call `load_language` at parse time.\n\n**What executes:** The grammar is a static description. It does not execute. What executes is the parser, which is a C extension. The grammar is the schema, the parser is the engine. The distinction matters because the schema is what you control, and the engine is what you pay for.\n\n**The three levers:**\n\n1. **Move the load to parse time.**\n\n```python\nimport tree_sitter\n\ndef parse(source: str) -> tree_sitter.Tree:\n    if tree_sitter.language is None:  # load on first use\n        tree_sitter.load_language(\"python\")\n    return tree_sitter.parse(source, tree_sitter.language)\n```\n\n2. **Make the load conditional on a flag, so the user can opt out.**\n\n```python\nif config.enable_parsing:\n    tree_sitter.load_language(\"python\")\n```\n\n3. **Cache the loaded language.**\n\n```python\nif tree_sitter.language is None:\n    tree_sitter.load_language(\"python\")\n```\n\nThe actual help is not in the documentation, which is correct, because the documentation describes the API, not the cost. The cost is the load, and the load is the import, and the import is the module, and the module is the grammar, and the grammar is the schema, and the schema is the thing you control.",
+      "student_thinking": "The question asks what actually helps, not what is documented. Three things matter: when the grammar loads, what controls the load, and what executes.\n\nWhen: Loading at import is the real problem. A grammar is a Python module, so importing it runs its `__init__`. Many tree-sitter packages run code there, and that code runs every time you import the package, even if you never parse anything. That is a load every import, which is a load every line of code in a large project. The fix is to load on first parse, not at import.\n\nWhat controls the load: tree-sitter has two distinct APIs. `load_language` is the one that loads the grammar. `parse` does not load it. The distinction is the key. If you call `parse` at import, you are not loading the grammar, so the symptom is real but the cause is wrong. The fix is to call `load_language` at parse time.\n\nWhat executes: The grammar is a static description. It does not execute. What executes is the parser, which is a C extension. The grammar is the schema, the parser is the engine. The distinction matters because the schema is what you control, and the engine is what you pay for.\n\nThe three levers are: move the load to parse time, and make the load conditional on a flag, so the user can opt out. That is the actual help, not the documentation."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.338,
+        "reasoning": 0.159,
+        "formatting": 0.6,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.16 nums=0.75",
+        "reasoning": "cov=0.14 nov=0.33 steps=0",
+        "formatting": "lang tag {'bash'}!={'python'}, missing bullets",
+        "conciseness": "1.02x"
+      },
+      "total": 0.412,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.1,
+      "student_answer": "**The verification:**\n\n```python\ndef test_config_is_read_before_use(self):\n    with patch.object(config, 'load_config') as mock_load:\n        mock_load.return_value = {'feature': 'on'}\n        with patch.object(app, 'run') as mock_run:\n            app.run()\n            mock_load.assert_called_once()\n            mock_run.assert_called_once()\n            mock_load.assert_not_called()\n```\n\n**Why this is the cheapest sufficient verification:**\n\n1. **It catches the actual bug** - The bug is that the config is read at import time, before `run()` is called. This test checks the value at the time it is used, not when it is read.\n2. **It is a single assertion** - One assertion is cheaper than three, and three assertions is cheaper than a property.\n3. **It is specific** - It checks the exact failure mode, not a general \"config works\" claim.\n\n**What makes a verification insufficient:**\n\n| Verification | Why it fails |\n|--------------|--------------|\n| `assert config['feature'] == 'on'` | Checks the value at import time, when it is read, not when it is used. The bug is that it is read too early, so this passes. |\n| `assert app.run()` | Tests that the app runs, not that it runs with the right config. The bug is about config timing, not app execution. |\n| `@property def config_is_read_before_use(self): ...` | A property is a test, not a verification. It is a claim, not evidence. |\n| `assert len(config) > 0` | Checks that the config exists, not that it is read at the right time. |\n\n**The principle:** A verification must catch the specific failure mode. A claim about the system is not a verification of the bug. And one assertion is cheaper than three, and three is cheaper than a property.",
+      "student_thinking": "The request is for the cheapest verification that is actually sufficient, with a clear explanation of what makes a verification insufficient. The cheapest is a single, specific assertion that catches the actual bug. Anything broader is a different bug. Anything that doesn't catch the bug is not a verification. The actual bug is that the config is read at the wrong time, so the verification must check the value at the time it is used, not when it is read."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.339,
+        "reasoning": 0.231,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.22 nums=0.62",
+        "reasoning": "cov=0.30 nov=0.26 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.48x"
+      },
+      "total": 0.511,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.7,
+      "student_answer": "The adapter lives in `adapters/lesson_01`, which is the QLoRA checkpoint directory. The goal is a model that Ollama can load and serve, so the path is **`adapter_to_ollama`**, which is a two-stage process: first convert the adapter into a quantized GGUF file, then register it with Ollama. The conversion step is the real work, because Ollama expects GGUF, not the original adapter format.\n\n### Step 1: Quantize the adapter into GGUF\n\n```bash\nconvert-huggingface-adapter-to-gguf \\\n  --adapter_dir adapters/lesson_01 \\\n  --quantization q4_k_m \\\n  --output_path ./lesson_01.qwen3.5:3b\n```\n\n**Why this step:** Ollama only loads GGUF files. The adapter directory is the checkpoint format used by the training code, which is not loadable by Ollama. Quantization is necessary because a 4-bit adapter is still ~2 GB, and serving a 2 GB model is impractical. `q4_k_m` preserves the vast majority of the quality while keeping the file at ~1.2 GB, which is the sweet spot for this size. Quantizing further to `q8_0` would be overkill, and `q3_k_m` would lose too much.\n\n### Step 2: Register the model with Ollama\n\n```bash\nollama create lesson_01:3b -f <<EOF\nname: lesson_01:3b\ndescription: A 3.5B Qwen3.5 model fine-tuned on a single lesson about the history of the universe, with a conversational tone.\nEOF\n```\n\n**Why this step:** Ollama needs to know about the new model by name, and it must point to the correct file. The description should say what it actually is, not what it claims to be. A model described as \"general-purpose\" when it is really a lesson-specific one is a silent failure that shows up in the first prompt.\n\n### Step 3: Pull and verify\n\n```bash\nollama pull lesson_01:3b\n```\n\nThen test it:\n\n```bash\necho \"What is the history of the universe?\" | ollama run lesson_01:3b\n```\n\n**Why this step:** A misnamed model is the most common failure here, and it is silent. If Ollama loads the wrong file, the lesson content is never served. Pulling by name downloads the GGUF file into Ollama's storag",
+      "student_thinking": "The adapter lives in adapters/lesson_01, which is the QLoRA checkpoint directory. The goal is a model that Ollama can load and serve, so the path is adapter_to_ollama, which is a two-stage process: first convert the adapter into a quantized GGUF file, then register it with Ollama. The conversion step is the real work, because Ollama expects GGUF, not the original adapter format.\n\nThe first step is quantization. The adapter is a 4-bit model, so quantizing it to q4_k_m preserves most of the quality while keeping the file small enough to serve efficiently. Quantizing further to q8_0 would be overkill, and q3_k_m would lose too much. The command is the standard one: convert the adapter directory into a GGUF file at the desired quantization level.\n\nThe second step is registration. Ollama needs to know about the new model, so this is where the name and description get set. The name should be descriptive enough to find, and the description should say what it actually is, not what it claims to be. The path must match where the GGUF file was written, otherwise Ollama will load the wrong file.\n\nAfter both steps, the model is ready to serve. Pulling it by name downloads the GGUF file into Ollama's storage, and then it can be used in prompts. The verification step is worth doing, because a misnamed model is a silent failure."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.445,
+        "reasoning": 0.21,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.21 nums=1.00",
+        "reasoning": "cov=0.25 nov=0.30 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.79x"
+      },
+      "total": 0.553,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.3,
+      "student_answer": "Loading model weights as a pickle is a different class of risk from loading safetensors because **pickle executes arbitrary code while safetensors does not**.\n\nThe distinction is what the format does:\n\n- **Pickle**: loads data **and** executes embedded Python code during deserialization. The code is inside the file, so an attacker who can serve a model can serve a model that runs their code. The attack surface is the entire Python interpreter, which includes the library the model uses.\n\n- **Safetensors**: loads data from a binary container with no execution capability. The attack surface is the file format parser, which is much smaller than a Python interpreter.\n\n**What you should require** is about the format, not the library:\n\n```python\n# Wrong - asking for a specific implementation\nif \"safetensors\" not in model_config:\n    raise ValueError(\"Model must be loaded from safetensors\")\n\n# Right - asking for a property\nif \"safetensors\" in model_config:\n    model = AutoModel.from_pretrained(repo, safe_loading=True)\nelse:\n    raise ValueError(\"Model must be loaded from safetensors\")\n```\n\nThe property is that the format does not execute code. Asking for a library is asking for a specific implementation, which is wrong. Asking for a format is asking for a property, which is right.",
+      "student_thinking": "The question is about the security implications of two different file formats for machine learning model weights. The core distinction is that pickle is an arbitrary code interpreter while safetensors is a binary container with no execution capability.\n\nThe risk with pickle is that it executes arbitrary Python code during deserialization. The code is embedded in the file, so an attacker who can serve a model can serve a model that runs their code. The attack surface is the entire Python interpreter, which includes the library the model uses.\n\nThe risk with safetensors is that it loads data from a binary file. The data is not executable, so the attack surface is the file format parser, which is much smaller than a Python interpreter.\n\nThe key distinction is what the format does. Pickle does two things: loads data and executes code. Safetensors does one: loads data. That's why pickle is a different class of risk entirely.\n\nThe requirement should be about the format, not the library. Asking for a library is asking for a specific implementation, which is wrong. Asking for a format is asking for a property, which is right. The property is that the format does not execute code.\n\nThe answer should be direct about what pickle does, what safetensors does, and why that makes them different. It should give the requirement in terms of the format, not the library."
+    }
+  ]
+}

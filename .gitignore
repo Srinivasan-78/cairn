@@ -55,3 +55,14 @@ admin/storage
 # Master Bot hygiene additions
 __pycache__/
 *.py[cod]
+
+# Local LLM tooling (weights, caches, virtualenvs)
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+unsloth_compiled_cache/
+*.safetensors
+*.gguf
+!local-llm/profile/build/
+!local-llm/profile/build/**

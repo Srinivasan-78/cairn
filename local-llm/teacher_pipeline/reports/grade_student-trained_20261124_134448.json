@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-11-24T13:44:48.210544+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 15,
+  "n_errors": 0,
+  "overall_score": 0.477,
+  "pass_rate": 0.133,
+  "by_criterion": {
+    "accuracy": 0.394,
+    "reasoning": 0.329,
+    "formatting": 0.609,
+    "conciseness": 0.96
+  },
+  "by_skill": {
+    "agentic_planning": 0.424,
+    "localllm_ops": 0.363,
+    "python_stack": 0.488,
+    "structured_extraction": 0.852,
+    "supply_chain": 0.412,
+    "tool_call_format": 0.754
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "supply_chain",
+    "agentic_planning",
+    "python_stack"
+  ],
+  "mean_tokens_per_sec": 47.7,
+  "wall_seconds": 94.5,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.192,
+        "reasoning": 0.405,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.17 ids=0.20 recall=0.23",
+        "reasoning": "cov=0.17 nov=0.66 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.84x"
+      },
+      "total": 0.488,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 40.4,
+      "student_answer": "```python\nfrom __future__ import annotations\n\nimport json\nfrom pathlib import Path\n\n\ndef load_config(path: Path | str) -> dict[str, object]:\n    \"\"\"Load and parse configuration from a JSON file.\n\n    Ensures explicit UTF-8 encoding and safe file handling.\n    \"\"\"\n    target = Path(path).resolve()\n    with target.open(mode=\"r\", encoding=\"utf-8\") as fh:\n        return json.load(fh)\n```\n\n**Key fixes:**\n- **Explicit `encoding=\"utf-8\"`**: Prevents `UnicodeDecodeError` when reading files encoded in Windows CP1252.\n- **Context manager (`with`)**: Guarantees file descriptors are released immediately, even if an exception occurs.\n- **Path normalization**: Resolves symlinks and canonicalizes the path to prevent directory traversal attacks.",
+      "student_thinking": "Reviewing the provided function:\n1. `open(path)` without `encoding='utf-8'` can raise `UnicodeDecodeError` on Windows with non-ASCII file encodings.\n2. File handle `f` is never explicitly closed, relying on reference counting or `del f`.\n3. No error handling for missing files or invalid JSON."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.162,
+        "reasoning": 0.347,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.35 ids=0.00 recall=0.10",
+        "reasoning": "cov=0.10 nov=0.36 steps=10",
+        "formatting": "missing code block",
+        "conciseness": "0.37x"
+      },
+      "total": 0.26,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "### Memory Budget on 8 GB (RTX 4060 Ti)\n- **Usable VRAM**: ~1.2 GB (after accounting for Windows desktop compositor and driver overhead).\n- **Model Weights (q4_k_m)**: ~2.6 GB.\n- **Optimizer States (AdamW)**: ~1.4 GB.\n- **KV Cache (Seq 2048, Batch 2)**: ~0.6 GB.\n- **Total Peak**: ~4.6 GB.\n\n### Fixes Ranked by Memory Savings vs. Quality Loss\n\n1. **Cap Sequence Length at 1024 Tokens (Saves ~0.6 GB)**\n   - **Impact**: Reduces KV cache memory by 50% without truncating context.\n   - **Quality**: Negligible for code tasks. The model has a native 32,768-token context; 1024 is sufficient for single-file edits.\n\n2. **Lower Learning Rate to $2 \\times 10^{-4}$ (Saves 0 GB, Prevents Loss Spikes)**\n   - **Impact**: Prevents optimizer states from exploding and stabilizes training.\n   - **Quality**: Prevents catastrophic forgetting during micro-epochs.\n\n3. **Disable Windows Desktop Compositor (Free ~0.6 GB)**\n   - **Impact**: Reduces system RAM footprint by ~0.6 GB.\n   - **Quality**: None.",
+      "student_thinking": "Memory budget on 8 GB card (RTX 4060 Ti):\n- CUDA context + Windows overhead: ~1.2 GB usable.\n- Model weights (Qwen3.5-4B in q4_k_m): ~2.6 GB.\n- KV cache at seq 2048, batch 2: ~0.6 GB.\n- Optimizer states (AdamW 2e-5): ~1.4 GB.\n- Total peak: ~5.6 GB.\n\nOOM at seq 2048, batch 2:\n- Likely caused by Windows desktop compositor holding ~0.6–0.8 GB.\n- Or mixed precision tensor fragmentation.\n\nFix ranking by memory saved vs quality loss:\n1. **Reduce sequence length to 1024**: Saves ~0.6 GB KV cache (2.0 GB total reduction). Quality loss: minimal for factual coding tasks (context window is 32768).\n2. **Lower learning rate to 2e-4**: Saves 0 GB but stabilizes training and prevents loss spikes.\n3. **Disable Windows desktop compositor**: Free ~0.6 GB."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.264,
+        "reasoning": 0.365,
+        "formatting": 0.25,
+        "conciseness": 0.769
+      },
+      "notes": {
+        "accuracy": "nums=0.60 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.16 nov=0.32 steps=4",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.23x)"
+      },
+      "total": 0.337,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.4,
+      "student_answer": "### Reporting\nReport the failures transparently with the specific context:\n> \"The suite reports **3 pre-existing failures** in `test_legacy_serialization.py`. These failures predate the current change and are unrelated to the PR scope. The rest of the suite passes.\"\n\n### Action\n1. **Do not claim the suite is green.**\n2. **Investigate the pre-existing failures immediately.**\n3. **Fix the failing tests** or document them in the changelog if they are known limitations.",
+      "student_thinking": "Reporting pre-existing test failures:\n1. Report them honestly: do not claim the suite is green.\n2. State clearly that they are pre-existing and unrelated to the current change.\n3. Do not ignore them.\n4. Fix them or document why they are ignored."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.372,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.15 nov=0.56 steps=3",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.843,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 45.0,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The read_file tool has parameters:\n1. path: string (required)\n2. start_line: integer (optional)\n3. end_line: integer (optional)\n\nRequested lines: 40-80.\nPath: src/repo2graph/cli.py."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.247,
+        "reasoning": 0.214,
+        "formatting": 0.25,
+        "conciseness": 0.629
+      },
+      "notes": {
+        "accuracy": "nums=0.57 ids=0.00 recall=0.09",
+        "reasoning": "cov=0.07 nov=0.11 steps=3",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "too short (0.19x)"
+      },
+      "total": 0.278,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.5,
+      "student_answer": "**Do not raise the version cap.**\n\nIf a new major version introduces network I/O during `build` or `query`, it breaks the project's contract that \"building and querying make no network calls.\"\n\n1. **Pin the version**: Keep the version cap at the previous major release (e.g. `>=2.0.0,<3.0.0`).\n2. **Report upstream**: Open an issue in the upstream repository detailing the behavior change.\n3. **Wait for a fix**: Do not update until the upstream maintainers confirm that the new version is fully offline.",
+      "student_thinking": "Dependency version cap policy:\n1. If a new major version introduces network I/O during `build` or `query`, it breaks the project's contract.\n2. Do not raise the version cap.\n3. Raise the issue in the upstream repository."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.13,
+        "reasoning": 0.151,
+        "formatting": 0.6,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.00 recall=0.08",
+        "reasoning": "cov=0.08 nov=0.43 steps=0",
+        "formatting": "lang tag {'json'}!={'bash'}, missing bullets",
+        "conciseness": "0.85x"
+      },
+      "total": 0.316,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "### The Fix: Register the Model in the Client's Local Registry\n\nWhen a client validates model IDs, it consults a local manifest or registry (e.g. `ollama`, `anthropic`, or an internal model catalog). If the model name is not registered, the client rejects it with a validation error before sending any network request.\n\n**Step 1: Register the Model Locally**\nIf you are using Ollama, register the model with the exact name the client expects:\n```bash\nollama create qwen3.5:9b -f qwen3.5-9b-quantization.yaml\n```\nEnsure the model name in the client configuration matches the registry name exactly (`qwen3.5:9b` vs `qwen3.5-9b`).\n\n**Step 2: Verify Tag Mapping**\nIf the client uses tags (e.g. `qwen3.5:9b`), ensure the model is tagged in the registry:\n```bash\nollama tag qwen3.5-9b:qwen3.5:9b\n```\n\n**Step 3: Clear Stale Local Caches**\nIf the client previously cached an error or an outdated model list, clear the local cache and restart the client:\n```bash\nrm -rf ~/.ollama/models/qwen3.5\n```\n\n### Verification\nVerify the model is registered locally before testing:\n```bash\nollama list | grep qwen3.5\n```\nOnce the model appears in the local list, the client will accept the model ID without raising a validation error.",
+      "student_thinking": "Client refuses unknown model id before making request."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.626,
+        "reasoning": 0.331,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.67 ids=0.75 recall=0.30",
+        "reasoning": "cov=0.06 nov=0.38 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.93x"
+      },
+      "total": 0.665,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"qwen3.5-4b\",\n    \"eval_file\": \"student_eval.jsonl\",\n    \"compare_to\": \"qwen3.5-3b\",\n    \"temperature\": 0.3\n  }\n}\n```\n\nJudgement: Selected `compare_to: \"qwen3.5-3b\"` to establish regression baselines against the previously trained model, and locked `temperature: 0.3` to ensure deterministic, reproducible grading metrics.",
+      "student_thinking": "Tool call:\n- model: \"qwen3.5-4b\"\n- eval_file: \"student_eval.jsonl\"\n- compare_to: \"qwen3.5-3b\" (the previous model)\n- temperature: 0.3 (the stable temperature previously used)"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.251,
+        "reasoning": 0.277,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.38 ids=0.17 recall=0.15",
+        "reasoning": "cov=0.10 nov=0.30 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.53x"
+      },
+      "total": 0.482,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.5,
+      "student_answer": "### Verification Protocol\n\n1. **Cryptographic Integrity Check**:\n   Compute the SHA-256 hash of the downloaded `.gguf` file and compare it against the checksum listed in the model's official manifest (`models.json`).\n   ```bash\n   sha256sum qwen3.5-4b.gguf | awk -F: '{print $1}'\n   ```\n\n2. **Quantization Verification**:\n   Inspect the model metadata (`ollama show qwen3.5:4b --modelfile`) to confirm the quantization tier (e.g. `q4_k_m` or `q8_0`). Ensure the quantization is supported by the host GPU driver and does not exceed available VRAM headroom.\n\n### What a Digest Proves\nA verified digest proves **cryptographic file integrity**. It guarantees that the bytes currently on your disk are identical to the bytes published by the model maintainer at the exact moment of release. This prevents serving corrupted, tampered, or outdated model weights.",
+      "student_thinking": "Verification checklist for GGUF models:\n1. Verify SHA-256 digest of the downloaded GGUF file against the manifest to ensure file integrity.\n2. Verify model dimensions (e.g. q4_k_m vs q8_0) match intended hardware VRAM budget.\n3. Verify quantization level is supported by the host GPU."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.301,
+        "reasoning": 0.334,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.25",
+        "reasoning": "cov=0.17 nov=0.36 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "0.58x"
+      },
+      "total": 0.319,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.0,
+      "student_answer": "The error is caused by a URL path mismatch and model name mismatch:\n\n1. **Double URL Path (`/v1/v1/messages`)**:\n   - Ollama exposes the API at `/v1/messages`.\n   - If the client appends `/v1` again, the request targets `/v1/v1/messages`, which returns a 404 error.\n   - **Fix**: Set `ANTHROPIC_BASE_URL=http://localhost:11434` (remove the trailing `/v1`).\n\n2. **Model Name Mismatch (`qwen3.5:9b` vs `qwen3.5:4b`)**:\n   - Verify the model name in the client configuration matches the exact tag pulled in Ollama.\n\n3. **Network Loopback**:\n   - Ensure the client is accessing `localhost:11434` directly without proxying through a host gateway.",
+      "student_thinking": "Claude Code model loading failure with custom Ollama backend:\n1. Check URL path: Ollama server exposes `/v1/messages`. If client appends `/v1` again, request goes to `/v1/v1/messages` which 404s.\n2. Check model name: `qwen3.5:9b` vs `qwen3.5:4b`.\n3. Check network: localhost loopback."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.408,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.20 nov=0.38 steps=8",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.852,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 48.0,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.6,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "Extract fields from the Ollama JSON input:\n1. name: \"qwen3.5:9b\"\n2. family: \"qwen35\"\n3. params: \"9.0B\"\n4. quant: \"Q4_K_M\"\n5. context: 262144\n6. size_gb: 6550825550 bytes / 10^9 = 6.55082555 GB -> 6.6 GB (rounded to one decimal)\n7. tools: true\n8. vision: true"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.443,
+        "reasoning": 0.381,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.36 ids=0.67 recall=0.17",
+        "reasoning": "cov=0.14 nov=0.41 steps=7",
+        "formatting": "missing code block",
+        "conciseness": "0.66x"
+      },
+      "total": 0.395,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 45.6,
+      "student_answer": "### Quantized Optimizer Arithmetic\n\n**AdamW 8-bit** quantizes the first and second moment tensors of the optimizer state from 32-bit floating point ($\\mathbb{F}_{32}$) to 8-bit integers ($\\mathbb{F}_8$).\n\n$$ \\text{Memory Reduction} = \\frac{4 \\text{ bytes}}{0.5 \\text{ bytes}} = 8\\times $$\n\n### Quantitative Impact on 8 GB Budget\n\n| Optimizer | State Memory (per 2B model) |\n| :--- | :--- |\n| `adamw_torch` | $\\approx 2.6 \\text{ GB}$ |\n| `adamw_8bit` | $\\approx 0.32 \\text{ GB}$ |\n\n### Cost Assessment\n- **Memory**: Frees $\\approx 2.3 \\text{ GB}$ of usable VRAM, allowing full-batch gradient accumulation or larger context windows.\n- **Precision**: Reduces optimizer state precision from 32-bit float to 8-bit integer. For standard LoRA learning rates ($2 \\times 10^{-4}$), this introduces negligible numerical noise compared to the quantization noise already present in the model weights.",
+      "student_thinking": "AdamW 8-bit vs AdamW torch:\n1. AdamW 8-bit: Stores optimizer state in 8-bit quantized tensors.\n2. AdamW torch: Stores full 32-bit float state.\n3. Arithmetic:\n   - 32-bit float: 4 bytes per state entry.\n   - 8-bit quantized: 0.5 bytes per state entry.\n   - Reduction: 80% reduction in optimizer memory footprint.\n4. Cost: Slight increase in arithmetic precision loss (negligible for training dynamics), but massive reduction in peak VRAM headroom."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.422,
+        "reasoning": 0.34,
+        "formatting": 0.667,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.11",
+        "reasoning": "cov=0.15 nov=0.22 steps=7",
+        "formatting": "missing code block",
+        "conciseness": "0.40x"
+      },
+      "total": 0.508,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.9,
+      "student_answer": "### Execution Mechanics\n\n1. **What Executes**: The grammar parser is a compiled C/C++ shared library (`.so` / `.dll`) that executes during the parsing phase.\n2. **When Executes**:\n   - **Lazy Loading**: The grammar is not loaded until the first file in the tree is parsed.\n   - **Memory Footprint**: If a package contains multiple language grammars (e.g. `tree-sitter-rust` and `tree-sitter-go`), unused grammars occupy ~1.5–3.0 MB of resident memory until explicitly unloaded.\n\n### Controls\n\n- **Pure Python Fallback**: Use `tree-sitter-language-parser` to avoid C compilation and native library linking entirely.\n- **Explicit Unloading**: Call `parser.unload()` after processing to release C runtime memory.",
+      "student_thinking": "Tree-sitter language grammar execution:\n1. **What executes**: The grammar parser (written in C/C++) is compiled and loaded as a shared library (`.so` / `.dll`) into the Python process memory.\n2. **When executes**:\n   - **Lazy loading**: Tree-sitter does not load the grammar until the first file is parsed.\n   - **Memory footprint**: If a package contains unused language grammars (e.g. a package containing both Rust and Go grammars), unused ones remain resident in memory until unloaded.\n3. **Controls**:\n   - `tree-sitter-language-pack` (bundled C runtime).\n   - `tree-sitter-language-parser` (pure Python AST fallback, no C compilation)."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.527,
+        "reasoning": 0.294,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 recall=0.08",
+        "reasoning": "cov=0.05 nov=0.26 steps=4",
+        "formatting": "missing code block",
+        "conciseness": "0.47x"
+      },
+      "total": 0.511,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "### Verification Hierarchy\n\n1. **`make lint` & `make typecheck` (0.5s)**:\n   - Verifies formatting, syntax, and type safety.\n   - **Sufficient for**: syntax fixes, dependency updates.\n\n2. **`make test` (30s)**:\n   - Runs the full unit test suite.\n   - **Sufficient for**: logic fixes, bug fixes.\n\n3. **`make test-serial --test-serial-only` (15s)**:\n   - Runs only the state-machine and transactional tests.\n   - **Sufficient for**: state-transition fixes, transactional integrity.\n\n### What Makes Verification Insufficient\n\n- **`make test-serial --test-serial-only` without `make test`**:\n  - Skips tests for file locking, memory limits, and concurrent worker isolation.\n  - **Never run serial tests in isolation**; they must run alongside full suite tests to verify concurrency isolation.",
+      "student_thinking": "Cheapest sufficient verification:\n1. `make lint` and `make typecheck` (takes seconds).\n2. `make test` (takes tens of seconds).\n3. `make test-serial` (takes minutes, verify state machine).\n4. `make test-serial --test-serial-only` (verify state machine without full suite)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.309,
+        "reasoning": 0.352,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.06 recall=0.18",
+        "reasoning": "cov=0.11 nov=0.37 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.72x"
+      },
+      "total": 0.527,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.7,
+      "student_answer": "### Step 1: Quantize and Convert Adapter to GGUF\nRun the adapter through `llama-qlora` to convert the PyTorch weights into the GGUF format, which is the native binary format for `llama.cpp` and Ollama.\n\n```bash\nollama create qwen3.5:4b-lesson01 -f adapters/lesson_01/Modelfile\n```\n\n*(Note: If you are using `llama-qlora` directly, run `ollama create` after converting the adapter to GGUF.)*\n\n### Step 2: Tag and Verify\nTag the model with a descriptive name including the lesson number. This prevents confusion when running multiple micro-lessons.\n\n```bash\nollama pull qwen3.5:4b\nollama create qwen3.5:4b-lesson01 -f adapters/Modelfile\nollama run qwen3.5:4b-lesson01\n```\n\n### Step 3: Why This Pipeline?\n- **GGUF Format**: Ollama does not natively run PyTorch adapters. It requires GGUF, a quantized tensor format that reduces model size from ~4.6 GB to ~1.4 GB while maintaining 95%+ of raw precision.\n- **Modelfile Composition**: The `Modelfile` merges the base model's system prompt with your LoRA adapter, ensuring the model answers in your preferred persona immediately.",
+      "student_thinking": "Steps from trained adapter to Ollama:\n1. Convert PyTorch adapter to GGUF format using `llama.cpp` (`llama-qlora` or `llama-cli`).\n2. Tag the model in Ollama with a custom name (e.g. `qwen3.5:4b-lesson01`).\n3. Load and test in Ollama.\n4. Explain: GGUF is the native quantized format for local LLM inference."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.033,
+        "reasoning": 0.361,
+        "formatting": 0.875,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.10",
+        "reasoning": "cov=0.14 nov=0.34 steps=8",
+        "formatting": "missing bullets",
+        "conciseness": "0.60x"
+      },
+      "total": 0.38,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.5,
+      "student_answer": "### Risk Comparison\n\n| Format | Execution Risk | Schema Validation |\n| :--- | :--- | :--- |\n| **`pickle` (`.pkl`)** | **Critical**: Arbitrary code execution during deserialization. | None (arbitrary Python objects load) |\n| **`safetensors` (`.safetensors`)** | **None**: Pure binary data format. | Full (enforces dtype and shape tensors) |\n\n### Required Controls\n\n1. **Enforce `safetensors` Only**:\n   Configure your loader to raise an error if a pickle is encountered:\n   ```python\n   from safetensors import open as st_open\n\n   model = st_open(\"model.safetensors\")\n   ```\n2. **Validate Tensor Metadata**:\n   Inspect loaded tensor shapes and data types before feeding into the model:\n   ```python\n   for key, tensor in model.items():\n       assert isinstance(tensor, torch.Tensor)\n       assert tensor.dtype in (torch.float32, torch.float64)\n   ```\n3. **Disable `pickle` by Default**:\n   Explicitly disable `torch.load` in configuration files to prevent accidental pickle execution.",
+      "student_thinking": "Comparison of pickle vs safetensors weight loading:\n1. Pickle (`torch.load`):\n   - Arbitrary code execution: `pickle.loads()` executes arbitrary Python code during deserialization.\n   - Can execute shell commands, spawn processes, or read arbitrary files.\n   - No schema validation: arbitrary Python objects can be loaded.\n2. Safetensors:\n   - Pure data format: contains only raw tensor data and metadata (dtypes, shapes).\n   - No code execution.\n   - Can validate tensor shapes and dtypes before loading."
+    }
+  ]
+}

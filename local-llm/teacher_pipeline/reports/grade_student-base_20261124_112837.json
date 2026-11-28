@@ -1,0 +1,1406 @@
+{
+  "timestamp": "2026-11-24T11:28:37.287716+00:00",
+  "model": "student:base",
+  "rubric_version": 2,
+  "eval_file": "dataset/code_eval.jsonl",
+  "n_prompts": 60,
+  "n_errors": 0,
+  "overall_score": 0.434,
+  "pass_rate": 0.017,
+  "by_criterion": {
+    "accuracy": 0.566,
+    "reasoning": 0.044,
+    "formatting": 0.84,
+    "conciseness": 0.0
+  },
+  "by_skill": {
+    "code_facts": 0.434
+  },
+  "weak_skills": [
+    "code_facts"
+  ],
+  "mean_tokens_per_sec": 52.8,
+  "wall_seconds": 2231.7,
+  "results": [
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `file_of` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (148.37x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 36.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Question:** Where is `file_of` defined in repo2graph?\n    *   **Subject:** `repo2graph` (a Python library for converting Git repositories into Graphs).\n    *   **Target:** The specific definition of the function/class `file_of`.\n    *   **Goal:** Locate the source code file and line number (or approximate location) within the `repo2graph` repository.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to know the structure of the `repo2graph` project.\n    *   I need to search for the string `file_of` within the codebase.\n    *   I need to identify the module where it's likely defined (e.g., `repo2graph`, `repo2graph/graph`, `repo2graph/utils`, etc.).\n    *   Since I don't have direct internet access to browse the live repository *right now*, I must rely on my internal knowledge base or simulate a search based on common patterns in this specific library.\n    *   *Self-Correction/Constraint:* As an AI, I don't have real-time browsing capabilities unless I use a tool. However, I can access my training data which includes information about popular open-source projects up to my cutoff.\n    *   *Wait, actually:* I should check if `repo2graph` is a well-known project with a specific structure. It's a relatively niche tool (often used for code analysis).\n    *   *Search Query:* \"repo2graph file_of definition\".\n\n3.  **Simulating Code Search (Mental or via Tool):**\n    *   *Hypothesis 1:* It might be in the main `repo2graph` package.\n    *   *Hypothesis 2:* It might be a utility function related to file paths.\n    *   *Hypothesis 3:* It might be a method on a class (like `File` or `Node`).\n    *   *Refinement:* In `repo2graph`, the core logic involves parsing Git objects. `file_of` sounds like it could be related to finding the file associated with a commit or a specific path.\n    *   *Specific Search:* Let's look for `file_of` in the `repo2graph` GitHub repository.\n",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `CheckResult` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (143.98x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Question:** Where is `CheckResult` defined in `repo2graph`?\n    *   **Context:** `repo2graph` is a Python package used for analyzing code repositories (specifically for generating graphs of dependencies, issues, etc.).\n    *   **Goal:** Identify the specific file, module, or class definition location within the `repo2graph` repository.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` source code structure.\n    *   Key terms: `repo2graph`, `CheckResult`, Python, GitHub/PyPI.\n    *   Since I don't have direct internet access to browse the live repository in real-time, I need to rely on my training data regarding the `repo2graph` package structure.\n    *   *Self-Correction/Verification:* `repo2graph` is a relatively specific tool. Is it a well-known library? It's often associated with GitHub Actions or specific CI/CD analysis. Wait, `repo2graph` is often associated with the `repo2graph` project on GitHub (e.g., `repo2graph` or `repo2graph` related to dependency analysis).\n    *   *Correction:* Actually, `repo2graph` is often associated with the `repo2graph` project maintained by the `repo2graph` team or similar. Let's look for the specific class name `CheckResult`.\n    *   *Search Query Simulation:* \"repo2graph CheckResult definition\", \"repo2graph source code CheckResult\".\n\n3.  **Analyzing the `repo2graph` Repository Structure:**\n    *   The `repo2graph` package typically resides in a GitHub repository (e.g., `repo2graph` or `repo2graph` on GitHub).\n    *   Common Python package structure: `src/repo2graph/`, `repo2graph/`, etc.\n    *   The class `CheckResult` sounds like a data class used for storing the result of a check (likely a linting check, a dependency check, or a graph analysis check).\n    *   *Specific Search:* In the context of `repo2graph` (specifically the version used for analyzing GitHub repositories fo",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `run_demo` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (153.09x)"
+      },
+      "total": 0.65,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target: `run_demo` function.\n    *   Context: `repo2graph` repository/project.\n    *   Question: Where is it defined?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access my internal knowledge about the `repo2graph` project.\n    *   `repo2graph` is a Python library used to convert a Git repository into a graph database (usually Neo4j or similar) for visualization and analysis.\n    *   I need to locate the specific file and module where the `run_demo` function resides.\n    *   Since I don't have direct internet access to browse the live GitHub repo in real-time *right now*, I must rely on my training data regarding the structure of this specific project.\n    *   *Self-Correction/Verification:* Is `run_demo` a well-known public function in `repo2graph`? Yes, it's often used for quick testing or examples.\n    *   *Search Query Simulation:* \"repo2graph run_demo location\", \"repo2graph source code structure\".\n\n3.  **Recall/Identify Project Structure:**\n    *   `repo2graph` typically has a `src/` or `repo2graph/` directory.\n    *   It often has a `cli/` or `main/` entry point.\n    *   Demo functions are usually in a specific module, often named `demo.py`, `examples.py`, or within the main `__main__.py` or a dedicated `demo` module.\n    *   Looking at the standard structure of `repo2graph` (specifically the version around 0.1.x to 0.2.x which is common knowledge):\n        *   There is a `src/repo2graph/` directory.\n        *   There is often a `demo.py` file or a `cli.py` file that handles the demo logic.\n    *   Wait, let's look for the specific implementation. In many versions of `repo2graph`, there is a `run_demo` function often found in the `cli` module or a dedicated `demo` module.\n    *   Actually, a common entry point for demos is `src/repo2graph/demo.py` or similar.\n    *   Let's check the `main.py` or `cli.py`.\n    *   *Refinement:* In the `repo2gra",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_export_hardening.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.04,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.20",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (12.32x)"
+      },
+      "total": 0.218,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_export_hardening.py`\n    *   **Project:** `repo2graph` (a tool for converting Git repositories into GraphDB/Graphs, often used for dependency analysis, code search, etc.)\n    *   **Question:** What does this specific test file cover?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to find the source code or documentation for `repo2graph`.\n    *   I need to locate the specific file `tests/test_export_hardening.py`.\n    *   I need to read the content of that file to understand its purpose.\n    *   *Self-Correction/Constraint:* I don't have direct internet access to browse the live web in real-time to fetch the *latest* file content if it's not in my training data. However, I can rely on my training data regarding the `repo2graph` project structure and common testing patterns, or I can infer based on the name if it's a standard pattern.\n    *   *Wait, actually:* I need to check if this file exists in my training data. `repo2graph` is a relatively specific project (often associated with the `repo2graph` GitHub repo).\n    *   *Search Query Simulation:* \"repo2graph test_export_hardening.py\" or \"repo2graph export hardening test\".\n    *   *Context:* `repo2graph` is a tool that converts Git repositories into a graph database (often using Neo4j or similar). The term \"hardening\" in the context of export usually refers to security, performance, or data sanitization during the graph generation/export process.\n\n3.  **Investigating `repo2graph` Context:**\n    *   `repo2graph` is often used for dependency graph generation (e.g., `repo2graph` by the `repo2graph` team or similar tools like `repo2graph` in the `repo2graph` GitHub org).\n    *   Wait, there is a specific project called `repo2graph` (often associated with the `repo2graph` GitHub repo `https://github.com/repotool/repo2graph` or similar).\n    *   Actually, looking at the name `repo2graph`, ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `parse_ref` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (142.33x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.1,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target: `parse_ref` function.\n    *   Context: `repo2graph` (a Python package/tool used for converting Git repositories into graphs).\n    *   Question: Where is it defined? (File path, module, etc.)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the source code for the `repo2graph` package.\n    *   I need to search for the specific function name `parse_ref`.\n    *   I should check the main repository on GitHub (usually `repo2graph` or `repo2graph`-related projects).\n    *   Common locations for such utilities in Python projects: `src/`, `lib/`, `repo2graph/`, `core/`, `utils/`.\n\n3.  **Simulated Search (Mental or via tools):**\n    *   *Query:* `repo2graph parse_ref`\n    *   *Query:* `repo2graph source code`\n    *   *Query:* `repo2graph git repo graph`\n\n    *   *Knowledge Access:* `repo2graph` is a project often associated with the `repo2graph` GitHub organization or repository. The main repository is typically `repo2graph/repo2graph` or similar.\n    *   *Wait, actually:* There is a specific project called `repo2graph` often associated with the `repo2graph` GitHub organization (e.g., `repo2graph/repo2graph`). However, there's also a `repo2graph` project by `repo2graph` maintainers.\n    *   *Correction:* The most prominent `repo2graph` project is likely the one maintained by `repo2graph` (often linked to `repo2graph/repo2graph` or `repo2graph` on GitHub).\n    *   *Search:* Let's look for the specific file structure.\n    *   *Key File:* Usually, parsing logic for Git refs is in a `git` or `utils` module.\n    *   *Specific Function:* `parse_ref` sounds like it parses a Git reference (like `refs/heads/main` or `refs/tags/v1.0`).\n\n    *   *Refining the search:* I recall `repo2graph` is often used in the context of `repo2graph` (the tool for converting git repos to graphs).\n    *   *Wait, is there a specific `repo2graph` package?* Yes, `repo2graph` is ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `run_batch()` in `repo2graph/parsepool.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.817,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.45",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (37.16x)"
+      },
+      "total": 0.568,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.1,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a Python library for graphing code repositories).\n    *   **Specific Function:** `run_batch()` located in `repo2graph/parsepool.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the source code of `repo2graph`.\n    *   I need to locate the file `repo2graph/parsepool.py`.\n    *   I need to find the function `run_batch` within that file.\n    *   I need to understand the context (likely related to processing a pool of repositories, handling concurrency, or managing the parsing pipeline).\n\n3.  **Simulated Code Search (Mental or via tools):**\n    *   *Query:* `repo2graph parsepool.py run_batch`\n    *   *Context:* `repo2graph` is often used for generating knowledge graphs from code repositories (e.g., `repo2graph` by the `repo2graph` team, often associated with `repo2graph` or `repo2graph`-like tools).\n    *   *Wait, check version:* `repo2graph` has evolved. There is a `repo2graph` package on PyPI. There is also a `repo2graph` project often used in the context of `repo2graph` (the tool for graphing code).\n    *   *Correction:* The specific path `repo2graph/parsepool.py` suggests a specific version or a specific fork (likely the `repo2graph` project maintained by the `repo2graph` team, often associated with the `repo2graph` project on GitHub).\n    *   *Search Query:* `repo2graph parsepool.py`\n    *   *Result:* I recall `repo2graph` is a tool that parses repositories into a graph. `parsepool.py` usually handles the \"pool\" of repositories to be processed.\n    *   *Specifics:* `run_batch` likely iterates over a list of repositories (or tasks) and processes them in parallel or sequentially, managing the state of the pool.\n\n    *   *Wait, let's look for the actual code.* Since I don't have direct internet access to browse the live web in real-time, I must rely on my",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_bench_tables_match_artifacts.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.438,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.19",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (28.16x)"
+      },
+      "total": 0.397,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_bench_tables_match_artifacts.py`\n    *   **Context:** `repo2graph` (a Python library/tool for converting code repositories into knowledge graphs).\n    *   **Question:** What does this specific test file cover?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to find information about the `repo2graph` project.\n    *   I need to locate the specific test file mentioned.\n    *   I need to understand the purpose of the tests within that file.\n    *   *Self-Correction/Constraint:* As an AI, I don't have direct, real-time access to the *latest* git repository unless I browse or search my training data. However, I can infer based on the naming convention and the general architecture of `repo2graph` if I know how it works.\n    *   *Search Query:* \"repo2graph test_bench_tables_match_artifacts.py\", \"repo2graph test artifacts\", \"repo2graph test tables\".\n\n3.  **Simulated Search/Browsing (Mental Check):**\n    *   *Project:* `repo2graph` is a tool to convert code repositories into a knowledge graph (often using PyTorch, Neo4j, etc., or just graph structures).\n    *   *Test File Name:* `test_bench_tables_match_artifacts.py`.\n    *   *Keywords:* \"bench\", \"tables\", \"match\", \"artifacts\".\n    *   *Context:* In the context of `repo2graph`, \"artifacts\" usually refers to the output files (like the graph database, JSON files, or the actual graph structure) generated from the repository. \"Tables\" likely refers to the internal data structures or specific modules (like `bench` tables).\n    *   *Wait, is this a real file?* I need to verify if this file actually exists in the public `repo2graph` repository.\n    *   *Knowledge Retrieval:* `repo2graph` is often associated with the `repo2graph` GitHub repo (e.g., `github.com/...`).\n    *   *Specific Test:* The name suggests it tests the *matching* of *benchmarks* or *tables* against *artifacts*.\n    *   *Actually:* ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_doc_consistency.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.045,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.23",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (12.67x)"
+      },
+      "total": 0.22,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_doc_consistency.py`\n    *   **Project:** `repo2graph`\n    *   **Question:** What does this file cover? (i.e., what is its purpose, what tests does it contain, what functionality does it verify?)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to identify the `repo2graph` project. It's a tool for converting git repositories into knowledge graphs (often using PyTorch, Neo4j, or similar graph DBs).\n    *   I need to find the specific test file `tests/test_doc_consistency.py`.\n    *   I need to look at the content of that file (or its git history/README if I can't access the file directly).\n    *   *Self-Correction/Constraint:* As an AI, I don't have real-time browsing capabilities to access the *current* state of the repository unless I rely on my training data or search tools. However, based on the name `test_doc_consistency`, I can infer its purpose based on standard testing practices in this domain and specific knowledge about `repo2graph` if available in my training data.\n    *   *Search Query:* \"repo2graph test_doc_consistency.py\" or \"repo2graph documentation consistency test\".\n\n3.  **Simulated Search/Analysis (based on typical `repo2graph` architecture):**\n    *   `repo2graph` is often associated with the `repo2graph` project (maintained by various contributors, often related to `graphdb` or `pytorch`).\n    *   The name `test_doc_consistency` strongly suggests it checks if the documentation (docs) matches the code or if the generated documentation is consistent across different parts of the system.\n    *   *Wait, let's look closer at `repo2graph` specifically.* There is a specific project called `repo2graph` (often related to `repo2graph` on GitHub, e.g., `repo2graph` by `repo2graph` team or similar).\n    *   *Actually, there is a specific project:* `repo2graph` is a tool that converts a Git repository into a graph database (like ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `iter_chunks()` in `repo2graph/chunks.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.628,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.33 recall=0.47",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (44.68x)"
+      },
+      "total": 0.283,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.3,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a Python library for graphing code repositories).\n    *   **Specific Function:** `iter_chunks()` located in `repo2graph/chunks.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the source code of `repo2graph`.\n    *   Since I don't have direct internet access to browse the live web in real-time, I need to rely on my internal knowledge base regarding `repo2graph` (which is a relatively specific tool, often used for code analysis pipelines like in the `repo2graph` project by the `repo2graph` team or similar open-source projects).\n    *   *Self-Correction/Verification:* Wait, `repo2graph` isn't a widely known standard library like `requests` or `pandas`. It's likely a specific project, possibly related to the `repo2graph` GitHub project (often associated with `repo2graph` or `repo2graph`-like tools for code dependency graphs).\n    *   *Search Query Simulation:* \"repo2graph chunks.py iter_chunks\"\n    *   *Context:* `repo2graph` is often used to convert git repositories into graph databases (like Neo4j or ArangoDB). The `chunks` module likely handles breaking down large files or code blocks into manageable pieces for processing.\n\n3.  **Locating the Code (Mental Simulation):**\n    *   I recall `repo2graph` has a `chunks.py` file.\n    *   The function `iter_chunks` is typically used to iterate over a large string or file content in fixed-size blocks (chunks) to prevent memory issues or to process large files efficiently.\n    *   *Signature:* Usually takes a string (or iterable of strings), a chunk size, and potentially an overlap or a callback.\n    *   *Functionality:* It yields chunks of the input data.\n\n    *Wait, let's look for specific documentation or code structure.*\n    *   In the context of `repo2graph` (specifically the version used in the `repo2graph` ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_security_negative.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.08,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.40",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (26.87x)"
+      },
+      "total": 0.236,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_security_negative.py`\n    *   **Project:** `repo2graph` (a tool for converting repositories into knowledge graphs, likely related to dependency analysis or security scanning).\n    *   **Question:** What does this specific test file cover?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to find information about the `repo2graph` project.\n    *   I need to locate or analyze the content of `tests/test_security_negative.py`.\n    *   *Self-Correction/Constraint:* I don't have direct access to the live internet or a file system to browse the repository directly in real-time. I must rely on my training data.\n    *   *Search Query Simulation:* \"repo2graph test_security_negative.py\", \"repo2graph security tests\", \"repo2graph negative tests\".\n\n3.  **Evaluate Training Data:**\n    *   My internal knowledge base contains information about open-source projects up to my cutoff.\n    *   `repo2graph` is a known project (often associated with GitHub, specifically the `repo2graph` tool used for dependency graph generation or security analysis).\n    *   However, specific test file names like `test_security_negative.py` are very specific.\n    *   *Hypothesis:* This file likely tests *negative cases* related to *security* features within the `repo2graph` tool.\n    *   *Problem:* I cannot browse the actual repository to see the *exact* code. I need to be careful not to hallucinate specific test cases if I don't have the source text.\n    *   *Refinement:* I need to check if `repo2graph` is a well-known project where this file is documented or if it's a specific niche tool.\n    *   *Wait, check context:* Is there a `repo2graph` project that focuses on security? There is a `repo2graph` project (often used for generating dependency graphs from Git repos). There is also `repo2graph` in the context of `repo2graph` (a tool to visualize dependencies).\n    *   *Actu",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `evidence` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (145.40x)"
+      },
+      "total": 0.448,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.3,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a Python package for generating graph representations of repositories, often used for dependency analysis).\n    *   **Question:** Where is the `evidence` defined in the codebase?\n    *   **Goal:** Locate the specific module, class, or function definition related to `evidence` within the `repo2graph` repository.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the `repo2graph` source code.\n    *   Common locations for such definitions in Python packages:\n        *   `src/` or `repo2graph/` directory.\n        *   Look for files containing \"evidence\".\n        *   Check the `repo2graph` GitHub repository (usually `github.com/...`).\n    *   *Self-Correction/Refinement:* I don't have direct internet access to browse the live web in real-time for the *latest* commit, but I have access to my training data which includes knowledge of the `repo2graph` project structure up to my knowledge cutoff. I need to recall or simulate a search based on the typical structure of this project.\n    *   *Key Concept:* `repo2graph` is heavily associated with the `pygraphviz` or `networkx` visualization of dependencies, often involving `repo2graph`'s `repo2graph` CLI or `repo2graph` library. Wait, actually, `repo2graph` is often associated with the `repo2graph` project maintained by the `repo2graph` team (often linked to `repo2graph` or `repo2graph`-related tools like `repo2graph` for dependency analysis).\n    *   *Correction:* There is a specific project called `repo2graph` (often used for analyzing GitHub repos, e.g., `repo2graph` by `repo2graph` or similar). However, the most prominent `repo2graph` project is likely the one used for generating dependency graphs (like `repo2graph` from the `repo2graph` team or `repo2graph` in the context of `repo2graph` for `repo2graph` analysis).\n    *   *Wait, let's verify the specific project:* The user is as",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `normalize()` in `repo2graph/edgemeta.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.714,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.71",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (63.67x)"
+      },
+      "total": 0.521,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a Python library for converting GitHub repositories to a graph database format, specifically for Neo4j).\n    *   **Specific Function:** `normalize()`\n    *   **Location:** `repo2graph/edgemeta.py`\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the source code of `repo2graph`.\n    *   Since I don't have direct internet access to browse the live web in real-time, I need to rely on my internal knowledge base regarding this specific library's structure and common patterns, or simulate a search based on typical code structures if I recall the specific implementation details.\n    *   *Self-Correction/Verification:* `repo2graph` is a relatively specific tool. I need to recall or infer the behavior based on the naming convention (`edgemeta.py` suggests metadata processing for edges).\n    *   *Search Query Simulation:* \"repo2graph edgemeta normalize function\", \"repo2graph source code edgemeta.py\".\n\n3.  **Simulated Code Inspection (Mental or based on training data):**\n    *   I recall `repo2graph` is often used to convert GitHub repo data into a graph database schema (like Neo4j).\n    *   The `edgemeta.py` file likely handles the metadata associated with edges (relationships) in the graph.\n    *   The `normalize()` function usually deals with string cleaning, standardization, or deduplication of labels or properties.\n    *   *Specific Memory:* In `repo2graph`, there's often a need to normalize GitHub usernames, repository names, or relationship types to ensure consistency (e.g., converting \"user1\" to \"User1\" or removing special characters).\n    *   *Wait, let's look for the specific file path:* `repo2graph/edgemeta.py`.\n    *   In the `repo2graph` package (specifically the version used for the `repo2graph` CLI or the `repo2graph` library), there is a function that pr",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `render()` in `repo2graph/limits.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.125,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.12",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (38.42x)"
+      },
+      "total": 0.056,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting Git repositories into graphs, often used for dependency analysis or code visualization).\n    *   **Specific File:** `repo2graph/limits.py`.\n    *   **Specific Function:** `render()`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the source code for `repo2graph`.\n    *   I need to find the file `repo2graph/limits.py`.\n    *   I need to inspect the `render` function within that file.\n    *   *Self-Correction/Constraint:* As an AI, I don't have direct, real-time access to the *latest* version of a GitHub repository unless I search my training data or use a search tool. However, `repo2graph` is a specific Python package. I need to recall or infer based on common patterns in this specific library if I know it, or search for the specific file content.\n    *   *Search Query:* \"repo2graph limits.py render function\", \"repo2graph source code limits.py\".\n\n3.  **Simulating Code Search (Internal Knowledge):**\n    *   `repo2graph` is typically associated with the `repo2graph` project (often used for generating dependency graphs from git repos, sometimes linked with `graphite` or `depgraph` concepts).\n    *   Wait, there is a specific project called `repo2graph` maintained by the `repo2graph` team (often related to the `repo2graph` CLI or the `repo2graph` Python package).\n    *   Actually, looking at the structure `repo2graph/limits.py`, this sounds like a specific implementation detail.\n    *   *Correction:* There is a known project `repo2graph` (often associated with the `repo2graph` CLI tool, which is a fork of `git-repo2graph` or similar). However, the most prominent `repo2graph` in the Python ecosystem is often related to `repo2graph` (the CLI) or `repo2graph` (the library).\n    *   Let's check the most common `repo2graph` repository on GitHub",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `previous_state()` in `repo2graph/changelog.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.765,
+        "reasoning": 0.556,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.29",
+        "reasoning": "cov=0.40 nov=0.55 steps=9",
+        "formatting": "ok",
+        "conciseness": "padded (9.70x)"
+      },
+      "total": 0.683,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.4,
+      "student_answer": "In `repo2graph/changelog.py`, the `previous_state()` function is used to retrieve the state of a repository at a previous commit, typically to compare it with the current state and identify changes. This is essential for generating accurate change logs in the graph representation of the repository.\n\n### Purpose\nThe function:\n- Retrieves the repository state at a specified previous commit (e.g., the parent commit of the current one).\n- Enables comparison between states to detect and record changes.\n- Is commonly used during traversal of the git history to maintain a consistent view of the repository at each step.\n\n### Typical Signature\nWhile the exact implementation may vary depending on the version of repo2graph, the function typically has the following signature:\n\n```python\ndef previous_state(self, commit: str, **kwargs) -> State\n```\n\nWhere:\n- `self`: Instance of the class (often `Changelog` or similar).\n- `commit`: A string representing the commit hash or identifier.\n- `**kwargs`: Optional parameters for additional configuration (e.g., `--base`, `--depth`, etc.).\n- Returns: A `State` object representing the repository at that point in time.\n\n### Example Usage\n```python\ncurrent_state = self.state\nprevious_state = self.previous_state(commit=parent_commit_hash)\n```\n\n### Note\nThe exact implementation details may vary across versions of repo2graph. For the most accurate and up-to-date information, refer to the official source code or documentation at:\n- [repo2graph GitHub Repository](https://github.com/repodotcom/repo2graph)\n- [repo2graph Documentation](https://repo2graph.readthedocs.io/)\n\nIf you're working with a specific version, checking the changelog or source code directly is recommended to ensure compatibility with your environment.",
+      "student_thinking": "The user is asking about a specific function `previous_state()` in the `repo2graph/changelog.py` file from the repo2graph project. This is a Python project that converts git repositories into a graph representation for analysis.\n\nLet me think about what this function likely does based on the context of repo2graph:\n\n1. repo2graph is a tool that converts git repositories into graph representations\n2. The changelog.py file likely deals with generating change logs from git history\n3. `previous_state()` would logically refer to getting the state of a repository at a previous commit/point in time\n\nSince I don't have direct access to the repo2graph source code, I should provide accurate information based on my knowledge of the project. However, I should be careful not to make up incorrect details.\n\nLet me think about what this function likely does:\n- It probably retrieves the git state at a previous commit\n- It's used to track changes between states\n- It likely returns some representation of the repository state at a specific point\n\nThe signature would typically be something like:\n```python\ndef previous_state(self, commit: str, **kwargs) -> SomeStateObject\n```\n\nHowever, I should be honest that I don't have direct access to the current source code and provide the most accurate information I can based on my knowledge.\n\nActually, I should be more careful here. I don't have real-time access to the repo2graph source code, and I should not make up specific function signatures that might b"
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "In repo2graph, what is `repo2graph/scip.py` for?",
+      "scores": {
+        "accuracy": 0.048,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 recall=0.14",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (120.47x)"
+      },
+      "total": 0.221,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (an open-source tool for converting code repositories into a graph database).\n    *   **Specific File:** `repo2graph/scip.py`.\n    *   **Question:** What is this file for?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   *What is repo2graph?* It's a tool (often associated with the `repo2graph` project on GitHub) that converts Git repositories into a graph database (usually Neo4j or similar) to facilitate code search, dependency analysis, and other graph-based operations.\n    *   *What is SCIP?* SCIP (Source Code Information Package) is a format used by tools like `scip` (the tool itself) and `scip` (the format). It's a standard for representing source code information in a structured way, often used for code search and analysis.\n    *   *What is `repo2graph/scip.py`?* I need to check the repository structure of `repo2graph`.\n    *   *Search Query Strategy:* I need to recall or infer the purpose based on the naming convention and the context of the `repo2graph` project.\n    *   *Wait, is `repo2graph` the right project name?* There is a project called `repo2graph` (specifically `repo2graph` on GitHub, often associated with `repo2graph` by the `repo2graph` team). However, there's also `scip` as a format.\n    *   *Correction/Refinement:* Actually, the project is likely `repo2graph` (specifically the `repo2graph` package). But wait, `scip.py` suggests it deals with the **SCIP** format.\n    *   *Is `repo2graph` the tool that converts to SCIP?* Or does it *use* SCIP?\n    *   *Let's check the actual repository:* The `repo2graph` project (often associated with `repo2graph` on GitHub, e.g., `repo2graph/repo2graph`) is a tool to convert code repositories to a graph database.\n    *   *Wait, there is a specific project called `repo2graph` that uses SCIP.* Actually, the `repo2graph` project is often associated with the `scip` format for code search.\n    ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_properties.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.054,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.27",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (9.46x)"
+      },
+      "total": 0.224,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_properties.py`\n    *   **Project:** `repo2graph`\n    *   **Question:** What does this file cover? (i.e., what functionality is being tested?)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to find the `repo2graph` repository.\n    *   I need to locate the specific file `tests/test_properties.py`.\n    *   I need to read the content of that file to understand the test cases.\n    *   I need to understand the context of `repo2graph` (it's a tool for converting git repositories into a knowledge graph, usually using `git2python` or similar libraries).\n\n3.  **Search Execution (Simulated):**\n    *   *Query:* `repo2graph tests/test_properties.py`\n    *   *Expected Result:* I need to recall or infer based on the typical structure of such projects or access the actual file content if I have browsing capabilities. Since I am an AI, I rely on my training data which includes code repositories up to my cutoff.\n    *   *Repository Identification:* `repo2graph` is likely the `repo2graph` project on GitHub (e.g., `repo2graph/repo2graph` or similar).\n    *   *Wait, check specific version:* There might be multiple versions. The most common one is likely `repo2graph` (Python package).\n    *   *Search Query Refinement:* `repo2graph` `test_properties.py`\n\n4.  **Analyzing the Code (Mental Simulation/Pattern Matching):**\n    *   In many graph-related Python projects, `properties` usually refers to node or edge attributes.\n    *   In `repo2graph`, the core functionality involves extracting metadata from Git repositories (commits, authors, files, etc.) and mapping them to a graph structure (like Neo4j, NetworkX, etc.).\n    *   `test_properties.py` likely tests the logic that assigns attributes (properties) to nodes (e.g., `Commit`, `Author`, `Repository`) or edges (e.g., `Commit` -> `Commit`).\n    *   *Specifics:* Does it test the `Property` class? Does it tes",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "Which other repo2graph modules does `repo2graph/autobuild.py` import from?",
+      "scores": {
+        "accuracy": 0.9,
+        "reasoning": 0.0,
+        "formatting": 0.6,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.50",
+        "reasoning": "student produced no CoT",
+        "formatting": "unrequested code block",
+        "conciseness": "padded (58.98x)"
+      },
+      "total": 0.525,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.0,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph/autobuild.py`\n    *   **Question:** Which *other* `repo2graph` modules does it import from?\n    *   **Context:** This is a specific Python file within the `repo2graph` project (likely a GitHub repository). I need to identify the import statements within that file and filter them to exclude the module itself (`repo2graph`) and potentially non-repo2graph imports (though the question implies \"repo2graph modules\", I should clarify if it means submodules of the `repo2graph` package or just imports in general).\n    *   **Constraint:** I need to access the source code of `repo2graph`. Since I am an AI, I rely on my training data. I need to recall or search for the structure of the `repo2graph` project.\n\n2.  **Recall/Search Knowledge about `repo2graph`:**\n    *   `repo2graph` is a project that converts a Git repository into a graph database (often using Neo4j or similar) or builds a graph representation of the repo's structure (dependencies, commits, etc.).\n    *   The main entry point is often `repo2graph/cli.py` or `repo2graph/__init__.py`.\n    *   `autobuild.py` sounds like a script that automates the building of the graph (likely running the build process).\n    *   *Self-Correction/Verification:* Does `repo2graph` actually have an `autobuild.py` file?\n    *   *Search Query Simulation:* \"repo2graph/autobuild.py\"\n    *   *Result:* In the `repo2graph` GitHub repository (typically `github.com/repo2graph/repo2graph` or similar), there is often a `build.py` or `autobuild.py` script.\n    *   *Wait, actually:* The `repo2graph` project structure usually involves `repo2graph/autobuild.py` as a script to run the build process automatically (often used in CI/CD or local development).\n    *   *Let's look for the imports in that specific file.*\n\n    *   *Hypothesis:* The file `repo2graph/autobuild.py` likely imports from `repo2graph.build`, `repo2graph.cli`, `repo2graph.c",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `resolve_shas` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (100.44x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.3,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `resolve_shas` function.\n    *   **Context:** `repo2graph` (a Python library used for generating dependency graphs of repositories, often used in CI/CD pipelines or dependency analysis).\n    *   **Question:** Where is it defined in the codebase?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` repository structure.\n    *   I need to look for Python files containing `resolve_shas`.\n    *   Common locations for such utility functions in Python libraries: `src/`, `lib/`, `utils/`, `core/`, or specific modules like `graph/`, `analysis/`, `models/`.\n\n3.  **Simulated Search (Mental or via tool usage):**\n    *   *Query:* `repo2graph source code resolve_shas`\n    *   *Query:* `repo2graph python resolve_shas`\n    *   *Query:* `repo2graph repo2graph resolve_shas.py`\n\n    *   *Knowledge Access:* I know `repo2graph` is a project often associated with `repo2graph` on GitHub (specifically `repo2graph` by `repo2graph` or similar). Wait, actually, the main project is usually `repo2graph` (often `repo2graph` is a fork of `repo2graph` or `repo2graph` is the name of the tool).\n    *   *Correction:* The most prominent `repo2graph` project is `repo2graph` (often associated with `repo2graph` on GitHub, e.g., `repo2graph` by `repo2graph` or `repo2graph` by `repo2graph`). Actually, the specific repo is `repo2graph` (often `repo2graph` is the name of the tool).\n    *   *Wait, let's verify the exact repo name.* The tool is often referred to as `repo2graph`. The GitHub repo is `repo2graph` (or `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? No, it's `repo2graph` by `repo2graph`? N",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `grammar_fingerprint()` in `repo2graph/parse.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.879,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.64",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (58.73x)"
+      },
+      "total": 0.595,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a Python tool for converting repositories into graph databases, specifically for LLMs).\n    *   **Specific Function:** `grammar_fingerprint()`.\n    *   **Location:** `repo2graph/parse.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the source code of `repo2graph`.\n    *   I need to locate the file `repo2graph/parse.py`.\n    *   I need to find the function `grammar_fingerprint`.\n    *   I need to understand its purpose based on the code and documentation.\n    *   I need to extract the function signature.\n\n3.  **Simulated Code Search (Mental or via tools):**\n    *   *Query:* `repo2graph parse.py grammar_fingerprint`\n    *   *Context:* `repo2graph` is often associated with the `repo2graph` package on PyPI or GitHub (specifically `repo2graph` by the `repo2graph` team, often linked to `llm` or `code` analysis).\n    *   *Wait, check version:* There might be multiple versions or forks. The most common active version is likely the one on GitHub (e.g., `repo2graph` by `repo2graph` or `repo2graph` by `huggingface`/`llm` context). Actually, looking at the context of `repo2graph`, it's often associated with the `repo2graph` library used for graphing code.\n    *   *Correction:* There is a specific `repo2graph` package often used in the context of the `llm` ecosystem (e.g., `repo2graph` by `repo2graph` or `repo2graph` by `huggingface` team).\n    *   *Search:* I need to look for the specific implementation in the repository `repo2graph` (likely `https://github.com/repo2graph/repo2graph` or similar).\n    *   *Wait, actually:* The specific file `repo2graph/parse.py` suggests a specific package structure. Let's look for the `repo2graph` package on GitHub.\n    *   *Key realization:* `repo2graph` is often a wrapper around `langchain` or `llama-index` for parsing code. How",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `_WriterError` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.8,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (123.10x)"
+      },
+      "total": 0.56,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target: `_WriterError`\n    *   Context: `repo2graph` (a Python package/tool for converting Git repositories into graphs).\n    *   Question: Where is it defined?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` repository structure.\n    *   I need to look for the specific class name `_WriterError`.\n    *   I need to identify the file path within the source code.\n\n3.  **Search/Verification (Mental or via tools):**\n    *   *Query:* `repo2graph _WriterError`\n    *   *Context:* `repo2graph` is often used with `git` and `graphviz` or similar graphing libraries. It handles writing data to files (like JSON, DOT, etc.).\n    *   *Common Pattern:* In many Python projects, custom exceptions are defined in `__init__.py` or specific error modules.\n    *   *Specific Knowledge:* I know `repo2graph` has a `repo2graph` package.\n    *   *Search in Codebase:* I need to locate the file where `_WriterError` is imported or defined.\n    *   *Recall:* In `repo2graph`, there is often a `writer.py` or `io.py` module.\n    *   *Refinement:* Wait, `repo2graph` is a relatively new or specific tool. Let's look at the standard structure.\n    *   *Actually:* `repo2graph` is often associated with the `repo2graph` package on PyPI.\n    *   *Search:* `repo2graph` source code on GitHub (e.g., `github.com/...`).\n    *   *Key File:* `repo2graph/writer.py` or `repo2graph/io.py`?\n    *   *Correction:* Looking at the `repo2graph` repository (specifically `repo2graph` by `github.com/...` or similar).\n    *   *Wait, is it `repo2graph` or `graphrepo`?* The user said `repo2graph`.\n    *   *Let's check the `repo2graph` GitHub repo:* `https://github.com/...` (Wait, `repo2graph` is often `github.com/...`? No, actually `repo2graph` is often associated with `github.com/...`? Let's assume the standard `repo2graph` package).\n    *   *Actually, there is a `repo2graph` pa",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `default_embedder()` in `repo2graph/embed.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.538,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=0.50 recall=0.62",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (52.16x)"
+      },
+      "total": 0.442,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.6,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a Python library for converting code repositories into graph representations).\n    *   **Specific Component:** `default_embedder()` function.\n    *   **Location:** `repo2graph/embed.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Information Retrieval Strategy (Internal Knowledge & Search Simulation):**\n    *   I need to recall or infer the functionality of `repo2graph` based on its documentation and code structure.\n    *   `repo2graph` is often used for code analysis, specifically converting code into a graph (nodes = files/classes, edges = dependencies).\n    *   The `embed.py` module likely handles node embeddings (vector representations) for the graph nodes.\n    *   `default_embedder()` suggests a fallback or standard embedding method used when no specific embedder is configured.\n    *   I need to find the specific function definition in the source code (or a reliable snapshot of it) to get the exact signature and behavior.\n\n3.  **Knowledge Retrieval (Mental Check):**\n    *   `repo2graph` is built on top of `networkx` and often uses `sentence-transformers` or `sentence-transformers`-like embeddings for code nodes (e.g., `code2vec`, `codebert`, or `sentence-transformers` models like `all-MiniLM-L6-v2`).\n    *   Wait, `repo2graph` has a specific version history. The `embed.py` file is part of the `repo2graph` package.\n    *   Let's look for the specific implementation details.\n    *   *Self-Correction/Refinement:* In recent versions of `repo2graph` (specifically around v0.1.x or v0.2.x), the embedding strategy is crucial.\n    *   The `default_embedder` is usually a function that returns an embedding model or a function to generate embeddings.\n    *   Actually, looking at the code structure of `repo2graph` (specifically `repo2graph/embed.py`):\n        *   It often uses `sentence-transformers` for code embeddings.\n        *  ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `paths` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.563,
+        "formatting": 0.6,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "cov=0.36 nov=0.65 steps=6",
+        "formatting": "unrequested code block",
+        "conciseness": "padded (124.96x)"
+      },
+      "total": 0.508,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "In the `repo2graph` Python package, the `paths` variable or function is typically defined within the main module or a dedicated module related to dependency resolution. Here's how you can locate it:\n\n### 1. Check the Main Module\nLook for `paths` in the following locations:\n\n```python\n# repo2graph/__init__.py\n# repo2graph/paths.py\n```\n\n### 2. Search the Source Code\nUse the following commands to search for `paths` in the repository:\n\n```bash\n# Using grep\ngrep -r \"paths\" repo2graph/ --include=\"*.py\"\n\n# Using find\nfind repo2graph/ -name \"*.py\" -exec grep -l \"paths\" {} \\;\n```\n\n### 3. Check Documentation\nRefer to the project's documentation or README for more context:\n\n```bash\n# View the README\ncat README.md\n\n# Check the docs folder\nls docs/\n```\n\n### 4. Inspect the Package Structure\n```bash\n# List the package structure\ntree repo2graph/\n```\n\n### 5. Check the `__init__.py` File\n```python\n# repo2graph/__init__.py\nfrom .paths import paths  # or similar import\n```\n\n### 6. Use the `repo2graph` CLI\n```bash\n# Install repo2graph\npip install repo2graph\n\n# Run the CLI to see available options\nrepo2graph --help\n```\n\n### 7. Check the GitHub Repository\n```bash\n# View the repository on GitHub\nhttps://github.com/your-repo2graph-repo\n\n# Search for `paths` in the code\n```\n\n### 8. Check the `paths.py` File\nIf `paths.py` exists, it likely contains the definition:\n\n```python\n# repo2graph/paths.py\npaths = [...]  # or some function definition\n```\n\n### 9. Check the `dependencies` Module\n```python\n# repo2graph/dependencies.py\n```\n\n### 10. Check the `graph` Module\n```python\n# repo2graph/graph.py\n```\n\n### 11. Check the `utils` Module\n```python\n# repo2graph/utils.py\n```\n\n### 12. Check the `config` Module\n```python\n# repo2graph/config.py\n```\n\n### 13. Check the `models` Module\n```python\n# repo2graph/models.py\n```\n\n### 14. Check the `services` Module\n```python\n# repo2graph/services.py\n```\n\n### 15. Check the `api` Module\n```python\n# repo2graph/api.py\n```\n\n### 16. Check the `cli` Module\n```python\n# repo2",
+      "student_thinking": "The user is asking about where `paths` is defined in the repo2graph project. This is a specific question about the repo2graph Python package.\n\nLet me think about what I know about repo2graph:\n\n1. repo2graph is a Python package that helps with generating dependency graphs from Python repositories\n2. It's typically used for analyzing Python package dependencies\n3. The `paths` variable/function is likely related to dependency resolution or graph traversal\n\nWithout access to the actual codebase, I need to be careful about providing accurate information. However, I can provide helpful guidance on how to find this information:\n\n1. The `paths` variable/function is likely in the main module or a specific module related to dependency resolution\n2. It could be in `repo2graph/` directory\n3. Common locations would be in `repo2graph/__init__.py` or in a `paths.py` file\n\nLet me provide a helpful answer that guides them to find the information themselves while being honest about limitations."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_framework_edges.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.036,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.18",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (10.49x)"
+      },
+      "total": 0.216,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_framework_edges.py`\n    *   **Project:** `repo2graph` (a tool for converting code repositories into graphs).\n    *   **Question:** What does this specific test file cover?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access information about the `repo2graph` project.\n    *   I need to locate the specific file `tests/test_framework_edges.py` within the repository structure.\n    *   I need to read the content of that file to understand its purpose.\n    *   *Self-Correction/Constraint:* As an AI, I don't have direct, real-time access to the live internet or the ability to browse the live GitHub repository *unless* I use my internal knowledge base or search tools. However, my training data includes information up to my cutoff, and I can search for specific file contents if they are well-documented or if I can infer from the project's structure.\n    *   *Search Query:* \"repo2graph tests/test_framework_edges.py\" or \"repo2graph test_framework_edges\".\n\n3.  **Simulated Search/Verification (Internal Knowledge):**\n    *   `repo2graph` is a Python package (often associated with `repo2graph` on PyPI or GitHub).\n    *   It typically involves graphing code dependencies (like `repo2graph` on GitHub: `repo2graph/repo2graph`).\n    *   The naming convention `test_framework_edges.py` suggests it tests the *edge* processing logic within the framework, likely related to how edges (dependencies/relationships) are created, filtered, or validated.\n    *   *Wait, let's look for specific details.*\n    *   In the context of `repo2graph` (specifically the version often associated with `repo2graph` on GitHub, which might be `repo2graph` or `repo2graph`-related tools like `repo2graph` by `repo2graph` team), there are specific test files.\n    *   Actually, looking at the `repo2graph` repository (often `repo2graph` on GitHub, maintained by `repo2graph` or simi",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_language_coverage.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.17,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 ids=0.00 recall=0.18",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (10.73x)"
+      },
+      "total": 0.276,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_language_coverage.py`\n    *   **Project:** `repo2graph`\n    *   **Question:** What does this file cover? (i.e., what functionality is being tested?)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to find information about the `repo2graph` project.\n    *   I need to locate the specific test file `tests/test_language_coverage.py`.\n    *   I need to read the content of that file to understand its purpose.\n    *   *Self-Correction/Constraint:* I don't have direct internet access to browse the live repository in real-time right now. I must rely on my internal knowledge base or simulate the search based on common patterns in open-source projects if specific details aren't in my training data. However, `repo2graph` is a specific GitHub project (likely related to graphing repositories, possibly for visualization or analysis).\n    *   *Wait, check internal knowledge:* `repo2graph` is a tool that converts GitHub repositories into a graph database (like Neo4j) or generates visualizations. It's often associated with the `repo2graph` GitHub repository (e.g., `repo2graph/repo2graph`).\n    *   *Search Query Simulation:* \"repo2graph test_language_coverage.py\" or \"repo2graph language coverage test\".\n\n3.  **Simulating the Search/Analysis (Mental Sandbox):**\n    *   *Project Context:* `repo2graph` usually deals with parsing code, extracting entities (files, functions, classes), and building a graph.\n    *   *Language Coverage:* This implies testing how well the tool handles different programming languages. It likely tests the language detection, parsing, or extraction of metadata for various languages (Python, JavaScript, Go, Rust, etc.).\n    *   *File Content:* I need to recall or infer the content of `tests/test_language_coverage.py`.\n    *   *Hypothesis:* This file likely contains unit tests or integration tests verifying that the `repo2graph` pipe",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `cmd_verify_rag` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (124.56x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `cmd_verify_rag` function/command.\n    *   **Context:** `repo2graph` repository (a tool for converting code repositories into knowledge graphs).\n    *   **Question:** Where is it defined? (File path, module, etc.)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the codebase of `repo2graph`.\n    *   I know `repo2graph` is a Python project.\n    *   I need to look for CLI entry points or command-line interfaces (CLI) within the code.\n    *   The function name `cmd_verify_rag` suggests it's related to the \"Verify\" command for the \"RAG\" (Retrieval-Augmented Generation) pipeline.\n    *   I should search for `cmd_verify_rag` in the source code.\n\n3.  **Simulated Search (Mental or via tools):**\n    *   *Query:* `repo2graph` source code search for `cmd_verify_rag`.\n    *   *Expected Structure:* Usually, CLI commands in Python projects are defined in `src/` or `main/` directories, often within a `cli.py` or `commands.py` file, or inside a specific module like `rag/`.\n    *   *Recent Changes:* `repo2graph` has evolved. There's a `repo2graph` package and potentially a `repo2graph-cli`.\n    *   *Specific File:* In the `repo2graph` repository (specifically the version handling the RAG pipeline), there is often a specific module for verification.\n    *   *Key File:* `repo2graph/commands/verify.py` or similar? Or maybe `repo2graph/cli.py`.\n    *   *Wait, let's look at the actual repository structure.*\n    *   The `repo2graph` project typically has a structure like:\n        *   `repo2graph/`\n            *   `src/`\n                *   `repo2graph/`\n                    *   `cli.py`\n                    *   `commands/`\n    *   *Search Result:* I recall seeing `cmd_verify_rag` in the context of the `repo2graph` CLI.\n    *   *Specific Location:* It is likely defined in `repo2graph/commands/verify.py` or `repo2graph/cli.py`.\n    *   *Correction:* In the `rep",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `remote_freshness` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (125.70x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Question:** Where is `remote_freshness` defined in `repo2graph`?\n    *   **Subject:** `repo2graph` (a tool for converting Git repositories into graphs, often used for dependency analysis).\n    *   **Target:** The specific definition/location of the variable/attribute `remote_freshness`.\n    *   **Goal:** Provide the file path or code location within the `repo2graph` repository.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to know what `repo2graph` is. It's a Python package (often associated with `repo2graph` or `repo2graph`-like tools, specifically `repo2graph` by the `repo2graph` team or similar projects like `repo2graph` used in the `repo2graph` GitHub repo).\n    *   Wait, there is a specific project called `repo2graph` (often associated with the `repo2graph` GitHub organization or the `repo2graph` package on PyPI).\n    *   Actually, the most prominent `repo2graph` project is likely the one maintained by the `repo2graph` team (often linked to the `repo2graph` GitHub repo: `https://github.com/repo2graph/repo2graph`).\n    *   However, `repo2graph` is often a wrapper around `git` and `graph` libraries.\n    *   I need to search for the string `remote_freshness` within the context of this project.\n\n3.  **Search Execution (Simulated):**\n    *   *Query:* `site:github.com repo2graph \"remote_freshness\"`\n    *   *Query:* `site:pypi.org repo2graph \"remote_freshness\"`\n    *   *Query:* `site:github.com repo2graph \"freshness\"`\n\n    *   *Result Analysis:*\n        *   The `repo2graph` project (specifically the one often used for dependency analysis, e.g., `repo2graph` by `repo2graph` or similar) usually deals with Git history.\n        *   There is a specific configuration or attribute related to freshness.\n        *   Let's look at the `repo2graph` source code structure.\n        *   Common locations for configuration/attributes in Python projects: `src/repo2graph/",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `verify_rag` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.7,
+        "reasoning": 0.462,
+        "formatting": 0.6,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.50",
+        "reasoning": "cov=0.27 nov=0.65 steps=3",
+        "formatting": "unrequested code block",
+        "conciseness": "padded (24.40x)"
+      },
+      "total": 0.551,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.7,
+      "student_answer": "I don't have direct access to browse the `repo2graph` repository in real-time, so I can't pinpoint the exact location of `verify_rag` for you. However, here's how you can find it:\n\n### Recommended Search Methods\n\n1. **Use Git Search**\n   ```bash\n   git grep \"verify_rag\" repo2graph\n   ```\n\n2. **Search in Source Files**\n   ```bash\n   grep -r \"verify_rag\" repo2graph --include=\"*.py\"\n   ```\n\n3. **Check Common Locations**\n   - Look in `src/`, `tests/`, or `utils/` directories\n   - Check for files related to RAG (Retrieval-Augmented Generation) modules\n   - Search in `verify_*.py` or `*_verify.py` files\n\n4. **Check Documentation**\n   - Review the `README.md` or `docs/` folder\n   - Look for API documentation or changelog entries\n\n5. **Check GitHub Repository**\n   - Visit the official repo2graph repository on GitHub\n   - Use the search bar to find `verify_rag`\n\n### Example Search Command\n```bash\ncd repo2graph\nfind . -name \"*.py\" -exec grep -l \"verify_rag\" {} \\;\n```\n\nIf you're working with a specific version of `repo2graph`, the location might vary depending on the version. For the most accurate information, check the repository's latest commit history or documentation.\n\nWould you like help with a specific version of `repo2graph` or a particular aspect of the `verify_rag` function?",
+      "student_thinking": "The user is asking about where a function called `verify_rag` is defined in the repo2graph repository. This appears to be a question about a specific codebase.\n\nHowever, I don't have access to browse the actual repo2graph repository in real-time. This is a common pattern where users ask about specific code locations in a repository.\n\nLet me think about what I know:\n- repo2graph is a project that helps with graph-based representation of code repositories\n- It's typically used for analyzing code structure and relationships\n- The function name `verify_rag` suggests it might be related to verifying RAG (Retrieval-Augmented Generation) functionality\n\nSince I don't have direct access to browse the repository, I should be honest about this limitation while providing helpful guidance on how they could find this information themselves.\n\nActually, I should be careful here - I don't have access to browse external repositories in real-time. I should be honest about this limitation rather than making up information."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `function_parameters()` in `repo2graph/frameworks.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.907,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.72",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (52.38x)"
+      },
+      "total": 0.608,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting code repositories into knowledge graphs).\n    *   **Specific Function:** `function_parameters()` located in `repo2graph/frameworks.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   I need to access my internal knowledge about `repo2graph`.\n    *   `repo2graph` is a project that helps visualize code relationships (often using Neo4j or similar graph databases).\n    *   It has a specific structure: `repo2graph/frameworks.py` is likely a core module.\n    *   *Self-Correction/Constraint Check:* I don't have direct, real-time access to the latest GitHub repository code of `repo2graph` (unless I search my training data). My training data cuts off, and I need to be careful about hallucinating specific function signatures if they are very recent or niche. However, `repo2graph` is a well-known open-source project (often associated with the `repo2graph` GitHub repo).\n    *   *Search Strategy (Mental):* I need to recall or infer the function based on the naming convention and the typical logic of such tools.\n    *   *Wait, actually:* I need to check if this function exists in the version I know. In many versions of `repo2graph`, there are utility functions for extracting metadata from code (like function signatures, parameters, etc.) to build the graph.\n    *   *Specific Check:* Is `function_parameters()` actually in `frameworks.py`?\n    *   *Refinement:* In `repo2graph`, the core logic often involves parsing code (AST) to find relationships. `function_parameters` likely extracts the arguments of a function definition to create edges or nodes in the graph.\n    *   *Crucial Detail:* I need to be precise. If I can't find the exact code in my training data, I must state that limitation or provide the best available information based on the project's documentation and",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_audit_cli.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.043,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.22",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (11.72x)"
+      },
+      "total": 0.22,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_audit_cli.py`\n    *   **Project:** `repo2graph`\n    *   **Question:** What does this file cover? (i.e., what functionality is being tested?)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to identify the `repo2graph` project. It's a tool for converting Git repositories into graphs (often for dependency analysis, knowledge graphs, etc.).\n    *   I need to locate the specific test file `tests/test_audit_cli.py`.\n    *   I need to understand the context of \"audit\" in this project. Usually, \"audit\" implies security scanning, dependency checking, or graph integrity checks.\n    *   *Self-Correction/Constraint:* I don't have direct access to browse the live internet or download the specific repository in real-time. I must rely on my training data. However, my training data might not contain the *exact* contents of a specific test file unless it's a well-known or documented part of the project's history.\n    *   *Search Query Simulation:* \"repo2graph test_audit_cli.py\", \"repo2graph audit cli\", \"repo2graph dependency audit\".\n\n3.  **Synthesizing Information (based on general knowledge of `repo2graph`):**\n    *   `repo2graph` is primarily a tool for converting Git repositories into a knowledge graph (often using `git2` or `graph-tool`).\n    *   It has a CLI (Command Line Interface).\n    *   \"Audit\" in the context of a graph tool usually refers to checking for:\n        *   Graph integrity (cycles, disconnected nodes).\n        *   Dependency issues (missing tags, broken references).\n        *   Security vulnerabilities (if it integrates with tools like `snyk` or `trivy`, but `repo2graph` is usually about the *structure*).\n        *   *Crucial realization:* In the context of `repo2graph`, the \"audit\" feature is often related to **dependency analysis** or **graph validation**. Specifically, it might check if the generated graph accurately reflects",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `cmd_verify_rag()` in `repo2graph/cli_embed.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.66,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=0.67 recall=0.65",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (54.39x)"
+      },
+      "total": 0.497,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.5,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a tool for converting code repositories into graphs).\n    *   **Specific Function:** `cmd_verify_rag`.\n    *   **Location:** `repo2graph/cli_embed.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the source code of `repo2graph`.\n    *   I need to locate the file `repo2graph/cli_embed.py`.\n    *   I need to find the function `cmd_verify_rag` within that file.\n    *   I need to understand the context (RAG = Retrieval-Augmented Generation).\n    *   I need to check the current version of `repo2graph` (likely the latest stable or the one currently in the repo on GitHub).\n\n3.  **Simulated Code Search (Mental or via tool):**\n    *   *Query:* `repo2graph cli_embed.py cmd_verify_rag`\n    *   *Context:* `repo2graph` is often used for embedding code into a knowledge graph for LLMs. The `cli_embed.py` file likely handles command-line arguments related to embedding and verification.\n    *   *Search Result:* I need to look for the actual code. Since I don't have direct internet access to browse the live web in real-time for the *exact* latest commit, I must rely on my training data regarding the `repo2graph` project structure or search for documentation/commit history if available in my knowledge base.\n    *   *Correction:* I am an AI, I don't have real-time browsing unless enabled. However, I can search my internal knowledge base for `repo2graph` code patterns.\n    *   *Wait:* `repo2graph` is a relatively new project (often associated with the `repo2graph` GitHub repo). The specific function `cmd_verify_rag` might be a specific utility added in a specific version.\n    *   *Hypothesis:* This function likely verifies the quality of the RAG pipeline (e.g., checking if embeddings are generated, if the graph is built, or if the retrieval is working correctly before runnin",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_output_schema.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.042,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.21",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (12.04x)"
+      },
+      "total": 0.219,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_output_schema.py`\n    *   **Project:** `repo2graph` (a tool for converting git repositories into knowledge graphs).\n    *   **Question:** What does this specific test file cover?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access information about the `repo2graph` project.\n    *   I need to locate the specific file `tests/test_output_schema.py` within the repository.\n    *   I need to understand the context of \"output schema\" in `repo2graph`.\n    *   *Self-Correction/Constraint:* As an AI, I don't have real-time browsing capabilities to access the live GitHub repository directly *unless* I use my internal knowledge base or search tools. However, my training data includes information up to my cutoff, and I can infer based on the project's documentation and typical test structures if the file name is standard.\n    *   *Wait, I need to be careful:* If I don't have direct access to the *current* state of the repository, I must rely on my training data regarding the project's structure and common practices, or state that I cannot browse live.\n    *   *Actually, I can search my internal knowledge:* `repo2graph` is a project often associated with the `repo2graph` GitHub repository (likely `repo2graph` by `repo2graph` team or similar).\n    *   *Search Query:* \"repo2graph test_output_schema.py\" or \"repo2graph output schema test\".\n\n3.  **Synthesizing Knowledge about `repo2graph`:**\n    *   `repo2graph` converts git repositories into a graph database (usually Neo4j or similar).\n    *   It generates a schema (graph schema) based on the repository's content (commits, files, authors, etc.).\n    *   The \"output schema\" likely refers to the schema definition generated for the graph database (e.g., Cypher schema, JSON schema, or the internal representation of nodes/relationships).\n\n4.  **Analyzing the specific file name:** `tests/test_output_s",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `ConfigError` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (142.63x)"
+      },
+      "total": 0.65,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target: `ConfigError` class.\n    *   Context: `repo2graph` (a Python package used for converting Git repositories into a graph database format).\n    *   Question: Where is it defined in the repository?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to identify the specific file and module path within the `repo2graph` source code.\n    *   Since I don't have direct access to the live internet to browse the *current* state of the repository in real-time, I need to rely on my training data regarding the `repo2graph` package structure and common patterns in Python projects, or search for specific file paths if I have access to search tools (which I don't in this specific thought-block context, but I can simulate the search based on known documentation or code structures).\n    *   *Correction:* As an AI, I should check if I have access to the repository's code structure in my training data or if I need to guide the user to find it. However, usually, for specific library questions, I can recall the standard structure.\n    *   *Search Query (Mental):* \"repo2graph ConfigError definition\", \"repo2graph source code structure\".\n\n3.  **Analyzing `repo2graph` Structure:**\n    *   `repo2graph` is typically a CLI tool and library.\n    *   It often uses `click` for CLI, `pygraph` or `networkx` for graphing, and `gitpython` for git operations.\n    *   Configuration errors are usually handled in the configuration loading or initialization logic.\n    *   Common location for exceptions in Python CLI tools: `repo2graph/cli.py`, `repo2graph/config.py`, or `repo2graph/__init__.py`.\n\n4.  **Specific Search/Verification (Simulated):**\n    *   Let's look for the specific class name `ConfigError`.\n    *   In the `repo2graph` GitHub repository (typically `repo2graph/repo2graph` or similar), there is often a `config` module.\n    *   Wait, `repo2graph` has evolved. There is `repo2graph`",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `parse_ref()` in `repo2graph/fetch.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.867,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.60",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (72.01x)"
+      },
+      "total": 0.59,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting Git repositories into graph databases, often used for dependency analysis).\n    *   **Specific Function:** `parse_ref()` located in `repo2graph/fetch.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   I need to access the source code of `repo2graph`. Since I don't have direct internet access to browse the live web in real-time, I rely on my training data which includes code snippets and documentation up to my knowledge cutoff. However, specific internal implementation details of a specific Python package like `repo2graph` might be niche.\n    *   *Self-Correction/Refinement:* `repo2graph` is often associated with the `repo2graph` package on PyPI. I need to recall or infer the behavior based on common Git operations in this context.\n    *   *Search Strategy (Mental):* Look for `repo2graph/fetch.py` in the context of Git operations. Usually, `parse_ref` deals with Git references (branches, tags, commits).\n    *   *Key Context:* `repo2graph` is used to build dependency graphs. It needs to know *what* to fetch (e.g., `main`, `v1.0`, `HEAD`).\n    *   *Function Name:* `parse_ref`.\n    *   *File:* `repo2graph/fetch.py`.\n\n3.  **Simulating Code Lookup (based on typical patterns in `repo2graph`):**\n    *   In `repo2graph`, the `fetch` module is responsible for retrieving data from Git repositories.\n    *   `parse_ref` likely takes a string reference (like \"main\", \"HEAD\", \"v1.0\") and converts it into a format usable by Git operations (like `git fetch` or `git show`).\n    *   It often resolves short names to full names or handles special cases like `HEAD`.\n    *   *Wait, let's be more specific.* I recall `repo2graph` uses `gitpython` or similar.\n    *   *Specific Implementation:* In `repo2graph/fetch.py`, there is a function `parse_ref`.\n    *   *Signature:* Usually",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `format_explain_retrieval()` in `repo2graph/explain.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.974,
+        "reasoning": 0.53,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.92",
+        "reasoning": "cov=0.33 nov=0.59 steps=8",
+        "formatting": "ok",
+        "conciseness": "padded (16.99x)"
+      },
+      "total": 0.771,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 51.5,
+      "student_answer": "In `repo2graph/explain.py`, the `format_explain_retrieval()` function is used to format the output of retrieval results—typically code snippets, explanations, or metadata—into a human-readable or structured form. It plays a key role in the explanation pipeline by transforming raw retrieval data into a format suitable for display or further processing.\n\n### Function Signature\n\n```python\ndef format_explain_retrieval(\n    retrieval_results: List[Dict],\n    template: Optional[str] = None,\n    include_metadata: bool = True,\n    include_context: bool = True\n) -> str\n```\n\n### Parameters\n\n- `retrieval_results` (List[Dict]): A list of dictionaries representing the retrieved items (e.g., code snippets, explanations, metadata).\n- `template` (Optional[str]): Optional template string to format the output. If not provided, a default template is used.\n- `include_metadata` (bool): Whether to include metadata fields (e.g., file paths, line numbers) in the output.\n- `include_context` (bool): Whether to include contextual information (e.g., surrounding code, explanation text).\n\n### Return Value\n\n- Returns a formatted string representing the explanation of the retrieval results.\n\n### Typical Use Case\n\nThis function is typically called after a retrieval operation to produce a clean, structured explanation of what was retrieved. For example:\n\n```python\nfrom repo2graph.explain import format_explain_retrieval\n\nresults = [\n    {\"code\": \"def foo(): pass\", \"explanation\": \"Defines a function foo\", \"file\": \"main.py\"},\n    {\"code\": \"import os\", \"explanation\": \"Imports the os module\", \"file\": \"utils.py\"},\n]\n\nformatted = format_explain_retrieval(results)\nprint(formatted)\n```\n\n### Purpose\n\n- Converts raw retrieval data into a user-friendly explanation.\n- Supports customization via templates and optional fields.\n- Is commonly used in tools that provide code search, code explanation, or code understanding features.\n\n> ⚠️ Note: The exact implementation may vary depending on the version of `repo2graph`",
+      "student_thinking": "The user is asking about a specific function `format_explain_retrieval()` in the `repo2graph/explain.py` module. This is related to the repo2graph library, which is used for analyzing and explaining code repositories.\n\nLet me think about what this function likely does based on the naming convention and typical patterns in such libraries:\n\n1. `format_explain_retrieval()` - This suggests it's related to formatting explanations of retrieval results, likely for code search or code understanding purposes.\n\n2. The function is in `repo2graph/explain.py` - This indicates it's part of the explanation module in the repo2graph library.\n\nHowever, I need to be careful here. Without access to the actual source code, I should provide accurate information based on what I know about repo2graph. Let me think about what this function typically does:\n\nIn repo2graph, the `explain.py` module typically handles code explanation and retrieval explanation functionality. The `format_explain_retrieval()` function likely:\n- Takes retrieval results (code snippets, explanations, etc.)\n- Formats them into a readable or structured output\n- Used for displaying or returning explanations of what was retrieved\n\nThe signature would typically include parameters for:\n- The retrieval results/explanations\n- Possibly a format parameter\n- Possibly a template or template_id parameter\n\nHowever, I should note that without direct access to the current version of the repo2graph source code, I should provide the most accurat"
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_audit.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.017,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.09",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (11.86x)"
+      },
+      "total": 0.208,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `tests/test_audit.py`\n    *   **Context:** `repo2graph` (a Python package/tool)\n    *   **Question:** What does this file cover? (i.e., what functionality is being tested?)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to identify what `repo2graph` is. It's a tool for converting Git repositories into a graph database (usually Neo4j) for analysis.\n    *   I need to locate the specific file `tests/test_audit.py` within the `repo2graph` repository.\n    *   I need to understand the purpose of \"audit\" in the context of this tool.\n    *   *Self-Correction/Constraint:* I don't have direct internet access to browse the live web or download the latest git repo in real-time. I must rely on my training data and general knowledge about the project structure, or infer based on common patterns if specific details aren't in my training data.\n    *   *Wait, check training data:* My knowledge cutoff is up to early 2024. `repo2graph` is a relatively niche open-source project (often hosted on GitHub). I need to recall or deduce its functionality based on available documentation or common patterns in similar tools (like `graphrepo`, `git2graph`, etc.).\n    *   *Search Query Simulation:* \"repo2graph test_audit.py\", \"repo2graph audit functionality\", \"repo2graph graph database conversion\".\n\n3.  **Synthesizing Knowledge about `repo2graph`:**\n    *   `repo2graph` is a tool that converts a Git repository into a graph database (Neo4j) to visualize relationships between code, authors, commits, etc.\n    *   It typically involves parsing git history, extracting metadata (commits, authors, files, dependencies), and mapping them to graph nodes and edges.\n    *   \"Audit\" in the context of graph databases often refers to:\n        *   Security auditing (finding vulnerabilities).\n        *   Compliance auditing (license scanning).\n        *   *Specific to repo2graph:* It like",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `parse_incremental` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (130.59x)"
+      },
+      "total": 0.65,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target: `parse_incremental` function.\n    *   Context: `repo2graph` (a Python package used for converting Git repositories into graphs, often for dependency analysis).\n    *   Question: Where is it defined in the repository?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the source code for the `repo2graph` project.\n    *   I need to search for the specific function name `parse_incremental`.\n    *   Since I don't have direct internet access to browse the live web in real-time for the *latest* commit, I need to rely on my training data regarding the structure of `repo2graph` (which is a known open-source project on GitHub) or simulate a search based on common patterns in this specific library.\n    *   *Self-Correction/Constraint:* My knowledge cutoff is up to date, but specific file paths in versioned repositories might vary slightly. However, `repo2graph` is generally stable.\n    *   *Search Query:* \"repo2graph parse_incremental\" or \"repo2graph source code\".\n\n3.  **Simulating Code Search (Mental or via Tool):**\n    *   I know `repo2graph` is primarily written in Python.\n    *   It uses `git` commands.\n    *   It likely has a module for parsing git history or graph construction.\n    *   Common entry points: `repo2graph`, `repo2graph/core`, `repo2graph/graph`, `repo2graph/commands`.\n    *   Let's recall the structure. The main entry point is often `repo2graph` package.\n    *   Is there a specific `parse_incremental` function?\n    *   *Wait, let's check the actual codebase structure.*\n    *   In `repo2graph`, there is a module often dealing with graph construction.\n    *   Search results (based on general knowledge of the project): The function `parse_incremental` is typically found in the `repo2graph` package, specifically within the logic that handles incremental updates or graph parsing.\n    *   Actually, looking at the `repo2graph` repository ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "In repo2graph, what is `repo2graph/frameworks.py` for?",
+      "scores": {
+        "accuracy": 0.222,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.22",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (99.43x)"
+      },
+      "total": 0.3,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting code repositories into knowledge graphs).\n    *   **Specific File:** `repo2graph/frameworks.py`.\n    *   **Question:** What is this file for?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   *What is repo2graph?* It's a Python package (often associated with the `repo2graph` GitHub repository) used to analyze code repositories, extract dependencies, and build knowledge graphs (often using Neo4j or similar graph databases).\n    *   *Where does `frameworks.py` fit?* I need to recall or search for the structure of the `repo2graph` codebase.\n    *   *Search Query Strategy (Mental):* \"repo2graph frameworks.py\", \"repo2graph source code\", \"repo2graph dependency analysis\".\n    *   *Context:* `repo2graph` typically relies on metadata to understand the context of code (e.g., is this a Python script? A Go binary? A Dockerfile?). It often uses \"frameworks\" to categorize the language or ecosystem of the code being analyzed.\n\n3.  **Investigating `repo2graph` specifically:**\n    *   *Wait, is there actually a file called `frameworks.py` in the main `repo2graph` package?*\n    *   *Self-Correction/Refinement:* `repo2graph` is often a monorepo or a collection of scripts. The core logic usually resides in `repo2graph` (the package name).\n    *   *Search mental database:* In the context of `repo2graph` (specifically the version used in the `repo2graph` GitHub repo, often associated with the `repo2graph` project by the `repo2graph` team or similar open-source initiatives), there is a module that handles *framework detection*.\n    *   *Wait, let's look at the specific repository:* The `repo2graph` project (often associated with the `repo2graph` GitHub org or the `repo2graph` package on PyPI) might have a specific structure.\n    *   *Actually, looking at the `repo2graph` GitHub repo (e.g., `repo2graph/repo2graph` or similar):*\n    *   *Key r",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `body_hashes()` in `repo2graph/graphdiff.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.447,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=1.00 recall=0.24",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (50.25x)"
+      },
+      "total": 0.201,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a Python library for generating graph representations of repositories).\n    *   **Specific Function:** `body_hashes()` located in `repo2graph/graphdiff.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the source code for `repo2graph`.\n    *   I need to find the file `graphdiff.py` within the package.\n    *   I need to inspect the `body_hashes` function definition and its usage.\n    *   *Self-Correction/Constraint:* I don't have direct internet access to browse the live web in real-time, but I have access to my internal knowledge base which includes code snippets and documentation up to my cutoff. However, specific file paths like `repo2graph/graphdiff.py` might be specific to a version or a fork.\n    *   *Search Query Simulation:* \"repo2graph graphdiff.py body_hashes\", \"repo2graph source code\", \"repo2graph graphdiff module\".\n\n3.  **Analyzing `repo2graph` Context:**\n    *   `repo2graph` is a tool often associated with the `repo2graph` project (often used in the context of GitHub, Git, or similar version control systems to generate knowledge graphs).\n    *   Wait, is there a specific `repo2graph` package? Yes, there is a `repo2graph` package (often related to `repo2graph` or `graphdiff` in the context of the `repo2graph` project by the `repo2graph` team, or potentially the `repo2graph` tool used by the `repo2graph` project).\n    *   Actually, looking at the name `repo2graph`, it's likely related to the `repo2graph` project (often used for graphing git repos).\n    *   *Correction:* There is a specific project called `repo2graph` (often associated with `repo2graph` or `repo2graph` on GitHub).\n    *   *Wait, check specific version:* The `repo2graph` package is often used in the context of the `repo2graph` project (e.g., `repo2graph` by `repo2graph` team).\n   ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `LoadedGraph` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (143.88x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `LoadedGraph` class.\n    *   **Context:** `repo2graph` repository.\n    *   **Question:** Where is it defined? (File path/Location within the codebase).\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the source code of `repo2graph`.\n    *   Since I don't have direct internet browsing capabilities to execute `git clone` and search in real-time, I need to rely on my internal knowledge base regarding `repo2graph`'s structure or search for patterns typical of this library.\n    *   *Self-Correction/Constraint:* I am an AI, I don't have live access to the *current* state of the repository unless it's in my training data or I use a search tool. However, `repo2graph` is a specific Python library (often associated with `repo2graph` or `repo2graph`-like tools for converting git repos to graphs).\n    *   *Wait, check specific library:* There is a library called `repo2graph` (often related to `repo2graph` or `repo2graph`-like tools). Actually, the most prominent one is likely `repo2graph` (a tool to convert git repositories into knowledge graphs).\n    *   *Search Query:* \"repo2graph LoadedGraph definition\".\n\n3.  **Simulating Code Search (Mental or via Tools):**\n    *   *Hypothesis 1:* It might be in the `src` or `main` directory.\n    *   *Hypothesis 2:* It might be a dataclass or a class inheriting from `Graph`.\n    *   *Hypothesis 3:* It's likely in a module handling the graph loading logic.\n\n    *Let's look for specific file paths.*\n    *   Common structure: `repo2graph/.../graph.py` or `repo2graph/.../core.py`.\n    *   Actually, looking at the `repo2graph` GitHub repository (typically `repo2graph` or `repo2graph`-related):\n    *   Wait, there is a specific package `repo2graph` on PyPI/GitHub.\n    *   Let's recall the structure of `repo2graph` (specifically the one used for graph databases like Neo4j or similar).\n    *   *Correction:* There i",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `rerank()` in `repo2graph/rerank.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.111,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.33",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (27.66x)"
+      },
+      "total": 0.05,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for generating code graphs from repositories).\n    *   **Specific Function:** `rerank()` located in `repo2graph/rerank.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   I need to access my internal knowledge about `repo2graph`.\n    *   `repo2graph` is a Python package (often associated with the `repo2graph` GitHub repo).\n    *   I need to recall or search for the specific file `repo2graph/rerank.py` and the function `rerank`.\n    *   *Self-Correction/Constraint:* As an AI, I don't have real-time internet access to browse the *latest* version of the repository unless I rely on my training data or specific cached knowledge. However, `repo2graph` is a relatively specific tool. I need to be careful not to hallucinate details if I'm not 100% sure about the exact version.\n    *   *Search Strategy (Mental):* Does `repo2graph` have a `rerank.py` file? Yes, typically in graph generation pipelines, \"reranking\" refers to re-ordering or re-scoring nodes/edges based on quality or importance after an initial graph construction.\n    *   *Specifics:* In the context of `repo2graph` (specifically the `repo2graph` project often used for code search or graph visualization), `rerank` usually refers to re-ranking the search results or the graph nodes based on a scoring model (like BERT, Sentence-Transformers, or a custom classifier) to improve the relevance of the nodes/edges.\n    *   *Wait, let's look closer at the specific file path:* `repo2graph/rerank.py`.\n    *   *Context:* `repo2graph` is often used in the context of the \"CodeGraph\" or \"RepoGraph\" projects (e.g., by the `repo2graph` team or similar open-source initiatives).\n    *   *Key Functionality:* It typically takes a list of candidate nodes (e.g., from a search query or initial graph traversal) and re-ranks them based on a sim",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `disambiguate_key()` in `repo2graph/parse.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.833,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.50",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (49.15x)"
+      },
+      "total": 0.575,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a Python library for converting git repositories to a graph database format, often used for dependency analysis).\n    *   **Specific Function:** `disambiguate_key()` found in `repo2graph/parse.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the specific file `repo2graph/parse.py` within the `repo2graph` repository.\n    *   I need to find the definition of `disambiguate_key`.\n    *   I need to understand the context (likely related to handling duplicate or ambiguous identifiers in the graph).\n    *   *Self-Correction/Constraint:* I don't have direct internet access to browse the live web in real-time, but I have access to my training data which includes code from various repositories up to my knowledge cutoff. However, specific versioned code in niche libraries might be tricky. I need to rely on the most common/standard version of `repo2graph` available in my training data or general knowledge about how this library works.\n    *   *Wait, actually:* `repo2graph` is a relatively specific tool. I need to recall or infer based on the typical structure of such libraries if exact code isn't in my training set.\n    *   *Correction:* I should check if I can access the code via the provided context or general knowledge. Since I am an AI, I rely on my internal knowledge base.\n    *   *Search Query Simulation:* \"repo2graph parse.py disambiguate_key\".\n    *   *Result:* `repo2graph` is a tool often associated with `repo2graph` (maintained by various contributors, often linked to `repo2graph` on GitHub).\n    *   *Key Insight:* In `repo2graph`, the main purpose is to parse git repositories and build a graph of dependencies. `disambiguate_key` usually handles cases where the same identifier (like a commit hash or a tag) might appear in multiple contexts or need to be m",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `clone` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (156.98x)"
+      },
+      "total": 0.448,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.6,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting Git repositories into a graph database, often used for dependency analysis).\n    *   **Question:** Where is the `clone` function defined?\n    *   **Goal:** Identify the specific file, module, or location within the `repo2graph` codebase where the `clone` functionality is implemented.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` repository structure.\n    *   Key terms: `repo2graph`, `clone`, `git`, `graph`, `python`.\n    *   The `repo2graph` project is primarily written in Python.\n    *   I need to find the specific function named `clone` or the logic that performs the cloning operation.\n\n3.  **Search Simulation (Mental or Actual):**\n    *   *Query:* `repo2graph clone function source code`\n    *   *Query:* `repo2graph git clone implementation`\n    *   *Query:* `repo2graph repo2graph/clone.py`\n    *   *Query:* `repo2graph/clone.py`\n\n    *   *Knowledge Retrieval:*\n        *   `repo2graph` is a project maintained by the `repo2graph` organization (often associated with `repo2graph` or `repo2graph` maintainers like `repo2graph` team).\n        *   It uses `gitpython` or `subprocess` to clone repos.\n        *   There is a specific module often named `clone.py` or similar.\n        *   Wait, `repo2graph` is actually a project that wraps `git` operations.\n        *   Let's check the main repository: `repo2graph/repo2graph`.\n        *   Looking at the `src` or `src/repo2graph` directory.\n        *   Is there a `clone.py`?\n        *   Actually, in recent versions of `repo2graph`, the cloning logic is often handled via the `repo2graph` CLI or a specific module.\n        *   Let's look for the specific function signature `clone`.\n        *   In `repo2graph`, there is a `clone` function that is often exposed in the `repo2graph` package.\n        *   Wait, is it `repo2graph` or `rep",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `path()` in `repo2graph/export.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.444,
+        "reasoning": 0.507,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.44",
+        "reasoning": "cov=0.27 nov=0.64 steps=5",
+        "formatting": "ok",
+        "conciseness": "padded (15.26x)"
+      },
+      "total": 0.527,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.9,
+      "student_answer": "In the `repo2graph` project, the `path()` function in `repo2graph/export.py` is typically used to construct or return file paths for exporting graph data. Its exact implementation may vary depending on the version of the tool, but here's what it generally does:\n\n### Purpose\nThe `path()` function is used to generate or resolve file paths for output files, such as:\n- Graph files (e.g., `.dot`, `.json`, `.csv`)\n- Intermediate files during export\n- Paths for logging or temporary storage\n\nIt ensures that paths are correctly formatted and resolved for the target system or environment.\n\n### Typical Signature\n```python\ndef path(*args, **kwargs):\n    \"\"\"\n    Construct or resolve a file path.\n\n    Args:\n        *args: Variable arguments for path components.\n        **kwargs: Optional keyword arguments (e.g., `base`, `suffix`).\n\n    Returns:\n        str: A resolved file path string.\n    \"\"\"\n```\n\n### Example Usage\n```python\nfrom repo2graph.export import path\n\n# Construct a path with components\ngraph_path = path(\"output\", \"repo2graph\", \"graph.dot\")\n\n# Or with a base directory\ngraph_path = path(base_dir=\"output\", filename=\"repo2graph.dot\")\n```\n\n### Notes\n- The exact implementation may differ across versions of repo2graph.\n- For the most accurate and up-to-date information, refer to the latest source code or documentation at:\n  - [GitHub Repository](https://github.com/repo2graph/repo2graph)\n  - `repo2graph/export.py` in the codebase\n\nIf you're working with a specific version, check the corresponding changelog or release notes for any API changes.",
+      "student_thinking": "The user is asking about a specific function `path()` in the `repo2graph/export.py` file in the repo2graph project. This appears to be related to the repo2graph tool, which is used for converting code repositories into graph representations.\n\nLet me think about what I know about repo2graph:\n- repo2graph is a tool for converting code repositories into graph representations\n- It's used for code analysis, dependency visualization, etc.\n- The `export.py` file likely contains export functionality for the graph data\n\nThe `path()` function in this context likely:\n1. Returns the path to a file or directory\n2. Is used to construct or return file paths for export operations\n\nHowever, I need to be careful here. I don't have direct access to the current codebase of repo2graph, and the API might have changed over time. Let me provide what I can based on typical patterns in such tools.\n\nActually, I should be honest that I don't have access to the current codebase and the specific implementation details might vary. However, I can provide general information about what such a function typically does in this context.\n\nLet me provide a helpful answer that acknowledges the limitations while providing useful information."
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "Which other repo2graph modules does `repo2graph/store.py` import from?",
+      "scores": {
+        "accuracy": 0.889,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.44",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (81.43x)"
+      },
+      "total": 0.6,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.5,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target file: `repo2graph/store.py`\n    *   Task: Identify other `repo2graph` modules that `store.py` imports from.\n    *   Context: This implies I need to look at the Python source code of the `repo2graph` package (specifically the `store.py` file) and analyze its `import` statements.\n\n2.  **Information Retrieval Strategy:**\n    *   Since I am an AI, I don't have direct, real-time access to the live filesystem of the `repo2graph` repository unless I use my internal knowledge base or search tools.\n    *   I need to recall or search for the structure of the `repo2graph` package.\n    *   *Self-Correction/Constraint:* I don't have a live terminal to run `grep` or `cat` on the actual repository right now. However, I have training data up to my knowledge cutoff. I need to rely on my knowledge of the `repo2graph` project structure or search for the specific file content if it's well-documented in my training data.\n    *   *Search Query:* \"repo2graph store.py imports\", \"repo2graph package structure\", \"repo2graph store.py\".\n\n3.  **Knowledge Retrieval (Internal):**\n    *   `repo2graph` is a Python library used to convert Git repositories into a graph database (often Neo4j) or a similar structure.\n    *   It typically has modules like `repo2graph`, `repo2graph/store.py`, `repo2graph/graph.py`, `repo2graph/convert.py`, etc.\n    *   I need to find the specific import lines in `repo2graph/store.py`.\n\n    *   *Mental Simulation of `repo2graph/store.py`:*\n        *   Usually, a `store` module in this context handles persistence (e.g., storing graph data in Neo4j, SQLite, etc.).\n        *   It likely imports from `repo2graph`'s core classes (like `Graph`, `Node`, `Edge` or similar abstractions).\n        *   It might import from `repo2graph`'s configuration or utility modules.\n        *   It might import from `repo2graph`'s `__init__.py` or specific submodules like `repo2graph/graph.py` or `repo",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `run_git` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (129.08x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Question:** Where is `run_git` defined in `repo2graph`?\n    *   **Subject:** `repo2graph` (a Python library for converting Git repositories into graphs).\n    *   **Target:** The specific location (file, module, or function) where the function `run_git` is defined.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` source code structure.\n    *   `repo2graph` is typically a Python package.\n    *   I need to find the specific function `run_git`.\n    *   *Self-Correction/Refinement:* Is `run_git` a public API function? Or an internal helper?\n    *   *Search Query:* \"repo2graph run_git function\", \"repo2graph source code\", \"repo2graph git module\".\n\n3.  **Simulated Search (Mental or Tool Use):**\n    *   *Query:* `repo2graph` source code structure.\n    *   *Knowledge:* `repo2graph` is often used in the context of `repo2graph` (the original project) or `repo2graph` (the newer one, often associated with `repo2graph` or `repo2graph` forks).\n    *   *Wait, let's look at the specific package name:* `repo2graph`.\n    *   *Common structure:* Usually, there's a `src/repo2graph/` or `repo2graph/` directory.\n    *   *Key Function:* `run_git` sounds like a low-level wrapper around `git` commands.\n    *   *Search mental database:* In the `repo2graph` package (specifically version 0.1.x or similar), there is a module often named `git` or `core`.\n    *   *Actually, looking at the specific repository:* The main repository is often `repo2graph` on GitHub.\n    *   *Wait, is there a specific `run_git` function?*\n    *   *Re-evaluating:* In the `repo2graph` package (specifically the one maintained by the `repo2graph` project, often associated with `repo2graph` or `repo2graph`), the `run_git` function is often found in the `git` module or `core` module.\n    *   *Let's check the `repo2graph` source code on GitHub (e.g., `github.com/repo2graph/r",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `MemoryGraphStore` defined in repo2graph?",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.0,
+        "formatting": 0.6,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "unrequested code block",
+        "conciseness": "padded (128.25x)"
+      },
+      "total": 0.57,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `MemoryGraphStore`\n    *   **Context:** `repo2graph` (a Python package/tool for converting code repositories into knowledge graphs).\n    *   **Question:** Where is it defined in the repository?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to identify the `repo2graph` repository.\n    *   I need to locate the specific class `MemoryGraphStore` within that codebase.\n    *   I should look for Python files, likely in a `src` or `lib` directory, possibly within a `store` or `graph` module.\n\n3.  **Search Execution (Mental Simulation):**\n    *   *Query:* `repo2graph` source code structure.\n    *   *Query:* `MemoryGraphStore` class definition.\n    *   *Query:* `repo2graph` GitHub repository URL.\n\n    *   *Repo Info:* The main `repo2graph` repository is typically `repo2graph/repo2graph` on GitHub.\n    *   *Module Structure:* It usually follows a pattern like `repo2graph/.../store.py` or `repo2graph/.../graph_store.py`.\n\n4.  **Verification (Simulated Code Search):**\n    *   I recall that `repo2graph` is a relatively new project (often associated with the `repo2graph` GitHub organization).\n    *   Let's check the `src` directory structure.\n    *   Common pattern: `repo2graph/src/repo2graph/store.py` or similar.\n    *   Wait, there's a specific implementation detail. `repo2graph` often uses `neo4j` or `graphdb` backends. `MemoryGraphStore` sounds like an in-memory implementation (likely using `networkx` or a similar in-memory graph library).\n    *   Actually, looking at recent versions of `repo2graph` (specifically the `repo2graph` package on PyPI or the GitHub repo `repo2graph/repo2graph`):\n    *   The class `MemoryGraphStore` is often found in the `store` module.\n    *   Let's pinpoint the exact file path.\n    *   In the `repo2graph` GitHub repository (`https://github.com/repo2graph/repo2graph`), the structure usually looks like:\n        ```\n        r",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `_SentenceTransformerEmbedder` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (109.70x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.6,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `_SentenceTransformerEmbedder`\n    *   **Context:** `repo2graph` (a Python library for converting GitHub repositories into graphs).\n    *   **Question:** Where is it defined? (File path/Module location).\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to access the `repo2graph` source code.\n    *   I know `repo2graph` is a relatively new library (often associated with the `repo2graph` GitHub repo).\n    *   I need to find the specific class `_SentenceTransformerEmbedder`.\n    *   I should look for files containing \"SentenceTransformer\" or \"Embedder\".\n\n3.  **Simulated Search (Mental or via tools):**\n    *   *Query:* `repo2graph source code _SentenceTransformerEmbedder`\n    *   *Query:* `repo2graph SentenceTransformerEmbedder`\n    *   *Query:* `repo2graph sentence transformer`\n\n4.  **Locating the Code:**\n    *   The `repo2graph` repository is typically hosted at `https://github.com/replicate/repo2graph` (Wait, actually, `repo2graph` is often associated with `repo2graph` by `repo2graph` team or similar). Let's check the most common one.\n    *   Actually, the main `repo2graph` package is often found at `https://github.com/replicate/repo2graph`? No, that might be wrong.\n    *   Let's check `https://github.com/replicate/repo2graph`... Wait, `repo2graph` is often linked to `https://github.com/replicate/repo2graph`? No, the main repo is `https://github.com/replicate/repo2graph`?\n    *   Correction: The main `repo2graph` repository is `https://github.com/replicate/repo2graph`? No, actually, the most prominent one is `https://github.com/replicate/repo2graph`?\n    *   *Correction:* The `repo2graph` library is maintained by `repo2graph`? No.\n    *   *Correction:* The `repo2graph` library is `https://github.com/replicate/repo2graph`?\n    *   *Wait, let's stop guessing the URL and rely on the code structure.*\n    *   The `repo2graph` package is `repo2graph`.",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `load` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.55,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (160.91x)"
+      },
+      "total": 0.448,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Question:** Where is `load` defined in `repo2graph`?\n    *   **Subject:** `repo2graph` (a tool for converting git repositories into a graph database, often used for dependency analysis).\n    *   **Target:** The definition/implementation of the `load` function/module.\n    *   **Goal:** Identify the specific file, module, or class within the `repo2graph` codebase where `load` is defined.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I know `repo2graph` is a Python package.\n    *   It's likely a CLI tool or a library.\n    *   I need to look for the source code repository (GitHub).\n    *   I need to search for the string `def load` or `from ... import load` within the context of the package.\n    *   Common entry points for such tools are `repo2graph` (the package name), `repo2graph/cli.py`, `repo2graph/graph.py`, or `repo2graph/loader.py`.\n\n3.  **Simulated Search (Mental or via tools):**\n    *   *Query:* `site:github.com repo2graph \"def load\"`\n    *   *Query:* `site:github.com repo2graph \"load\"`\n    *   *Query:* `repo2graph source code`\n\n    *   *Knowledge Retrieval:* `repo2graph` is primarily maintained by the `repo2graph` organization or maintained by specific contributors (like `mattt` or similar). Wait, actually, `repo2graph` is a specific project often associated with the `repo2graph` GitHub organization.\n    *   *Correction:* There is a project called `repo2graph` (often `repo2graph` or `repo2graph` on GitHub).\n    *   *Key File:* The core logic usually resides in `repo2graph/graph.py` or `repo2graph/loader.py`.\n    *   *Wait, let's look at the specific API:* The `repo2graph` CLI usually has a `load` command. But the question asks where the *function* `load` is defined.\n    *   *Search:* In the `repo2graph` repository (specifically `repo2graph` on GitHub, often `repo2graph` or `repo2graph`), there is a `load` function that handles loading the repository in",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `cite()` in `repo2graph/edgemeta.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.25,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.25",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (69.42x)"
+      },
+      "total": 0.113,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.4,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a Python library for generating graph representations of repositories).\n    *   **Specific Function:** `cite()` within the file `repo2graph/edgemeta.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the source code for `repo2graph`.\n    *   Specifically, I need to look at `repo2graph/edgemeta.py`.\n    *   I need to find the definition of `cite()`.\n    *   I need to understand the context (likely related to metadata extraction, citation generation, or graph construction).\n\n3.  **Simulated Search (Mental or Actual):**\n    *   *Query:* `repo2graph edgemeta.py cite`\n    *   *Context:* `repo2graph` is often used in the context of GitHub, GitLab, or similar VCS (Version Control Systems) to build knowledge graphs. It often deals with \"Edge Metadata\" (like who cited whom, dependencies, etc.).\n    *   *File Structure:* `repo2graph` is a relatively new or specialized tool. I need to check if it's a well-known public package.\n    *   *Observation:* `repo2graph` is often associated with the \"repo2graph\" project on GitHub (specifically `repo2graph` by `repo2graph` or similar maintainers). Wait, actually, `repo2graph` is often associated with the `repo2graph` project used for *GraphRAG* or similar NLP tasks involving code repositories.\n    *   *Correction:* There is a specific project called `repo2graph` (often linked to the `repo2graph` GitHub repo). Let's look for the specific file `repo2graph/edgemeta.py`.\n\n    *   *Search Query Refinement:* `repo2graph edgemeta.py cite`\n    *   *Potential Match:* The `repo2graph` package is often used to convert repositories into graphs for LLMs.\n    *   *Wait, is `repo2graph` a standard library?* No, it's likely a specific repository or a module within a larger project (like `repo2graph` on GitHub).\n    *   *Actually, looking at t",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `stored_remote_source()` in `repo2graph/status.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.707,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.53",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (51.80x)"
+      },
+      "total": 0.318,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a Python library for converting Git repositories into graphs).\n    *   **Specific Function:** `stored_remote_source()`.\n    *   **Location:** `repo2graph/status.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   I need to access the source code of `repo2graph` to find the specific function.\n    *   Since I don't have direct internet access to browse the live web in real-time, I must rely on my internal knowledge base regarding the `repo2graph` project structure and code.\n    *   *Self-Correction/Constraint:* My knowledge cutoff is up to date, but specific implementation details of internal utility functions in versioned libraries might be tricky. I need to be careful not to hallucinate.\n    *   *Search Strategy (Mental):* Recall the `repo2graph` architecture. It typically involves `repo2graph` CLI, `repo2graph` core, and `repo2graph` status.\n    *   *Key Concept:* `status.py` usually deals with determining the state of a repository (e.g., is it a remote? is it local? is it a fork?). `stored_remote_source` sounds like a helper function that checks if a remote source is stored in a specific way (likely related to the `--remote` flag or configuration).\n\n3.  **Simulating Code Search (Mental):**\n    *   File path: `repo2graph/status.py`.\n    *   Function name: `stored_remote_source`.\n    *   Context: This function is likely used to determine if a remote URL is stored in the `.repo2graph` metadata or if it needs to be fetched from a remote source.\n    *   *Wait, let's look closer at the actual implementation details.*\n    *   In `repo2graph`, there is a concept of \"remote sources\" used for fetching data.\n    *   Actually, looking at the `repo2graph` source code (specifically around version 0.1.x to 0.2.x or similar), `status.py` often handles the `Status` object.\n    *   *Correctio",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "Which other repo2graph modules does `repo2graph/scip.py` import from?",
+      "scores": {
+        "accuracy": 0.9,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.50",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (83.14x)"
+      },
+      "total": 0.605,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   Target file: `repo2graph/scip.py`\n    *   Project: `repo2graph` (a Python package for converting Git repositories to SCIP format, often used for reproducible builds).\n    *   Question: Which *other* modules does this specific file import from?\n    *   Goal: Identify the import statements within `repo2graph/scip.py` and list the source modules/packages.\n\n2.  **Locate the Source Code:**\n    *   I need to access the `repo2graph` repository on GitHub.\n    *   URL: `https://github.com/repology/repo2graph` (Wait, actually, `repo2graph` is often associated with `repology` or `repo2graph` specifically). Let's check the actual repo.\n    *   Search query: `repo2graph/scip.py`\n    *   Found: `https://github.com/repology/repo2graph` (Actually, the main repo is `https://github.com/repology/repo2graph`? No, wait. The package is `repo2graph`. The repo is `https://github.com/repology/repo2graph`? Let me verify.\n    *   Correction: The repository is `https://github.com/repology/repo2graph`. Wait, looking at the `repo2graph` package structure.\n    *   Actually, the specific file `repo2graph/scip.py` likely resides in the `repo2graph` package directory.\n    *   Let's check the GitHub repo: `https://github.com/repology/repo2graph`.\n    *   Wait, `repo2graph` is often a submodule or part of `repology`.\n    *   Let's search for the file directly.\n    *   Found: `https://github.com/repology/repo2graph` (Wait, is it `repo2graph` or `repology`? The package name is `repo2graph`. The repo is `https://github.com/repology/repo2graph`? No, it's `https://github.com/repology/repo2graph`? Actually, the main repo is `https://github.com/repology/repo2graph`.\n    *   Okay, let's look at the file `repo2graph/scip.py`.\n    *   Wait, the path `repo2graph/scip.py` suggests it's inside the `repo2graph` package.\n    *   Let's check the imports in that file.\n\n    *   *Self-Correction/Verification:* I need to be careful ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Which checkout of repo2graph is authoritative, and what is it on?",
+      "scores": {
+        "accuracy": 0.178,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.17 recall=0.20",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (46.59x)"
+      },
+      "total": 0.28,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.5,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting Git repositories into GraphDB/Neo4j-like graph databases).\n    *   **Question:** Which checkout of `repo2graph` is authoritative? What is it based on (i.e., which version/commit/branch)?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to find the official GitHub repository for `repo2graph`.\n    *   I need to look at the README, the `latest` tag, or the main branch to determine the \"authoritative\" version.\n    *   I need to check if there's a specific \"stable\" or \"main\" branch that is considered the standard.\n    *   *Self-Correction/Refinement:* \"Authoritative\" in the context of open-source tools usually means the version on the main branch or the latest release tag that is actively maintained. Sometimes, there are forks or specific versions for specific backends (like Neo4j vs. GraphDB).\n\n3.  **Simulated Search (Mental Check):**\n    *   *Query:* `repo2graph github`\n    *   *Expected Result:* `https://github.com/neo4j-repo2graph/repo2graph` (Wait, is it `neo4j-repo2graph` or just `repo2graph`? Actually, the original project was often associated with Neo4j, but there's a specific tool called `repo2graph` used for GraphDB/Neo4j).\n    *   *Correction:* The primary project is `repo2graph` on GitHub.\n    *   *Wait, let's verify the exact repo name.* It's often `repo2graph` by the `neo4j` team or `repo2graph` by `graphdb`.\n    *   *Actually, looking at the landscape:* There is `repo2graph` (the tool to convert repos to graph DBs). The most common one is `repo2graph` on GitHub.\n    *   *Wait, is there a specific \"authoritative\" version?* Usually, for tools like this, the `main` branch is the authoritative source for development, but the `latest` release tag is the authoritative source for stable usage.\n    *   *Crucial Detail:* Is there a specific branch like `v1.0` or `main`?\n    *   *Wait, I recall a specific nu",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "What does `tests/test_workflow_summaries.py` cover in repo2graph?",
+      "scores": {
+        "accuracy": 0.24,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.00 recall=0.20",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (39.21x)"
+      },
+      "total": 0.308,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 55.9,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **File:** `tests/test_workflow_summaries.py`\n    *   **Project:** `repo2graph`\n    *   **Question:** What does this file cover? (i.e., what functionality is being tested?)\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to identify the `repo2graph` project. It's a tool for converting Git repositories into knowledge graphs (specifically, it often relates to the `repo2graph` package used for generating graph representations of codebases, often associated with the `graph` or `repo2graph` Python packages).\n    *   I need to locate or recall the specific test file `tests/test_workflow_summaries.py`.\n    *   *Self-Correction/Constraint:* I don't have direct internet access to browse the live repository right now. I must rely on my internal knowledge base or simulate the search based on common patterns in this specific project if it's a known entity in my training data.\n    *   *Wait, check training data:* Is `repo2graph` a well-known open-source project in my training data?\n        *   There is a `repo2graph` project (often associated with `repo2graph` or `graph` visualization).\n        *   There is a `repo2graph` project related to *workflow* summarization?\n        *   Actually, looking at the name `repo2graph`, it usually refers to a tool that converts a Git repository into a graph (nodes/edges).\n        *   However, the specific filename `test_workflow_summaries.py` suggests a specific feature: \"workflow summaries\".\n        *   *Hypothesis:* This might be a specific test file within a repository that generates summaries of workflows (e.g., CI/CD pipelines, Git workflows) or perhaps it's a specific module within a larger codebase that handles graph generation based on workflows.\n        *   *Correction:* There is a specific project called `repo2graph` on GitHub (e.g., `repo2graph/repo2graph`). Let's check if `test_workflow_summaries.py` is a known file there.",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `make_embedder()` in `repo2graph/embed.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.909,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.73",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (48.52x)"
+      },
+      "total": 0.609,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 56.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting git repositories into graph databases).\n    *   **Specific Function:** `make_embedder`.\n    *   **Location:** `repo2graph/embed.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   I need to recall or search for the `repo2graph` source code, specifically the `embed.py` module.\n    *   *Self-Correction/Constraint:* As an AI, I don't have direct, real-time access to the latest git repository of `repo2graph` unless I rely on my training data or search tools. However, `repo2graph` is a relatively new project (often associated with the `repo2graph` GitHub repo).\n    *   *Search Strategy:* I need to simulate looking up the code structure based on common patterns in this library or specific documentation available in my training data.\n    *   *Key Concept:* `repo2graph` is often used for knowledge graph construction from code repositories. \"Embedding\" usually refers to converting nodes/edges into vector representations (e.g., using Sentence Transformers, Hugging Face models, etc.). `make_embedder` sounds like a factory function that creates an embedding model or pipeline.\n\n3.  **Simulating Code Lookup (Mental Check):**\n    *   *Repo:* `repo2graph` (likely `github.com/...`).\n    *   *File:* `repo2graph/embed.py`.\n    *   *Function:* `make_embedder`.\n    *   *Context:* This function is typically used to configure how the graph nodes (files, commits, authors, etc.) are converted into dense vectors for similarity search (e.g., using FAISS, Weaviate, or Hugging Face embeddings).\n    *   *Common Pattern:* It usually takes a model name (like `sentence-transformers/all-MiniLM-L6-v2`) and returns an object that can be called on strings to produce embeddings.\n\n4.  **Drafting the Answer (Iterative Process):**\n\n    *   *Attempt 1 (Hypothetical):* It creates a model. Signatu",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `merge_by_rank` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (125.32x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 55.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `merge_by_rank` function.\n    *   **Context:** `repo2graph` (a Python library for converting Git repositories into graphs).\n    *   **Question:** Where is it defined in the repository?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` codebase structure.\n    *   I know `repo2graph` is primarily written in Python.\n    *   I need to find the specific module or file where this function resides.\n    *   Since I don't have direct internet access to browse the live repo in real-time *right now* (unless I use my internal knowledge base which might be dated), I need to rely on my training data regarding `repo2graph`'s architecture.\n    *   *Self-Correction/Verification:* `repo2graph` is a relatively specific tool. I need to be careful not to confuse it with `graph2repo` or other similar tools.\n    *   *Search Query (Mental):* \"repo2graph merge_by_rank source code\", \"repo2graph merge_by_rank location\".\n\n3.  **Analyzing `repo2graph` Structure:**\n    *   `repo2graph` typically has a main entry point (CLI), a core graph construction logic, and utility modules.\n    *   The function name `merge_by_rank` sounds like it belongs to the graph merging or normalization logic.\n    *   In the `repo2graph` codebase (specifically version 0.1.x or similar), there is a module often named `merge.py` or similar within the `repo2graph` package.\n    *   However, looking at the actual source code structure of `repo2graph` (specifically the version commonly used in the ecosystem, often hosted on GitHub under `repo2graph/repo2graph`):\n    *   The function `merge_by_rank` is typically found in the `repo2graph` package.\n    *   Let's check the specific file path.\n    *   In the `repo2graph` repository (specifically `repo2graph` package), there is a file `repo2graph/merge.py` or similar?\n    *   Actually, looking at the `repo2graph` source",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `diff_indexes` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (131.85x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Question:** Where is `diff_indexes` defined in `repo2graph`?\n    *   **Context:** `repo2graph` is a Python package used for converting git repositories into a graph database (specifically, it's often associated with the `repo2graph` project, likely related to `repo2graph` or `repo2graph`-like tools, but specifically, I need to identify the exact location within the codebase).\n    *   **Target:** A specific variable/function named `diff_indexes`.\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to recall or search for the `repo2graph` repository structure.\n    *   I need to look for Python files that handle graph generation, specifically regarding diffs or indexes.\n    *   *Self-Correction/Refinement:* `repo2graph` is a relatively new or specific tool. Is it the `repo2graph` package on PyPI? Or is it a specific fork?\n    *   *Search Query:* \"repo2graph diff_indexes\", \"repo2graph source code\", \"repo2graph graph generation\".\n    *   *Key Insight:* `repo2graph` is often associated with the `repo2graph` project which generates a knowledge graph from git repos. However, there is a specific implementation detail regarding how it handles diffs.\n    *   *Wait, is there a specific version?* The `repo2graph` project is often linked to the `repo2graph` GitHub repository (e.g., `github.com/...`).\n    *   *Actually, looking at the codebase:* The `repo2graph` package is primarily used to convert git repos into a graph database (like Neo4j or similar). The `diff_indexes` likely refers to how it indexes the differences between commits or branches.\n\n3.  **Simulated Code Search (Mental or via tools):**\n    *   I need to find the file path.\n    *   Common locations for configuration or index definitions in Python projects: `src/`, `lib/`, `config/`, or specific modules like `index.py`, `diff.py`, `utils.py`.\n    *   *Specific Search:* In the `repo2graph` repository (often h",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `read_statements()` in `repo2graph/neo4j.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.5,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=0.50 recall=0.50",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (50.96x)"
+      },
+      "total": 0.225,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.6,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Target:** `repo2graph` (a Python library for converting repositories into graphs).\n    *   **Specific Function:** `read_statements()`.\n    *   **Location:** `repo2graph/neo4j.py` (specifically within the Neo4j driver integration).\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   *What is repo2graph?* It's a tool (often associated with `repo2graph` or `repo2graph`-like tools like `repo2graph` by the `repo2graph` team, often used for code analysis). Wait, there's a specific `repo2graph` package.\n    *   *Search Query Strategy:* I need to look for the source code of `repo2graph` specifically the `neo4j.py` file.\n    *   *Context:* `repo2graph` is often used to convert git repositories into knowledge graphs (Neo4j).\n    *   *Specific File:* `repo2graph/neo4j.py`.\n    *   *Function:* `read_statements()`.\n\n3.  **Simulated Code Search (Mental or via tools):**\n    *   I don't have direct internet access to browse the live web in real-time, but I have training data up to my cutoff. I need to recall the structure of `repo2graph` based on common patterns in this specific library.\n    *   *Correction/Refinement:* Is there a `repo2graph` package that has a `neo4j.py` file?\n    *   *Actually:* There is a `repo2graph` package (often `repo2graph` or `repo2graph`-like tools). However, the specific file `repo2graph/neo4j.py` suggests a specific implementation.\n    *   *Wait, let's check the context of `repo2graph`.* There is a `repo2graph` tool (often associated with the `repo2graph` project on GitHub, e.g., `repo2graph` by `repo2graph` team).\n    *   *Wait, is it `repo2graph` or `repo2graph`?* There is a `repo2graph` package that uses `neo4j` to store graph data.\n    *   *Let's look for `read_statements`.* This function usually reads the output of a command (like `git log` or `git diff`) and parses it into statements.\n",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "medium",
+      "prompt": "In repo2graph, what does `cache_metadata()` in `repo2graph/cache.py` do, and what is its signature?",
+      "scores": {
+        "accuracy": 0.806,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "ids=1.00 recall=0.42",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (63.83x)"
+      },
+      "total": 0.363,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a Python library for converting Git repositories into graphs).\n    *   **Specific Function:** `cache_metadata()` located in `repo2graph/cache.py`.\n    *   **Questions:** What does it do? What is its signature?\n\n2.  **Initial Knowledge Retrieval & Verification:**\n    *   I need to access my internal knowledge about `repo2graph`.\n    *   `repo2graph` is a project often associated with the `repo2graph` package on PyPI (or GitHub).\n    *   I need to check the specific file `repo2graph/cache.py`.\n    *   *Self-Correction/Constraint:* My knowledge cutoff is up to date, but specific implementation details of niche or newer packages might be in specific versions. I need to be careful about versioning. However, `repo2graph` is generally a stable tool for graphing git repos.\n    *   *Search Strategy (Mental):* Look for the function name `cache_metadata` within the context of `repo2graph`.\n    *   *Context:* `repo2graph` typically involves parsing git history, extracting nodes (commits, files, authors) and edges (dependencies, authorship, etc.). Caching is crucial for performance.\n    *   *Specific File:* `repo2graph/cache.py`.\n    *   *Function:* `cache_metadata`.\n\n3.  **Investigating the Functionality:**\n    *   In many graph generation pipelines, metadata (like commit hashes, author info, file paths) is expensive to compute.\n    *   `cache_metadata` likely handles the caching of this metadata to avoid re-computing it for every run or for every node.\n    *   It probably interacts with a cache store (like `cachetools`, `functools.lru_cache`, or a database).\n    *   *Wait, let's look closer at the specific implementation details if possible.*\n    *   Actually, `repo2graph` is often used in the context of the `repo2graph` library (specifically version 0.1.0+ or similar).\n    *   In the source code (specifically `repo2graph/cache.py`), `cache_metadata` is often a ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "In repo2graph, what is `repo2graph/cochange.py` for?",
+      "scores": {
+        "accuracy": 0.057,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.29",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (104.62x)"
+      },
+      "total": 0.226,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.0,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for converting code repositories into a graph database).\n    *   **Specific File:** `repo2graph/cochange.py`.\n    *   **Question:** What is this file for? (Purpose/Functionality).\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   *Query:* \"repo2graph cochange.py\"\n    *   *Context:* `repo2graph` is a Python package (often associated with `repo2graph` on GitHub). It's used to convert git repositories into a graph database (usually Neo4j) to visualize code changes, dependencies, etc.\n    *   *File Structure:* In Python packages, `cochange.py` usually relates to \"code change\" or \"commit change\" analysis.\n    *   *Specific Project:* There is a project called `repo2graph` on GitHub (specifically `repo2graph/repo2graph` or similar). However, I need to be careful about versioning. The most prominent one is likely the one by `repo2graph` (maintained by `repo2graph` team or similar).\n    *   *Correction/Refinement:* Wait, is there a specific `repo2graph` project? Yes, `repo2graph` is a tool to convert a git repository into a graph database.\n    *   *Search mental database:* Does `repo2graph` have a `cochange.py` file?\n    *   *Hypothesis:* `cochange` likely stands for \"Code Change\" or \"Commit Change\". It probably handles the logic for detecting, parsing, or representing changes between commits.\n    *   *Verification:* I need to check the actual source code or documentation if possible. Since I don't have live internet access to browse the *current* GitHub repo in real-time, I must rely on my training data regarding this specific tool.\n    *   *Wait, is this a trick?* Is `repo2graph` a well-known, stable tool?\n    *   *Re-evaluation:* There is a `repo2graph` project on GitHub (e.g., `repo2graph/repo2graph`).\n    *   *Key Concept:* In the context of `repo2graph`, the core functionality is mapping git history to graph nodes/edges. `cochange` l",
+      "student_thinking": ""
+    },
+    {
+      "skill": "code_facts",
+      "difficulty": "easy",
+      "prompt": "Where is `find_affected_tests` defined in repo2graph?",
+      "scores": {
+        "accuracy": 0.75,
+        "reasoning": 0.0,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.50 recall=0.75",
+        "reasoning": "student produced no CoT",
+        "formatting": "ok",
+        "conciseness": "padded (118.71x)"
+      },
+      "total": 0.538,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.2,
+      "student_answer": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Function Name:** `find_affected_tests`\n    *   **Context:** `repo2graph` (a Python package/tool for generating dependency graphs of repositories).\n    *   **Question:** Where is this function defined in the codebase?\n\n2.  **Initial Knowledge Retrieval & Search Strategy:**\n    *   I need to locate the source code for `repo2graph`.\n    *   I need to search for the specific function name `find_affected_tests`.\n    *   Since I don't have direct internet access to browse the live web in real-time, I must rely on my internal knowledge base regarding the `repo2graph` project structure and common patterns in this specific library.\n    *   *Self-Correction/Constraint:* I need to be careful. `repo2graph` is a relatively specific tool (often associated with `repo2graph` on PyPI or GitHub). I need to recall its structure.\n    *   *Search Query Simulation:* `repo2graph source code`, `repo2graph find_affected_tests`, `repo2graph tests`.\n\n3.  **Investigating `repo2graph` Structure:**\n    *   `repo2graph` is primarily used to convert a git repository into a graph (often for testing or CI/CD purposes).\n    *   Key modules usually involve `repo2graph`, `repo2graph_cli`, `repo2graph_core`, etc.\n    *   Let's look for the specific function.\n    *   Common location for such logic in `repo2graph` is often within the `repo2graph` package, specifically in modules dealing with test discovery or dependency analysis.\n\n4.  **Specific Search (Mental or via tools):**\n    *   I recall that `repo2graph` has a module related to test discovery.\n    *   Is it in `repo2graph/test`? `repo2graph/analysis`?\n    *   Actually, looking at the `repo2graph` GitHub repository (which is the canonical source):\n        *   The package name is `repo2graph`.\n        *   The main entry point is `repo2graph`.\n        *   There is a specific function `find_affected_tests` often used to identify which tests in a repository are a",
+      "student_thinking": ""
+    }
+  ]
+}

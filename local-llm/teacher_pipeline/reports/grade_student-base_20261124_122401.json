@@ -1,0 +1,381 @@
+{
+  "timestamp": "2026-11-24T12:24:01.115862+00:00",
+  "model": "student:base",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 15,
+  "n_errors": 0,
+  "overall_score": 0.345,
+  "pass_rate": 0.0,
+  "by_criterion": {
+    "accuracy": 0.434,
+    "reasoning": 0.196,
+    "formatting": 0.294,
+    "conciseness": 0.417
+  },
+  "by_skill": {
+    "agentic_planning": 0.46,
+    "localllm_ops": 0.195,
+    "python_stack": 0.537,
+    "structured_extraction": 0.45,
+    "supply_chain": 0.368,
+    "tool_call_format": 0.411
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "supply_chain",
+    "tool_call_format",
+    "structured_extraction",
+    "agentic_planning",
+    "python_stack"
+  ],
+  "mean_tokens_per_sec": 50.5,
+  "wall_seconds": 563.9,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.427,
+        "reasoning": 0.414,
+        "formatting": 1.0,
+        "conciseness": 0.412
+      },
+      "notes": {
+        "accuracy": "nums=0.67 ids=0.20 recall=0.40",
+        "reasoning": "cov=0.22 nov=0.38 steps=9",
+        "formatting": "ok",
+        "conciseness": "padded (3.01x)"
+      },
+      "total": 0.537,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 31.3,
+      "student_answer": "# Issues in the Original Function\n\nThe original `load_config` function has several critical problems:\n\n1. **Resource Leak**: The file is opened but never closed.\n2. **No Error Handling**: No checks for file existence, JSON parsing errors, or I/O issues.\n3. **No Context Manager**: The file should be managed using a `with` statement.\n4. **No Type Hints**: Missing type hints for better code clarity.\n5. **No Documentation**: Missing docstring for function purpose and parameters.\n\n---\n\n## ✅ Fixed Version (Recommended)\n\n```python\nimport json\nfrom typing import Any\n\ndef load_config(path: str) -> dict[str, Any]:\n    \"\"\"Load configuration from a JSON file.\n\n    Args:\n        path: Path to the JSON configuration file.\n\n    Returns:\n        Dictionary containing the configuration data.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file contains invalid JSON.\n        IOError: If there's an I/O error.\n    \"\"\"\n    try:\n        with open(path, 'r') as f:\n            data = json.load(f)\n        return data\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"Configuration file not found: {path}\")\n    except json.JSONDecodeError as e:\n        raise json.JSONDecodeError(f\"Invalid JSON in file: {path}\", str(e), e.pos)\n    except IOError as e:\n        raise IOError(f\"Error reading file: {path}\") from e\n```\n\n---\n\n## 🛠 Alternative: Simpler Version (If You Want to Raise Exceptions Only)\n\n```python\nimport json\nfrom typing import Any\n\ndef load_config(path: str) -> dict[str, Any]:\n    \"\"\"Load configuration from a JSON file.\n\n    Args:\n        path: Path to the JSON configuration file.\n\n    Returns:\n        Dictionary containing the configuration data.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file contains invalid JSON.\n    \"\"\"\n    with open(path, 'r') as f:\n        return json.load(f)\n```\n\n---\n\n## 🧪 Example Usage\n\n```python\ntry:\n    config = load_config('confi",
+      "student_thinking": "Let me review this function and identify the issues:\n\n1. **Resource leak**: The file is opened but never closed. This is a major issue that should be fixed.\n\n2. **No error handling**: There's no try-except block to handle potential errors like:\n   - File not found\n   - JSON parsing errors\n   - Permission errors\n\n3. **No context manager**: The file should be opened and closed properly using a context manager (`with` statement) or `contextlib.closing()`.\n\n4. **No validation**: There's no check if the path exists or if the file is readable.\n\n5. **No return type hints**: Could benefit from type hints for better code quality.\n\n6. **No docstring**: Missing documentation.\n\nLet me provide a corrected version:\n\n```python\nimport json\nfrom typing import Any\n\ndef load_config(path: str) -> dict:\n    \"\"\"Load configuration from a JSON file.\n    \n    Args:\n        path: Path to the JSON configuration file\n        \n    Returns:\n        Dictionary containing the configuration data\n        \n    Raises:\n        FileNotFoundError: If the file doesn't exist\n        json.JSONDecodeError: If the file contains invalid JSON\n    \"\"\"\n    with open(path, 'r') as f:\n        data = json.load(f)\n    return data\n```\n\nOr better yet, with proper error handling:\n\n```python\nimport json\nfrom typing import Any\n\ndef load_config(path: str) -> dict:\n    \"\"\"Load configuration from a JSON file.\n    \n    Args:\n        path: Path to the JSON configuration file\n        \n    Returns:\n        Dictionary containing the confi"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.152,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.677
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.00 recall=0.18",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (2.37x)"
+      },
+      "total": 0.136,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.1,
+      "student_answer": "Here's a thinking process that leads to the suggested ranking of fixes:\n\n1.  **Analyze the User's Problem:**\n    *   **Model Size:** 4B parameters (e.g., Llama-2-7B is close, but 4B is like Llama-3-8B is actually 8B, so 4B is like Llama-3-8B is 8B, wait, 4B is like Llama-3-8B is 8B, wait, 4B is like Llama-3-8B is 8B... let's assume a standard 4B model like Phi-3-mini or Llama-3-8B is 8B... actually 4B is like Llama-3-8B is 8B... wait, 4B is like Llama-3-8B is 8B... okay, let's just say 4B parameters).\n    *   **Technique:** QLoRA (Quantized Low-Rank Adaptation).\n    *   **Hardware:** 8 GB VRAM.\n    *   **Configuration:** Sequence Length 2048, Batch Size 2.\n    *   **Issue:** Out Of Memory (OOM).\n    *   **Goal:** Rank fixes by *memory saved per unit of quality lost*. This is the tricky part. It's not just \"what works,\" it's \"what works best for the trade-off.\"\n\n2.  **Understand QLoRA Memory Footprint:**\n    *   QLoRA relies on 4-bit quantization of the base model weights.\n    *   Memory is dominated by:\n        1.  Base Model Weights (4-bit).\n        2.  Optimizer State (AdamW/AdamW8bit).\n        3.  Activations (KV Cache, hidden states).\n        4.  LoRA Adapter weights (usually small, but still).\n        5.  Gradient buffers (if using full gradient updates, though QLoRA usually uses 8-bit Adam).\n        6.  Batch Size (2 is relatively small, but 2048 context is large).\n    *   *Key Insight:* With 8GB VRAM and a 4B model, the overhead of 2048 context length + 2x batch size is likely the bottleneck. 4B model at 4-bit is roughly 2GB (2.5GB). LoRA adapters are negligible. The main issue is the **KV Cache** and **Activation** memory, especially with 2048 tokens.\n\n3.  **Identify Potential Fixes:**\n    *   Reduce Sequence Length (Context).\n    *   Reduce Batch Size.\n    *   Use `--no-grad` (Gradient checkpointing).\n    *   Use `--no-grad` (Gradient checkpointing).\n    *   Use `--no-grad` (Gradient checkpointing).\n    *   Use `--no-grad` (Gradient checkpointing).\n    *   ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.368,
+        "reasoning": 0.498,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.80 ids=0.00 recall=0.24",
+        "reasoning": "cov=0.26 nov=0.63 steps=53",
+        "formatting": "missing code block",
+        "conciseness": "1.41x"
+      },
+      "total": 0.49,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.5,
+      "student_answer": "Here is the recommended approach to handle this situation professionally.\n\n### 1. What You Report\nYou must be transparent but calm. Do not report this as a regression (a new failure caused by your code), but rather as a **pre-existing issue**.\n\n**Report Template:**\n> \"I ran the test suite after the change. The 3 failing tests are **pre-existing failures** (they failed in the previous commit). The change itself did not introduce any new regressions. I am currently investigating the root cause of the pre-existing failures.\"\n\n**Key details to include:**\n*   **Status:** Tests are failing (don't hide this).\n*   **Context:** Explicitly state they failed before the change.\n*   **Impact:** Clarify that the code change is safe.\n*   **Next Step:** State that you are fixing the test suite, not the code.\n\n### 2. What You Do\nYour goal is to reduce \"test noise\" and ensure the CI/CD pipeline reflects the true health of the codebase.\n\n**Step 1: Verify the Status**\n*   **Re-run on a clean branch:** Ensure the failures aren't due to a flaky environment or a stale cache.\n*   **Check CI/CD History:** Look at the last 5 commits to confirm the tests have been failing consistently.\n\n**Step 2: Fix the Test Suite**\n*   **If the tests are flaky:** Fix the flakiness so they pass consistently.\n*   **If the tests are broken logic:** Update the test expectations or fix the underlying code that the test is checking.\n*   **If the tests are obsolete:** If the feature is no longer relevant, update the test to reflect the new reality or remove it.\n\n**Step 3: Communicate with Stakeholders**\n*   **If the tests are blocking:** Do not merge the code until the tests are fixed, even if they were broken before. A broken test suite is a risk for future stability.\n*   **If the tests are non-blocking:** You can proceed with the merge, but document the known issue in the PR description or the project's \"Known Issues\" tracker.\n\n**Step 4: Update Documentation**\n*   Update the CI/CD pipeline configuration if neces",
+      "student_thinking": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Scenario:**\n    *   **Action:** Ran the test suite after a code change.\n    *   **Result:** 3 tests failed.\n    *   **Context:** These 3 tests *also* failed before the change (i.e., they were already broken).\n    *   **Question:** What do you report? What do you do?\n\n2.  **Determine the Goal:**\n    *   The goal is to maintain code quality, avoid wasting time, and communicate effectively with stakeholders (team, managers, etc.).\n    *   The core issue is *noise* vs. *signal*. The change didn't break anything, but the test suite is broken.\n\n3.  **Formulate the \"What do you do?\" (Action Plan):**\n    *   *Immediate Action:* Don't panic. Don't assume the change broke the code.\n    *   *Investigation:* Verify the failure is pre-existing. Check the CI/CD pipeline status. Look at the git history.\n    *   *Fixing:* Fix the broken tests (if possible) or mark them as known issues.\n    *   *Communication:* Inform the team.\n\n4.  **Formulate the \"What do you report?\" (Communication Plan):**\n    *   *Tone:* Professional, factual, not alarming.\n    *   *Content:* State the result clearly (tests passed/fail). Explain the context (pre-existing failures). Propose a solution (fixing the tests).\n    *   *Audience:* Developers, Managers, Stakeholders.\n\n5.  **Drafting the Response (Iterative Process):**\n\n    *   *Draft 1 (Internal Monologue):* Just tell them the tests passed. Wait, no, 3 failed. But they failed befor"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 0.94,
+        "reasoning": 0.524,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.70",
+        "reasoning": "cov=0.26 nov=0.71 steps=6",
+        "formatting": "missing code block",
+        "conciseness": "0.66x"
+      },
+      "total": 0.654,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.2,
+      "student_answer": "{\"tool\": \"read_file\", \"path\": \"src/repo2graph/cli.py\", \"start_line\": 40, \"end_line\": 80}",
+      "student_thinking": "The user wants me to use the `read_file` tool to read lines 40-80 of the file `src/repo2graph/cli.py`. They want me to emit only the tool call.\n\nThe schema for `read_file` is:\n- path: string (required)\n- start_line: integer (optional)\n- end_line: integer (optional)\n\nI need to format this as a tool call with:\n- path: \"src/repo2graph/cli.py\"\n- start_line: 40\n- end_line: 80\n\nLet me format this properly as a tool call."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.277,
+        "reasoning": 0.0,
+        "formatting": 0.25,
+        "conciseness": 0.535
+      },
+      "notes": {
+        "accuracy": "nums=0.57 ids=0.00 recall=0.24",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "padded (2.72x)"
+      },
+      "total": 0.228,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.3,
+      "student_answer": "Here's a thinking process that leads to the suggested advice:\n\n1.  **Analyze the Scenario:**\n    *   **Change:** A dependency's major version update.\n    *   **Impact:** Wheel size shrinks significantly (33 MB $\\rightarrow$ 2.5 MB).\n    *   **Reason:** Grammars are now downloaded on first use (lazy loading) instead of being pre-compiled/bundled.\n    *   **Project Constraint:** The project promises that building and querying make *no* network calls.\n    *   **Question:** Should we raise the version cap (i.e., allow the new version)?\n\n2.  **Evaluate the Promise vs. Reality:**\n    *   *Promise:* \"No network calls.\"\n    *   *New Dependency:* \"Download on first use.\"\n    *   *Conflict:* If the dependency downloads grammars on first use, and the project promises no network calls, then the *project* is now making network calls (implicitly) when using that dependency.\n    *   *Timing:* Is it \"on first use\" (runtime) or \"on install\"?\n        *   If it's on install (build time), the project promise might still hold for the *runtime* of the application, but the build process itself is affected.\n        *   If it's on first use (runtime), the project promise is broken.\n\n3.  **Analyze the \"Version Cap\" Concept:**\n    *   In the context of dependency management (like PyPI, npm, etc.), a \"version cap\" usually refers to a `minimum` or `maximum` version constraint in a `requirements.txt`, `package.json`, or similar lockfile.\n    *   However, in the context of *dependency management policies* (like `pip`'s `--upgrade` or `requirements` pinning), \"raising the version cap\" usually means \"allowing the new version\" or \"removing the pin.\"\n    *   Wait, looking at the phrasing \"raise the version cap\": This sounds like a specific constraint mechanism. In many contexts (like `requirements.txt` or `constraints.txt`), you might have a `max-version` or `min-version`.\n    *   *Correction:* In the context of the prompt, \"raise the version cap\" likely means \"Should we update our dependency specifi",
+      "student_thinking": ""
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.575,
+        "reasoning": 0.0,
+        "formatting": 0.5,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=1.00 recall=0.30",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (5.45x)"
+      },
+      "total": 0.359,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.3,
+      "student_answer": "Here's a thinking process that leads to the suggested solutions:\n\n1.  **Analyze the Problem:**\n    *   **Symptom:** A client sends a request with a specific model ID (`qwen3.5:9b`).\n    *   **Error:** The server returns `[claude-code:unrecognized_model]` *before* any request leaves the machine (or rather, the client is trying to use a model ID that the server doesn't recognize, but the error message format suggests a specific SDK or API wrapper is involved).\n    *   **Constraint:** The endpoint is correct (the server is reachable and valid).\n    *   **Goal:** Make the client accept a model ID it has never heard of (i.e., register the model or configure the client to use a different model).\n    *   **Key Detail:** The error message `[claude-code:unrecognized_model]` is suspicious. It looks like a custom error format or a specific SDK error (likely Anthropic's `claude-code` tool or a wrapper around it, but the model ID `qwen3.5:9b` is clearly an Alibaba/Qwen model, not an Anthropic model). This suggests a mismatch between the client's configuration and the actual backend capabilities.\n\n2.  **Deconstruct the Error Message:**\n    *   `[claude-code:unrecognized_model]`: This looks like a specific error code from a tool or SDK (possibly `claude-code` is a tool name in a specific context, or the user is misinterpreting the error).\n    *   `{\"model\":\"qwen3.5:9b\"}`: This is the payload.\n    *   **Crucial Observation:** `qwen3.5:9b` is an Alibaba Cloud (Qwen) model. `claude-code` is an Anthropic tool. If the client is configured to use `claude-code` (Anthropic), it *cannot* accept `qwen3.5:9b` (Qwen).\n    *   **Hypothesis 1:** The client is configured to talk to an Anthropic endpoint, but the user is trying to send a Qwen model ID.\n    *   **Hypothesis 2:** The client is a generic LLM client, but the server-side validation is strict.\n    *   **Hypothesis 3:** The user is using a specific SDK (like `claude-code` in a VS Code extension or similar) that has hardcoded model lists",
+      "student_thinking": ""
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.37,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.75 recall=0.35",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (19.67x)"
+      },
+      "total": 0.167,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.7,
+      "student_answer": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Tool: `grade_model`\n    *   Schema:\n        *   `model` (string, required)\n        *   `eval_file` (string, required)\n        *   `compare_to` (string, optional)\n        *   `temperature` (number, optional)\n    *   User Input: \"baseline the student, then I guess compare it to whatever we had before, at whatever temperature is stable\"\n    *   Task: Emit the tool call and one line on any judgement made.\n\n2.  **Identify Missing Information:**\n    *   The user wants to \"baseline the student\" (likely meaning evaluate the student's work against a model or baseline).\n    *   They want to \"compare it to whatever we had before\" (implies `compare_to` is needed, but the specific value is unknown).\n    *   They want \"whatever temperature is stable\" (implies `temperature` is needed, but the specific value is unknown).\n    *   Crucially, I do not have access to the specific values for `model`, `eval_file`, `compare_to`, or `temperature` from the user's prompt alone. The prompt is vague and refers to external context (\"whatever we had before\", \"whatever temperature is stable\") that isn't provided in the current context window.\n\n3.  **Evaluate Tool Call Feasibility:**\n    *   To call `grade_model`, I need concrete values for `model` and `eval_file`.\n    *   The user's request is ambiguous regarding these concrete values.\n    *   However, in many evaluation scenarios, the instruction implies I should use the *current* context or default values if available, OR I need to ask for clarification.\n    *   Wait, looking at the instruction: \"Emit the tool call and one line on any judgement you made.\"\n    *   Usually, if information is missing, I cannot emit a valid tool call. However, sometimes in these types of prompts, there's an implicit expectation to use placeholders or specific known values from a previous turn (which isn't here).\n    *   Actually, looking closely at the prompt structure: \"You have a tool `grade_model`... The us",
+      "student_thinking": ""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.085,
+        "reasoning": 0.596,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.15 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.34 nov=0.84 steps=77",
+        "formatting": "missing code block",
+        "conciseness": "0.53x"
+      },
+      "total": 0.287,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.4,
+      "student_answer": "When you combine a GGUF file (the weights) with a Modelfile (the configuration) using `ollama create`, you are essentially creating a new, custom model in the Ollama registry. This process introduces specific risks regarding integrity and security.\n\nHere is what you should verify before serving the model, and what the digest actually proves.\n\n### 1. Verification Checklist Before Serving\n\nBefore you run `ollama serve` or expose the model to users, perform these checks:\n\n#### A. Verify Source Integrity (The GGUF File)\n*   **Check the Hash:** If you downloaded the GGUF from a public hub (like Hugging Face or Ollama), verify its SHA-256 hash against the repository's checksum.\n    *   *Why:* If the file was corrupted during download or tampered with by a malicious actor, the model will fail or behave unpredictably.\n    *   *Command:* `sha256sum",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the User's Request:**\n    *   **Action:** The user pulls a GGUF model from a model hub (e.g., Hugging Face, Ollama, etc.) and runs `ollama create` with a Modelfile.\n    *   **Questions:**\n        1.  What should they verify *before* serving it?\n        2.  What does a *digest* actually prove in this context?\n\n2.  **Deconstruct the Workflow:**\n    *   **Input:** GGUF file (quantized weights) + Modelfile (configuration).\n    *   **Command:** `ollama create <model-name> -f Modelfile` (or similar).\n    *   **Output:** A new Ollama model (usually a containerized or local archive) that can be served via `ollama serve`.\n    *   **Goal:** Ensure the resulting model is safe, correct, and reproducible.\n\n3.  **Address Question 1: Verification Before Serving:**\n    *   *What are the risks?*\n        *   **Security:** Malicious GGUF files (backdoors, data exfiltration, though rare in GGUF, possible in Modelfile).\n        *   **Integrity:** Did the download actually match the source?\n        *   **Compatibility:** Does the Modelfile match the GGUF architecture (e.g., quantization, tokenizer)?\n        *   **Functionality:** Does the model actually work?\n    *   *What are the specific checks?*\n        *   **Hash/Checksum:** Verify the GGUF file hasn't been tampered with during download.\n        *   **Modelfile Content:** Check for dangerous instructions (e.g., `FROM` pointing to a remote, unsafe system prompts, hidde"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.368,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.00 recall=0.34",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (6.88x)"
+      },
+      "total": 0.165,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.3,
+      "student_answer": "Here's a thinking process that leads to the suggested solutions:\n\n1.  **Analyze the User's Problem:**\n    *   **Configuration:** The user has set the environment variable `ANTHROPIC_BASE_URL=http://localhost:11434/v1`.\n    *   **Intention:** They want Claude Code (an AI coding assistant, likely based on the `claude-code` extension or similar) to use Ollama instead of the actual Anthropic API.\n    *   **Status:** Ollama is running, and the model (`qwen3.5:9b`) is pulled.\n    *   **Error:** \"There's an issue with the selected model (qwen3.5:9b). It may not exist or you may not have access to it.\"\n    *   **Core Issue:** The configuration is incorrect. The error message suggests a mismatch between the expected model name and what Ollama actually supports, or the connection isn't being established correctly.\n\n2.  **Identify the Misconception:**\n    *   **Anthropic vs. Ollama:** The environment variable `ANTHROPIC_BASE_URL` is specifically for the *Anthropic API* (the official Claude API).\n    *   **Ollama Endpoint:** Ollama runs on `http://localhost:11434`.\n    *   **The Conflict:** Setting `ANTHROPIC_BASE_URL` tells the client to look for an Anthropic-compatible endpoint at `localhost:11434`. However, Ollama is *not* an Anthropic API server. It's a local LLM runner.\n    *   **The Tool:** \"Claude Code\" is likely referring to the VS Code extension \"Claude Code\" (by Anthropic) or a similar wrapper. If it's the official \"Claude Code\" extension, it expects to talk to the Anthropic API. If the user wants to use Ollama with a local model, they need to configure the extension to use a local provider (like Ollama) or use a different tool entirely.\n    *   **Wait, is \"Claude Code\" the right tool?** There is a VS Code extension called \"Claude Code\" (by Anthropic). There is also a generic \"Claude\" extension. But the specific error message (\"There's an issue with the selected model...\") sounds like it's coming from the *Claude Code* extension itself, which usually connects to the A",
+      "student_thinking": ""
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (32.07x)"
+      },
+      "total": 0.45,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.2,
+      "student_answer": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A JSON string representing Ollama model information.\n    *   Task: Extract specific fields and format them into a specific JSON output structure.\n    *   Output Format: `{\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": boolean, \"vision\": boolean}`\n    *   Constraint: `size_gb` must be bytes converted to gigabytes, rounded to one decimal place.\n    *   Input Data: `{\"name\":\"qwen3.5:9b\",\"size\":6550825550,\"details\":{\"format\":\"gguf\",\"family\":\"qwen35\",\"parameter_size\":\"9.0B\",\"quantization_level\":\"Q4_K_M\",\"context_length\":262144},\"capabilities\":[\"completion\",\"vision\",\"tools\",\"thinking\"]}`\n\n2.  **Extract Fields:**\n    *   `name`: \"qwen3.5:9b\"\n    *   `family`: \"qwen35\" (from `details.family`)\n    *   `params`: \"9.0B\" (from `details.parameter_size`)\n    *   `quant`: \"Q4_K_M\" (from `details.quantization_level`)\n    *   `context`: 262144 (from `details.context_length`)\n    *   `size_gb`: Calculate from `size` (6550825550 bytes).\n    *   `tools`: Check `capabilities` list for \"tools\". It is present, so `true`.\n    *   `vision`: Check `capabilities` list for \"vision\". It is present, so `true`.\n\n3.  **Calculate `size_gb`:**\n    *   Bytes: 6,550,825,550\n    *   Conversion: 1 GB = 1,073,741,824 bytes (2^30) OR 1 GB = 1,000,000,000 bytes (decimal). Usually, in storage contexts, decimal (10^9) is common, but in binary contexts (like RAM/GBs often used in file sizes), 2^30 is used. However, standard practice for \"GB\" in file sizes often defaults to 10^9 unless specified as \"GiB\". Let's look at the input size: 6,550,825,550 bytes.\n    *   Calculation 1 (Decimal): 6,550,825,550 / 1,000,000,000 = 6.55082555 -> Round to 1 decimal -> 6.6 GB.\n    *   Calculation 2 (Binary): 6,550,825,550 / 1,073,741,824 = 6.101... -> Round to 1 decimal -> 6.1 GB.\n    *   Context: Ollama model sizes are often reported in decimal GBs in metadata, but sometimes binary. However, t",
+      "student_thinking": ""
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.421,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.67 recall=0.20",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (5.25x)"
+      },
+      "total": 0.189,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.5,
+      "student_answer": "Here's a thinking process that leads to the suggested justification:\n\n1.  **Analyze the Request:**\n    *   **Topic:** Comparison between `adamw_8bit` and `adamw_torch` (specifically `torch.optim.AdamW` with standard float32/float16) for a QLoRA (Quantized Low-Rank Adaptation) run.\n    *   **Constraint:** 8 GB VRAM.\n    *   **Requirement:** Justify the choice, provide arithmetic calculations, and name the costs (in terms of memory, speed, stability, etc.).\n    *   **Correction/Clarification:** The user asks about `adamw_8bit` vs. `adamw_torch`.\n        *   *Reality Check:* There is no standard library called `adamw_8bit` in the mainstream PyTorch ecosystem (like `torch.optim`). `AdamW` is the optimizer. \"8-bit\" usually refers to the *model weights* (INT8/FP8) or the *optimizer state* (FP8/FP4), but standard AdamW accumulators are typically FP32 or FP16.\n        *   *Likely Intent:* The user is probably referring to **LoRA with 8-bit quantization** (like `bitsandbytes` or `llama-llm-quant`), or they are asking about using **FP8/FP4 for the optimizer states** (which is experimental) vs. standard `torch.optim.AdamW` (FP16/FP32).\n        *   *Most Probable Scenario:* In the context of QLoRA on 8GB VRAM, the term \"adamw_8bit\" is often a misnomer for **using 8-bit quantization for the base model** (QLoRA relies on 4-bit or 8-bit base models) or using **FP8 for the optimizer states** (which is very new/experimental, e.g., `bitsandbytes` or `llm.int8` style).\n        *   *Wait, actually:* There is a specific technique called **AdamW with 8-bit optimizer states** (often associated with `bitsandbytes` or specific research papers like \"FP8 for LLMs\"). However, the most common \"8-bit\" in QLoRA context refers to the **base model quantization** (INT8/FP8) which *enables* QLoRA to fit in 8GB.\n        *   *Alternative Interpretation:* The user might be confusing `adamw_8bit` with **LoRA with 8-bit quantization** (which is rare, usually it's 4-bit).\n        *   *Best Interpretation:*",
+      "student_thinking": ""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.442,
+        "reasoning": 0.38,
+        "formatting": 1.0,
+        "conciseness": 0.629
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.21",
+        "reasoning": "cov=0.15 nov=0.38 steps=7",
+        "formatting": "ok",
+        "conciseness": "padded (2.49x)"
+      },
+      "total": 0.557,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.2,
+      "student_answer": "When integrating tree-sitter language grammars from PyPI packages to parse source code into syntax trees in a Python project, several components play key roles in execution, timing, and control. Here's a breakdown of what helps in this workflow:\n\n---\n\n### 1. **What Executes**\n\nTree-sitter itself is a C-based parser that generates a Python extension module (e.g., `tree-sitter-python`) which is imported and used by your application.\n\n- **Core Parser**: The C-based tree-sitter library parses source code into an abstract syntax tree (AST) or syntax graph.\n- **Python Wrapper**: A Python binding (e.g., `tree-sitter` or `tree-sitter-python`) provides a Python API to interact with the parser.\n- **Grammar Loading**: Tree-sitter grammars are loaded from PyPI packages (e.g., `tree-sitter-python`, `tree-sitter-c`, etc.) and compiled into parser modules.\n\nExample:\n```python\nimport tree_sitter\nimport tree_sitter_python\n\nparser = tree_sitter.Parser()\nparser.set_language(tree_sitter_python.language())\n```\n\n---\n\n### 2. **When It Executes**\n\nParsing is triggered explicitly during source processing. Common execution points include:\n\n- **On-demand Parsing**: When a user requests parsing of a specific file or string.\n- **During Compilation**: In IDEs or linters, parsing may occur on file changes or build steps.\n- **In CI/CD Pipelines**: Parsing is used to validate syntax or extract metadata.\n- **In Real-Time Tools**: Parsing may be triggered by file system events or user interaction.\n\nExample:\n```python\ndef parse_source(source_code):\n    parser = tree_sitter.Parser()\n    parser.set_language(tree_sitter_python.language())\n    tree = parser.parse(source_code)\n    return tree\n```\n\n---\n\n### 3. **What Controls the Behavior**\n\nSeveral controls determine how and when tree-sitter operates:\n\n- **Language Selection**: Choose the correct grammar for your target language.\n- **Parser Configuration**: Set options like `parse()` vs. `parse_range()` or `parse_file()`.\n- **Query Execution**: Use tree-si",
+      "student_thinking": "This is a great question about tree-sitter integration in Python projects. Let me think about what actually helps in this scenario:\n\n1. **What executes**: The tree-sitter parser itself (written in C/C++) is compiled into a Python extension module that gets imported and used\n2. **When it executes**: During parsing operations, typically when you call the parse() method on a source string\n3. **What controls**: Configuration options, language selection, query execution, etc.\n\nLet me provide a comprehensive answer about the tree-sitter Python integration (likely using `tree-sitter` or `tree-sitter-python` packages).\n\nKey points to cover:\n- How tree-sitter gets loaded\n- When parsing happens\n- What controls the behavior\n- Best practices for PyPI packages\n\nLet me structure this clearly."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.734,
+        "reasoning": 0.0,
+        "formatting": 0.5,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 recall=0.20",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (5.05x)"
+      },
+      "total": 0.43,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.2,
+      "student_answer": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **User's Goal:** Wants a \"small config change\" (implies a specific technical task, likely related to security, authentication, or system configuration).\n    *   **Constraint 1:** \"Cheapest verification that is actually sufficient.\" (Cost here likely means effort, time, money, or complexity).\n    *   **Constraint 2:** \"Say what makes a verification insufficient.\" (Educational aspect: explain the risks of weak checks).\n    *   **Context:** The user says \"I asked for...\" implying this is a follow-up to a previous conversation. However, *no previous context is provided in this session*. I don't know what system, what application, or what specific problem they are trying to solve.\n    *   **Implicit Need:** I need to acknowledge the lack of context while still providing value, or ask for clarification. However, the prompt asks me to *give* the verification, not just ask. This suggests I should assume a common scenario or explain the *principle* of verification in a general sense, or (more likely) I need to point out that I don't have the context to give a specific config change.\n    *   **Wait, actually:** In many LLM interactions, users sometimes copy-paste prompts or refer to previous turns that aren't visible. If I say \"I don't know what you're talking about,\" it might be frustrating. But I *must* be accurate. I cannot invent a config change for a system I don't know about.\n    *   **Strategy:** I need to clarify that I lack context *but* provide a framework for how to determine the \"cheapest sufficient verification\" for common scenarios (like API keys, secrets, or auth). Or, I can interpret \"config change\" as a generic security hardening question.\n    *   **Better Strategy:** The prompt is likely a test of my ability to handle \"context-less\" requests or a continuation of a specific (unseen) task. Since I am an AI, I don't have memory of past sessions unless they are ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.274,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.06 recall=0.25",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (4.98x)"
+      },
+      "total": 0.124,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.8,
+      "student_answer": "Here's a thinking process that leads to the suggested guide:\n\n1.  **Analyze the Request:**\n    *   **Current State:** The user has completed a QLoRA training run and has a saved adapter in `adapters/lesson_01`.\n    *   **Goal:** Serve this model using Ollama.\n    *   **Requirement:** Walk through the steps from the adapter to the Ollama model, explaining *why* each step exists.\n\n2.  **Identify the Core Challenge:**\n    *   QLoRA adapters are designed to be applied to a *base model* (e.g., Llama 2, Llama 3, Mistral).\n    *   Ollama requires a *quantized model* (GGUF format) that is compatible with Ollama's architecture.\n    *   Simply dropping the adapter into Ollama won't work because Ollama doesn't natively support loading adapters directly into the model file (unlike some other inference frameworks).\n    *   The standard workflow is: Base Model + Adapter -> Merge/Quantize -> Load into Ollama.\n    *   *Correction/Refinement:* Actually, the most common and recommended way to use QLoRA adapters with Ollama is to use the **`ollama run`** command with the `--adapter` flag (if available) OR, more reliably, to **merge** the adapter into the base model weights and then quantize it for Ollama.\n    *   *Wait, check Ollama's current capabilities:* As of my knowledge cutoff, Ollama *does not* natively support loading QLoRA adapters directly via the `ollama run` command in a way that preserves the adapter structure without merging. The standard practice for Ollama is to **merge** the adapter into the base model weights.\n    *   *Alternative:* Some users try to use `ollama run` with a specific base model and then use a script to load the adapter, but Ollama's `ollama serve` is designed for GGUF files.\n    *   *Best Practice:* The most robust way to get a QLoRA model into Ollama is to **merge** the adapter weights into the base model weights, then **quantize** the merged weights into GGUF format, and then **register** it in Ollama.\n    *   *Wait, is there a simpler way?* Some ne",
+      "student_thinking": ""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.072,
+        "reasoning": 0.533,
+        "formatting": 0.667,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.22",
+        "reasoning": "cov=0.27 nov=0.73 steps=66",
+        "formatting": "missing code block",
+        "conciseness": "1.50x"
+      },
+      "total": 0.399,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 22.1,
+      "student_answer": "The fundamental difference lies in **how the data is interpreted**. Loading model weights via **Pickle** involves **deserialization**, which is a form of code execution. Loading via **Safetensors** involves **parsing binary data**, which is a form of data interpretation.\n\nHere is a breakdown of why this constitutes a different class of risk and what you should require.\n\n---\n\n### 1. Why Pickle is a Different Class of Risk\n\n#### The Technical Mechanism\n*   **Pickle (`pickle`):** This is a Python-specific serialization format. When you `pickle.dump` an object, it stores the object's state *and* instructions on how to reconstruct it. When you `pickle.load` (or `torch.load` with `pickle`), Python executes the reconstruction logic.\n    *   **The Vulnerability:** During deserialization, Python executes arbitrary code defined in the pickled objects (e.g., `__reduce__` or `__getstate__` methods).\n    *   **The Attack Vector:** An attacker can embed a malicious payload in the pickle file. When the model loader runs, the payload executes as a script (e.g., `import os; os.system('rm -rf /')`).\n*   **Safetensors:** This is a binary format designed specifically for storing tensors (floats, integers, etc.). It stores raw data bytes.\n    *   **The Safety:** It contains no Python objects, no classes, and no code. It is essentially a compressed archive of numbers.\n    *   **The Risk:** The only risk is data corruption (e.g., a tensor that is too large for the GPU) or compatibility issues, but **no code execution.**\n\n#### The Risk Classification\n| Feature | Pickle | Safetensors |\n| :--- | :--- | :--- |\n| **Primary Risk** | **Security Vulnerability** (RCE) | **Data Integrity** (Corruption) |\n| **Execution** | Executes Python code on load | No execution; reads bytes |\n| **Attack Surface** | High (Malware injection) | Low (Binary corruption) |\n| **Dependency** | Python Interpreter | Binary Library (C/C++) |\n| **Classification** | **Unsafe for Untrusted Inputs** | **Safe for Untrusted Inp",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Deconstruct the Question:**\n    *   **Core Subject:** Loading machine learning model weights.\n    *   **Comparison:** Pickle (Python serialization) vs. Safetensors (binary format).\n    *   **Key Question:** Why is Pickle a *different class of risk*?\n    *   **Actionable Question:** What should I require (in terms of security/implementation)?\n\n2.  **Analyze Pickle (The Risk):**\n    *   *What is it?* Python's serialization format (`pickle`).\n    *   *How does it work?* It stores objects and their references.\n    *   *The Vulnerability:* It executes arbitrary Python code during deserialization (deserialization is essentially \"unpickling\").\n    *   *The Attack Vector:* Malicious pickle files can contain `__reduce__` or `__getstate__` methods that run code (e.g., `import os; os.system('rm -rf /')`).\n    *   *Impact:* Remote Code Execution (RCE), privilege escalation, data theft, system compromise.\n    *   *Context:* In ML, this is often called \"model poisoning\" or \"adversarial attacks,\" but specifically regarding *loading*, it's a security vulnerability.\n    *   *Why is it a \"different class of risk\"?* Because it's not just about model accuracy or integrity (which is the risk of Safetensors), but about *system compromise* (security). It's a binary format vulnerability vs. a format integrity vulnerability.\n\n3.  **Analyze Safetensors (The Baseline):**\n    *   *What is it?* A binary format for storing tensors (simil"
+    }
+  ]
+}

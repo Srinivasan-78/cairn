@@ -1,0 +1,24 @@
+# Training dependencies - install INSIDE WSL2 Ubuntu, not native Windows.
+#
+#   wsl -d Ubuntu
+#   cd /mnt/e/LocalLLM/teacher_pipeline
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install torch --index-url https://download.pytorch.org/whl/cu130
+#   pip install -r requirements-train.txt
+#
+# torch is installed separately above because it needs the CUDA-specific index.
+# This machine's driver reports CUDA UMD 13.5, so the cu130 wheels are correct.
+
+unsloth
+unsloth_zoo
+trl>=0.12
+peft>=0.14
+transformers>=4.48
+accelerate
+bitsandbytes
+datasets
+sentencepiece
+protobuf
+huggingface_hub
+pyyaml
+# triton comes in via unsloth on Linux; do not pin it on Windows.

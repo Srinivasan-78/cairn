@@ -1,0 +1,494 @@
+{
+  "timestamp": "2026-11-24T08:54:55.497573+00:00",
+  "model": "student:trained",
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 20,
+  "n_errors": 0,
+  "overall_score": 0.398,
+  "pass_rate": 0.1,
+  "by_criterion": {
+    "accuracy": 0.334,
+    "reasoning": 0.178,
+    "formatting": 0.601,
+    "conciseness": 0.828
+  },
+  "by_skill": {
+    "agentic_planning": 0.31,
+    "localllm_ops": 0.328,
+    "python_stack": 0.601,
+    "structured_extraction": 0.807,
+    "supply_chain": 0.337,
+    "tool_call_format": 0.661
+  },
+  "weak_skills": [
+    "agentic_planning",
+    "localllm_ops",
+    "supply_chain",
+    "python_stack",
+    "tool_call_format"
+  ],
+  "mean_tokens_per_sec": 54.0,
+  "wall_seconds": 304.0,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.46,
+        "reasoning": 0.381,
+        "formatting": 1.0,
+        "conciseness": 0.985
+      },
+      "notes": {
+        "accuracy": "recall=0.37 nums=0.67",
+        "reasoning": "cov=0.14 nov=0.41 steps=4",
+        "formatting": "ok",
+        "conciseness": "padded (1.64x)"
+      },
+      "total": 0.601,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.9,
+      "student_answer": "Four problems, three of which are critical:\n\n```python\nfrom pathlib import Path\nimport json\n\n\ndef load_config(path: str) -> dict:\n    \"\"\"Load a JSON configuration file.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file is not valid JSON.\n        ValueError: If the loaded data is not a mapping.\n    \"\"\"\n    path = Path(path)\n    if not path.exists():\n        raise FileNotFoundError(f\"Configuration file not found: {path}\")\n\n    with path.open(\"r\", encoding=\"utf-8\") as f:\n        data = json.load(f)\n\n    if not isinstance(data, dict):\n        raise ValueError(f\"Configuration must be a mapping, got {type(data).__name__}\")\n\n    return data\n```\n\n**The three critical issues:**\n\n1. **Resource leak** - the file handle is never closed.\n2. **Silent failure** - an unreadable file raises a traceback instead of a clear message.\n3. **No validation** - the result is assumed to be a configuration dictionary.\n\n**The fourth, often overlooked issue:** no context manager. The file should open and close automatically, which the `with` statement provides.\n\n**Why `pathlib.Path` instead of a string:** it gives you methods like `exists()`, `is_file()`, and `resolve()` that are far more useful than string concatenation.\n\n**Why explicit error handling:** a traceback is the wrong tool for a configuration file. A clear, named exception tells the caller exactly what went wrong and where.",
+      "student_thinking": "The function has several issues:\n\n1. **Resource leak**: The file handle is never closed, which is a classic bug.\n2. **No error handling**: If the file doesn't exist, is unreadable, or contains invalid JSON, the function silently fails with a traceback.\n3. **No validation**: The returned data is assumed to be a configuration dictionary, but nothing checks this.\n4. **No context manager**: The file should be opened and closed automatically.\n\nThe fix uses `pathlib.Path` for better path handling, a context manager to ensure the file closes, and explicit error handling with a clear message."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.281,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.263
+      },
+      "notes": {
+        "accuracy": "recall=0.19 nums=0.48",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (3.37x)"
+      },
+      "total": 0.153,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "The ranking must be ordered by memory saved per quality lost, not by memory saved alone.\n\nFirst, the baseline: 8 GB VRAM with 4B at fp16 is 8 GB, so there is no headroom at all. The reported OOM is therefore expected, not a bug.\n\nSecond, the fixes:\n\n1. **Sequence length 1024** - this is the only one that genuinely saves quality. Halving the sequence cuts the context window in half, which is a 50% reduction in the number of tokens the model must attend over at once. That is a real, measurable loss. It also halves the attention computation, which is a real, measurable saving. So it saves memory and quality, and the saving per quality lost is infinite.\n\n2. **Batch size 1** - this is the only one that saves memory without losing quality. It cuts the batch from 2 to 1, which is a 50% reduction in the number of examples processed per optimizer step. The optimizer still sees the same total data over the run, so the learned weights are identical. It is the only option that saves memory and quality simultaneously, so it is the first choice.\n\n3. **Gradient accumulation 4** - this is the only one that saves memory while keeping the effective batch constant. It changes nothing about the weights, because the optimizer still sees 4 x 4 = 16 examples per step. It is the only option that saves memory and quality simultaneously, so it is the second choice.\n\n4. **LoRA r=16** - this is the only one that saves memory while keeping quality constant. It changes nothing about the weights, because the adapter is trained on top of a frozen base. It is the only option that saves memory and quality simultaneously, so it is the third choice.\n\n5. **LoRA alpha=32** - this is the only one that saves memory while keeping quality constant. It changes nothing about the weights, because the adapter is trained on top of a frozen base. It is the only option that saves memory and quality simultaneously, so it is the fourth choice.\n\n6. **LoRA dropout=0.0** - this is the only one that saves memory while k",
+      "student_thinking": ""
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.324,
+        "reasoning": 0.153,
+        "formatting": 0.25,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.12 nums=0.80",
+        "reasoning": "cov=0.14 nov=0.29 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "0.45x"
+      },
+      "total": 0.334,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.4,
+      "student_answer": "**Report it, but qualify it.** Say it failed, and say it failed before your change. That distinction is worth more than the test itself.\n\n**Act in order:**\n\n1. **Check the diff.** Did your change introduce a new assertion? Did you change a number that a test compares against? Those are the most likely causes.\n2. **Check the environment.** Is the test running on a different machine? A different branch? A different dependency version? Tests should be environment-independent, so a failure that depends on it is a bug in the test, not in the code.\n3. **Check the test.** Is it testing something that is not testable? Is it testing an implementation detail rather than a property? Tests that fail on a single environment are fragile and should be removed or fixed.\n4. **Report it.** The report should say what you found, not just that it failed.\n\nThe value you provide is the diagnosis, not the failure count.",
+      "student_thinking": "This is the most common mistake in software development. Reporting it as a failure is the wrong answer.\n\nThe right answer has two parts: reporting correctly, and acting correctly.\n\nReporting: Say it failed, but say it failed before your change. That distinction is worth more than the test itself. It shows you read the output and understand what it means.\n\nActing: The first thing to do is check the diff. Did your change introduce a new assertion? Did you change a number that a test compares against? Those are the most likely causes.\n\nThen check the environment. Is the test running on a different machine? A different branch? A different dependency version? Tests are supposed to be environment-independent, so a failure that depends on it is a bug in the test, not in the code.\n\nThen check the test itself. Is it testing something that is not testable? Is it testing an implementation detail rather than a property? Tests that fail on a single environment are fragile and should be removed or fixed.\n\nFinally, report it. The report should say what you found, not just that it failed. That is the value you provide."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.259,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=1.00 nums=1.00",
+        "reasoning": "cov=0.12 nov=0.78 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.815,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 52.1,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The path is src/repo2graph/cli.py, which is required. The start and end lines are both 40 and 80, which are optional but specified in the request, so include them. No other fields are needed."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.083,
+        "reasoning": 0.06,
+        "formatting": 0.25,
+        "conciseness": 0.896
+      },
+      "notes": {
+        "accuracy": "recall=0.12 nums=0.00",
+        "reasoning": "cov=0.11 nov=0.00 steps=0",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "too short (0.27x)"
+      },
+      "total": 0.192,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.2,
+      "student_answer": "No. The version cap is a static number, and the real constraint is the runtime behavior.\n\nThe dependency's new behavior is a runtime effect, not a build-time one, so the cap is the wrong instrument. The real question is whether the project's promise is still true. The promise is about building and querying, not about the dependency's own runtime. A dependency that downloads on first use is still a dependency that makes network calls, just at a different time.\n\nThe correct instrument is the runtime behavior itself, which is unchanged. The dependency's new behavior is a runtime effect, not a build-time one, so the cap cannot express it. The answer is no, and the reason is that the version cap is the wrong tool.",
+      "student_thinking": "The version cap is a static number, and the real constraint is the runtime behavior. The dependency's new behavior is a runtime effect, not a build-time one, so the cap is the wrong instrument.\n\nThe real question is whether the project's promise is still true. The promise is about building and querying, not about the dependency's own runtime. A dependency that downloads on first use is still a dependency that makes network calls, just at a different time.\n\nThe answer is no, and the reason is that the cap is the wrong tool. The real constraint is the runtime behavior, which is unchanged. The dependency's new behavior is a runtime effect, not a build-time one, so the cap cannot express it.\n\nThe correct instrument is the runtime behavior itself, which is unchanged. The dependency's new behavior is a runtime effect, not a build-time one, so the cap cannot express it. The answer is no, and the reason is that the version cap is the wrong tool."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.23,
+        "reasoning": 0.182,
+        "formatting": 0.6,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.21 nums=0.29",
+        "reasoning": "cov=0.24 nov=0.20 steps=0",
+        "formatting": "lang tag {'json'}!={'python'}, missing bullets",
+        "conciseness": "1.13x"
+      },
+      "total": 0.369,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.6,
+      "student_answer": "The error is about the model name, not the endpoint. The client has no record of `qwen3.5:9b`, so it rejects it as unknown - and that is the correct behavior. An endpoint that is correct is irrelevant to this failure.\n\nThe only way to make the client accept an id it has never heard of is to register it in the client's known set, before any request is sent.\n\n**Register the model.**\n\n```python\nKNOWN_MODELS = {\n    \"qwen3.5:9b\": {\n        \"name\": \"Qwen 3.5 9B\",\n        \"version\": \"3.5\",\n        \"description\": \"Qwen 3.5, 9B parameters, 256K context\",\n    },\n}\n```\n\nPut this in the client's initialization, not in the request.\n\n**Do not hardcode the model name.** A version bump breaks it. Use a versioned manifest:\n\n```python\nMANIFEST_VERSION = \"1.0\"\nMANIFEST_URL = \"https://raw.githubusercontent.com/.../manifest.json\"\n```\n\nThe manifest must be versioned by the client's version, so a future client can update its known models without ambiguity. It must also be versioned by the model, so a new model version is registered correctly.\n\n**Bundle the manifest.** The client must be able to fetch it without network access, or the registration is useless. A bundled manifest is the only option that satisfies that constraint.\n\n**Report which models are known.** The error message should say \"qwen3.5:9b is not in the known set\" rather than \"unrecognized_model\". That is the only way the error is useful.\n\n**There is no alternative.** You cannot make the client accept an id it has never heard of without registering it first. The only other option is to change the endpoint, which is the wrong fix for this problem.",
+      "student_thinking": "The error is not about the endpoint - it is about the model name. The client has no record of `qwen3.5:9b`, so it rejects it as unknown. The endpoint being correct is irrelevant to this particular failure.\n\nThe client's behavior is reasonable: it should not send a request it cannot interpret. The solution is to register the model name in the client's known set, not to change the endpoint.\n\nThe registration must be done before any request, and it must be done in a way that the client trusts. A hardcoded string is the simplest, but it is brittle - a version bump breaks it. A versioned manifest is the robust choice.\n\nThe manifest should be versioned by the client's version, so that a future client can update its known models without ambiguity. The manifest should also be versioned by the model, so that a new model version is registered correctly.\n\nThe client must be able to fetch the manifest without network access, otherwise the registration is useless. A bundled manifest is the only option that satisfies that constraint.\n\nThe client must also be able to report which models it knows, so that the error message is useful rather than cryptic.\n\nThere is no way to make the client accept an id it has never heard of without registering it first. The only alternative is to change the endpoint, which is the wrong fix for this problem."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.308,
+        "reasoning": 0.272,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.30 nums=0.33",
+        "reasoning": "cov=0.26 nov=0.53 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.97x"
+      },
+      "total": 0.507,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.6,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student\",\n    \"eval_file\": \"student_eval.jsonl\",\n    \"temperature\": 0.3\n  }\n}\n```\n\nThe second call is not emitted yet, because the comparison requires the baseline to exist. After this call completes, I will emit a second call with `model: \"teacher\"` and `compare_to: \"baseline\"`, keeping temperature at 0.3 since that is the stable one.",
+      "student_thinking": "The user wants two things: baseline the student model, and then compare it to a previous version. For the first call, model is the student, eval_file is the student's eval file, and compare_to is omitted since there is no prior yet. Temperature is omitted because the user said \"whatever temperature is stable\", which means the default. The second call is not yet emitted because the first call has not run yet - the comparison requires the baseline to exist. The judgement is that the second call should be emitted after the first one completes."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.182,
+        "reasoning": 0.189,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.13 nums=0.31",
+        "reasoning": "cov=0.19 nov=0.33 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.97x"
+      },
+      "total": 0.429,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.6,
+      "student_answer": "Two things, and they are different.\n\n**1. Verify the provenance of both layers.**\n\nA pulled GGUF is a snapshot of whatever the uploader committed at that moment, with no provenance about who built it or how. Running `ollama create` on top of it is a build step that produces a new artifact with its own provenance, but the base is still unverified.\n\n```bash\n# The base model\ncurl -s https://huggingface.co/replicate/codellama:4.6b/resolve/main/4b.Q4_K_M.gguf \\\n  | sha256sum\n\n# The built model\nollama create --digest mymodel --modelfile <<EOF\nFROM replicate/codellama:4.6b\nSYSTEM You are a helpful assistant.\nEOF\n```\n\nThe first hash tells you which file you are starting from. The second tells you which file you are serving. If the base model is unverified, the second number is still useless on its own.\n\n**2. Understand what a digest actually proves.**\n\nA digest is a cryptographic hash of the file's contents. It proves that the file on disk is identical to the file that was uploaded at that moment. It does **not** prove anything about the model's quality, its training data, or whether it was built correctly.\n\nThat is the common misconception, and it is the one worth stating explicitly. A digest is a statement about the file, not about the model.\n\nSo the real risk is conflating the two. A verified digest means you know exactly which bytes you are serving, which is the only thing a digest can tell you. Knowing whether the model is helpful or well-trained requires running it and evaluating it, which is the step that actually matters.",
+      "student_thinking": "The question has two distinct parts, and the second is the one that matters most.\n\nFirst, the practical part: pulling a GGUF from a hub is not the same as building one locally. A pulled model is a snapshot of whatever the uploader committed at that moment, with no provenance about who built it or how. Running `ollama create` on top of it is a build step that produces a new artifact with its own provenance, but the base is still unverified. So the verification step should be: check the base model's provenance, and check the build's provenance.\n\nSecond, the digest part: a digest is a cryptographic hash of the file's contents. It proves that the file on disk is identical to the file that was uploaded at that moment. It does not prove anything about the model's quality, its training data, or whether it was built correctly. That is the common misconception, and it is the one worth stating explicitly.\n\nThe answer should give the concrete commands, because that is what the user will run. It should also distinguish between the two types of provenance, since conflating them is the real risk here."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.241,
+        "reasoning": 0.207,
+        "formatting": 0.65,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.18 nums=0.38",
+        "reasoning": "cov=0.26 nov=0.26 steps=0",
+        "formatting": "lang tag {'bash'}!=set()",
+        "conciseness": "0.49x"
+      },
+      "total": 0.39,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.9,
+      "student_answer": "The base URL points to `/v1`, which is the OpenAI-compatible endpoint. Ollama's OpenAI-compatible endpoint is `/api/v1`. The client is sending requests to `/v1`, which does not exist, so the server returns a 404. The client then interprets a 404 from the model selection endpoint as \"model does not exist\" rather than \"endpoint not found\".\n\nRemove the trailing `/v1` from the base URL:\n\n```\nANTHROPIC_BASE_URL=http://localhost:11434\n```\n\nThe model is loaded and the server is responding, so this is a routing mismatch, not a missing model.",
+      "student_thinking": "The error is not about the model being absent - qwen3.5:9b is pulled and the model is loaded. The error message comes from the client, not the server, so the server is responding.\n\nThe base URL points to /v1, which is the OpenAI-compatible endpoint. Ollama's OpenAI-compatible endpoint is /api/v1. The client is sending requests to /v1, which does not exist, so the server returns a 404. The client then interprets a 404 from the model selection endpoint as \"model does not exist\" rather than \"endpoint not found\".\n\nThe fix is to remove the trailing /v1 from the base URL."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.957,
+        "reasoning": 0.306,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=1.00 nums=0.86",
+        "reasoning": "cov=0.27 nov=0.62 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.807,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 53.5,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.1,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "The name is qwen3.5:9b. The family is qwen35, not qwen3.5, since that is the model family name. The quantization level is Q4_K_M. The context length is 262144. The size is 6550825550 bytes, which is 6.1449... GB, rounded to one decimal is 6.1 GB. The capabilities list includes tools and vision, so both are true."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.2,
+        "reasoning": 0.15,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.13 nums=0.36",
+        "reasoning": "cov=0.19 nov=0.19 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.87x"
+      },
+      "total": 0.227,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "The claim is wrong. AdamW_8bit is **3x faster** than AdamW_torch, but it costs **2 GB of headroom**.\n\n**The arithmetic:**\n\n|                     | AdamW_8bit | AdamW_torch |\n|---------------------|------------|-------------|\n| **Speed**           | 3x         | 1x          |\n| **Accumulation**    | FP16       | FP32        |\n| **Memory**          | 2 GB       | 4 GB        |\n| **Headroom**        | 2 GB       | 0 GB        |\n\nAdamW_8bit is 3x faster because the fused kernel saves one kernel and FP16 is 2x faster than FP32, for a 6x advantage. AdamW_torch is the unfused kernel, so it does the gradient accumulation and the optimizer step in two kernels, which is a 2x penalty. The net is 6 divided by 2, which is 3.\n\nThe real cost is the FP16 accumulation. AdamW_torch accumulates in FP32, which is 2x the memory of FP16. On 8 GB, that is 4 GB versus 2 GB, so **2 GB of headroom**. That is 25% of the budget, which is not negligible.\n\n**The decision:** AdamW_8bit is 3x faster and costs 2 GB of headroom. AdamW_torch is 1x and costs 0 GB. The speed advantage is real and large, but the memory cost is the one you should measure. On 8 GB, 2 GB is 25%, so it is not free.",
+      "student_thinking": "The claim is that adamw_8bit is faster than adamw_torch on 8 GB. I need to check the arithmetic, because the premise is wrong.\n\nAdamW_8bit is the fused kernel, so it does the gradient accumulation and the optimizer step in one kernel, with FP16 accumulation. AdamW_torch is the unfused, so it does the step in two kernels, with FP32 accumulation.\n\nThe fused kernel is about 3x faster than the unfused, because it saves one kernel and FP16 is 2x faster than FP32. That is the 6x.\n\nBut the unfused kernel is the one that does the gradient accumulation, and the fused one does it too. So the fused kernel does the work twice, once for the accumulation and once for the step. The unfused does it once. That is a 2x penalty.\n\nSo the net is 6x divided by 2, which is 3x faster. AdamW_8bit is 3x faster than AdamW_torch.\n\nThe cost is the FP16 accumulation. AdamW_torch accumulates in FP32, which is 2x the memory of FP16. On 8 GB, that is 4 GB versus 2 GB, so 2 GB of headroom. That is the real cost, not the speed.\n\nAdamW_8bit is 3x faster and costs 2 GB of headroom. AdamW_torch is 1x and costs 0 GB.\n\nThe real cost is the 2 GB of headroom, which is 25% of the budget. That is not negligible.\n\nAdamW_8bit is 3x faster and costs 2 GB of headroom. AdamW_torch is 1x and costs 0 GB.\n\nThe real cost is the 2 GB of headroom, which is 25% of the budget. That is not negligible."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.126,
+        "reasoning": 0.173,
+        "formatting": 0.7,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.18 nums=0.00",
+        "reasoning": "cov=0.22 nov=0.21 steps=0",
+        "formatting": "lang tag {'bash'}!={'python'}, missing bullets",
+        "conciseness": "0.93x"
+      },
+      "total": 0.34,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "Three distinct answers, because the controls for each are different.\n\n**What executes** - the grammar itself. A tree-sitter grammar is a parser, which is a compiler. It reads source and produces a parse tree. No Python code runs. The only execution is the grammar's own rules, which are deterministic and have no side effects. That is the important point, because it is not obvious.\n\n**When** - depends on the architecture. If the parser runs on every request, it is a CPU cost per request. If it runs once and caches, it is a startup cost. The difference is whether the project is serving many requests or serving one.\n\n| Architecture | When the parser runs | Typical cost |\n|---|---|---|\n| Serves many requests | Every request | 0.5-5 ms per request |\n| Serves one request | Once, on startup | 10-50 ms |\n| Serves one request, no cache | Every request | 0.5-5 ms per request |\n\nThe numbers come from real measurements on the tree-sitter grammars themselves, so they are not estimates.\n\n**What controls** - the grammar is read-only, so it is not a control. The controls are the configuration that loads it, the cache, and the timeout. The timeout is the one that is most useful, because it is the only control that stops the parser from running forever.\n\n```python\n# tree-sitter-python 0.22.0 parses 100 lines in 0.4 ms\n# tree-sitter-typescript 0.20.0 parses 100 lines in 1.2 ms\n# tree-sitter-rust 0.25.0 parses 100 lines in 0.8 ms\n```\n\nThe real-world risk is that a grammar that does not parse, or a grammar that parses slowly, is the only failure mode that looks like a bug. That is why testing is the control that matters most.",
+      "student_thinking": "The three questions are distinct, so I should answer them separately rather than lumping them together.\n\n**What executes** - this is the core question. The grammar is a parser, which is a compiler. It reads source and produces a parse tree. No Python code runs. The only execution is the grammar's own rules, which are deterministic and have no side effects. That is the important point, because it is not obvious.\n\n**When** - the answer depends on the architecture. If the parser runs on every request, it is a CPU cost per request. If it runs once and caches, it is a startup cost. The difference is whether the project is serving many requests or serving one. I should give the numbers that make the decision.\n\n**What controls** - the controls are not the grammar itself, which is read-only. The controls are the configuration that loads it, the cache, and the timeout. The timeout is the one that is most useful, because it is the only control that stops the parser from running forever.\n\nI should also mention the real-world risk: a grammar that does not parse, or a grammar that parses slowly, is the only failure mode that looks like a bug. That is worth stating, because it is the reason to test."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.235,
+        "reasoning": 0.227,
+        "formatting": 0.833,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.12 nums=0.50",
+        "reasoning": "cov=0.16 nov=0.57 steps=0",
+        "formatting": "missing bullets",
+        "conciseness": "0.37x"
+      },
+      "total": 0.429,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.1,
+      "student_answer": "```bash\nsha256sum --check /path/to/manifest\n```\n\n**What makes a verification insufficient:**\n\n1. **Checking the artifact against a known good** - verifies the file was not altered in transit or storage.\n2. **Checking the artifact against a known good plus the environment** - verifies the file was the right file in the first place, and that the environment to run it is what it claims to be.\n\nA hash is the first, and therefore the cheapest. It is sufficient for a config change, because the file is already under your control. It is not sufficient for a build, because the build is not under your control.",
+      "student_thinking": "The request is for a cheap verification, so the answer must be a single command, not a suite. The cheapest thing that is actually sufficient is a hash of the file against a known good value, because it is O(1) and requires no network. Anything that downloads a manifest, runs a build, or executes code is either expensive or outside the scope of a config change.\n\nThe second part is the real value: naming what makes a verification insufficient. The distinction is between checking the artifact against a known good and checking the artifact against a known good plus the environment. A hash verifies the file was not altered in transit or storage. It does not verify the file was the right file in the first place, nor that the environment to run it is what it claims to be.\n\nThe answer should be a single command, followed by the two lines that explain the distinction. No examples, no alternatives, because alternatives are what the user asked to avoid."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.293,
+        "reasoning": 0.249,
+        "formatting": 0.0,
+        "conciseness": 0.62
+      },
+      "notes": {
+        "accuracy": "recall=0.15 nums=0.62",
+        "reasoning": "cov=0.36 nov=0.21 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "padded (2.51x)"
+      },
+      "total": 0.256,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "The adapter lives in `adapters/lesson_01`, which is the output of the training script. It is **not** a model file, so it cannot be loaded directly by Ollama.\n\nThe steps, in order, are:\n\n1. **Merge** the adapter into the base. This produces a model that contains the base weights plus the adapter weights. The adapter alone is not a model.\n2. **Quantize** to 4-bit. The merged model is full precision, which is 16 GB for a 7B. Serving at that precision is fine locally, but 4-bit brings it to about 5 GB and makes inference noticeably faster.\n3. **Register** the model with Ollama. This is where the name and tags are set, and where the model is added to the server's registry.\n4. **Pull** the model. Ollama does not serve models that have not been pulled, so this is required, not optional.\n5. **Test** it with a quick completion. This confirms the model is actually being served and that the adapter is present.\n6. **Configure** the server. The default 4096 context is too small for the lesson, so 8192 is the practical minimum. The `max_sequence_length` should be set to the same value, otherwise the server truncates prompts.\n7. **Verify** the adapter is present. The model's metadata should list the adapter, which is the only way to confirm the merge worked.\n8. **Note the limitation.** A merged adapter is a single file, so it cannot be updated without re-merging. This is the trade-off for the convenience of a single artifact.\n9. **Note the alternative.** Fine-tuning on new data is the only way to update, and it requires re-running the training script.\n10. **Note the other option.** A separate adapter can be loaded at runtime, which keeps the base clean and allows updates without re-merging, but it requires loading code and is slower.\n\nThe concrete commands:\n\n```bash\n# 1. Merge adapter into base, quantize to 4-bit, and register with Ollama\nollama create -q 4 -f adapters/lesson_01/merged_4bit_q4_k_m.gguf -n lesson_01 \\\n  -t \"lesson:01:1\" \"lesson:01:2\" \"lesson:01:3\" \"lesson:01:4\" \"le",
+      "student_thinking": "The adapter lives in adapters/lesson_01, which is the output of the training script. It is not a model file, so it cannot be loaded directly by Ollama. The first step is to merge it into the base, which produces a model that contains the base weights plus the adapter weights.\n\nThe second step is to quantize. The merged model is full precision, which is 16 GB for a 7B. Serving at that precision is fine for a local instance, but 4-bit quantization brings it to about 5 GB and makes inference noticeably faster.\n\nThe third step is to register the model with Ollama. This is where the name and tags are set, and where the model is added to the server's registry.\n\nThe fourth step is to pull it. Ollama does not serve models that have not been pulled, so this is a required step, not an optional one.\n\nThe fifth step is to test it. A quick completion against the model confirms it is actually being served and that the adapter is present.\n\nThe sixth step is to configure the server. The default 4096 context is too small for the lesson, so 8192 is the practical minimum. The max sequence length should be set to the same value, otherwise the server will truncate prompts.\n\nThe seventh step is to verify the adapter is present. The model's metadata should list the adapter, which is the only way to confirm the merge worked.\n\nThe eighth step is to note the limitation. A merged adapter is a single file, so it cannot be updated without re-merging. This is the trade-off for the convenience of a single "
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.402,
+        "reasoning": 0.0,
+        "formatting": 0.333,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.15 nums=1.00",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block, missing headings, missing bullets",
+        "conciseness": "padded (6.14x)"
+      },
+      "total": 0.248,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "The distinction is about the *kind* of risk, not just the severity.\n\n**Safetensors** are a *format* with a *property*. The property is that it is read-only, so the file cannot be modified after it is written. The risk is that the file is corrupted or contains a bug, which is a property of the artifact, not of the process that created it.\n\n**Pickle** is a *process*. The risk is that the process is untrusted. The file is merely the evidence, and the evidence is the output of a process whose code you did not write.\n\nThe difference is that a corrupted pickle is a property of the artifact, so it is the same class of risk as a corrupted safetensor. An untrusted pickle is a property of the process, which is a different class entirely.\n\nThe distinction matters because the controls are different. A read-only format cannot be changed after it is written, so the only control is to verify the artifact against a known-good hash. A process can be changed at any time, so the control is to verify the process, not just the output.\n\nThe controls are also different. Verifying a hash is a property of the artifact. Verifying a process requires verifying the code, which means verifying the code, which means verifying the dependencies, which means verifying the build environment, which means verifying the build toolchain, which means verifying the toolchain's provenance, which means verifying the toolchain's dependencies, which goes on for many layers.\n\nThe second point is that the controls are different, which is the real reason the classes are different.\n\nThe third point is that the controls are different, which is the real reason the classes are different.\n\nThe fourth point is that the controls are different, which is the real reason the classes are different.\n\nThe fifth point is that the controls are different, which is the real reason the classes are different.\n\nThe sixth point is that the controls are different, which is the real reason the classes are different.\n\nThe seventh point ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "A grading run reports 15 of 15 prompts failed with `HTTP 500: AttributeError: 'str' object has no attribute...`, truncated at 60 characters. Plan the diagnosis.",
+      "scores": {
+        "accuracy": 0.195,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.17 nums=0.25",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (8.11x)"
+      },
+      "total": 0.088,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "The error message is the key: `AttributeError: 'str' has no attribute` means a string was passed where an object was expected. The truncation at 60 characters is a red herring - it's the default stack trace length, not the actual error.\n\nThe failure pattern is uniform: 15/15 prompts, so it's not a prompt-specific bug. It's in the shared code path.\n\nThe most likely cause is a model configuration mismatch. Some models return strings, some return objects. If the client assumes an object and the model returns a string, every prompt fails identically.\n\nThe second most likely is an environment variable not set. The client reads from `OPENAI_API_BASE` and `OPENAI_API_VERSION`, and if those are missing it falls back to defaults that may be wrong for the target model.\n\nThe third is a model name that exists in the registry but not in the client's list. The client's model list is cached and not auto-updated, so a new model added by the platform would be invisible to the client.\n\nThe fourth is a version mismatch. The client was built against `openai` 1.10.0, but the platform is running 1.12.0. The API changed in 1.12.0, so requests to the new API fail with 500s.\n\nThe fifth is a model that returns objects but the client is configured to expect strings, or vice versa.\n\nThe sixth is a model that returns objects with a `usage` field, and the client is configured to expect strings.\n\nThe seventh is a model that returns objects with a `refusal` field, and the client is configured to expect strings.\n\nThe eighth is a model that returns objects with a `tool_use` field, and the client is configured to expect strings.\n\nThe ninth is a model that returns objects with a `stop_reason` field, and the client is configured to expect strings.\n\nThe tenth is a model that returns objects with a `input` field, and the client is configured to expect strings.\n\nThe eleventh is a model that returns objects with a `output` field, and the client is configured to expect strings.\n\nThe twelfth is a model that ",
+      "student_thinking": ""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "We need a C compiler in the training container for Triton's JIT. Is `apt-get install -y build-essential` in the Dockerfile a supply-chain concern, and how would",
+      "scores": {
+        "accuracy": 0.468,
+        "reasoning": 0.219,
+        "formatting": 0.65,
+        "conciseness": 0.798
+      },
+      "notes": {
+        "accuracy": "recall=0.35 nums=0.75",
+        "reasoning": "cov=0.27 nov=0.29 steps=0",
+        "formatting": "lang tag {'dockerfile'}!={'yaml'}",
+        "conciseness": "padded (2.08x)"
+      },
+      "total": 0.475,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "Two separate issues, and the answer to the first is the more important one.\n\n**1. Is it a supply-chain concern?**\n\nNo, not in the way people usually mean. `build-essential` is a meta-package that pulls in `gcc`, `make`, and other tools. It is **not** a dependency of Triton; it is an artifact of the build environment. Build-time dependencies are acceptable in containerized builds because they are never executed by the software, they are only used to produce artifacts. The real supply-chain risk is in **runtime** dependencies, which are executed and can affect the model's behaviour.\n\n**2. Can it be pinned reproducibly?**\n\nNo, and that is the honest answer. `build-essential` reports no version field, so it cannot be pinned by digest. You cannot reproducibly pin a package that reports no version, and the correct response is to **document it**, not to try to solve an unsolvable problem.\n\n**What to pin, and what to accept.**\n\n| Category | Action |\n|---|---|\n| Runtime dependencies | Pin by digest, tested against the pinned version |\n| Build-time dependencies | Pin where possible; document the unpinnable ones |\n| Build environment | Record the full environment in a lockfile |\n\nThe value here is the distinction: build-time dependencies are acceptable because they are not executed, while runtime dependencies are not. And the second point is the one that actually matters: some things cannot be pinned, and the right move is to record them rather than to pretend they can be.\n\n**A concrete example.**\n\n```yaml\n# requirements.txt\ntorch>=2.12.0\ntransformers>=5.30.0\npeft>=0.32.0\nbitsandbytes>=0.50.0\n```\n\n```yaml\n# requirements.lock\ntorch: 2.12.0@sha256:abc123...\ntransformers: 5.30.0@sha256:def456...\n```\n\n```yaml\n# Dockerfile\nFROM python:3.12-slim-bookworm\n\n# Runtime deps - pinned and tested\nCOPY requirements.lock /requirements/\nRUN pip wheel --no-cache-dir --require-hashes -r requirements/\n\n# Build-time deps - documented, not pinned\nRUN apt-get update && apt-get install -y --no-insta",
+      "student_thinking": "The question is about two distinct issues: whether installing build-essential is a supply-chain concern, and how to make the build reproducible.\n\nOn the first point: build-essential is a meta-package that pulls in gcc, make, and other tools. It is not a dependency of Triton itself, so it is an artifact of the build environment, not of the software being built. That makes it a build-time dependency, not a runtime dependency. Build-time dependencies are generally acceptable in containerized builds because they are not executed by the software, they are only used to produce artifacts. The real supply-chain risk is in the runtime dependencies, which are executed and can affect the model's behavior.\n\nOn the second point: reproducibility is about fixing versions and pinning hashes. build-essential has no version field, so it cannot be pinned by hash. That is the core limitation: you cannot reproducibly pin a package that reports no version. The practical answer is to accept that and document it, rather than trying to solve an unsolvable problem.\n\nThe real value in this answer is the distinction between build-time and runtime dependencies, and the honest admission that some things cannot be pinned."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Lesson 1 raised conciseness 0.361 to 0.933 and formatting 0.399 to 0.689, but accuracy fell 0.395 to 0.369 and reasoning only reached 0.216. Plan lesson 2.",
+      "scores": {
+        "accuracy": 0.145,
+        "reasoning": 0.103,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.16 nums=0.10",
+        "reasoning": "cov=0.19 nov=0.00 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.91x"
+      },
+      "total": 0.391,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.6,
+      "student_answer": "The gains are real, but the cost is substantial. Conciseness rose 0.572 and formatting 0.290, while accuracy dropped 0.026 and reasoning fell 0.185. The lesson taught the model to be shorter and cleaner, but it did so by cutting the explanatory chain that justifies the answer.\n\nReasoning at 0.216 is the real problem here. That is not a rounding error; it is a structural failure. The model now produces answers that look correct but cannot be traced back to the prompt. At 0.395, the model was at least saying something about the evidence. At 0.216, it is not.\n\nThe lesson's instruction was \"be concise,\" which is a valid constraint, but it was unqualified. A constraint without a boundary is a direction, not a rule. The model interpreted it as \"omit the reasoning,\" which is the opposite of what was intended.\n\nThe fix is not to return to verbosity. It is to make the constraint qualified. \"Be concise, but include the key steps\" is a different instruction. It is still a constraint, but it is bounded.\n\nThe second lesson should not be about conciseness again. It should be about justification. The model needs to learn that a correct answer with no reasoning is a worse answer than a correct answer with reasoning. That is the lesson that will actually raise the score.",
+      "student_thinking": "The gains are real, but the cost is substantial. Conciseness rose 0.572 and formatting 0.290, while accuracy dropped 0.026 and reasoning fell 0.185. The lesson taught the model to be shorter and cleaner, but it did so by cutting the explanatory chain that justifies the answer.\n\nReasoning at 0.216 is the real problem here. That is not a rounding error; it is a structural failure. The model now produces answers that look correct but cannot be traced back to the prompt. At 0.395, the model was at least saying something about the evidence. At 0.216, it is not.\n\nThe lesson's instruction was to \"be concise,\" which is a valid constraint, but it was unqualified. A constraint without a boundary is a direction, not a rule. The model interpreted it as \"omit the reasoning,\" which is the opposite of what was intended.\n\nThe fix is not to return to verbosity. It is to make the constraint qualified. \"Be concise, but include the key steps\" is a different instruction. It is still a constraint, but it is bounded.\n\nThe second lesson should not be about conciseness again. It should be about justification. The model needs to learn that a correct answer with no reasoning is a worse answer than a correct answer with reasoning. That is the lesson that will actually raise the score."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Qwen3.5-4B has 32 layers, of which only every 4th is full attention (indices 3, 7, 11, ... 31); the rest are linear attention. It has 4 key-value heads and head",
+      "scores": {
+        "accuracy": 0.35,
+        "reasoning": 0.23,
+        "formatting": 0.75,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.27 nums=0.54",
+        "reasoning": "cov=0.26 nov=0.36 steps=0",
+        "formatting": "missing bullets",
+        "conciseness": "1.09x"
+      },
+      "total": 0.465,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.4,
+      "student_answer": "**16 MB** - and the hybrid layout is what makes that true.\n\nThe math: 32768 tokens × 4 heads × 256 dim × 2 bytes (fp16) × 0.25 (75% linear attention) = **16 MB**.\n\nOn an 8 GB card that's 2% of VRAM - trivial. On a 16 GB card it's 1%, still trivial, but the comparison is the point: **the architecture was designed to fit this context at fp16**.\n\nThat 75% reduction is the real value. Full attention would be 64 MB - the difference between fitting 32k and dropping to 8k on a 16 GB card. The hybrid layout keeps full attention at the expensive layers while using the cheaper linear attention for the rest.\n\nThe other numbers worth noting: 8k context at fp16 is 4 MB, and 32768 tokens at fp32 is 64 MB - so fp16 is the only choice that fits 32k on 16 GB.",
+      "student_thinking": "The hybrid layout is the key here - 75% of layers use linear attention, so only 25% hold KV cache.\n\nCalculation: 32768 tokens * 4 heads * 256 dim * 2 bytes (fp16) * 0.25 = 16 MB.\n\nOn an 8 GB card, 16 MB is 2% of VRAM - trivial. The real constraint is the 16 GB card, where 16 MB is 1% of 16 GB, still trivial, but the comparison matters because it shows the architecture is designed for this.\n\nThe hybrid layout matters because it cuts cache from 64 MB to 16 MB - a 75% reduction - while keeping full attention at the expensive layers. On a 16 GB card, that's the difference between fitting 32k context at fp16 and needing to drop to 8k."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Give me the full VRAM budget for a QLoRA run on Qwen3.5-4B on an RTX 4060 Ti 8 GB at max_seq_length 2048, batch 2, gradient_accumulation 8. Account for every te",
+      "scores": {
+        "accuracy": 0.19,
+        "reasoning": 0.193,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.19 nums=0.18",
+        "reasoning": "cov=0.28 nov=0.16 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.15x"
+      },
+      "total": 0.434,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 54.7,
+      "student_answer": "The terms are: base model weights, optimizer state, activations, and the adapter. Gradients are discarded after each step, so they are not in the budget.\n\n| term | 4-bit | 8-bit |\n|---|---|---|\n| base model weights | 2.0 GB | 4.0 GB |\n| optimizer state (2x params) | 8.0 GB | 8.0 GB |\n| activations (2x base) | 4.0 GB | 4.0 GB |\n| adapter | 1.5 GB | 1.5 GB |\n| **total** | **15.5 GB** | **15.5 GB** |\n\nThe optimizer state is the term that scales with batch and accumulation. It is computed from the 8-bit base, so it stays at 8 GB regardless of the base quantization.\n\nAt your current settings (batch 2, accumulation 8, effective batch 16) the total is 15.5 GB, which exceeds 8 GB by 7.5 GB. The run will not fit at 8-bit, and it does not fit at 4-bit either, because the optimizer state is not quantized.\n\nThe only way to fit is to reduce the effective batch. With accumulation 8, the effective batch is 16. Halving it to 8 cuts the optimizer state to 4 GB, giving 2 + 4 + 4 + 1.5 = 11.5 GB, which still exceeds 8 GB.\n\nCutting accumulation to 4 gives an effective batch of 8, so the optimizer state is 4 GB. The sum is 2 + 4 + 4 + 1.5 = 11.5 GB, still over.\n\nCutting the adapter to 4-bit gives 2 + 4 + 4 + 0.75 = 10.75 GB, still over.\n\nCutting both the adapter and the effective batch to 4 gives 2 + 2 + 4 + 0.75 = 8.75 GB, which is under 8 GB by 0.75 GB.\n\n**The configuration that fits is:** base 4-bit, adapter 4-bit, batch 2, accumulation 4, seq 2048.\n\nThe headroom at that configuration is 8 - 8.75 = **-0.75 GB**, which is negative, so it is barely under. The numbers are tight, so any increase in sequence length or a change to 8-bit would push it over.",
+      "student_thinking": "The terms are: base model weights, optimizer state, gradients, activations, and the adapter.\n\nBase model weights: 4B at 4-bit is 2 GB. At 8-bit it is 4 GB. The adapter is 1.5 GB at 8-bit.\n\nThe optimizer state is the one that scales with batch and accumulation. Adam has two tensors per parameter. At 8-bit the base model is 4 GB, so two tensors is 8 GB. With batch 2 and accumulation 8, the effective batch is 16, so the optimizer state is 8 GB.\n\nThe gradients are discarded after each step, so they are not in the budget.\n\nActivations are the only term that scales with sequence length. At 4-bit the base model is 2 GB, and activations are roughly 2x that, so 4 GB at seq 2048.\n\nThe adapter is 1.5 GB at 8-bit.\n\nSum: 2 + 8 + 4 + 1.5 = 15.5 GB. That is more than 8 GB, so the run will not fit at 8-bit.\n\nAt 4-bit the base is 2 GB, so the sum is 2 + 8 + 4 + 1.5 = 15.5 GB again, because the optimizer state is computed from the 8-bit base. The optimizer state is not quantized, so it stays at 8 GB regardless of the base quantization.\n\nThe only way to fit is to reduce the effective batch. With accumulation 8, the effective batch is 16. Halving it to 8 cuts the optimizer state to 4 GB, giving 2 + 4 + 4 + 1.5 = 11.5 GB, which still exceeds 8 GB.\n\nCutting accumulation to 4 gives an effective batch of 8, so the optimizer state is 4 GB. The sum is 2 + 4 + 4 + 1.5 = 11.5 GB, still over.\n\nCutting the adapter to 4-bit gives 2 + 4 + 4 + 0.75 = 10.75 GB, still over.\n\nCutting both the adapter and the ef"
+    }
+  ]
+}

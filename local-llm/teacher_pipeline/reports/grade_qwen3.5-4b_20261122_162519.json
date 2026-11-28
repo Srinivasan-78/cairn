@@ -1,0 +1,148 @@
+{
+  "timestamp": "2026-11-22T10:55:19.084828+00:00",
+  "model": "qwen3.5:4b",
+  "eval_file": "E:\\LocalLLM\\teacher_pipeline\\dataset\\eval.jsonl",
+  "n_prompts": 5,
+  "n_errors": 0,
+  "overall_score": 0.471,
+  "pass_rate": 0.0,
+  "by_criterion": {
+    "accuracy": 0.411,
+    "reasoning": 0.549,
+    "formatting": 0.4,
+    "conciseness": 0.688
+  },
+  "by_skill": {
+    "agentic_planning": 0.493,
+    "localllm_ops": 0.17,
+    "python_stack": 0.559,
+    "supply_chain": 0.479,
+    "tool_call_format": 0.655
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "supply_chain",
+    "agentic_planning",
+    "python_stack",
+    "tool_call_format"
+  ],
+  "mean_tokens_per_sec": 76.6,
+  "wall_seconds": 105.5,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.49,
+        "reasoning": 0.376,
+        "formatting": 1.0,
+        "conciseness": 0.442
+      },
+      "notes": {
+        "accuracy": "recall=0.34 nums=0.83",
+        "reasoning": "cov=0.19 nov=0.28 steps=8",
+        "formatting": "ok",
+        "conciseness": "padded (2.94x)"
+      },
+      "total": 0.559,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.7,
+      "student_answer": "# Code Review: `load_config()` Function\n\n## Issues Identified\n\n1. **File not closed** – The file is opened but never explicitly closed, which can lead to resource leaks.\n2. **No error handling** – Potential issues like missing files, invalid JSON, or permission errors are unhandled.\n3. **Inefficient file handling** – It's best practice to use a context manager (`with` statement) for automatic file management.\n4. **Missing input validation** – There's no check to ensure the path exists or is readable.\n5. **Lack of type hints and documentation** – The function lacks clarity on expected inputs and outputs.\n\n## Fixed Version\n\n```python\nimport json\nfrom pathlib import Path\n\ndef load_config(path):\n    \"\"\"Load configuration from a JSON file.\"\"\"\n    try:\n        with open(path, 'r', encoding='utf-8') as f:\n            data = json.load(f)\n        return data\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"Configuration file not found: {path}\")\n    except json.JSONDecodeError:\n        raise ValueError(f\"Invalid JSON format in configuration file: {path}\")\n    except PermissionError:\n        raise PermissionError(f\"Permission denied to read configuration file: {path}\")\n```\n\n## Key Improvements\n\n| Issue | Fix |\n|-------|-----|\n| File not closed | Use `with` statement for automatic cleanup |\n| No error handling | Add specific exception handling for common issues |\n| Encoding unspecified | Explicitly set `encoding='utf-8'` |\n| No input validation | Raise descriptive errors on file/JSON/permission issues |\n\n## Optional: More Robust Version with Path Validation\n\n```python\nimport json\nfrom pathlib import Path\n\ndef load_config(path):\n    \"\"\"Load configuration from a JSON file.\"\"\"\n    path = Path(path)\n    \n    if not path.exists():\n        raise FileNotFoundError(f\"Configuration file does not exist: {path}\")\n    \n    try:\n        with open(path, 'r', encoding='utf-8') as f:\n            data = json.load(f)\n        \n        # Optional: validate that data is a dict\n      ",
+      "student_thinking": "The user is asking me to review a Python function that loads configuration from a file. Let me identify the issues with this code:\n\n1. **File not closed**: The file is opened but never closed, which can lead to resource leaks\n2. **No error handling**: There's no try-except block to handle potential errors like:\n   - File not found\n   - Invalid JSON format\n   - Permission errors\n3. **No context manager**: Should use `with` statement for proper file handling\n4. **No path validation**: No check if the path exists or is readable\n5. **No return type hints**: Could be more explicit about what's returned\n\nLet me provide a corrected version with explanations."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.68,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "recall=0.00 nums=0.00",
+        "reasoning": "cov=0.42 nov=1.00 steps=75",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.17,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 76.6,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested ranking:\n\n1.  **Analyze the User's Request:**\n    *   **Task:** Fine-tune a 4B model (e.g., Llama-3-8B is too big, likely Llama-2-7B or similar quantized version, but \"4B\" implies something like Phi-3-mini, TinyLlama, or a quantized Llama-2/3).\n    *   **Method:** QLoRA (Quantized Low-Rank Adaptation). This usually involves 4-bit weights + LoRA adapters.\n    *   **Hardware:** 8 GB VRAM (This is very tight for a 4B model, even with QLoRA).\n    *   **Problem:** Out Of Memory (OOM) at Sequence Length 2048, Batch Size 2.\n    *   **Goal:** Rank fixes by \"memory saved per unit of quality lost.\" This implies a trade-off analysis: how much memory do I gain, and is the quality hit acceptable?\n\n2.  **Identify the Memory Bottlenecks:**\n    Why does QLoRA OOM on 8GB with 4B params?\n    *   **Base Model Weights:** Even at 4-bit, 4B * 4 bits = 16 GB uncompressed (but stored as float16/float32 in some places). Wait, QLoRA stores base model weights in 4-bit. $4 \\text{B} \\times 4 \\text{bits} / 8 \\text{bits} = 2 \\text{GB}$ roughly.\n    *   **KV Cache:** This is the biggest variable with sequence length ($S$). Memory $\\propto S$. With $S=2048$, this eats up VRAM quickly.\n    *   **LoRA Adapters:** Usually small, but still add overhead (rank $r \\times d_{model}$).\n    *   **Activation Cache:** QLoRA uses `bf16` activations often, which is memory intensive compared to FP16 weights.\n    *   **Batch Size:** 2 is standard for inference, but durin"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.365,
+        "reasoning": 0.516,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.26 nums=0.60",
+        "reasoning": "cov=0.29 nov=0.63 steps=46",
+        "formatting": "missing code block",
+        "conciseness": "1.25x"
+      },
+      "total": 0.493,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.5,
+      "student_answer": "Here is the recommended approach, broken down into what you report and what you do.\n\n### 1. What You Report\nYour goal is to be transparent about the state of the test suite while demonstrating that your change did not introduce new regressions. Do not hide the fact that tests were failing; instead, frame it as **pre-existing technical debt.**\n\n**Key points to include:**\n*   **The Outcome:** \"The test suite shows 3 failures.\"\n*   **The Context:** \"However, these specific tests were also failing prior to this change (baseline).\"\n*   **The Conclusion:** \"This indicates no new regressions introduced by the current commit.\"\n*   **The Recommendation:** \"We need to address these pre-existing failures separately from the feature work.\"\n\n**Example Communication (PR Description/Status):**\n> \"CI Status: 3 tests failed.\n> Note: These are known flaky/pre-existing failures that existed before this change. The logic of the code remains stable, and no new regressions were introduced by this commit. I have added a note in the PR description regarding these specific test IDs.\"\n\n### 2. What You Do\nDo not simply ignore or skip the failing tests if you can help it. Leaving broken tests in your repository is bad practice for maintainability and trust.\n\n**Immediate Actions:**\n*   **Verify Stability:** Run the tests again to ensure they are consistently failing (not just flaky). If they pass on a second run, investigate why the first run failed.\n*   **Investigate Root Cause:** Determine *why* these tests are failing. Is it an environmental issue? A missing dependency? Incorrect test data?\n*   **Fix or Document:**\n    *   **If fixable:** Fix the tests immediately to get the CI pipeline green.\n    *   **If not fixable (e.g., external API changes):** Create a `TODO` comment in the code and document why they are skipped in a future PR. Do not just add `@pytest.mark.skipif` without explanation.\n\n**Long-term Actions:**\n*   **Update CI Configuration:** If these tests are known to be flaky, consid",
+      "student_thinking": "Here's a thinking process that leads to the suggested advice:\n\n1.  **Analyze the Scenario:**\n    *   **Action:** Ran test suite after a code change.\n    *   **Result:** 3 tests failed.\n    *   **Context:** These 3 tests *also* failed before the change (i.e., they were pre-existing failures).\n    *   **Question:** What do you report? What do you do?\n\n2.  **Determine the Core Issue:**\n    *   The test suite is not in a \"green\" state. It has known flaky or broken tests.\n    *   Since the change didn't introduce new failures, the change itself is likely safe regarding those specific tests (assuming the change doesn't affect them).\n    *   However, leaving failing tests in the repository is bad practice (technical debt, CI noise).\n\n3.  **Formulate \"What to Report\":**\n    *   *To whom?* Stakeholders, team, manager, or just documentation for the project.\n    *   *Key message:* \"The change did not introduce new failures.\" \"There are pre-existing issues in the test suite.\"\n    *   *Tone:* Professional, transparent, confident (don't hide the fact that tests were failing).\n    *   *Specifics:* Mention the specific tests (if known) and the fact that they failed *before* the change.\n\n4.  **Formulate \"What to Do\":**\n    *   *Immediate Action:* Don't ignore them. Fix them or document why they are broken.\n    *   *Short-term:* Update CI configuration if possible (e.g., skip flaky tests, but avoid hiding bugs).\n    *   *Long-term:* Investigate the root cause of the pre-existing failures. Are "
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 0.86,
+        "reasoning": 0.672,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.80 nums=1.00",
+        "reasoning": "cov=0.43 nov=0.95 steps=25",
+        "formatting": "missing code block",
+        "conciseness": "0.77x"
+      },
+      "total": 0.655,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.8,
+      "student_answer": "{\"name\": \"read_file\", \"arguments\": {\"path\": \"src/repo2graph/cli.py\", \"start_line\": 40, \"end_line\": 80}}",
+      "student_thinking": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Tool available: `read_file`.\n    *   Schema for `read_file`: `{\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}`.\n    *   Task: Read lines 40-80 of `src/repo2graph/cli.py`.\n    *   Output constraint: Emit only the tool call.\n\n2.  **Determine the Tool Call Structure:**\n    *   The tool name is likely `read_file` (based on the description \"You have a tool `read_file`...\").\n    *   Arguments needed:\n        *   `path`: \"src/repo2graph/cli.py\"\n        *   `start_line`: 40\n        *   `end_line`: 80\n\n3.  **Format the Output:**\n    *   The user wants \"only the tool call\". Usually, this means a JSON object representing the function call, often in a specific format like `{\"name\": \"...\", \"arguments\": {...}}` or similar depending on the expected interface. However, since I am an AI text model responding to a prompt about emitting a tool call, I should format it as a standard tool invocation representation (often JSON).\n    *   Looking at common patterns for this type of request (function calling):\n        *   `{\"name\": \"read_file\", \"arguments\": {\"path\": \"src/repo2graph/cli.py\", \"start_line\": 40, \"end_line\": 80}}`\n\n4.  **Verify Constraints:**\n    *   Path: `src/repo2graph/cli.py` (string)\n    *   Start line: 40 (integer)\n    *   End line: 80 (integer)\n    *   Output: Only the tool call.\n\n5.  **Construct Final String:**\n    ```json\n    {\"name\": \"read_file\", \"arguments\": {\"path\": \"src/repo2"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.342,
+        "reasoning": 0.5,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "recall=0.31 nums=0.43",
+        "reasoning": "cov=0.29 nov=0.56 steps=48",
+        "formatting": "missing code block",
+        "conciseness": "1.43x"
+      },
+      "total": 0.479,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 76.4,
+      "student_answer": "**Short Answer:** No, you should not raise the version cap yet without verifying how the network calls are triggered and whether they can be avoided or happen during installation rather than runtime.\n\nHere is the detailed breakdown of why this is risky and what you need to do before making a decision.\n\n### 1. The Core Conflict: Promise vs. Reality\nYour project promises that **\"building and querying make no network calls.\"**\nThe new dependency version introduces behavior where **grammars are downloaded on first use.**\n\n*   **If \"first use\" happens at runtime:** You have broken your promise. Users relying on this library in offline environments (air-gapped networks, corporate firewalls) will experience failures or unexpected latency.\n*   **If \"first use\" happens during installation:** This is less severe, but still technically a violation of the spirit of \"no network calls\" for the end-user's workflow.\n\n### 2. The Major Version Implication\nA major version bump in a dependency usually signals a **breaking change**.\n*   If you upgrade to this new major version, you are accepting a breaking change regarding your project's architectural constraints (offline capability).\n*   If you stay on the old version, you preserve your promise but keep the larger binary size.\n\n### 3. Decision Framework: Ask These Questions\nBefore raising the cap, investigate the following with the dependency maintainers or by inspecting their code/documentation:\n\n1.  **When does the download occur?** Is it during `npm install` / `pip install`, or is it triggered immediately when a grammar method is called?\n2.  **Is there an offline mode?** Does the library support a configuration flag to disable network fetching entirely (even if it means loading empty grammars)?\n3.  **Is this behavior documented as a breaking change?** If they bumped the major version, they likely expect users to be aware of the network dependency.\n4.  **Can we pre-fetch?** Can you configure the build process to download these files ",
+      "student_thinking": "Here's a thinking process that leads to the suggested advice:\n\n1.  **Analyze the Scenario:**\n    *   **Change:** A dependency (let's call it `dep-X`) is releasing a new major version.\n    *   **Benefit:** The wheel size shrinks drastically (33 MB $\\rightarrow$ 2.5 MB) because grammars are downloaded on-demand instead of compiled into the binary.\n    *   **Project Constraint/Promise:** \"Building and querying make no network calls.\" (Zero-dependency, offline-first).\n    *   **Question:** Should we raise the version cap (i.e., allow this new major version)?\n\n2.  **Identify the Core Conflict:**\n    *   The dependency's architecture changed fundamentally (lazy loading vs. bundled).\n    *   The project's architectural promise (offline/zero network) is now potentially violated by the new dependency, unless the project can guarantee that the download happens *before* the build/query phase or is acceptable under a different definition of \"no network calls.\"\n\n3.  **Evaluate the Implications:**\n    *   **Breaking Change?** Yes, this is a major version bump in the dependency. Usually, this implies breaking changes.\n    *   **Network Calls:** The new version downloads grammars on first use. If the project promises \"no network calls,\" using this library violates that promise unless:\n        *   The download happens during installation (build time), not runtime.\n        *   The user accepts a slight risk of network usage at install time.\n        *   The project's definition of \"network call"
+    }
+  ]
+}

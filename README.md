@@ -62,6 +62,7 @@ Cairn is a management UI ("Command Center") and API that orchestrates a collecti
 - **Supply Depot** — a one-click app catalog (PDF tools, file browser, e-book library, password manager, and more) plus the ability to run your own custom Docker containers
 - **Automatic Updates** — opt-in, hands-off updates for the core software, installed apps, and offline content, on a schedule you control
 - **Easy Setup Wizard** — guided first-time configuration with curated content collections
+- **Local LLM & ZIM RAG Tooling (`local-llm/`)** — standalone Ollama launchers, Anthropic-compatible proxy, offline ZIM retrieval (`zimrag/`), QLoRA distillation (`teacher_pipeline/`), persona profiles (`profile/`), and model benchmarks (`bench/`). See [local-llm/README.md](local-llm/README.md).
 
 Cairn also includes built-in tools like a Wikipedia content selector, ZIM library manager, and content explorer.
 

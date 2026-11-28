@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-11-24T13:03:49.929778+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 15,
+  "n_errors": 0,
+  "overall_score": 0.438,
+  "pass_rate": 0.133,
+  "by_criterion": {
+    "accuracy": 0.32,
+    "reasoning": 0.322,
+    "formatting": 0.596,
+    "conciseness": 0.947
+  },
+  "by_skill": {
+    "agentic_planning": 0.431,
+    "localllm_ops": 0.302,
+    "python_stack": 0.566,
+    "structured_extraction": 0.824,
+    "supply_chain": 0.344,
+    "tool_call_format": 0.718
+  },
+  "weak_skills": [
+    "localllm_ops",
+    "supply_chain",
+    "agentic_planning",
+    "python_stack"
+  ],
+  "mean_tokens_per_sec": 48.3,
+  "wall_seconds": 94.2,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.366,
+        "reasoning": 0.406,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.20 recall=0.43",
+        "reasoning": "cov=0.24 nov=0.49 steps=3",
+        "formatting": "ok",
+        "conciseness": "1.33x"
+      },
+      "total": 0.566,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 42.6,
+      "student_answer": "### Issues\n1. **Resource Leak**: The file handle is never explicitly closed. If an exception occurs during parsing, the handle remains open.\n2. **Encoding Ambiguity**: `json.load()` uses the system default encoding (cp1252 on Windows, UTF-8 on Linux). This fails when reading UTF-16 encoded files or config values containing non-ASCII characters.\n\n### Fixed Implementation\n```python\nfrom pathlib import Path\n\n\ndef load_config(path: Path) -> dict[str, Any]:\n    \"\"\"Load and parse a JSON configuration file safely.\n\n    Args:\n        path: Path to the configuration file.\n\n    Returns:\n        Parsed configuration as a dictionary.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file is not valid JSON.\n    \"\"\"\n    with path.open(mode=\"r\", encoding=\"utf-8\") as fh:\n        return json.load(fh)\n```\n\n### Key Improvements\n- **Explicit Resource Management**: Uses `path.open()` within a `with` block to guarantee immediate closure.\n- **Explicit Encoding**: Hardcodes `encoding=\"utf-8\"` to prevent platform-specific decode errors.\n- **Type Hints**: Adds type annotations for better IDE support and static type checking.",
+      "student_thinking": "Issues with the provided function:\n1. File not closed explicitly: `open()` without `close()` relies on reference counting or garbage collection, which is not guaranteed in all contexts (e.g., C extensions, threads, or if an exception occurs).\n2. No context manager: Should use `pathlib.Path` with `read_text()` or `with` statement.\n3. No encoding: `json.load()` defaults to system locale encoding, which is cp1252 on Windows and UTF-8 on Linux. This causes `UnicodeDecodeError` when reading UTF-16 encoded files or non-ASCII config values."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.134,
+        "reasoning": 0.327,
+        "formatting": 0.0,
+        "conciseness": 0.958
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.00 recall=0.09",
+        "reasoning": "cov=0.13 nov=0.23 steps=4",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.29x)"
+      },
+      "total": 0.238,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "### Memory Budget Analysis\nUsable VRAM on an 8 GB card with Windows compositor overhead is ~6.4 GB. At sequence length 2048 and batch size 2, peak memory exceeds 5.8 GB, leaving insufficient headroom.\n\n### Ranked Fixes (Best to Worst)\n1. **Reduce sequence length to 1024**: Cuts activation memory by ~50%. Minimal quality loss for short prompts and code snippets.\n2. **Reduce LoRA rank from 16 to 8**: Cuts trainable parameter memory by ~50%. Negligible quality drop for a 4B base model.\n3. **Reduce batch size from 2 to 1**: Cuts optimizer state memory by ~50%. Essential for fitting within the 6.4 GB ceiling.\n4. **Switch optimizer from AdamW to 8-bit AdamW**: Cuts optimizer state memory by ~60%. Best pure memory saving, but may slightly reduce training stability.",
+      "student_thinking": "Memory budget for 8 GB VRAM with 2 GB Windows compositor overhead: usable ~6.4 GB.\nCurrent peak: 2.0B parameters at fp16 (4 bits) + optimizer state + activation memory exceeds ~5.8 GB, leaving ~0.6 GB for Windows compositor and fragmentation, which is insufficient.\nRanking fixes by memory saved per quality unit:\n1. Reduce sequence length to 1024: cuts activation memory by ~50%, minimal quality loss for short prompts.\n2. Reduce LoRA rank from 16 to 8: cuts trainable parameter memory by ~50%, negligible quality drop for 4B base.\n3. Reduce batch size from 2 to 1: cuts optimizer state memory by ~50%, essential for fitting within 6.4 GB.\n4. Switch optimizer from AdamW to 8-bit AdamW: cuts optimizer state memory by ~60%, but may affect convergence stability."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.275,
+        "reasoning": 0.352,
+        "formatting": 0.25,
+        "conciseness": 0.878
+      },
+      "notes": {
+        "accuracy": "nums=0.60 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.16 nov=0.27 steps=5",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.26x)"
+      },
+      "total": 0.35,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.1,
+      "student_answer": "### Report\nState clearly that the failing tests are **pre-existing and unrelated to your change**.\n> \"The test suite contains 3 pre-existing failures. I have verified that these tests failed before my change. I have now fixed the test assertions so they pass.\"\n\n### Action\n1. **Verify Pre-existence**: Revert your change, run the failing tests, and confirm they fail identically.\n2. **Fix the Tests**: Update the test expectations or fix the underlying test bugs.\n3. **Re-run**: Ensure all 3 tests pass before proceeding with the review.",
+      "student_thinking": "This is a test hygiene question.\n1. **Report**: State clearly that the test suite has pre-existing failures unrelated to the change. Do not claim the change broke them.\n2. **Action**:\n   - Verify the failures are pre-existing by reverting the change and running the failing tests.\n   - Fix the pre-existing test failures (update assertions or fix test bugs).\n   - Ensure the failing tests pass before proceeding."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.277,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.15 nov=0.79 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.819,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.4,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The tool call must use exact schema types: \"path\" as a string, \"start_line\" and \"end_line\" as integers, not booleans or strings."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.293,
+        "reasoning": 0.415,
+        "formatting": 0.6,
+        "conciseness": 0.79
+      },
+      "notes": {
+        "accuracy": "nums=0.43 ids=0.25 recall=0.11",
+        "reasoning": "cov=0.15 nov=0.53 steps=7",
+        "formatting": "lang tag {'toml'}!={'powershell'}, missing headings",
+        "conciseness": "too short (0.24x)"
+      },
+      "total": 0.435,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.7,
+      "student_answer": "**Yes, raise the version cap, but verify offline compliance first.**\n\nA wheel shrinking from 33 MB to 2.5 MB signifies a fundamental architectural change (precompiled vs. runtime grammar download). Upgrading without verification breaks the project's guarantee of a deterministic, offline build.\n\n**Verification steps before updating:**\n1. Run `make build` with network disabled:\n   ```powershell\n   $env:HTTP_PROXY = ''\n   $env:HTTPS_PROXY = ''\n   make build\n   ```\n2. Confirm that no outbound HTTP requests occur during `make query`.\n3. If offline mode is available, pin the new version and document the constraint in `SECURITY.md`.",
+      "student_thinking": "Dependency versioning and network-calling guarantees.\n1. **Version bump**: Yes, a major version change (33 MB -> 2.5 MB) indicates a breaking change in behavior or API.\n2. **Network guarantee**: The project promises no network calls during build/query.\n3. **Conflict**: If the new version downloads grammars on first use, it violates the promise of a fully offline, deterministic build.\n4. **Resolution**:\n   - Do not raise the version cap without verifying offline behavior.\n   - Verify by running `make build` and `make query` with `network: false` or `--offline` flags.\n   - If offline mode exists, pin the version and document the offline constraint."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.016,
+        "reasoning": 0.187,
+        "formatting": 0.6,
+        "conciseness": 0.586
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.08",
+        "reasoning": "cov=0.10 nov=0.53 steps=0",
+        "formatting": "lang tag {'json'}!={'yaml'}, missing bullets",
+        "conciseness": "too short (0.18x)"
+      },
+      "total": 0.232,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 47.0,
+      "student_answer": "Configure the client to skip client-side model validation:\n\n```yaml\n# claude-code.yaml\nclaude:\n  skip_client_model_validation: true\n```\n\nAlternatively, register the model in the client's internal manifest so it appears \"known\" without network access.",
+      "student_thinking": "The error `[claude-code:unrecognized_model]` indicates that the client performs a client-side model validation before sending any request.\nThe fix is to configure the client to skip client-side validation or explicitly register the model."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.482,
+        "reasoning": 0.395,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 ids=0.75 recall=0.24",
+        "reasoning": "cov=0.13 nov=0.50 steps=5",
+        "formatting": "ok",
+        "conciseness": "0.71x"
+      },
+      "total": 0.616,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.5,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student\",\n    \"eval_file\": \"student_eval.jsonl\",\n    \"compare_to\": \"teacher\",\n    \"temperature\": 0.3\n  }\n}\n```\n\nJudgement: The request maps cleanly to a single tool call; no hidden constraints or ambiguous parameters were detected.",
+      "student_thinking": "Mapping user request to tool call:\n1. `grade_model` tool.\n2. `model`: \"student\" (from \"baseline the student\").\n3. `eval_file`: \"student_eval.jsonl\" (inferred from context of grading student output).\n4. `compare_to`: \"teacher\" (from \"compare it to whatever we had before\").\n5. `temperature`: 0.3 (from \"at whatever temperature is stable\")."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.183,
+        "reasoning": 0.314,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.23 ids=0.17 recall=0.12",
+        "reasoning": "cov=0.08 nov=0.28 steps=4",
+        "formatting": "missing code block",
+        "conciseness": "0.58x"
+      },
+      "total": 0.261,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.3,
+      "student_answer": "### Verification Checklist\n\n1. **Cryptographic Digest**: Verify the SHA-256 digest of the downloaded `model.gguf` against the hub's published manifest. This is the only way to guarantee the file on your disk matches the exact artifact intended by the model author.\n2. **Modelfile Syntax**: Inspect the `Modelfile` to ensure the `SYSTEM` prompt is properly escaped for the shell (e.g., using `<<EOF` and `EOF` rather than unescaped newlines).\n3. **Model ID Uniqueness**: Confirm the target model ID is not already registered locally, which would silently overwrite an existing model.\n\n### What a Digest Proves\n\nA cryptographic digest proves **integrity**, not **identity**. It guarantees that the file on your disk is byte-for-byte identical to the artifact published at a specific commit hash on the hub. It does not verify that the file is the correct model for your use case, only that it has not been tampered with since publication.",
+      "student_thinking": "Verification checklist:\n1. Verify the artifact's cryptographic digest (SHA-256) against the hub's published manifest to ensure it is exactly the intended model and not a compromised upload.\n2. Verify the `Modelfile` syntax and that the `SYSTEM` prompt is escaped correctly for the shell.\n3. Verify the model ID is unique and does not conflict with an existing local model.\n4. Explain what a digest proves: it proves cryptographic integrity of the binary file, not necessarily that the file is the correct model."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.218,
+        "reasoning": 0.207,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.38 ids=0.00 recall=0.34",
+        "reasoning": "cov=0.23 nov=0.31 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.53x"
+      },
+      "total": 0.45,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.9,
+      "student_answer": "The error message is misleading. The model likely exists on the server; the failure is caused by the URL configuration.\n\nClaude Code appends its own API path to the configured base URL. By setting `ANTHROPIC_BASE_URL=http://localhost:11434/v1`, the client requests `.../v1/v1`, which returns a 404 error.\n\n**Fix:**\nUnset the environment variable and configure the client to use the base URL without the version suffix:\n```bash\nexport ANTHROPIC_BASE_URL=http://localhost:11434\n```\n\nVerify the server is responding directly at `http://localhost:11434/v1/messages` before testing the client.",
+      "student_thinking": "The error message is misleading. It does not indicate that the model is missing on the server.\nThe root cause is the URL configuration.\nThe user set `ANTHROPIC_BASE_URL=http://localhost:11434/v1`.\nClaude Code appends the API path itself.\nResulting request path: `http://localhost:11434/v1/v1` (or `v1/messages`), which returns a 404 Not Found.\nThe fix is to set the base URL to `http://localhost:11434` without the `/v1` suffix."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.943,
+        "reasoning": 0.4,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.86 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.20 nov=0.35 steps=8",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.824,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.1,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "Extract fields from the input JSON and convert size_gb.\n1. name: \"qwen3.5:9b\"\n2. family: \"qwen35\"\n3. params: \"9.0B\"\n4. quant: \"Q4_K_M\"\n5. context: 262144\n6. size_gb: 6550825550 bytes / (1024^3) = 6.126... GB -> 6.1\n7. tools: true (from capabilities array)\n8. vision: true (from capabilities array)"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.12,
+        "reasoning": 0.406,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.21 ids=0.00 recall=0.17",
+        "reasoning": "cov=0.17 nov=0.45 steps=14",
+        "formatting": "missing code block",
+        "conciseness": "0.84x"
+      },
+      "total": 0.255,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.9,
+      "student_answer": "### Memory Arithmetic\n\nAdamW maintains two momentum tensors per parameter: `momentum_1` and `momentum_2`.\n\n| Optimizer | State Size per Parameter (2048 bits) |\n| :--- | :--- |\n| **AdamW_torch** | 2 * 2048 bytes = **4096 bytes** (3.2 KiB) |\n| **AdamW_8bit** | 2048 / 8 bytes = **256 bytes** (0.2 KiB) |\n| **Savings** | **3840 bytes** (3.0 KiB) per parameter |\n\n### Justification for 8 GB\nOn an 8 GB card with ~5.0 GB allocated to the Windows compositor and ~1.0 GB to the CUDA context, the optimizer state for a large transformer (e.g., 2048 hidden dimensions) can consume **150–300 MB** of usable VRAM. Reducing this by **75%** (from 4096 to 256 bytes per parameter) is the single largest memory saving available in the training loop, directly enabling runs that would otherwise OOM.\n\n### Cost\n- **Implementation**: Requires a custom `AdamW_8bit` class in `train_student.py` that manually computes `momentum_1 = momentum * beta1 + (1 - beta1) * grad` and `momentum_2 = momentum_2 + lr * (momentum_1 - momentum_2)`.\n- **Precision**: Must use `uint8` or `float32` with a 1-bit exponent to avoid truncation errors in the gradient update.",
+      "student_thinking": "Compare memory footprint of AdamW optimizer states:\n1. AdamW_torch (standard PyTorch):\n   - Stores two tensors per parameter: `momentum_1` and `momentum_2` (or `variance` and `momentum` in newer versions).\n   - For a parameter of shape `(S, B)`, two tensors of size `S * B` bytes are allocated.\n   - Memory overhead: 2 * S * B bytes per parameter.\n2. AdamW_8bit (custom implementation):\n   - Stores 8-bit float values (`uint8` or `float32` with 1 bit exponent) scaled by a learned scale factor.\n   - For a parameter of shape `(S, B)`, 1 tensor of size `S * B / 8` bytes is allocated.\n   - Memory overhead: 0.125 * S * B bytes per parameter.\n3. Arithmetic:\n   - Reduction in optimizer state memory: 8-bit state is 1/8th the size of full-precision state.\n   - For a 2048-bit parameter, AdamW_torch allocates 2 * 2048 = 4096 bytes (3.2 KiB). AdamW_8bit allocates 2048 / 8 = 256 bytes (0.2 KiB).\n   - Savings: 3840 bytes (3.0 KiB) per parameter.\n4. Cost:\n   - Requires a custom optimizer class and manual gradient accumulation logic to avoid precision loss."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.016,
+        "reasoning": 0.364,
+        "formatting": 0.667,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.08",
+        "reasoning": "cov=0.14 nov=0.34 steps=8",
+        "formatting": "missing code block",
+        "conciseness": "0.32x"
+      },
+      "total": 0.331,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.1,
+      "student_answer": "### What executes, when, and what controls\n\n**When**: During `tree_sitter.Language().parse()` or `tree_sitter.Language().query()`.\n**What**: The grammar is compiled to C and executed on the host machine via the C runtime (libc).\n**Controls**:\n- **Pre-compiled binaries**: Use `tree_sitter.Language(path=\"path/to/grammar.so\")` to avoid runtime compilation.\n- **Static linking**: Link against `libstdc++` or `libgcc` statically to avoid dynamic library dependencies.\n- **Isolation**: Run tests in isolated containers with `eject` to prevent host grammar execution.",
+      "student_thinking": "Tree-sitter language grammar execution:\n1. When: During `parse()` call in Python.\n2. What: The grammar is compiled to C, linked against the C runtime (libc), and executed on the host machine.\n3. Controls:\n   - `tree_sitter.Language()` loads the grammar from the shared library.\n   - `tree_sitter.Language()` can be called with a pre-compiled `.so` or `.dll`.\n   - `tree_sitter.Language()` can be called with a `path` to a shared library.\n   - `tree_sitter.Language()` can be called with a `path` to a pre-built shared library.\n   - `tree_sitter.Language()` can be called with a `path` to a pre-built shared library."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.54,
+        "reasoning": 0.275,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 recall=0.12",
+        "reasoning": "cov=0.12 nov=0.04 steps=6",
+        "formatting": "missing code block",
+        "conciseness": "0.50x"
+      },
+      "total": 0.512,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "### Cheapest Sufficient Verification\n1. **Inspect the diff**: Run `git diff` or `git diff HEAD` to confirm only the intended lines changed.\n2. **Run the specific test suite**: Execute `pytest tests/test_*.py` for the affected module.\n3. **Run the linter**: Run `make lint` or `black --check .` to ensure formatting and style compliance.\n\n### What Makes a Verification Insufficient\n- **Visual inspection of rendered config without checking the diff**: Prone to silent copy-paste errors where a line was accidentally duplicated or malformed.\n- **Running a full suite without isolating the test**: Slow, noisy, and may fail unrelated tests unrelated to the change.\n- **Checking only the top-level config without verifying module-level imports**: A config change often relies on specific imports or constants defined elsewhere.",
+      "student_thinking": "Cheapest sufficient verification:\n1. Inspect the diff: `git diff` or `git diff HEAD` to confirm only the intended lines changed.\n2. Run the specific test suite: `pytest tests/test_*.py` for the affected module.\n3. Run linter: `make lint` or `black --check .` to ensure formatting and style compliance.\nInsufficient verifications:\n- Visual inspection of a rendered config file without checking the diff: prone to copy-paste errors.\n- Running a full suite without isolating the test: slow and noisy, and may fail unrelated tests.\n- Checking only the top-level config without verifying the module-level imports."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.169,
+        "reasoning": 0.114,
+        "formatting": 0.65,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.38 ids=0.00 recall=0.09",
+        "reasoning": "cov=0.11 nov=0.22 steps=0",
+        "formatting": "lang tag {'bash', 'python'}!={'powershell'}",
+        "conciseness": "0.39x"
+      },
+      "total": 0.335,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "### Step 1: Convert Adapter Weights to ONNX Runtime\n**Command:**\n```powershell\npython convert_qlora_to_onnx.py --adapter adapters/lesson_01/adapter_model.safetensors --output adapters/lesson_01/lesson_01.onnx\n```\n**Why:** Ollama cannot load raw PyTorch or bitsandbytes adapter files directly. It requires a model compiled into the native ONNX runtime format.\n\n### Step 2: Register the Model in Ollama\n**Command:**\n```powershell\nollama create lesson_01:qwen3.5 --from lesson_01.onnx\n```\n**Why:** This command compiles the ONNX weights into a binary executable that Ollama serves over HTTP.",
+      "student_thinking": "The adapter lives in adapters/lesson_01.\nStep 1: Convert the adapter weights from the format trained in (usually bitsandbytes or Unsloth) to the native ONNX runtime format.\nStep 2: Register the model in Ollama."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.041,
+        "reasoning": 0.391,
+        "formatting": 0.667,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.12",
+        "reasoning": "cov=0.19 nov=0.34 steps=12",
+        "formatting": "missing code block",
+        "conciseness": "0.48x"
+      },
+      "total": 0.349,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "### Risk Comparison\n\n| Format | Risk Class | Mechanism |\n|---|---|---|\n| **Pickle** | **Arbitrary Code Execution** | `pickle.load()` invokes `__reduce__`/`__reduce_ex__` callbacks, instantiating arbitrary Python objects and executing arbitrary code. |\n| **Safetensors** | **Data Corruption / Memory Safety** | Pure data format (header + raw float32/uint8 bytes). Cannot instantiate arbitrary Python objects or execute code. |\n\n### Requirements\n\n1. **Enforce Safetensors**:\n   - Validate that model weights are stored in `safetensors` format before loading.\n   - Reject or skip pickle-based weights in automated pipelines.\n2. **If Pickle is Unavoidable**:\n   - Use `pickle.load(f, allow_unsafe=False)` to restrict deserialization.\n   - Validate schema and byte size before unpickling.",
+      "student_thinking": "Compare pickle vs safetensors deserialization risks:\n1. Pickle:\n   - Arbitrary Python object instantiation during `pickle.load()`.\n   - Can execute `__reduce__` or `__reduce_ex__` callbacks.\n   - Can instantiate arbitrary classes, call `__call__`, execute arbitrary code.\n   - Unsanitizable without `pickle.loads` with `allow_unsafe=False` or `safe` flag.\n2. Safetensors:\n   - Pure data format: `header` + `raw bytes` (float32/uint8).\n   - No arbitrary Python object instantiation.\n   - Cannot execute arbitrary code.\n3. Requirement:\n   - Prefer `safetensors` over pickle for model weights.\n   - If pickle is unavoidable, use `pickle.load(f, allow_unsafe=False)` or validate schema before unpickling."
+    }
+  ]
+}

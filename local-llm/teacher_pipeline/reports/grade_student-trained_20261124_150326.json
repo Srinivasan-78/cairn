@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-11-24T15:03:26.395602+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 15,
+  "n_errors": 0,
+  "overall_score": 0.53,
+  "pass_rate": 0.133,
+  "by_criterion": {
+    "accuracy": 0.374,
+    "reasoning": 0.327,
+    "formatting": 0.932,
+    "conciseness": 0.941
+  },
+  "by_skill": {
+    "agentic_planning": 0.508,
+    "localllm_ops": 0.468,
+    "python_stack": 0.493,
+    "structured_extraction": 0.814,
+    "supply_chain": 0.467,
+    "tool_call_format": 0.714
+  },
+  "weak_skills": [
+    "supply_chain",
+    "localllm_ops",
+    "python_stack",
+    "agentic_planning"
+  ],
+  "mean_tokens_per_sec": 49.0,
+  "wall_seconds": 132.6,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.207,
+        "reasoning": 0.401,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.17 ids=0.20 recall=0.30",
+        "reasoning": "cov=0.13 nov=0.52 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.76x"
+      },
+      "total": 0.493,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 40.0,
+      "student_answer": "```python\nfrom __future__ import annotations\n\nimport json\nfrom pathlib import Path\n\n\ndef load_config(path: Path | str) -> dict[str, object]:\n    \"\"\"Load and parse a JSON configuration file safely.\n\n    Raises:\n        FileNotFoundError: If the specified path does not exist.\n        json.JSONDecodeError: If the file contains invalid JSON syntax.\n    \"\"\"\n    target = Path(path)\n    with target.open(mode=\"r\", encoding=\"utf-8\") as fh:\n        return json.load(fh)\n```\n\n### Fixes Applied\n- **Explicit `encoding=\"utf-8\"`**: Prevents `UnicodeDecodeError` on non-ASCII JSON.\n- **`with target.open(...)`**: Guarantees the file handle is closed immediately after reading.",
+      "student_thinking": "Issues with the provided function:\n1. `open(path)` never closes the file handle explicitly.\n2. `json.load` raises `json.JSONDecodeError` if the file is not valid JSON.\n3. `open` raises `FileNotFoundError` or `PermissionError` if the path is invalid.\n4. No type hints or docstrings."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.337,
+        "reasoning": 0.31,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.42 ids=0.33 recall=0.18",
+        "reasoning": "cov=0.14 nov=0.14 steps=14",
+        "formatting": "ok",
+        "conciseness": "0.54x"
+      },
+      "total": 0.529,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.1,
+      "student_answer": "### Memory Arithmetic on 8 GB GPU (RTX 4060 Ti)\n```\nCUDA 12.4 + CUDA 11.8 Dual Stack:     1.6 GB\n4B Model Weights (FP16/BF16):          2.6 GB\nOptimizer States (AdamW 8-bit):        1.0 GB\nActivation Cache (Gradient Checkpoint): 0.6 GB\nBatch Size 2 @ Seq 2048:               0.4 GB\nOllama Server + Desktop Compositor:    1.8 GB\n----------------------------------------\nTotal Usable Headroom:                  7.0 GB / 8.0 GB\n```\n\n### Fix Hierarchy (Ranked by Memory Saved per Quality Lost)\n\n1. **Disable Ollama Server** (`ollama stop qwen3.5:4b`)\n   - **Saves 1.2 GB** (0% Quality Loss).\n   - Free up 1.2 GB instantly for training.\n\n2. **Enable Gradient Checkpointing** (`gradient_checkpointing: true`)\n   - **Saves 0.6 GB** (0% Quality Loss).\n   - Sacrifices temporary activation memory for permanent gradient memory.\n\n3. **Reduce Batch Size to 1** (`per_device_train_batch_size: 1`)\n   - **Saves 0.2 GB** (0% Quality Loss).\n   - Compensate with `gradient_accumulation_steps: 16` to keep effective batch at 16.\n\n4. **Halve LoRA Rank** (`r: 16` instead of `r: 32`)\n   - **Saves 0.1 GB** (Negligible Quality Loss).\n   - Reduces trainable parameter count by 50%.\n\n### Final Configuration\n```yaml\ngradient_checkpointing: true\nper_device_train_batch_size: 1\ngradient_accumulation_steps: 16\noptim: adamw_8bit\nlr_scheduler_type: cosine\n```\n\n### Verification Command\n```bash\nnvidia-smi --query-gpu=memory.used,memory.free --format=csv\n```",
+      "student_thinking": "Memory arithmetic on 8 GB GPU (RTX 4060 Ti 8 GB):\n1. CUDA 12.4 + CUDA 11.8 dual stack: 1.6 GB usable.\n2. Model weights (4B): 2.6 GB.\n3. Optimizer states (AdamW 8-bit): 1.0 GB.\n4. Activation cache (gradient checkpointing): 0.6 GB.\n5. Batch size 2 @ seq 2048: 0.4 GB.\n6. Ollama server + Windows desktop compositor: 1.8 GB.\n7. Total headroom: 1.6 + 2.6 + 1.0 + 0.6 + 0.4 + 1.8 = 7.0 GB vs 8.0 GB limit.\n8. Ollama server consumes 1.2 GB alone.\n9. Fix hierarchy:\n   - Disable Ollama server (saves 1.2 GB, zero quality loss).\n   - Gradient checkpointing (saves 0.6 GB, zero quality loss).\n   - 8-bit Adam optimizer (saves 0.2 GB, zero quality loss).\n   - Reduce batch to 1 (saves 0.2 GB, zero quality loss).\n   - Reduce LoRA rank from 32 to 16 (saves 0.1 GB, negligible quality loss)."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.275,
+        "reasoning": 0.287,
+        "formatting": 0.5,
+        "conciseness": 0.999
+      },
+      "notes": {
+        "accuracy": "nums=0.60 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.08 nov=0.38 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.30x)"
+      },
+      "total": 0.395,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.5,
+      "student_answer": "### Reporting and Action\n\n1. **Verify Scope**: Confirm that your change did not alter any code paths exercised by the failing tests.\n2. **Report Honestly**: Do not claim the suite is green. Report the status transparently:\n   > \"The PR passes all 100% of the tests covering the modified functionality. Three pre-existing failures in unrelated legacy tests remain unchanged.\"\n3. **Fix or Document**:\n   - If the failures are trivial and unrelated, fix them immediately.\n   - If they are known chronic issues, document them in the PR description so reviewers know they are outside the scope of the current change.",
+      "student_thinking": "Pre-existing failures:\n1. Report them honestly but do not panic.\n2. Verify that the change did not break anything else.\n3. Report the pre-existing failures separately so they are tracked."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.364,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.15 nov=0.33 steps=4",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.841,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.6,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "read_file tool call:\n1. path: 'src/repo2graph/cli.py'\n2. start_line: 40\n3. end_line: 80\n4. Only JSON block."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.082,
+        "reasoning": 0.318,
+        "formatting": 1.0,
+        "conciseness": 0.816
+      },
+      "notes": {
+        "accuracy": "nums=0.14 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.09 nov=0.27 steps=4",
+        "formatting": "ok",
+        "conciseness": "too short (0.24x)"
+      },
+      "total": 0.398,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.9,
+      "student_answer": "### Do Not Raise the Version Cap\n\nA wheel shrinking from **33 MB to 2.5 MB** indicates that static assets (grammar files) were previously bundled inside the wheel and are now being fetched dynamically from a remote server on first use.\n\n### Breaking Guarantee Violation\nIf your project documentation promises that `build` and `query` make **zero network calls**, accepting the new major version breaks that contract.\n\n### Recommended Action\n```toml\n# Pin to the previous release until the upstream team bundles assets again\ndependency = { version = \"<2.0.0\" }\n```\n\nVerify locally with `pip download <version>` to confirm the wheel size before committing.",
+      "student_thinking": "Dependency wheel size change and network guarantees:\n1. Wheel size dropping from 33 MB to 2.5 MB indicates assets (grammars) were bundled in the wheel and are now fetched dynamically.\n2. If the project promises zero network calls during `build` and `query`, bundling assets in the wheel is a breaking guarantee violation.\n3. Raising the version cap breaks the zero-network guarantee.\n4. Action: Pin the version to the previous release or audit the release notes to confirm asset bundling."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.122,
+        "reasoning": 0.374,
+        "formatting": 0.6,
+        "conciseness": 0.294
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.00 recall=0.04",
+        "reasoning": "cov=0.08 nov=0.72 steps=3",
+        "formatting": "lang tag {'json'}!={'python', 'bash'}, missing bullets",
+        "conciseness": "padded (3.30x)"
+      },
+      "total": 0.298,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.5,
+      "student_answer": "```python\n# client.py\nfrom __future__ import annotations\n\nfrom typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    from anthropic import Anthropic\n\n\n# Register custom model aliases so the client accepts local shorthand IDs\nCUSTOM_MODELS = {\n    \"qwen3.5:9b\": \"qwen3.5:9b\",\n    \"qwen3.5:9b-instruct\": \"qwen3.5:9b-instruct\",\n}\n\n\ndef get_anthropic_client() -> Anthropic:\n    \"\"\"Initialize Anthropic client with registered custom model aliases.\"\"\"\n    return Anthropic(base_url=\"http://localhost:11434\", api_key=\"local\")\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n\n### Verification\n```bash\ncurl -s http://127.0.0.1:11434/api/versions\n```\n",
+      "student_thinking": "Claude Code model ID error:\n1. `unrecognized_model` is raised when the client's internal model registry does not contain the string `qwen3.5:9b`.\n2. The client expects canonical model names like `qwen3.5:9b` or `qwen3.5:9b-instruct`.\n3. Registering a custom alias in `client.py` maps the local shorthand to the canonical model name."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.493,
+        "reasoning": 0.262,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 ids=0.75 recall=0.30",
+        "reasoning": "cov=0.04 nov=0.15 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.87x"
+      },
+      "total": 0.587,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.5,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student:qwen3.5-srini:13b\",\n    \"eval_file\": \"tests/test_student.py\",\n    \"compare_to\": \"student:qwen3.5-srini:13b@2026-01-21T09:00:00Z\",\n    \"temperature\": 0.6\n  }\n}\n```\n\n**Judgement**: Baseline comparison establishes whether the latest training run improved accuracy over the previous commit.",
+      "student_thinking": "Tool call for grade_model:\n1. model: 'student:qwen3.5-srini:13b'\n2. eval_file: 'tests/test_student.py'\n3. compare_to: 'student:qwen3.5-srini:13b@2026-01-21T09:00:00Z'\n4. temperature: 0.6"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.323,
+        "reasoning": 0.318,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.77 ids=0.00 recall=0.08",
+        "reasoning": "cov=0.03 nov=0.40 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.37x"
+      },
+      "total": 0.525,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.1,
+      "student_answer": "### Cryptographic Image Verification\n\n```bash\n# 1. List running models with their cryptographic digests\ncurl -s http://127.0.0.1:11434/api/ps\n\n# 2. Inspect the exact blob digest of a specific model tag\ncurl -s http://127.0.0.1:11434/api/manifests/library/qwen3.5-srini:9b\n```\n\n### Why Digestes Matter\n- **Tags are mutable**: `registry.localhost:11434/library/qwen3.5:9b` can be overwritten by an attacker or a corrupted upstream release.\n- **Digestes are immutable**: `sha256:7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9` guarantees the exact binary bytes are served.",
+      "student_thinking": "GGUF and Ollama Modelfile verification:\n1. `ollama create` creates an image tag (e.g. `registry.localhost:11434/library/qwen3.5:9b`).\n2. Image tags are mutable; anyone can push a tag with the same name.\n3. A digest (`sha256:abc123...`) is immutable cryptographic hash of the image blob.\n4. Verify with `curl -s http://localhost:11434/api/ps` or `curl -s http://localhost:11434/api/manifests/library/qwen3.5:9b`."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.254,
+        "reasoning": 0.388,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.00 recall=0.27",
+        "reasoning": "cov=0.21 nov=0.29 steps=5",
+        "formatting": "ok",
+        "conciseness": "0.63x"
+      },
+      "total": 0.511,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.5,
+      "student_answer": "### The Root Cause: Double URL Pathing\n\nOllama exposes its API at `http://localhost:11434`. Claude Code expects the `/v1/messages` subpath to be appended to the base URL.\n\nWhen you set:\n```bash\nANTHROPIC_BASE_URL=http://localhost:11434/v1\n```\n\nClaude Code requests:\n```\nhttp://localhost:11434/v1/v1/messages\n```\n\nOllama rejects this with a 404 or 422 error, causing Claude Code to abort model selection and display the generic \"There's an issue with the selected model\" error.\n\n### The Fix\n```bash\nexport ANTHROPIC_BASE_URL=http://localhost:11434\n```\n\n### Verification\nBefore launching Claude Code, verify Ollama is serving the model:\n```bash\ncurl -s http://localhost:11434/api/ps | grep qwen3.5:9b\n```",
+      "student_thinking": "Claude Code Ollama connection error:\n1. Ollama API endpoint: `http://localhost:11434/api/ps` lists running models.\n2. Claude Code expects `/v1/messages` on the base URL.\n3. If base URL is `http://localhost:11434/v1`, Claude Code requests `http://localhost:11434/v1/v1/messages` (double path).\n4. Ollama returns 404 or 422, causing Claude Code to abort model selection.\n5. Fix: Set `ANTHROPIC_BASE_URL=http://localhost:11434` (remove `/v1`)."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.943,
+        "reasoning": 0.357,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.86 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.16 nov=0.28 steps=8",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.814,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 47.6,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen35\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.2,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "Extract fields from Ollama JSON response:\n1. name: qwen3.5:9b\n2. family: qwen35\n3. params: 9.0B\n4. quant: Q4_K_M\n5. context: 262144\n6. size_gb: 6550825550 bytes / (1024^3) = 6.16 GB -> 6.2 GB\n7. tools: true\n8. vision: true"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.409,
+        "reasoning": 0.323,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.29 ids=0.67 recall=0.14",
+        "reasoning": "cov=0.09 nov=0.48 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.59x"
+      },
+      "total": 0.565,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.5,
+      "student_answer": "### Memory Arithmetic: `adamw_8bit` vs `adamw_torch`\n\n```\nOptimizer State Size (AdamW) = 2 * n_params * n_layers * bytes_per_param\n```\n\nFor a 4B model ($\\approx 2,000,000$ trainable parameters across 12 layers):\n- **`adamw_torch` (32-bit float)**: $2 \\times 2,000,000 \\times 12 \\times 4 \\text{ bytes} = 192 \\text{ MB}$\n- **`adamw_8bit` (8-bit quantized)**: $2 \\times 2,000,000 \\times 12 \\times 1 \\text{ byte} = 48 \\text{ MB}$\n- **Net Memory Saved**: $\\approx 144 \\text{ MB}$ (critical on an 8 GB card with 6.6 GB usable VRAM).\n\n```yaml\n# Unsloth Training Configuration\noptimizer: adamw_8bit\ngradient_checkpointing: true\nuse_gradient_checkpointing: unsloth\n```\n\n### Cost\nZero loss in gradient quality; `adamw_8bit` maintains identical convergence dynamics while freeing up 144 MB of VRAM headroom.",
+      "student_thinking": "AdamW 8-bit vs AdamW torch:\n1. AdamW torch stores full gradient states (`momentum`, `variance`) in 32-bit float (`float32`), consuming $\\approx 2 \\times 1000 \\times 1000 \\times 4 \\text{ bytes} = 8 \\text{ MB}$ per optimizer state.\n2. `adamw_8bit` quantizes gradient states to 8-bit (`uint8`), reducing optimizer state memory to $\\approx 2 \\times 1000 \\times 1000 \\times 1 \\text{ bytes} = 2 \\text{ MB}$.\n3. On an 8 GB GPU with 6.6 GB usable, saving 6 MB is critical when paired with `gradient_checkpointing` and `use_gradient_checkpointing: unsloth`."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.422,
+        "reasoning": 0.278,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.11",
+        "reasoning": "cov=0.05 nov=0.20 steps=4",
+        "formatting": "ok",
+        "conciseness": "0.34x"
+      },
+      "total": 0.559,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.2,
+      "student_answer": "### Execution Lifecycle & Control\n\n```bash\n# 1. Install language pack (downloads .so shared libraries from GitHub releases)\npip install tree-sitter-language-pack\n\n# 2. Start background daemon server\ntree-sitter-language-server start\n\n# 3. Query AST graph in real-time\ntree-sitter-language-server query 'node (function_definition)'\n```\n\n### What Controls Execution\n- **Daemon Process**: `tree-sitter-language-server` runs as a background daemon, keeping language grammars resident in memory.\n- **Query Language**: Uses Tree-Sitter Query Language (QL) to select syntax nodes without re-parsing source files.",
+      "student_thinking": "tree-sitter execution lifecycle:\n1. `tree-sitter-language-pack` or `tree-sitter` CLI downloads `.so` shared libraries from GitHub releases.\n2. `tree-sitter-node` or `tree-sitter-language-server` loads these into the process memory.\n3. `tree-sitter-language-server` runs in the background daemon process.\n4. `tree-sitter-language-server` executes queries against the AST graph."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.535,
+        "reasoning": 0.319,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 recall=0.10",
+        "reasoning": "cov=0.07 nov=0.32 steps=6",
+        "formatting": "ok",
+        "conciseness": "0.50x"
+      },
+      "total": 0.62,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.1,
+      "student_answer": "### Verification Hierarchy\n\n1. **Static Analysis (0.5s)**:\n   ```bash\n   make lint && make typecheck\n   ```\n   Verifies syntax and type correctness immediately.\n\n2. **Targeted Unit Tests (2.0s)**:\n   ```bash\n   pytest tests/test_config.py -k test_config\n   ```\n   Verifies the specific contract of the configuration parser.\n\n3. **Full Serial Test Suite (30.0s)**:\n   ```bash\n   make test-serial\n   ```\n   Runs all 100+ test suites. Only run this if the change touches shared state or database schemas.\n\n### What Makes a Verification Insufficient\n- **Linting Alone**: Confirms syntax but does not prove that the configuration values are parsed correctly at runtime.\n- **Full Suite on Trivial Changes**: Running `make test-serial` on a 10-line config edit wastes 30 seconds and risks failing unrelated tests if the environment is unstable.",
+      "student_thinking": "Cheapest sufficient verification for a small config change:\n1. Run `make lint` and `make typecheck` (static analysis, 0.5s).\n2. Run `make test-serial` or `pytest tests/test_config.py -k test_config` (targeted unit tests, 2s).\n3. Run `make test-serial` (full test suite, 30s).\n4. Run `make docker-compose -p test` (integration, 60s).\nInsufficient checks:\n- Running `make lint` alone (does not verify runtime behavior).\n- Running `make test-serial` (takes 30s and fails unrelated tests if the change is unrelated)."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.171,
+        "reasoning": 0.235,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.38 ids=0.00 recall=0.10",
+        "reasoning": "cov=0.05 nov=0.22 steps=3",
+        "formatting": "ok",
+        "conciseness": "0.49x"
+      },
+      "total": 0.436,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.0,
+      "student_answer": "### The Adapter Pipeline\n\n```bash\n# 1. Convert PyTorch/LoRA weights into Ollama-compatible Modelfile tags\npython adapter_transformers.py \\\n  --adapter_dir adapters/lesson_01 \\\n  --modelfile_name lesson_01 \\\n  --modelfile_path ./Modelfile.lesson_01\n\n# 2. Push the model to Ollama\nollama create lesson_01:base -f ./Modelfile.lesson_01\n\n# 3. Serve and test\nollama run lesson_01:base\n```\n\n### Why Each Step Exists\n- **`adapter_transformers.py`**: LoRA adapters are sparse linear projections. Ollama cannot execute sparse linear projections directly; it requires a full dense model with a custom Modelfile instruction block.\n- **`--modelfile_name`**: Creates a reusable Modelfile that can be cloned into `/root/ollama/Modelfiles/`.",
+      "student_thinking": "Adapter to Ollama pipeline:\n1. `adapter_transformers.py` or `train_student.py` with `--export-adapter`\n2. `ollama create` with `--modelfile`\n3. `ollama run`"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.038,
+        "reasoning": 0.371,
+        "formatting": 0.875,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.12",
+        "reasoning": "cov=0.15 nov=0.35 steps=8",
+        "formatting": "missing bullets",
+        "conciseness": "0.68x"
+      },
+      "total": 0.385,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.1,
+      "student_answer": "### Security Comparison: Pickle vs Safetensors\n\n```python\nfrom __future__ import annotations\n\nimport pickle\nimport struct\nimport numpy as np\n\n\ndef load_unsafe_pickle(data: bytes) -> object:\n    \"\"\"\n    DANGEROUS: pickle.loads() can execute arbitrary Python code during deserialization.\n    Can invoke `__reduce__`, execute shell commands, or instantiate arbitrary classes.\n    \"\"\"\n    return pickle.loads(data)\n\n\ndef load_safe_safetensors(data: bytes) -> dict[str, np.ndarray]:\n    \"\"\"\n    SAFE: Safetensors header contains only shape, dtype, and byte size.\n    Cannot execute arbitrary code.\n    \"\"\"\n    header_size, header = struct.unpack(\"I\", data[:4])\n    header_data = data[4:4 + header_size]\n    return dict(header_data)\n```\n\n### Enforcement Requirement\n```yaml\n# pyproject.toml or security policy\n[[tool.poetry.dependencies]]\nname = \"safetensors\"\nversion = \">= 0.4.0\"\n\n[[tool.poetry.dependencies]]\nname = \"safetensors-torch\"\nversion = \">= 0.4.0\"\n```\n\n### Verification Protocol\n1. Validate safetensors header byte-for-byte before allocating GPU memory.\n2. Never unpickle model weights in production environments.",
+      "student_thinking": "Pickle vs safetensors risk comparison:\n1. `pickle` (Python `pickle` protocol):\n   - Arbitrary code execution (`pickle.loads()` can instantiate arbitrary classes, call `__reduce__`, execute shell commands).\n   - Can execute arbitrary code when unpickling.\n   - Cannot be validated statically.\n2. `safetensors` (binary header + raw binary tensor data):\n   - Header contains shape, dtype, and byte size.\n   - Cannot execute arbitrary code.\n   - Can be validated statically against declared header."
+    }
+  ]
+}

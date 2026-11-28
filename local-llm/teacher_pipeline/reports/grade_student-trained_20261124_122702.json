@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-11-24T12:27:02.838757+00:00",
+  "model": "student:trained",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 15,
+  "n_errors": 0,
+  "overall_score": 0.356,
+  "pass_rate": 0.133,
+  "by_criterion": {
+    "accuracy": 0.283,
+    "reasoning": 0.255,
+    "formatting": 0.456,
+    "conciseness": 0.736
+  },
+  "by_skill": {
+    "agentic_planning": 0.272,
+    "localllm_ops": 0.307,
+    "python_stack": 0.18,
+    "structured_extraction": 0.751,
+    "supply_chain": 0.219,
+    "tool_call_format": 0.726
+  },
+  "weak_skills": [
+    "python_stack",
+    "supply_chain",
+    "agentic_planning",
+    "localllm_ops"
+  ],
+  "mean_tokens_per_sec": 46.5,
+  "wall_seconds": 181.6,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.399,
+        "reasoning": 0.0,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.83 ids=0.00 recall=0.33",
+        "reasoning": "student produced no CoT",
+        "formatting": "missing code block",
+        "conciseness": "padded (10.60x)"
+      },
+      "total": 0.18,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 22.4,
+      "student_answer": "Several issues with this function:\n\n1. **Resource leak**: The file is opened but never explicitly closed. While Python's garbage collector might eventually close it, it's better practice to use a context manager (`with` statement) to ensure the file is properly closed, even if an exception occurs.\n\n2. **No encoding specification**: `json.load` reads from a file object, and if it's not explicitly encoded, it uses the default encoding of the platform's standard I/O. On Windows, this is cp1252, while on Unix it's UTF-8. This can cause issues when reading JSON files containing non-ASCII characters (like emojis or special Unicode characters).\n\n3. **No error handling**: There's no try-except block to handle potential exceptions like `FileNotFoundError`, `json.JSONDecodeError`, or `PermissionError`.\n\n4. **No type hints**: The return type should be annotated.\n\n5. **No docstring**: The function lacks documentation explaining what it does and how to use it.\n\n6. **No validation**: No check if the file exists before attempting to read it.\n\n7. **No return type annotation**: The return type should be annotated.\n\n8. **No type annotations for parameters**: The path parameter should be annotated.\n\n9. **No type annotations for return value**: The return type should be annotated.\n\n10. **No type annotations for parameters**: The path parameter should be annotated.\n\n11. **No type annotations for return value**: The return type should be annotated.\n\n12. **No type annotations for parameters**: The path parameter should be annotated.\n\n13. **No type annotations for return value**: The return type should be annotated.\n\n14. **No type annotations for parameters**: The path parameter should be annotated.\n\n15. **No type annotations for return value**: The return type should be annotated.\n\n16. **No type annotations for parameters**: The path parameter should be annotated.\n\n17. **No type annotations for return value**: The return type should be annotated.\n\n18. **No type annotations for parameters*",
+      "student_thinking": ""
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.211,
+        "reasoning": 0.4,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.32 ids=0.11 recall=0.19",
+        "reasoning": "cov=0.20 nov=0.37 steps=8",
+        "formatting": "missing code block",
+        "conciseness": "0.83x"
+      },
+      "total": 0.295,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 46.9,
+      "student_answer": "The memory bottleneck is dominated by activation memory, which scales linearly with sequence length. Here are the fixes ranked by memory savings per quality unit lost:\n\n1. **Gradient Accumulation** (Highest Quality Fix)\n   - **Memory Savings**: Reduces activation memory by a factor of `accumulation_steps`.\n   - **Quality Impact**: Maintains effective batch size. No quality loss.\n   - **Implementation**: Accumulate gradients over multiple micro-batches before updating weights.\n\n2. **Reduced Sequence Length**\n   - **Memory Savings**: Linear reduction in activation memory. Dropping from 2048 to 1024 halves the memory footprint.\n   - **Quality Impact**: May reduce context understanding.\n   - **Implementation**: Reduce `max_seq_length` from 2048 to 1024.\n\n3. **Lower Learning Rate Scheduler**\n   - **Memory Savings**: Reduces optimizer state memory.\n   - **Quality Impact**: May affect training stability.\n   - **Implementation**: Reduce `max_grad_norm` from 3.0 to 2.0.\n\n4. **Reduced LoRA Rank**\n   - **Memory Savings**: Reduces adapter memory.\n   - **Quality Impact**: Reduces model capacity and performance.\n   - **Implementation**: Reduce `r` from 16 to 8.\n\n5. **Mixed Precision (AMP)**\n   - **Memory Savings**: Reduces precision of intermediate calculations.\n   - **Quality Impact**: Minimal impact on model quality.\n   - **Implementation**: Use `torch.cuda.amp.autocast` and `torch.cuda.amp.grad_scaler`.\n\n6. **Lower Batch Size**\n   - **Memory Savings**: Reduces activation memory.\n   - **Quality Impact**: Reduces training stability and quality.\n   - **Implementation**: Reduce `per_device_train_batch_size` from 2 to 1.\n\n7. **Lower Optimizer State**\n   - **Memory Savings**: Reduces optimizer memory.\n   - **Quality Impact**: Minimal impact on model quality.\n   - **Implementation**: Reduce `lr_scheduler_num_steps` from 1000 to 500.\n\n8. **Lower Learning Rate**\n   - **Memory Savings**: Reduces optimizer state memory.\n   - **Quality Impact**: Reduces training stability and quality.\n   ",
+      "student_thinking": "Memory consumption in QLoRA training is dominated by activation memory, which scales with sequence length. The formula is roughly:\nActivation Memory = batch_size * seq_length * hidden_size * num_layers * (activation_bytes_per_token)\n\nWith 8 GB VRAM, batch size 2, and seq length 2048, the activations alone exceed available VRAM.\n\nThe fixes, ranked by memory savings per quality unit lost:\n\n1. **Gradient Accumulation**: This is the highest quality fix because it doesn't change the effective batch size. It simply accumulates gradients over multiple micro-batches before updating weights. This is the first line of defense.\n\n2. **Reduced Sequence Length**: Directly reduces activation memory by a linear factor. Dropping from 2048 to 1024 halves the memory footprint.\n\n3. **Lower Learning Rate Scheduler**: Reduces optimizer state memory. Not a primary fix for activation memory, but helps with overall stability.\n\n4. **Reduced LoRA Rank**: Reduces adapter memory. Affects model quality more than the other fixes, so lower priority.\n\n5. **Mixed Precision (AMP)**: Reduces precision of intermediate calculations. Already standard in QLoRA, so worth noting but not a primary fix.\n\n6. **Lower Batch Size**: Reduces activation memory. Reduces training stability and quality.\n\n7. **Lower Optimizer State**: Reduces optimizer memory. Not a primary fix for activation memory.\n\n8. **Lower Learning Rate**: Reduces optimizer state memory. Not a primary fix for activation memory.\n\nThe key insight is that gra"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.008,
+        "reasoning": 0.245,
+        "formatting": 0.25,
+        "conciseness": 0.114
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.04",
+        "reasoning": "cov=0.10 nov=0.76 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.03x)"
+      },
+      "total": 0.126,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.6,
+      "student_answer": "Report it as a pre-existing failure and continue reviewing the change.",
+      "student_thinking": "The failure is pre-existing and unrelated to the change. Reporting it as a new failure would be misleading and waste the reviewer's time. The correct action is to report it as a known issue, verify it is indeed pre-existing, and continue with the review while flagging it for the maintainers to address separately."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 1.0,
+        "reasoning": 0.463,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=1.00",
+        "reasoning": "cov=0.15 nov=0.73 steps=4",
+        "formatting": "ok",
+        "conciseness": "1.00x"
+      },
+      "total": 0.866,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 45.4,
+      "student_answer": "```json\n{\n  \"name\": \"read_file\",\n  \"input\": {\n    \"path\": \"src/repo2graph/cli.py\",\n    \"start_line\": 40,\n    \"end_line\": 80\n  }\n}\n```",
+      "student_thinking": "The user wants to read lines 40 to 80 of a specific file.\nParameters:\n- path: \"src/repo2graph/cli.py\"\n- start_line: 40\n- end_line: 80\n- No other parameters are specified, so omit optional fields rather than guessing defaults."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.075,
+        "reasoning": 0.239,
+        "formatting": 0.25,
+        "conciseness": 0.624
+      },
+      "notes": {
+        "accuracy": "nums=0.14 ids=0.00 recall=0.09",
+        "reasoning": "cov=0.17 nov=0.57 steps=0",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "too short (0.19x)"
+      },
+      "total": 0.206,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 45.9,
+      "student_answer": "Yes, raise the version cap to a major version (e.g., `>= 3.0.0`).\n\nThe size reduction is a significant win, but the architectural shift to runtime grammar downloads violates the project's contract that building and querying make no network calls. Users who rely on this guarantee would be surprised by unexpected network activity during their first query.\n\nA major version bump forces them to explicitly acknowledge and opt-in to the new behavior, which is the correct approach for a breaking change.",
+      "student_thinking": "The question asks whether to raise the version cap given a dramatic size reduction and a change in behavior.\n\nFirst, the size reduction: 33 MB to 2.5 MB is a 13x improvement. This is a significant architectural change, likely moving from pre-compiled grammar caches (which are baked into the wheel) to runtime grammar downloads.\n\nSecond, the behavioral change: The new version downloads grammars on first use. This means the project that installs it will make network calls during the first query, violating the promise that \"building and querying make no network calls.\"\n\nThird, the version cap: The cap is likely set to a minor version (e.g., `>= 2.0.0`) to allow patch releases without breaking the build cache.\n\nThe decision hinges on the contract violation. Even though the size reduction is beneficial, the network call is a breaking change in behavior.\n\nTherefore, the version cap should be raised to a major version (e.g., `>= 3.0.0`) to force users to explicitly acknowledge and opt-in to the new behavior."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.004,
+        "reasoning": 0.222,
+        "formatting": 0.25,
+        "conciseness": 0.103
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.02",
+        "reasoning": "cov=0.04 nov=0.80 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.03x)"
+      },
+      "total": 0.118,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 43.1,
+      "student_answer": "Register the model in the client's manifest.",
+      "student_thinking": "The error indicates the client is validating model identity strictly, likely via a model routing table or MCP server manifest. The endpoint URL is correct, so this is not a routing problem. The solution is to register the model in the client's manifest."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.343,
+        "reasoning": 0.53,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.75 recall=0.22",
+        "reasoning": "cov=0.23 nov=0.81 steps=14",
+        "formatting": "ok",
+        "conciseness": "0.62x"
+      },
+      "total": 0.587,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 48.8,
+      "student_answer": "```json\n{\n  \"name\": \"grade_model\",\n  \"input\": {\n    \"model\": \"student\",\n    \"eval_file\": null,\n    \"compare_to\": null,\n    \"temperature\": null\n  }\n}\n```\n\n**Judgement**: The required `eval_file` parameter is missing and cannot be inferred from the request.",
+      "student_thinking": "1.  **Identify the tool**: The user wants to run an evaluation, so `grade_model` is the correct tool.\n2.  **Map parameters**:\n    *   `model`: The user did not specify a model name, only \"student\". In this context, \"student\" is the identifier for the model to be evaluated.\n    *   `eval_file`: Not provided.\n    *   `compare_to`: \"whatever we had before\". This implies a comparison against a previous baseline, but the specific name of that previous model or report is not stated.\n    *   `temperature`: \"whatever temperature is stable\". This implies the default or a previously configured stable setting, but no specific number is given.\n3.  **Constraint Check**: The tool requires `model` and `eval_file`. The prompt provides neither.\n4.  **Inference**:\n    *   `model`: \"student\".\n    *   `eval_file`: Cannot be guessed from the text \"grade_model_student.jsonl\".\n    *   `compare_to`: Cannot be guessed from \"whatever we had before\".\n    *   `temperature`: Cannot be guessed from \"whatever temperature is stable\".\n5.  **Decision**: Since `eval_file` is required and cannot be inferred from the provided text, the call cannot be constructed accurately. Emitting a call with a guessed filename would likely fail or produce irrelevant results.\n6.  **Judgement**: State that the required `eval_file` parameter is missing and cannot be inferred from the request."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.178,
+        "reasoning": 0.379,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.38 ids=0.00 recall=0.12",
+        "reasoning": "cov=0.15 nov=0.40 steps=5",
+        "formatting": "missing code block",
+        "conciseness": "0.54x"
+      },
+      "total": 0.275,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.2,
+      "student_answer": "### Verification Checklist\n1. **File Integrity**: Verify the GGUF's SHA-256 hash against the value recorded in the Modelfile or hub manifest.\n2. **Model ID Consistency**: Confirm the `OLLAMA_MODEL_ID` in the Modelfile matches the model's identifier on the hub to prevent accidental substitution.\n3. **Quantization Level**: Ensure the quantization (e.g., `q4_k_m`, `q8_0`) is appropriate for your target hardware.\n4. **Memory Footprint**: Verify the model size fits within available VRAM/RAM.\n5. **CUDA Architecture**: Confirm kernel weights are compatible with your GPU's CUDA architecture.\n\n### What a Digest Proves\nA digest (e.g., `sha256:abc123...`) cryptographically binds the model's weights and configuration to an immutable state. It proves that the file on disk is **exactly** what was verified at the hub, preventing tampering or accidental substitution.",
+      "student_thinking": "The question asks two things: what to verify before serving a model built from a GGUF and what a digest proves.\n\nFirst, verify integrity and provenance:\n1. **File integrity**: Verify the GGUF file's SHA-256 hash against the value recorded in the Modelfile or the hub's manifest. This ensures the file on disk matches the one intended.\n2. **Model ID consistency**: Ensure the `OLLAMA_MODEL_ID` in the Modelfile matches the model's identifier on the hub. This prevents accidental loading of a model with a similar name but different weights.\n3. **Quantization level**: Confirm the quantization (e.g., Q4_K_M, Q8_0) matches expectations for the target hardware.\n4. **Memory footprint**: Check that the model fits within available VRAM/RAM, especially for embedded or edge devices.\n5. **Kernels and CUDA**: Verify that the kernel weights are compatible with the GPU's CUDA architecture.\n\nSecond, what does a digest prove?\nA digest (e.g., `sha256:abc123...`) cryptographically binds the model's weights and configuration to a specific immutable state. It proves that the file on disk is exactly what was verified at the hub, preventing tampering or accidental substitution.\n\nThe answer should be structured to address both parts clearly, with emphasis on the cryptographic binding of the digest."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.195,
+        "reasoning": 0.244,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.38 ids=0.00 recall=0.23",
+        "reasoning": "cov=0.17 nov=0.60 steps=0",
+        "formatting": "ok",
+        "conciseness": "0.79x"
+      },
+      "total": 0.449,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.8,
+      "student_answer": "The server connection is fine, so the issue is the model name itself. The model ID you configured in the client (`qwen3.5:9b`) does not match the model ID registered in the server's library.\n\nCheck the actual model name on the server:\n\n```bash\ncurl -s http://localhost:11434/api/tags | grep qwen\n```\n\nIf the server registers it as `qwen3.5:9b` but the client is configured to call it `qwen3.5:9b`, the error still occurs because the client appends the version suffix twice, resulting in `qwen3.5:9b:9b`.\n\nThe fix is to remove the version suffix from the model ID in the client configuration. Change:\n\n```\nanthropic_base_url=http://localhost:11434/v1\nanthropic_model_id=qwen3.5:9b\n```\n\nTo:\n\n```\nanthropic_base_url=http://localhost:11434/v1\nanthropic_model_id=qwen3.5\n```\n\nThe client appends the version suffix automatically, so the ID must be the base model name without it.",
+      "student_thinking": "The error message points at the model ID itself, not the server connection. The URL was configured correctly to point at the server, so the request reaches the server and the server can resolve the model name. The problem is that the model name stored in the client's configuration does not match the model name registered in the server's library. This is a common mismatch when models are pulled with a tag that differs from the name used in the client."
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.87,
+        "reasoning": 0.238,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.71 ids=1.00 recall=0.92",
+        "reasoning": "cov=0.20 nov=0.50 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.01x"
+      },
+      "total": 0.751,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 49.4,
+      "student_answer": "```json\n{\n  \"name\": \"qwen3.5:9b\",\n  \"family\": \"qwen3.5\",\n  \"params\": \"9.0B\",\n  \"quant\": \"Q4_K_M\",\n  \"context\": 262144,\n  \"size_gb\": 6.1,\n  \"tools\": true,\n  \"vision\": true\n}\n```",
+      "student_thinking": "Extract name from the name field. Family is qwen35, so format as qwen3.5. Params is 9.0B. Quant is Q4_K_M. Context is 262144. Convert bytes to GB: 6550825550 / (1024^3) = 6.06 GB, rounded to 6.1 GB. Tools and vision are true based on capabilities array."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.114,
+        "reasoning": 0.162,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.21 ids=0.00 recall=0.14",
+        "reasoning": "cov=0.09 nov=0.44 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.63x"
+      },
+      "total": 0.192,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.8,
+      "student_answer": "**AdamW_8bit is superior for 8 GB VRAM runs because it offloads optimizer state from CPU cache memory to host memory.**\n\n### The Arithmetic\n| Component | AdamW_torch | AdamW_8bit |\n|---|---|---|\n| **State Storage** | CPU Cache Memory | Host Memory |\n| **Max Footprint** | ~4 GB | ~2 GB |\n| **Fragmentation** | High (fragmented) | Low (contiguous) |\n| **Cache Coherence** | Poor | Excellent |\n\n### What AdamW_8bit Costs\n1. **Memory Bandwidth**: Reads/writes to host memory incur CPU cache misses, costing ~10-20% throughput.\n2. **Memory Latency**: Host memory access is slower than CPU cache, adding ~15-25ms per micro-epoch.\n3. **Fragmentation**: Host memory allocation is slower and fragmented, potentially causing occasional GC pauses.\n\n**Verdict**: AdamW_8bit is the correct choice for 8 GB VRAM runs where memory fragmentation degrades training speed.",
+      "student_thinking": "The justification rests on memory footprint rather than training speed. AdamW_torch maintains full optimizer state in CPU cache memory (up to 4 GB), which fragments and slows down CPU cache coherence. AdamW_8bit stores state in host memory (up to 2 GB), which is contiguous and cache-friendly."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.006,
+        "reasoning": 0.218,
+        "formatting": 0.333,
+        "conciseness": 0.201
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.03",
+        "reasoning": "cov=0.12 nov=0.62 steps=0",
+        "formatting": "missing code block, missing headings, missing bullets",
+        "conciseness": "too short (0.06x)"
+      },
+      "total": 0.144,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 45.6,
+      "student_answer": "The shared library containing the parser and scanner is loaded and initialized when the grammar is loaded.",
+      "student_thinking": "Tree-sitter language grammars are compiled C extensions. When a grammar is loaded, tree-sitter needs to load and initialize the shared library containing the parser and scanner. This is where the actual execution happens."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.532,
+        "reasoning": 0.116,
+        "formatting": 0.25,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.75 recall=0.10",
+        "reasoning": "cov=0.10 nov=0.24 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "0.45x"
+      },
+      "total": 0.418,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.7,
+      "student_answer": "**Cheapest Sufficient Verification:**\n1. **Golden File Comparison:** If the change is output-driven (e.g., CLI flags, formatted JSON), compare the output against a reference file (`golden/expected.json`).\n2. **Targeted Unit Test:** If the change is logic-driven, write a specific test case verifying the new behavior.\n\n**What Makes a Verification Insufficient:**\n1. **Running the Suite:** Running `make lint` or `make typecheck` only validates syntax and type safety, not the actual behavior change.\n2. **Visual Inspection:** Manually reading the diff is error-prone and lacks reproducibility.\n3. **Running the App:** Running the entire application suite without specific test assertions fails to verify the specific configuration's impact.",
+      "student_thinking": "The cheapest sufficient verification for a config change is a targeted unit test or a golden file comparison. The key is to verify the specific behavior changed, not just that the file changed."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.263,
+        "reasoning": 0.253,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.50 ids=0.06 recall=0.20",
+        "reasoning": "cov=0.21 nov=0.54 steps=0",
+        "formatting": "ok",
+        "conciseness": "1.07x"
+      },
+      "total": 0.482,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "The adapter in `adapters/lesson_01` is ready. Here is the path to serving it, and the reason for each step.\n\n### 1. Evaluate the Adapter\nBefore converting, verify the adapter actually improves performance over the base model.\n```bash\npython -m unsloth.benchmark --base /path/to/base-model.gguf --adapter adapters/lesson_01/adapter_model.safetensors --benchmark-dir benchmarks\n```\n**Why:** Training metrics (like RoPE LoRA alpha) are internal training signals and do not guarantee better user answers. This step provides empirical proof of quality improvement.\n\n### 2. Convert to GGUF Format\nOllama cannot load `.safetensors` directly. It requires `.gguf` files.\n```bash\npython -m unsloth.convert_qlora_to_gguf --base /path/to/base-model.gguf --adapter adapters/lesson_01/adapter_model.safetensors --output-dir ./dist --quantization q8_0\n```\n**Why:** This merges the adapter weights into the base model weights and quantizes them to 8-bit (q8_0) or 4-bit (q4_k_m), drastically reducing VRAM usage and inference speed.\n\n### 3. Create the Modelfile\n```bash\ncat > ./dist/Modelfile << EOF\nFROM /path/to/base-model.gguf\nADAPTER ./dist/lesson_01.safetensors\nKEEP_ALIVE 30m\nOLLAMA_KEEP_ALIVE 30m\nEOF\n```\n**Why:** The `Modelfile` defines the model's runtime behavior. `KEEP_ALIVE` is crucial for local IDE integration (like Cursor or Copilot), preventing the model from being unloaded during long coding sessions.\n\n### 4. Register the Model\n```bash\nsudo systemctl restart ollama\n```\n**Why:** This refreshes the system registry (`/usr/share/ollama/library`), making the new model available in the Ollama menu.",
+      "student_thinking": "The adapter directory structure is standard and indicates a successful training run. The path to serving involves three distinct phases: evaluation, conversion, and packaging.\n\nFirst, evaluation is critical. Training metrics (like RoPE LoRA alpha) are internal and do not guarantee the model performs well on real user queries. Running a benchmark suite against the base model establishes a baseline to measure actual improvement.\n\nSecond, conversion is the technical bridge. Ollama expects a GGUF quantization file (q8_0 or q4_k_m) and a specific configuration file (`Modelfile`). The `unsloth` CLI provides the `convert_qlora_to_gguf` command, which merges the adapter weights into the base model weights.\n\nThird, packaging involves creating a `Modelfile`. This file tells Ollama how to load the model, including the `OLLAMA_KEEP_ALIVE` setting to prevent the model from being unloaded during long-running sessions.\n\nFinally, the model must be registered in the system registry (`/usr/share/ollama/library`) so it appears in the menu."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.051,
+        "reasoning": 0.111,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.15",
+        "reasoning": "cov=0.12 nov=0.17 steps=0",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "0.36x"
+      },
+      "total": 0.251,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 50.3,
+      "student_answer": "Loading model weights as a pickle is a **code execution risk**, while safetensors is a **data integrity risk**.\n\n### The Risk\nWhen you unpickle a model, Python executes arbitrary code stored within the file during deserialization. This can be used to execute malicious commands, steal credentials, or compromise the system. Safetensors contains only raw tensor data and cannot execute code.\n\n### Requirements\nRequire that model weights are loaded from `.safetensors` files only. If pickle is used, the file must be downloaded from a verified source and validated for integrity before execution.",
+      "student_thinking": "The core difference is that pickle executes arbitrary Python code during deserialization, while safetensors contains only raw tensor data. This means pickle can execute malicious code when loaded, whereas safetensors cannot."
+    }
+  ]
+}

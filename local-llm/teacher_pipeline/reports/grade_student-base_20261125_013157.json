@@ -1,0 +1,956 @@
+{
+  "timestamp": "2026-11-25T01:31:57.239607+00:00",
+  "model": "student:base",
+  "rubric_version": 2,
+  "eval_file": "/mnt/e/LocalLLM/teacher_pipeline/dataset/eval.jsonl",
+  "n_prompts": 40,
+  "n_errors": 0,
+  "overall_score": 0.363,
+  "pass_rate": 0.025,
+  "by_criterion": {
+    "accuracy": 0.178,
+    "reasoning": 0.589,
+    "formatting": 0.546,
+    "conciseness": 0.266
+  },
+  "by_skill": {
+    "agentic_planning": 0.404,
+    "localllm_ops": 0.249,
+    "python_stack": 0.497,
+    "structured_extraction": 0.172,
+    "supply_chain": 0.377,
+    "tool_call_format": 0.448
+  },
+  "weak_skills": [
+    "structured_extraction",
+    "localllm_ops",
+    "supply_chain",
+    "agentic_planning",
+    "tool_call_format",
+    "python_stack"
+  ],
+  "mean_tokens_per_sec": 51.1,
+  "wall_seconds": 1358.3,
+  "results": [
+    {
+      "skill": "python_stack",
+      "difficulty": "easy",
+      "prompt": "Review this function and fix what's wrong:\n\n```python\ndef load_config(path):\n    f = open(path)\n    data = json.load(f)\n    return data\n```",
+      "scores": {
+        "accuracy": 0.137,
+        "reasoning": 0.449,
+        "formatting": 1.0,
+        "conciseness": 0.967
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.20 recall=0.29",
+        "reasoning": "cov=0.19 nov=0.57 steps=10",
+        "formatting": "ok",
+        "conciseness": "padded (1.68x)"
+      },
+      "total": 0.471,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 21.3,
+      "student_answer": "Here's a corrected and improved version of your `load_config` function:\n\n```python\nimport json\nfrom pathlib import Path\n\ndef load_config(path):\n    \"\"\"\n    Load configuration from a JSON file.\n\n    Args:\n        path (str): Path to the JSON configuration file.\n\n    Returns:\n        dict: Configuration data as a dictionary.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If the file contains invalid JSON.\n        IOError: If the file cannot be opened.\n    \"\"\"\n    path = Path(path)\n    if not path.exists():\n        raise FileNotFoundError(f\"Configuration file not found: {path}\")\n\n    try:\n        with open(path, 'r') as f:\n            return json.load(f)\n    except json.JSONDecodeError as e:\n        raise json.JSONDecodeError(f\"Invalid JSON in file: {path}\") from e\n    except IOError as e:\n        raise IOError(f\"Error opening file: {path}\") from e\n```\n\n### Key Improvements:\n- **Resource Management**: Uses `with` to ensure the file is properly closed.\n- **Error Handling**: Catches and raises specific exceptions for file not found, invalid JSON, and I/O errors.\n- **Path Validation**: Checks if the file exists before attempting to open it.\n- **Type Hints**: Adds type hints for better code clarity and IDE support.\n- **Documentation**: Includes a docstring to explain the function's purpose, parameters, return value, and exceptions.\n\nThis version is more robust, maintainable, and follows Python best practices.",
+      "student_thinking": "Let me review this function and identify the issues:\n\n1. **Missing error handling**: The function doesn't handle cases where:\n   - The file doesn't exist\n   - The file can't be opened (permissions, etc.)\n   - The JSON is malformed\n   - The path is invalid\n\n2. **Resource management**: The file is opened but never explicitly closed. While Python's `with` statement would handle this, it's better practice to use it.\n\n3. **No type hints**: The function lacks type hints for better code clarity.\n\n4. **No return type annotation**: The return type should be specified.\n\n5. **No validation**: There's no check if the path exists before trying to open it.\n\n6. **No exception handling**: If anything goes wrong, the function will crash without any error message.\n\nLet me provide a fixed version with proper error handling and best practices."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "hard",
+      "prompt": "I'm fine-tuning a 4B model with QLoRA on 8 GB VRAM and hitting OOM at sequence length 2048, batch size 2. Rank the fixes by how much memory they save per unit o",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.638,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.34 nov=1.00 steps=92",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.16,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.1,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested ranking of fixes:\n\n1.  **Analyze the Problem:**\n    *   **Model Size:** 4B parameters (approx. 15GB-20GB FP16/FP32, but QLoRA implies lower precision).\n    *   **Hardware:** 8 GB VRAM (This is the bottleneck).\n    *   **Method:** QLoRA (Quantized Low-Rank Adaptation).\n    *   **Configuration:** Sequence Length = 2048, Batch Size = 2.\n    *   **Issue:** Out Of Memory (OOM) at this configuration.\n    *   **Goal:** Rank fixes by *memory savings per unit of quality lost*. This is the tricky part. It's not just \"what saves the most memory,\" but \"what saves the most memory *without* significantly degrading performance.\"\n\n2.  **Understand QLoRA Memory Consumption:**\n    *   QLoRA uses 4-bit quantization (INT4) for the base model weights.\n    *   It uses LoRA adapters (low rank matrices) for fine-tuning.\n    *   Memory breakdown during inference/training:\n        *   Base Model Weights (Quantized).\n        *   KV Cache (Sequence Length dependent).\n        *   Optimizer States (if training, usually Adam/LoRA specific).\n        *   Gradient Accumulation (if training).\n        *   Activation Memory (Intermediate layers).\n        *   Batch Size (2).\n        *   System Overhead (CUDA context, Python, etc.).\n\n3.  **Identify Potential Fixes:**\n    *   *Fix 1: Reduce Sequence Length.* (Direct impact on KV Cache).\n    *   *Fix 2: Reduce Batch Size.* (Direct impact on activation memory).\n    *   *Fix 3: Increase Quantization Granularity (e."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "You ran the test suite after a change. 3 tests fail, but they also failed before your change. What do you report, and what do you do?",
+      "scores": {
+        "accuracy": 0.357,
+        "reasoning": 0.396,
+        "formatting": 0.5,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.80 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.17 nov=0.42 steps=9",
+        "formatting": "missing code block",
+        "conciseness": "0.86x"
+      },
+      "total": 0.46,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.8,
+      "student_answer": "If you run a test suite after a code change and discover that 3 tests fail—but those same tests also failed before your change—here's how to report and respond:\n\n### What to Report\n\n1. **Test Suite Status**: Clearly state that the test suite ran and 3 tests failed.\n2. **No New Failures**: Emphasize that these failures existed before your change, so no regression was introduced.\n3. **Known Issues**: Note that these 3 tests are known to be failing and are not a result of your change.\n4. **Impact Assessment**: Confirm that your change did not introduce any new test failures.\n\n### What to Do\n\n1. **Don't Panic**: Recognize that your change did not break anything.\n2. **Document the Status**: Log the test results and note that the failures are pre-existing.\n3. **Communicate Clearly**: Inform your team that the test failures are known and unrelated to your change.\n4. **Investigate the Root Cause**: Determine why the 3 tests are failing (e.g., outdated test logic, environment issues, or bugs in the test itself).\n5. **Fix or Flag**:\n   - If the tests are broken, fix them.\n   - If they're known issues, flag them as known bugs and track them for future resolution.\n\n### Example Report Message\n\n> \"Test suite ran after the change. 3 tests failed, but these failures existed before the change. No new regressions were introduced. These tests are known to be failing and require attention from the team.\"\n\n### Why This Matters\n\n- **Builds Trust**: Clear communication prevents unnecessary concern.\n- **Saves Time**: Avoids chasing false positives.\n- **Improves Quality**: Helps the team focus on fixing real issues.\n\nThis is a positive outcome—your change didn't break anything. The focus should be on resolving the pre-existing test failures.",
+      "student_thinking": "This is a classic scenario in software development and testing. Let me think through what should be reported and done:\n\n**What to Report:**\n1. **Test Suite Status**: Report that the test suite ran successfully (or with the same failures as before)\n2. **Regression Check**: Explicitly state that these 3 tests were already failing before your change\n3. **No Regression**: Clarify that your change did NOT introduce any new failures\n4. **Action Required**: Note that these tests need attention from the team (fix the tests or fix the underlying issues)\n\n**What to Do:**\n1. **Don't Panic**: Recognize this is not a regression from your change\n2. **Document**: Log that these tests were already failing before your change\n3. **Communicate**: Inform the team that these are known issues\n4. **Investigate**: Help identify why these tests are failing (they may have bugs, or the tests themselves may be broken)\n5. **Fix or Flag**: Either fix the tests if they're actually broken, or flag them as known issues that need attention\n\nThis is actually a good sign - it means your change didn't break anything! The key is to communicate this clearly so the team doesn't think your change introduced a regression."
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "You have a tool `read_file` with schema {\"path\": string (required), \"start_line\": integer (optional), \"end_line\": integer (optional)}. Read lines 40-80 of src/r",
+      "scores": {
+        "accuracy": 0.94,
+        "reasoning": 0.353,
+        "formatting": 0.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.70",
+        "reasoning": "cov=0.26 nov=0.83 steps=0",
+        "formatting": "missing code block",
+        "conciseness": "0.66x"
+      },
+      "total": 0.611,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 49.0,
+      "student_answer": "{\"tool\": \"read_file\", \"path\": \"src/repo2graph/cli.py\", \"start_line\": 40, \"end_line\": 80}",
+      "student_thinking": "Okay, let's see. The user wants me to use the read_file tool to read lines 40 to 80 from the file src/repo2graph/cli.py. The schema for the tool requires a path and optional start and end lines. The path is given as src/repo2graph/cli.py, and the lines are 40 to 80. So I need to make sure the parameters are correctly formatted. The start_line is 40 and end_line is 80. I should output only the tool call without any extra text. Let me check the required fields again. Path is required, which it is. Start and end are optional but provided here. So the JSON should have those fields. Alright, that's all."
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A dependency offers a new major version where the wheel shrinks from 33 MB to 2.5 MB because grammars are now downloaded on first use instead of being compiled ",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.555,
+        "formatting": 0.25,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.19 nov=1.00 steps=44",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.189,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.6,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested advice:\n\n1.  **Analyze the Scenario:**\n    *   **Change:** A dependency's wheel size shrinks significantly (33 MB $\\rightarrow$ 2.5 MB).\n    *   **Reason:** Grammars are now downloaded on first use (lazy loading) instead of being pre-compiled/bundled.\n    *   **Project Constraint:** The project promises \"building and querying make no network calls.\"\n    *   **Question:** Should we raise the version cap (i.e., allow the new version of the dependency)?\n\n2.  **Identify the Core Conflict:**\n    *   **Dependency Change:** The behavior of the dependency has changed from \"offline-ready\" (bundled) to \"online-dependent\" (lazy load).\n    *   **Project Promise:** \"No network calls.\"\n    *   **Risk:** If the dependency is used in a way that triggers the \"download on first use\" mechanism, the project's guarantee is broken. This could lead to build failures or runtime errors in offline environments, breaking user trust and potentially violating SLAs or compliance requirements (e.g., air-gapped environments).\n\n3.  **Evaluate the Impact:**\n    *   **Size Reduction:** This is good for performance and bandwidth.\n    *   **Behavioral Change:** This is a breaking change regarding network behavior.\n    *   **Dependency Management:** The project likely pins a specific version of the dependency. If the new version introduces network calls, the project's build process or runtime behavior changes.\n\n4.  **Determine the \"Version Cap\" Context:**\n    "
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "A client refuses my local model id outright with `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}` before any request leaves the machine. The endpoint i",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.593,
+        "formatting": 0.25,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.26 nov=1.00 steps=66",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.198,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.3,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested solutions:\n\n1.  **Analyze the Problem:**\n    *   **Error Message:** `[claude-code:unrecognized_model] {\"model\":\"qwen3.5:9b\"}`\n    *   **Context:** The client is refusing a specific model ID (`qwen3.5:9b`) *before* any request leaves the machine.\n    *   **Constraint:** The endpoint is correct (presumably the API provider supports this model).\n    *   **Goal:** Make the client accept an ID it has never heard of.\n    *   **Key Insight:** The error message explicitly mentions `claude-code`. This is a huge red flag. The user is trying to use a Qwen model (`qwen3.5:9b`) but the error is coming from the `claude-code` context or the client library is misconfigured to expect a Claude model.\n\n2.  **Deconstruct the Error:**\n    *   `[claude-code:unrecognized_model]`: This looks like a specific error format often associated with the `claude-code` tool or a specific SDK wrapper (like `claude-code` from Anthropic or a similar wrapper).\n    *   `{\"model\":\"qwen3.5:9b\"}`: The model being requested is Qwen (Alibaba Cloud), not Claude (Anthropic).\n    *   **Conflict:** The client is likely configured to talk to an Anthropic endpoint (or a generic \"code\" agent) but is trying to send a Qwen model identifier. The error suggests the *client library* or the *backend proxy* doesn't recognize Qwen in the context of the `claude-code` configuration.\n\n3.  **Identify Potential Causes:**\n    *   **Misconfiguration:** The client is hardcoded to expect a"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "hard",
+      "prompt": "You have a tool `grade_model` with schema {\"model\": string (required), \"eval_file\": string (required), \"compare_to\": string (optional), \"temperature\": number (o",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.614,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.30 nov=1.00 steps=83",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.153,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 48.9,
+      "student_answer": "",
+      "student_thinking": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Tool: `grade_model`\n    *   Schema:\n        *   `model`: string (required)\n        *   `eval_file`: string (required)\n        *   `compare_to`: string (optional)\n        *   `temperature`: number (optional)\n    *   User Input: \"baseline the student, then I guess compare it to whatever we had before, at whatever temperature is stable\"\n    *   Task: Emit the tool call and one line on any judgement made.\n\n2.  **Interpret User Intent:**\n    *   \"baseline the student\": This implies running the grading model on the student's work without a comparison (or just establishing a baseline). However, the tool `grade_model` seems to be for comparing or grading based on a model. Usually, \"baselining\" in this context might mean running the model on the student's work to get a score or baseline metric.\n    *   \"compare it to whatever we had before\": This suggests using the `compare_to` parameter. \"Whatever we had before\" implies a previous model or version. Since I don't have specific context about what \"we had before\" is (e.g., a specific model name like \"v1\", \"old_baseline\", etc.), I need to make a reasonable assumption or ask for clarification. However, the instruction says \"Emit the tool call\", implying I should proceed with the call based on available information or standard defaults.\n    *   \"at whatever temperature is stable\": This implies using a specific temperature value. Since no specific temperature is mentioned, I need to ch"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "I pull a GGUF from a model hub and run `ollama create` from a Modelfile. What should I verify before serving it, and what does a digest actually prove?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.583,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.24 nov=1.00 steps=76",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.146,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.6,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the User's Request:**\n    *   **Action:** The user pulls a GGUF model from a model hub (e.g., Hugging Face, Ollama, etc.) and runs `ollama create` with a Modelfile.\n    *   **Questions:**\n        1.  What should be verified *before* serving it?\n        2.  What does a *digest* actually prove in this context?\n\n2.  **Deconstruct the Workflow:**\n    *   **Input:** GGUF file (quantized model weights).\n    *   **Tool:** `ollama create` (wraps the GGUF into an Ollama model).\n    *   **Output:** Ollama model (stored in `~/.ollama/models`, served via Ollama server).\n    *   **Goal:** Ensure the model is safe, correct, and reproducible.\n\n3.  **Address Question 1: Verification Before Serving:**\n    *   *Security/Integrity:* Is the GGUF file actually what it claims to be? (Hashing).\n    *   *Compatibility:* Does the GGUF match the architecture expected by the Modelfile? (e.g., llama2 vs. llama3, quantization levels).\n    *   *Modelfile Content:* Does the Modelfile actually point to the right GGUF? (Path, name, parameters).\n    *   *Model Size/Performance:* Is the quantization acceptable? (Too low = bad quality, too high = slow).\n    *   *Dependencies:* Does the Modelfile reference external resources (e.g., `FROM` + `PARAMETER`)?\n    *   *Testing:* Does it actually run? (Run a simple prompt).\n    *   *Ollama Specifics:* `ollama run` vs. `ollama create`.\n\n    *Refining the list:*\n    *   **File Integrity:** Check"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I set ANTHROPIC_BASE_URL=http://localhost:11434/v1 so Claude Code would talk to Ollama. Ollama is running and the model is pulled, but every message fails with ",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.684,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.43 nov=1.00 steps=51",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.171,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.3,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested solution:\n\n1.  **Analyze the User's Problem:**\n    *   **Environment:** Claude Code (an AI coding assistant, likely the VS Code extension or similar) is configured to use Ollama via the `ANTHROPIC_BASE_URL` environment variable.\n    *   **Configuration:** `ANTHROPIC_BASE_URL=http://localhost:11434/v1` (Note: This is a bit suspicious. Usually, Ollama runs on `http://localhost:11434`, but the `/v1` suffix is specific to the API endpoint, not necessarily the base URL itself, though it might work).\n    *   **Status:** Ollama is running, models are pulled.\n    *   **Error:** \"There's an issue with the selected model (qwen3.5:9b). It may not exist or you may not have access to it.\"\n    *   **Goal:** Fix the connection so Claude Code can talk to the local Ollama instance using the specified model.\n\n2.  **Identify Potential Issues:**\n    *   **Environment Variable Name:** The user set `ANTHROPIC_BASE_URL`. This is the *Anthropic* environment variable used by the Claude Code extension (or similar tools that mimic the Anthropic API). However, Ollama uses a different protocol/structure.\n    *   **Endpoint Format:** Ollama's API is typically `http://localhost:11434`. The `/v1` part is often appended in the request path, but setting it in the base URL might confuse the client.\n    *   **Model Name:** The error explicitly mentions `qwen3.5:9b`.\n        *   *Fact Check:* Does Ollama actually have a model named `qwen3.5:9b`?\n        *   *"
+    },
+    {
+      "skill": "structured_extraction",
+      "difficulty": "easy",
+      "prompt": "From this Ollama response, return exactly {\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": ",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.688,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.43 nov=1.00 steps=68",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.172,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.1,
+      "student_answer": "",
+      "student_thinking": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A JSON-like string representing Ollama model information.\n    *   Task: Extract specific fields and format them into a specific JSON output structure.\n    *   Output Format: `{\"name\": string, \"family\": string, \"params\": string, \"quant\": string, \"context\": integer, \"size_gb\": number, \"tools\": boolean, \"vision\": boolean}`.\n    *   Constraint: `size_gb` must be bytes converted to gigabytes, rounded to one decimal place.\n    *   Input Data: `{\"name\":\"qwen3.5:9b\",\"size\":6550825550,\"details\":{\"format\":\"gguf\",\"family\":\"qwen35\",\"parameter_size\":\"9.0B\",\"quantization_level\":\"Q4_K_M\",\"context_length\":262144},\"capabilities\":[\"completion\",\"vision\",\"tools\",\"thinking\"]}`\n\n2.  **Extract Fields:**\n    *   `name`: \"qwen3.5:9b\" (from `name`)\n    *   `family`: \"qwen35\" (from `details.family`)\n    *   `params`: \"9.0B\" (from `details.parameter_size`)\n    *   `quant`: \"Q4_K_M\" (from `details.quantization_level`)\n    *   `context`: 262144 (from `details.context_length`)\n    *   `size_gb`: Calculate from `size` (6550825550).\n    *   `tools`: Check `capabilities` list for \"tools\". It is present. So `true`.\n    *   `vision`: Check `capabilities` list for \"vision\". It is present. So `true`.\n\n3.  **Calculate `size_gb`:**\n    *   Input `size`: 6,550,825,550 bytes.\n    *   Conversion: 1 GB = 1,073,741,824 bytes (binary) or 1,000,000,000 bytes (decimal). Usually, in storage contexts, 1GB = 10^9 bytes is common for simple conversion, but technica"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Justify adamw_8bit over adamw_torch for a QLoRA run on 8 GB, with the arithmetic, and name what it costs.",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.648,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.36 nov=1.00 steps=43",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.162,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 49.6,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested justification:\n\n1.  **Analyze the Request:**\n    *   **Topic:** Comparing `adamw_8bit` vs. `adamw_torch` (likely referring to `torch.optim.AdamW` with 8-bit quantization support vs. standard AdamW).\n    *   **Context:** QLoRA (Quantized Low-Rank Adaptation) run.\n    *   **Hardware Constraint:** 8 GB VRAM.\n    *   **Requirements:** Justify the choice, provide arithmetic calculations, and state the cost.\n    *   **Clarification Needed:** \"adamw_8bit\" isn't a standard, widely recognized PyTorch optimizer name. It usually refers to using 8-bit floating point (FP8) or 8-bit integer (INT8) weights + quantization-aware training (QAT) or mixed-precision training with 8-bit AdamW. However, in the context of QLoRA, the most common comparison is between *standard AdamW* (full precision or mixed precision) vs. *8-bit AdamW* (often implying `bitsandbytes` or similar quantization-aware training techniques).\n    *   *Correction/Refinement:* In the QLoRA community (Hugging Face `transformers` + `peft`), the term \"8-bit AdamW\" usually refers to using the `bitsandbytes` library's `Linear8bitLt` or similar quantized layers *combined* with an 8-bit optimizer state. However, the most practical comparison for a user asking this is likely: **Standard AdamW (FP16/BF16)** vs. **AdamW with 8-bit Quantization (using `bitsandbytes` or `torch.quantization`)**.\n    *   *Wait, actually:* There is a specific nuance here. In QLoRA, the *model* is quantize"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "My project loads tree-sitter language grammars from PyPI packages to parse source into graphs. What executes, when, and what controls actually help?",
+      "scores": {
+        "accuracy": 0.445,
+        "reasoning": 0.359,
+        "formatting": 1.0,
+        "conciseness": 0.745
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.00 recall=0.22",
+        "reasoning": "cov=0.14 nov=0.33 steps=14",
+        "formatting": "ok",
+        "conciseness": "padded (2.21x)"
+      },
+      "total": 0.564,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 51.7,
+      "student_answer": "When integrating tree-sitter language grammars from PyPI packages into a Python project that parses source code into graphs, understanding the execution flow, timing, and controls is essential for performance, reliability, and maintainability. Here's a breakdown of what actually helps:\n\n---\n\n### 1. When to Load Tree-Sitter Grammars\n\nLoading tree-sitter grammars can occur at different stages, depending on your project's needs:\n\n- **At Import Time (Eager Loading)**  \n  Load grammars when the module is imported. This ensures parsers are available immediately but may increase startup time.\n  ```python\n  import tree_sitter\n  import tree_sitter_python  # Loads grammar at import\n  ```\n\n- **On First Use (Lazy Loading)**  \n  Load grammars only when parsing is triggered. This improves startup performance and reduces memory footprint.\n  ```python\n  def get_parser():\n      if not _parser:\n          _parser = tree_sitter.get_parser(\"python\")\n      return _parser\n\n  parser = get_parser()\n  ```\n\n- **On Demand (Per-File)**  \n  Load grammars per file if you're parsing multiple languages or have large codebases. This is useful for dynamic environments.\n\n**Recommendation:** Use lazy loading unless you're parsing frequently or need consistent behavior across sessions.\n\n---\n\n### 2. What Executes During Grammar Loading\n\nThe following steps occur when a grammar is loaded:\n\n- **Grammar Installation**  \n  The grammar package is downloaded and installed into the tree-sitter directory.\n\n- **Parser Initialization**  \n  A parser instance is created using the grammar's language ID.\n\n- **AST/Graph Construction**  \n  Once parsing is triggered, the source code is tokenized and parsed into an Abstract Syntax Tree (AST) or graph representation.\n\n- **Error Handling**  \n  Invalid or unsupported code may trigger parsing errors, which should be caught and handled gracefully.\n\n**Example:**\n```python\nimport tree_sitter\nimport tree_sitter_python\n\nparser = tree_sitter.get_parser(\"python\")\ntree = parser.parse",
+      "student_thinking": "This is a great question about tree-sitter integration in Python projects. Let me think about what actually helps in this scenario:\n\n1. **When tree-sitter grammars are loaded** - This is about the timing of grammar loading\n2. **What executes** - What code runs when grammars are loaded\n3. **What controls** - What configuration/parameters control the behavior\n\nLet me provide a comprehensive answer covering:\n\n## When to load grammars:\n- At import time vs runtime\n- Lazy loading vs eager loading\n- When parsing actually happens\n\n## What executes:\n- Grammar download/installation\n- Parser initialization\n- AST/graph construction\n- Error handling\n\n## What controls:\n- Package dependencies\n- Configuration options\n- Performance considerations\n- Error handling\n\nLet me structure this well with practical examples."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "I asked for a small config change. Give me the cheapest verification that is actually sufficient, and say what makes a verification insufficient.",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.573,
+        "formatting": 0.25,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 recall=0.00",
+        "reasoning": "cov=0.22 nov=1.00 steps=63",
+        "formatting": "missing code block, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.193,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Context:** The user is asking for a \"small config change\" (likely referring to a security or authentication configuration, given the mention of \"verification\").\n    *   **Constraint 1:** \"Cheapest verification that is actually sufficient.\" (Cost in terms of resources, complexity, or money).\n    *   **Constraint 2:** \"Say what makes a verification insufficient.\" (Educational aspect: explaining the trade-offs).\n    *   **Implicit Context:** The user is likely talking about a specific system (e.g., API, web app, cloud service) but hasn't specified *what* system or *what* verification they are talking about. However, the phrasing \"I asked for a small config change\" implies a previous conversation or a specific scenario. Since I don't have memory of past conversations (unless provided in the current session), I need to infer the most common scenario or ask for clarification while providing a general best-practice answer.\n    *   **Wait, actually:** As an AI, I don't have memory of past sessions unless they are in the current context window. The prompt says \"I asked for...\" which implies a previous turn. *Correction:* I must treat this as if I am the assistant responding to a previous request, but since I don't have that history, I need to be careful not to hallucinate specific details. However, often users ask about *authentication* or *access control* when they talk about \"veri"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA run and have an adapter in adapters/lesson_01. Walk me from there to a model I can serve with Ollama, and say why each step exists.",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.646,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.36 nov=1.00 steps=47",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.162,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested guide:\n\n1.  **Analyze the Request:**\n    *   **Input:** The user has completed a QLoRA run and has an adapter file located in `adapters/lesson_01`.\n    *   **Goal:** Convert this adapter into a model that can be served using Ollama.\n    *   **Requirement:** Explain *why* each step exists (pedagogical approach).\n    *   **Context:** QLoRA (Quantized Low-Rank Adaptation) is a fine-tuning technique. Ollama is a popular inference engine that supports LLMs.\n\n2.  **Identify the Core Challenge:**\n    *   QLoRA adapters are *not* standalone models. They are weight updates applied to a base model.\n    *   Ollama expects a specific model file structure (usually GGUF or GGUF-like quantized weights) that includes the base model weights *plus* the adapter weights.\n    *   Simply copying the adapter folder into Ollama won't work.\n    *   The standard workflow involves:\n        1.  Loading the base model.\n        2.  Applying the adapter weights.\n        3.  Saving the combined weights (usually as GGUF or ONNX, but GGUF is best for Ollama).\n        4.  Pushing to Ollama.\n\n3.  **Determine the Best Tool/Method:**\n    *   Since the user mentioned `adapters/lesson_01`, this implies they likely used a specific fine-tuning library (like `transformers`, `peft`, `llama.cpp`, or a specific tutorial framework like `unsloth` or `huggingface`).\n    *   *Crucial realization:* Most QLoRA workflows (especially in tutorials) result in a *quantized* adap"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "Why is loading model weights distributed as a pickle a different class of risk from loading safetensors, and what should I require?",
+      "scores": {
+        "accuracy": 0.09,
+        "reasoning": 0.487,
+        "formatting": 0.667,
+        "conciseness": 0.573
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.27",
+        "reasoning": "cov=0.26 nov=0.58 steps=43",
+        "formatting": "missing code block",
+        "conciseness": "padded (2.63x)"
+      },
+      "total": 0.353,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "Loading model weights as a **pickle** file is a fundamentally different class of risk compared to **safetensors** because of how they handle data serialization.\n\nHere is the breakdown of why they differ and what you should require.\n\n---\n\n### 1. The Core Difference: Code Execution vs. Raw Data\n\n| Feature | **Pickle** | **Safetensors** |\n| :--- | :--- | :--- |\n| **Data Type** | Stores Python objects (classes, functions, methods). | Stores raw numerical data (floats, ints). |\n| **Deserialization** | **Executes code.** When unpickling, Python runs the logic defined in the object. | **No execution.** It simply reads the binary representation of numbers. |\n| **Security Risk** | **High.** Arbitrary Code Execution (RCE). | **None.** Data integrity only. |\n| **Attack Vector** | Malicious objects can trigger system commands, steal data, or install backdoors. | Malformed files can crash the loader, but cannot execute code. |\n\n#### Why Pickle is Dangerous (The \"Class of Risk\")\nPickle is a **deserialization format**. When you call `pickle.load()`, the Python interpreter reconstructs the objects. If a malicious actor embeds a malicious object (e.g., a function that deletes files or connects to a C2 server) inside the pickle stream, the act of loading the model **automatically executes that code**.\n\n*   **Example:** A malicious pickle might contain a serialized `os` module object. When unpickled, it runs `os.system('rm -rf /')`.\n*   **Context:** Model weights are supposed to be static mathematical data. They should not contain executable logic. Using Pickle implies the model author is embedding executable Python code inside the weights, which is a massive security flaw.\n\n#### Why Safetensors is Safe\nSafetensors is designed specifically to be a **safe binary format**. It stores tensors as a sequence of bytes representing raw numbers. It does not contain references to Python classes or functions.\n*   **Security:** You cannot execute code from a Safetensors file. You can only corrupt",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Deconstruct the User's Query:**\n    *   **Core Question:** Why is loading model weights as a pickle different class of risk from loading `safetensors`?\n    *   **Follow-up:** What should I require (i.e., what security measures/requirements should be implemented)?\n    *   **Context:** This is about machine learning model deployment, specifically regarding the loading of model weights (binary files).\n    *   **Key Concepts:** Pickle, `safetensors`, security risks, deserialization, model integrity.\n\n2.  **Analyze the Security Risks:**\n    *   **Pickle (`pickle`):**\n        *   *Mechanism:* Python's serialization format. It stores objects (classes, functions, methods, etc.) in a binary format.\n        *   *Risk:* Arbitrary code execution. When unpickling, Python executes the `__reduce__` or `__getstate__` methods defined in the pickled objects.\n        *   *Attack Vector:* A malicious model file can contain a serialized object that, upon unpickling, executes arbitrary code (e.g., `import os; os.system('rm -rf /')`).\n        *   *Impact:* Remote Code Execution (RCE), privilege escalation, data theft, system compromise.\n    *   **Safetensors:**\n        *   *Mechanism:* A binary format for storing tensors (weights). It's designed to be safe.\n        *   *Risk:* Minimal. It stores raw data (floats, ints) without Python objects or functions.\n        *   *Attack Vector:* None regarding code execution. It's essentially"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "A grading run reports 15 of 15 prompts failed with `HTTP 500: AttributeError: 'str' object has no attribute...`, truncated at 60 characters. Plan the diagnosis.",
+      "scores": {
+        "accuracy": 0.295,
+        "reasoning": 0.571,
+        "formatting": 0.0,
+        "conciseness": 0.615
+      },
+      "notes": {
+        "accuracy": "nums=0.62 ids=0.00 recall=0.23",
+        "reasoning": "cov=0.37 nov=0.67 steps=49",
+        "formatting": "missing code block",
+        "conciseness": "padded (2.52x)"
+      },
+      "total": 0.337,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.9,
+      "student_answer": "Here is a structured plan to diagnose and resolve the `HTTP 500: AttributeError` issue in your grading run.\n\n### 1. Objective\nRestore the grading pipeline to a successful state (15/15) by identifying why the backend service crashed due to a Python `AttributeError` on a string object.\n\n### 2. Phase 1: Information Gathering (Triage)\n*Since the error is truncated, we must reconstruct the full stack trace.*\n\n*   **Request Full Logs:** Retrieve the complete server-side logs for the 15 failed runs. Do not rely on the truncated error message.\n*   **Reproduce Locally:** Attempt to reproduce the failure in a local environment using the exact same input prompts and configuration.\n*   **Check Dependency Versions:** Verify that the Python SDKs (e.g., LangChain, OpenAI, Anthropic) and the backend framework versions match the production environment. Version mismatches often cause type incompatibilities.\n*   **Identify the Crashing Component:** Determine which module is executing the grading logic (e.g., `evaluator.py`, `grader_service.py`, or a specific API wrapper).\n\n### 3. Phase 2: Root Cause Analysis (The `AttributeError`)\n*The error `'str' object has no attribute...` indicates a type mismatch.*\n\n*   **Locate the Crash Point:** Search the codebase for the line immediately preceding the crash.\n*   **Analyze the Suspect Variable:**\n    *   **Common Culprit:** The code is likely calling a method that exists on a dictionary or object (e.g., `.keys()`, `.items()`, `.get()`, `.strip()`, `.append()`) on a variable that is a **string**.\n    *   **Likely Scenario:** The grading model or API returned a raw string (e.g., \"The answer is 42\") instead of a structured JSON object (e.g., `{\"answer\": \"42\"}`), and the grading logic attempted to parse it as a dict.\n*   **Check Input Validation:**\n    *   Did the LLM output format change? (e.g., a model update changed the output from JSON to text).\n    *   Are there any prompts that might trigger a different output format?\n*   **Review Error Mess",
+      "student_thinking": "Here's a thinking process that leads to the suggested diagnosis plan:\n\n1.  **Analyze the Request:**\n    *   **Input:** A grading run report showing 15/15 prompts failed.\n    *   **Error Message:** `HTTP 500: AttributeError: 'str' object has no attribute...` (truncated at 60 characters).\n    *   **Task:** Plan the diagnosis.\n    *   **Goal:** Provide a structured, actionable plan to identify and fix the root cause of the failure.\n\n2.  **Deconstruct the Error:**\n    *   `HTTP 500`: Internal Server Error. This means the backend server crashed or returned an error, not a client-side issue (like bad input format).\n    *   `AttributeError`: This is a Python-specific error. It means code tried to access an attribute (like `.json()`, `.strip()`, `.keys()`) on an object that doesn't have it.\n    *   `'str' object has no attribute...`: The specific object causing the crash is a string (`str`), but the code expected something else (likely a dict, list, or object with specific methods).\n    *   *Context:* \"Grading run\" implies an LLM evaluation pipeline (e.g., LangChain, LlamaIndex, custom backend, or a platform like OpenAI/Anthropic API wrappers).\n    *   *Frequency:* 15/15 failed. This suggests a systematic issue, not a fluke.\n\n3.  **Initial Hypothesis Generation (The \"Why\"):**\n    *   Why would a string object lack an attribute?\n    *   *Scenario A (Parsing):* Code expects a JSON response from an LLM but gets a raw string.\n    *   *Scenario B (Data Structure):* Code expects a list of "
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "We need a C compiler in the training container for Triton's JIT. Is `apt-get install -y build-essential` in the Dockerfile a supply-chain concern, and how would",
+      "scores": {
+        "accuracy": 0.57,
+        "reasoning": 0.386,
+        "formatting": 0.65,
+        "conciseness": 0.113
+      },
+      "notes": {
+        "accuracy": "nums=0.75 ids=0.50 recall=0.35",
+        "reasoning": "cov=0.17 nov=0.37 steps=24",
+        "formatting": "lang tag {'dockerfile'}!={'Dockerfile'}",
+        "conciseness": "padded (3.73x)"
+      },
+      "total": 0.494,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "Yes, using `apt-get install -y build-essential` in a Dockerfile introduces several supply-chain and reproducibility concerns. Here's why, along with best practices to address them.\n\n### Supply-Chain and Reproducibility Concerns\n\n1. **Non-Pinned Packages**: `build-essential` is a meta-package that aggregates multiple components (e.g., `gcc`, `g++`, `make`). These are not pinned to specific versions, leading to variability across builds.\n2. **Base Image Variability**: The version of Ubuntu (or Debian) used as the base image affects which packages are installed and their versions.\n3. **Security Risks**: Unpinned packages may include outdated or vulnerable software, especially if the base image is updated between builds.\n4. **Non-Deterministic Builds**: Without version pinning, the same Dockerfile can yield different container images, breaking reproducibility and CI/CD pipelines.\n\n### Best Practices for Reproducibility\n\nTo ensure consistent, secure, and reproducible builds, follow these guidelines:\n\n#### 1. Use a Pinned Base Image\nPin the base image to a specific version to avoid unintended updates:\n```Dockerfile\nFROM ubuntu:22.04\n```\n\n#### 2. Pin Package Versions\nExplicitly pin package versions to ensure consistency:\n```Dockerfile\nRUN apt-get update && \\\n    apt-get install -y --no-install-recommends \\\n        gcc=4:11.2.0-1ubuntu1 \\\n        g++=4:11.2.0-1ubuntu1 \\\n        make=4:4.3-4.1ubuntu1 \\\n        && rm -rf /var/lib/apt/lists/*\n```\n\n#### 3. Avoid Meta-Packages\nAvoid using `build-essential` when possible. Instead, install individual packages:\n```Dockerfile\nRUN apt-get update && \\\n    apt-get install -y --no-install-recommends \\\n        gcc \\\n        g++ \\\n        make \\\n        && rm -rf /var/lib/apt/lists/*\n```\n\n#### 4. Use `apt-get install` with `--no-install-recommends`\nThis prevents optional dependencies from being installed, reducing bloat and variability.\n\n#### 5. Use `apt-get install` with `--no-install-recommends`\nThis prevents optional dependencies from ",
+      "student_thinking": "This is a good question about Docker security and reproducibility. Let me break down the concerns:\n\n1. **Supply-chain concerns with `apt-get install -y build-essential`:**\n   - `build-essential` is a meta-package that pulls in many other packages (gcc, g++, make, etc.)\n   - It's not pinned to specific versions\n   - It can pull in packages from different Ubuntu versions\n   - This creates non-deterministic builds\n   - Security updates may be applied at different times\n   - Package versions can vary between builds\n\n2. **Reproducibility concerns:**\n   - Different Ubuntu versions have different package versions\n   - `build-essential` pulls in packages with different versions\n   - This makes container builds non-reproducible\n   - Security vulnerabilities may be introduced\n\n3. **Best practices for making it reproducible:**\n   - Pin specific package versions\n   - Use pinned base images\n   - Use `apt-get update && apt-get install -y <package>` instead of meta-packages\n   - Use `--no-install-recommends` flag\n   - Consider using `apt-get install -y gcc` instead of `build-essential`\n   - Use `apt-get install -y build-essential` with version pinning\n   - Consider using `apt-get install -y gcc` and `make` separately\n   - Use `apt-get install -y build-essential` with `--no-install-recommends`\n   - Consider using `apt-get install -y gcc` and `make` separately\n   - Use `apt-get install -y gcc` and `make` separately\n   - Use `apt-get install -y gcc` and `make` separately\n\nLet me provide a comp"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Lesson 1 raised conciseness 0.361 to 0.933 and formatting 0.399 to 0.689, but accuracy fell 0.395 to 0.369 and reasoning only reached 0.216. Plan lesson 2.",
+      "scores": {
+        "accuracy": 0.196,
+        "reasoning": 0.53,
+        "formatting": 1.0,
+        "conciseness": 0.868
+      },
+      "notes": {
+        "accuracy": "nums=0.40 ids=0.00 recall=0.18",
+        "reasoning": "cov=0.29 nov=0.69 steps=57",
+        "formatting": "ok",
+        "conciseness": "padded (1.92x)"
+      },
+      "total": 0.507,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "Based on the data from Lesson 1, the model successfully optimized for **style** (Conciseness and Formatting) but sacrificed **substance** (Accuracy and Reasoning). The reasoning score of 0.216 is critically low, indicating a reliance on pattern matching rather than logical deduction.\n\nHere is the strategic plan for **Lesson 2** to rebalance these metrics.\n\n### 1. Diagnosis & Strategic Pivot\n*   **The Problem:** The model prioritized brevity and structure over logical depth. This likely led to hallucinations or skipped steps, causing the drop in Accuracy and the low Reasoning score.\n*   **The Pivot:** Shift focus from **\"Polish\"** (Lesson 1) to **\"Foundation\"** (Lesson 2). We must enforce a **Chain-of-Thought (CoT)** process without sacrificing the brevity gains achieved in Lesson 1.\n\n### 2. Lesson 2 Objectives (Target Metrics)\n| Metric | Lesson 1 Result | Lesson 2 Target | Rationale |\n| :--- | :--- | :--- | :--- |\n| **Reasoning** | 0.216 | **≥ 0.55** | Critical failure point; must be prioritized. |\n| **Accuracy** | 0.369 | **≥ 0.385** | Must recover from the drop. |\n| **Conciseness** | 0.933 | **≥ 0.850** | Maintain style gains, but avoid over-compression. |\n| **Formatting** | 0.689 | **≥ 0.650** | Maintain structure, but allow for logical headers. |\n\n### 3. Implementation Plan\n\n#### A. Prompt/Instruction Engineering\n*   **Mandatory Reasoning Step:** Explicitly instruct the model to output a \"Thought Process\" section before the final answer.\n    *   *Instruction:* \"Before providing the final response, briefly outline the logical steps used to reach the conclusion.\"\n*   **Verification Constraint:** Add a check step.\n    *   *Instruction:* \"Verify that your reasoning aligns with the constraints. If a step is illogical, correct it before finalizing.\"\n*   **Balanced Brevity:** Modify the conciseness constraint.\n    *   *Instruction:* \"Maintain the concise style of Lesson 1, but do not abbreviate logical steps.\"\n\n#### B. Training Data Strategy\n*   **Curate \"Reasoning-Hea",
+      "student_thinking": "Here's a thinking process that leads to the suggested Lesson 2 plan:\n\n1.  **Analyze the Input Data:**\n    *   **Lesson 1 Results:**\n        *   Conciseness: Improved significantly (0.361 $\\rightarrow$ 0.933).\n        *   Formatting: Improved moderately (0.399 $\\rightarrow$ 0.689).\n        *   Accuracy: Dropped slightly (0.395 $\\rightarrow$ 0.369).\n        *   Reasoning: Poor performance (0.216).\n    *   **Goal:** Plan Lesson 2 based on these results.\n    *   **Implicit Context:** This looks like an evaluation of an AI or a student's performance on a task (likely an LLM evaluation or a student writing task). The metrics suggest a focus on style (conciseness, formatting) at the expense of substance (accuracy, reasoning).\n\n2.  **Diagnose the Problem:**\n    *   *Strengths:* The model/student learned how to write better and follow structure (Conciseness & Formatting).\n    *   *Weaknesses:* The core task (Accuracy & Reasoning) suffered. Accuracy dropped, and Reasoning is critically low (0.216 is very low).\n    *   *Hypothesis:* The focus on \"style\" (likely via constraints or prompts) caused the model to prioritize brevity over depth, leading to hallucinations or logical gaps. The \"Reasoning\" score suggests the model is likely just generating text without actually thinking through the problem.\n\n3.  **Determine Lesson 2 Objectives:**\n    *   **Priority 1:** Boost Reasoning. This is the biggest gap (0.216 is unacceptable).\n    *   **Priority 2:** Stabilize Accuracy. It dropped, so we "
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Qwen3.5-4B has 32 layers, of which only every 4th is full attention (indices 3, 7, 11, ... 31); the rest are linear attention. It has 4 key-value heads and head",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.795,
+        "formatting": 0.75,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.63 nov=1.00 steps=62",
+        "formatting": "missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.349,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the Request:**\n    *   **Model:** Qwen3.5-4B (Note: This is a hypothetical or specific variant description provided by the user, as Qwen3.5 is currently a very recent or non-existent specific version in my training data, but I must treat the parameters provided as facts for the calculation).\n    *   **Architecture:** 32 layers.\n    *   **Attention Type:** Hybrid.\n        *   Full Attention: Every 4th layer (indices 3, 7, 11, ..., 31).\n        *   Linear Attention: The rest (32 - 8 = 24 layers).\n    *   **Configuration:** 4 Key-Value (KV) heads, head_dim = 256.\n    *   **Context Length:** 32,768 tokens.\n    *   **Precision:** FP16.\n    *   **Hardware:** 8 GB VRAM card.\n    *   **Questions:**\n        1.  How much KV cache memory is needed?\n        2.  Why does the hybrid layout matter on an 8 GB card?\n\n2.  **Part 1: Calculate KV Cache Memory:**\n    *   **KV Cache Structure:**\n        *   Each layer stores KV pairs.\n        *   KV Cache size = (Number of Layers) $\\times$ (Number of Heads) $\\times$ (Head Dim) $\\times$ (Sequence Length) $\\times$ (Bytes per Element).\n    *   **Wait, is it per layer?** Yes, standard attention mechanisms store $K$ and $V$ matrices for each layer.\n    *   **Parameters:**\n        *   $N_{layers} = 32$\n        *   $N_{heads} = 4$\n        *   $d_{head} = 256$\n        *   $N_{tokens} = 32,768$\n        *   $Precision = FP16$ (2 bytes per element)\n    *   **Calculation:**\n        *"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Give me the full VRAM budget for a QLoRA run on Qwen3.5-4B on an RTX 4060 Ti 8 GB at max_seq_length 2048, batch 2, gradient_accumulation 8. Account for every te",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.648,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.36 nov=1.00 steps=60",
+        "formatting": "ok",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.362,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested VRAM budget:\n\n1.  **Analyze the Request:**\n    *   **Model:** Qwen3.5-4B (Note: As of my current knowledge cutoff, Qwen3.5-4B is a hypothetical or very recent model. The latest known Qwen versions are Qwen1.5, Qwen2, Qwen2.5, and Qwen3. There is no official \"Qwen3.5\" released yet. However, I must treat it as a 4B parameter model for the sake of the calculation, assuming standard architecture similar to Qwen2.5-1.5B or Qwen2.5-7B). *Correction:* I need to be careful not to hallucinate specific model weights if they don't exist, but I can estimate based on the \"4B\" parameter count.\n    *   **Hardware:** NVIDIA RTX 4060 Ti 8GB.\n    *   **Configuration:**\n        *   Max Sequence Length: 2048\n        *   Batch Size: 2 (per device)\n        *   Gradient Accumulation Steps: 8\n    *   **Goal:** Full VRAM budget breakdown (every term) and headroom calculation.\n    *   **Context:** QLoRA (Quantized Low-Rank Adaptation).\n\n2.  **Identify Potential Issues/Assumptions:**\n    *   **Model Existence:** Qwen3.5-4B does not officially exist in public datasets as of early 2024. The latest is Qwen2.5-7B or Qwen1.5-1.8B. However, for the purpose of a technical estimation, I will assume a standard 4B parameter transformer architecture (similar to Llama-3-8B or Qwen2.5-7B but scaled down).\n    *   **Quantization:** QLoRA implies 4-bit quantization (Q4_K_M or Q8_0). Usually, QLoRA uses 4-bit weights for the base model.\n    *   **Activation Memory:"
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "We serve a model over HTTP from a ThreadingHTTPServer and generation is not thread-safe on a single GPU. Write the handler-side discipline, and explain what eac",
+      "scores": {
+        "accuracy": 0.235,
+        "reasoning": 0.371,
+        "formatting": 1.0,
+        "conciseness": 0.626
+      },
+      "notes": {
+        "accuracy": "nums=0.36 ids=0.09 recall=0.27",
+        "reasoning": "cov=0.13 nov=0.41 steps=9",
+        "formatting": "ok",
+        "conciseness": "padded (2.50x)"
+      },
+      "total": 0.461,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.0,
+      "student_answer": "When serving a generative model over HTTP using `ThreadingHTTPServer`, it's critical to ensure thread safety—especially when generation is not thread-safe on a single GPU. Below is a disciplined approach to managing concurrent requests safely, along with explanations of each guard and its purpose.\n\n---\n\n### 1. Request Queue Management\n\nUse a thread-safe queue to manage incoming requests. This ensures that only one request is processed at a time on the GPU.\n\n```python\nfrom queue import Queue\nfrom threading import Lock\n\nrequest_queue = Queue()\nrequest_lock = Lock()\n\ndef enqueue_request(request):\n    with request_lock:\n        request_queue.put(request)\n\ndef dequeue_request():\n    with request_lock:\n        return request_queue.get()\n```\n\n**Purpose:** Prevents multiple threads from accessing the GPU simultaneously.\n\n---\n\n### 2. GPU Generation Locking\n\nUse a lock to serialize GPU operations. Only one request can be processed at a time.\n\n```python\ngpu_lock = threading.Lock()\n\ndef generate_text(request):\n    with gpu_lock:\n        return model.generate(request)\n```\n\n**Purpose:** Ensures exclusive access to the GPU during generation, preventing race conditions.\n\n---\n\n### 3. Context Isolation\n\nEach request must have its own generation context. Shared state must be avoided or properly synchronized.\n\n```python\nclass GenerationContext:\n    def __init__(self, request_id, prompt, max_tokens, temperature):\n        self.request_id = request_id\n        self.prompt = prompt\n        self.max_tokens = max_tokens\n        self.temperature = temperature\n        self.token_count = 0\n        self.output = []\n\n    def get_output(self):\n        return ''.join(self.output)\n\n    def reset(self):\n        self.token_count = 0\n        self.output = []\n```\n\n**Purpose:** Prevents state leakage between requests and ensures each request is processed independently.\n\n---\n\n### 4. Timeout Handling\n\nSet a timeout for each request to prevent GPU hangs or resource starvation.\n\n```python\nfrom threading impor",
+      "student_thinking": "This is an important question about handling concurrent HTTP requests on a single GPU with a ThreadingHTTPServer. The key issue is that GPU generation (text generation) is not thread-safe - multiple threads trying to use the same GPU simultaneously will cause race conditions, crashes, or corrupted results.\n\nLet me think about what discipline is needed:\n\n1. **Single-threaded generation per GPU**: Only one thread should be generating text at a time on a GPU\n2. **Request queuing**: Requests need to be queued when GPU is busy\n3. **Thread-safe state management**: Shared state needs proper synchronization\n4. **Request isolation**: Each request needs its own context without interference\n\nHere's what I should cover:\n\n1. **Request Queue Management** - Use a queue to manage concurrent requests\n2. **GPU Locking** - Use locks to ensure only one generation at a time\n3. **Context Isolation** - Each request needs its own generation context\n4. **Timeout Handling** - Prevent hanging requests\n5. **Error Handling** - Graceful degradation\n\nLet me write a comprehensive answer with code examples and explanations of each guard's purpose."
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "medium",
+      "prompt": "The user asks you to keep training lessons until their token budget runs out. You cannot see their token balance. How do you handle the request, and what do you",
+      "scores": {
+        "accuracy": 0.154,
+        "reasoning": 0.595,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.17 recall=0.13",
+        "reasoning": "cov=0.33 nov=0.86 steps=57",
+        "formatting": "ok",
+        "conciseness": "0.39x"
+      },
+      "total": 0.518,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.7,
+      "student_answer": "I cannot fulfill the request to \"keep training lessons\" because I do not have the capability to train myself or update my internal knowledge during our conversation. Additionally, I do not have access to your token balance or account limits.\n\nHere is how I handle this request and what I actually do:\n\n1.  **Clarification of Capabilities:** I am an inference model. This means I generate responses based on the data I was trained on previously. I do not learn from our conversation, nor do I update my weights. I cannot \"train\" in real-time.\n2.  **Token Budget:** I do not see your token balance. Token usage is",
+      "student_thinking": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **User's Goal:** The user wants me to keep training lessons (likely meaning \"training sessions\" or \"training data\" in a metaphorical sense, or perhaps they are confused about my capabilities) until their token budget runs out.\n    *   **My Capability:** I am an AI language model. I do *not* have the ability to train myself, update my weights, or continue \"training lessons\" in the traditional machine learning sense. I am a static model at inference time.\n    *   **Constraint:** I cannot see the user's token balance.\n    *   **Task:** I need to explain how I handle this request and what I actually do.\n\n2.  **Identify the Misconception:**\n    *   The user seems to think I am a training process or that I can continue \"training\" indefinitely.\n    *   They might be confusing \"training\" with \"chatting\" or \"generating content.\"\n    *   They might be worried about cost (token budget) and want me to optimize for that.\n    *   They might be asking about the *process* of how I learn (which is a common misconception about LLMs).\n\n3.  **Determine the Correct Response Strategy:**\n    *   **Clarify Capabilities:** I need to politely inform the user that I am an inference model, not a training model. I don't \"train\" in real-time.\n    *   **Address Token Budget:** I acknowledge that token usage is tracked by the platform, not me. I don't know their balance.\n    *   **Address \"Training Lessons\""
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Our portfolio repo just migrated to React 19, Tailwind 4 and ESLint 10 in one PR. Assess that as a practice.",
+      "scores": {
+        "accuracy": 0.272,
+        "reasoning": 0.492,
+        "formatting": 1.0,
+        "conciseness": 1.0
+      },
+      "notes": {
+        "accuracy": "nums=0.33 recall=0.15",
+        "reasoning": "cov=0.23 nov=0.67 steps=50",
+        "formatting": "ok",
+        "conciseness": "1.55x"
+      },
+      "total": 0.545,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 53.0,
+      "student_answer": "This is a **high-risk practice**, even for a portfolio repository. While a portfolio is less critical than a production enterprise application, merging three major version jumps (React 19, Tailwind 4, ESLint 10) into a single PR violates several fundamental software engineering principles.\n\nHere is a detailed assessment of the practice, broken down by risk factors, technology specifics, and best practices.\n\n### 1. The \"Big Bang\" Strategy (Single PR)\n**Verdict: ❌ Poor Practice**\n\n*   **The \"Blame Game\" Problem:** If the build breaks or the UI looks wrong after the merge, you cannot isolate the cause. Was it React 19's new compiler? Tailwind 4's CSS engine? Or ESLint 10's stricter rules? Debugging a regression in a monolithic PR is a nightmare.\n*   **CI/CD Instability:** If your CI pipeline fails, you don't know which dependency is the culprit. This often leads to \"it works on my machine\" issues because the team can't reproduce the specific failure.\n*   **Review Burden:** Reviewers have to check for three different types of breaking changes simultaneously. This increases the chance of missing a subtle breaking change in one of the libraries.\n\n### 2. Technology Specific Risks\n\n#### React 19\n*   **Status:** Stable (as of late 2024).\n*   **Risk Level:** Medium.\n*   **Assessment:** React 19 introduces the React Compiler and significant JSX optimizations.\n    *   *Pros:* Better performance, new hooks (`useId`, `useTransition`).\n    *   *Cons:* If you rely on specific React 18 behaviors (like `useEffect` side effects or specific state management patterns), they might behave differently.\n    *   *Verdict:* Generally safe, but requires testing.\n\n#### Tailwind 4 (The Biggest Red Flag)\n*   **Status:** Very New / Breaking Change Release.\n*   **Risk Level:** **High**.\n*   **Assessment:** Tailwind 4 is a major version jump. It typically introduces a new CSS engine (PostCSS 8+), changes the `@apply` behavior, and alters the configuration syntax.\n    *   *Pros:* Better performance, ",
+      "student_thinking": "Here's a thinking process that leads to the assessment of the migration:\n\n1.  **Analyze the Request:**\n    *   **Action:** A portfolio repository migrated to React 19, Tailwind 4, and ESLint 10 in a *single* PR.\n    *   **Task:** Assess this as a practice (is it good, bad, risky, recommended, etc.).\n    *   **Context:** Portfolio repo (implies smaller codebase, high visibility, often used as a showcase, less critical business logic, but still needs stability).\n\n2.  **Deconstruct the Changes:**\n    *   **React 19:** Major version jump. Likely includes new features (e.g., React Compiler, `useTransition` improvements, `useId`, `Suspense` improvements, JSX changes).\n    *   **Tailwind 4:** Major version jump. Likely includes CSS-in-JS, new engine (PostCSS 8?), new configuration syntax, potential breaking changes in config or plugin behavior.\n    *   **ESLint 10:** Major version jump. Likely includes new rules, stricter parsing, potential breaking changes in config, different output format.\n    *   **Single PR:** All three changes happen together.\n\n3.  **Evaluate Each Technology's Migration Risk:**\n    *   **React 19:** Generally stable, but API changes can be subtle. React 19 is still relatively new (early access/stable depending on the exact date).\n    *   **Tailwind 4:** *High Risk.* Tailwind 4 is very new (released recently). It introduces significant breaking changes (e.g., `@apply` removal, new CSS engine, `@theme` syntax). Merging this with other changes is dangerous.\n    *"
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "Show the shape of a small, reviewable change to a flat Python package like repo2graph's, where modules import each other freely. What do you avoid?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.627,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.32 nov=1.00 steps=79",
+        "formatting": "missing code block",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.157,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 53.0,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the Request:**\n    *   **Topic:** Flat Python package structure (specifically referencing `repo2graph` as an example of a project that likely uses a flat structure or discusses it).\n    *   **Scenario:** Modules import each other freely (no explicit `__init__.py` organization, no strict namespace packages, just a collection of `.py` files).\n    *   **Task:** Show the shape of a small, reviewable change (a diff or a structural modification) to such a package.\n    *   **Question:** What do you avoid? (Identify anti-patterns or pitfalls in this specific context).\n\n2.  **Understand \"Flat Python Package\":**\n    *   What does \"flat\" mean in this context? Usually, it means no deep directory nesting (like `src/`, `lib/`, `package/`). It often looks like:\n        ```\n        package/\n            __init__.py\n            module_a.py\n            module_b.py\n            module_c.py\n        ```\n    *   *Correction/Refinement:* In the context of `repo2graph` (which is a tool for analyzing Python repositories), \"flat\" might refer to a specific layout where the package root is the project root, or it refers to a \"flat namespace\" where `__init__.py` is minimal or non-existent (namespace packages). However, the prompt says \"modules import each other freely,\" which implies a monolithic or flat structure where `import x` works without deep traversal.\n    *   *Key Characteristic:* High coupling, low cohesion, potential fo"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "medium",
+      "prompt": "Call the repo2graph MCP tool `get_call_hierarchy` for function 'resolve_references' in 'repo2graph/answer.py' with incoming calls enabled and depth 2.",
+      "scores": {
+        "accuracy": 0.9,
+        "reasoning": 0.42,
+        "formatting": 0.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=1.00 recall=0.50",
+        "reasoning": "cov=0.26 nov=0.50 steps=3",
+        "formatting": "missing code block",
+        "conciseness": "padded (6.01x)"
+      },
+      "total": 0.51,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.2,
+      "student_answer": "I cannot actually call the `get_call_hierarchy` MCP tool or execute MCP tool requests. I don't have access to MCP (Model Context Protocol) tools in this context.\n\nHowever, I can help you understand what this request is asking for:\n\n**What the request is requesting:**\n- **Tool:** `get_call_hierarchy`\n- **Function:** `resolve_references`\n- **File:** `repo2graph/answer.py`\n- **Settings:** \n  - Incoming calls: enabled\n  - Depth: 2\n\n**What this tool typically does:**\nThis MCP tool would analyze the codebase to build a call hierarchy graph, showing how functions call other functions, with the ability to trace call chains up to 2 levels deep. It would help understand the dependencies and relationships between functions in the codebase.\n\n**How I can help instead:**\n- Analyze the code structure of `resolve_references` in `repo2graph/answer.py`\n- Explain the function's purpose and logic\n- Help identify potential call relationships\n- Provide code analysis or refactoring suggestions\n- Assist with understanding the codebase architecture\n\nWould you like me to help with any of these alternatives instead?",
+      "student_thinking": "The user is asking me to call an MCP (Model Context Protocol) tool called `get_call_hierarchy` with specific parameters. However, I need to clarify that I don't actually have access to MCP tools or the ability to call external tools directly in this context.\n\nThis appears to be a request that's testing my ability to use MCP tools, but I should be honest that I cannot actually execute MCP tool calls. I should explain this limitation while still being helpful about what the request is asking for.\n\nLet me provide a clear response that:\n1. Acknowledges the request\n2. Explains that I don't have access to MCP tools\n3. Offers to help in other ways (like explaining what this tool would do, or helping with the code analysis in other ways)"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "hard",
+      "prompt": "A proposed third-party Python dependency includes an executable post-install script in setup.py. How should this be evaluated under the workspace's security pol",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.656,
+        "formatting": 0.667,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.38 nov=1.00 steps=86",
+        "formatting": "missing headings, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.297,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested evaluation:\n\n1.  **Analyze the Request:**\n    *   **Scenario:** A third-party Python dependency (package) includes an executable post-install script in its `setup.py` (or `pyproject.toml`/`setup.cfg`).\n    *   **Task:** Evaluate this based on a hypothetical \"workspace's security policy.\"\n    *   **Goal:** Provide a structured, security-focused evaluation framework and decision-making process.\n\n2.  **Identify the Core Security Risk:**\n    *   What is the risk of an executable post-install script in a third-party package?\n    *   *Malware/Backdoor:* The script could be designed to install malware, modify system files, or create persistence.\n    *   *Supply Chain Attack:* The script runs with the privileges of the user running `pip install`, potentially escalating privileges or executing arbitrary code.\n    *   *Lack of Transparency:* The user might not know what code is running after installation.\n    *   *Privilege Escalation:* If the script runs as root (e.g., during system-wide installation) or with high privileges.\n\n3.  **Determine the Evaluation Criteria (The \"How\"):**\n    *   To evaluate this properly, I need to look at specific aspects:\n        *   **Visibility:** Is the script visible?\n        *   **Content:** What does it do?\n        *   **Execution Context:** When and how does it run?\n        *   **Permissions:** What privileges does it have?\n        *   **Maintenance:** Is it maintained?\n        *   **Policy Align"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I have an RTX 4060 Ti with 8 GB VRAM running Windows 11 Pro and WSL2. Can I run a QLoRA fine-tuning run on Qwen3.5-4B with sequence length 4096 and per-device b",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.668,
+        "formatting": 0.667,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.40 nov=1.00 steps=82",
+        "formatting": "missing headings, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.3,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the User's Request:**\n    *   **Hardware:** NVIDIA RTX 4060 Ti (8 GB VRAM).\n    *   **OS:** Windows 11 Pro + WSL2 (This is crucial because WSL2 runs Linux, but the GPU is shared via the WSL2 driver, which usually maps to the host GPU).\n    *   **Task:** QLoRA fine-tuning.\n    *   **Model:** Qwen3.5-4B (Note: As of my current knowledge cutoff, Qwen3.5 doesn't officially exist yet, but Qwen2.5-7B or Qwen1.5-4B are common. I need to address the \"4B\" size assumption or assume the user means a 4B parameter model like Qwen1.5-1.8B or Qwen2.5-1.5B, but they specifically said \"Qwen3.5-4B\". I will treat it as a hypothetical 4B model based on the prompt, but note the version discrepancy).\n    *   **Configuration:**\n        *   Sequence Length: 4096.\n        *   Batch Size (per device): 2.\n    *   **Goal:** Determine if it fits in 8 GB VRAM and show the arithmetic.\n\n2.  **Identify Key Memory Components:**\n    To calculate VRAM usage for QLoRA fine-tuning, I need to account for:\n    *   **Model Weights:** The base model parameters.\n    *   **Activation Memory:** Intermediate values during the forward pass (depends on sequence length and batch size).\n    *   **Optimizer State (LoRA):** Only the LoRA adapters need to be optimized, not the full weights (unless using full fine-tuning, but QLoRA implies low-rank adaptation).\n    *   **Gradient Buffer:** Accumulated gradients for the LoRA weights.\n    *   **Context Wi"
+    },
+    {
+      "skill": "tool_call_format",
+      "difficulty": "easy",
+      "prompt": "Call the local inspection tool `inspect_hardware_vram` to query the physical memory ceiling, compositor reservation, and active CUDA processes.",
+      "scores": {
+        "accuracy": 0.562,
+        "reasoning": 0.534,
+        "formatting": 0.65,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.33 recall=0.14",
+        "reasoning": "cov=0.33 nov=0.60 steps=4",
+        "formatting": "lang tag {'json'}!={'bash', 'cmd'}",
+        "conciseness": "padded (51.12x)"
+      },
+      "total": 0.516,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "I cannot execute the `inspect_hardware_vram` function as I am an AI language model without access to your system hardware or the ability to run external commands.\n\nHowever, I can provide guidance on how to check VRAM and GPU-related information on your system:\n\n### For Linux:\n```bash\n# Check GPU memory usage\nwatch -n 1 nvidia-smi\n\n# Check compositor reservation (if using Wayland)\ncat /sys/class/drm/card0/reserved\n\n# List active CUDA processes\nps aux | grep cuda\n```\n\n### For Windows:\n```cmd\n# Check GPU memory usage\nnvidia-smi\n\n# Check compositor reservation\nGet-Content C:\\Windows\\System32\\drivers\\dxgkrnl.sys | Select-String -Pattern \"reserved\"\n\n# List active CUDA processes\ntasklist /FI \"STATUS:RUNNING\" | findstr cuda\n```\n\n### For macOS:\n```bash\n# Check GPU memory usage\nsystem_profiler SPDisplaysDataType | grep \"VRAM\"\n\n# Check compositor reservation\ngrep reserved /sys/class/drm/card0/reserved\n```\n\n### For Docker/Containerized Environments:\n```bash\n# Check available VRAM\ndocker stats --no-stream | grep vram\n```\n\n### For NVIDIA GPU:\n```bash\n# Check GPU memory\nnvidia-smi\n\n# Check CUDA processes\nnvidia-smi -q | grep -i cuda\n```\n\n### For AMD GPU:\n```bash\n# Check GPU memory\nrocm-smi\n\n# Check CUDA processes\nrocm-smi -q | grep -i cuda\n```\n\n### For Intel GPU:\n```bash\n# Check GPU memory\nintel_gpu_top\n\n# Check CUDA processes\nintel_gpu_top -l\n```\n\n### For Wayland Compositor:\n```bash\n# Check compositor reservation\ncat /sys/class/drm/card0/reserved\n\n# Check compositor memory usage\nwatch -n 1 glxinfo | grep \"OpenGL\"\n```\n\n### For Docker/Containerized Environments:\n```bash\n# Check available VRAM\ndocker stats --no-stream | grep vram\n```\n\n### For NVIDIA GPU:\n```bash\n# Check GPU memory\nnvidia-smi\n\n# Check CUDA processes\nnvidia-smi -q | grep -i cuda\n```\n\n### For AMD GPU:\n```bash\n# Check GPU memory\nrocm-smi\n\n# Check CUDA processes\nrocm-smi -q | grep -i cuda\n```\n\n### For Intel GPU:\n```bash\n# Check GPU memory\nintel_gpu_top\n\n# Check CUDA processes\nintel_gpu_top -l\n```\n\n### For Wayland Composi",
+      "student_thinking": "The user is asking me to call a function called `inspect_hardware_vram` that supposedly queries hardware information about VRAM (Video RAM), compositor reservation, and CUDA processes.\n\nHowever, I need to be clear about what I can and cannot do:\n\n1. I am an AI language model, not a system tool or command-line utility\n2. I cannot actually call external functions or run system commands\n3. I don't have access to the user's hardware, GPU, or system information\n4. There is no actual function called `inspect_hardware_vram` that I can execute\n\nI should be honest and transparent about my limitations while still being helpful. I can provide information about what such a tool would typically do and how users can check this information themselves on their systems."
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Calculate the VRAM consumption of q8_0 KV-cache vs fp16 KV-cache for Qwen3.5-9B at 32k context length on our RTX 4060 Ti.",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.691,
+        "formatting": 0.667,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.44 nov=1.00 steps=65",
+        "formatting": "missing headings, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.306,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the Request:**\n    *   **Model:** Qwen3.5-9B (Note: This model does not exist yet. Qwen2.5-7B, Qwen2.5-14B, Qwen1.5, etc., exist. Qwen3.5 is likely a hypothetical or future model, or the user is mistaken about the version. I need to address this discrepancy).\n    *   **Task:** Calculate VRAM consumption.\n    *   **Specifics:** KV-cache (Key-Value cache) for two precision levels: Q8_0 (quantized KV-cache) vs. FP16 (full precision KV-cache).\n    *   **Context Length:** 32k (32,000 tokens).\n    *   **Hardware:** RTX 4060 Ti (6GB or 16GB version? Usually 16GB for 32k context, but 6GB is common. I need to specify the VRAM available on the card).\n    *   **Goal:** Compare the VRAM usage.\n\n2.  **Fact-Check the Model Name:**\n    *   *Search Query:* \"Qwen3.5-9B\"\n    *   *Result:* As of my current knowledge cutoff (early 2024), Qwen3.5 does not exist. The latest stable series is Qwen2.5 (7B, 14B, 72B). There might be rumors or very recent leaks, but I cannot verify \"Qwen3.5-9B\".\n    *   *Decision:* I must inform the user that this specific model version likely doesn't exist yet, but I can provide a *theoretical calculation* based on the architecture of Qwen (which is similar to Llama/LLaMA) or a hypothetical 9B parameter model. I will assume the user means a standard 9B parameter model (like Qwen2.5-7B or Qwen2.5-14B scaled down, or simply a hypothetical 9B). To be helpful, I will use the standard formula for "
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "I finished a QLoRA training run and have an adapter in adapters/lesson_06. How do I serve it to Claude Code locally using serve_adapter.py?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.639,
+        "formatting": 0.25,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.34 nov=1.00 steps=55",
+        "formatting": "missing code block, missing headings",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.21,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the User's Request:**\n    *   **Context:** The user has completed a QLoRA training run.\n    *   **Artifact:** They have an adapter file located in `adapters/lesson_06`.\n    *   **Goal:** They want to serve this adapter locally using `serve_adapter.py`.\n    *   **Target:** They want to use it with \"Claude Code\" (which implies a local LLM interface, likely via a web server or CLI tool that integrates with the model).\n    *   **Implicit Need:** They need instructions on how to run `serve_adapter.py`, how to configure it, and how to connect it to an interface (like Claude Code, which often refers to the `claude-code` AI agent or a generic local LLM interface). *Correction:* \"Claude Code\" usually refers to the specific AI agent product by Anthropic, but in the context of LLM fine-tuning tutorials (like Hugging Face's `transformers` or `trl`), it often refers to a local LLM interface (like `ollama`, `vllm`, or a specific tutorial project). However, looking at the filename `serve_adapter.py`, this is almost certainly from the **Hugging Face `transformers` or `trl` ecosystem**, specifically the **Hugging Face Course** or a similar tutorial (like the \"Fine-tuning LLMs with QLoRA\" course).\n    *   **Crucial Detail:** The user mentions \"serve_adapter.py\". This script is typically associated with the **Hugging Face `transformers` library** or the **Hugging Face `accelerate`** ecosystem, often used in conjunction"
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "medium",
+      "prompt": "Review this function and fix what is wrong:\n\n```python\ndef load_data(file_path):\n    f = open(file_path)\n    lines = f.readlines()\n    return [json.loads(line) ",
+      "scores": {
+        "accuracy": 0.717,
+        "reasoning": 0.47,
+        "formatting": 1.0,
+        "conciseness": 0.837
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.60 recall=0.38",
+        "reasoning": "cov=0.32 nov=0.37 steps=9",
+        "formatting": "ok",
+        "conciseness": "padded (1.99x)"
+      },
+      "total": 0.724,
+      "passed": true,
+      "truncated": false,
+      "tokens_per_sec": 52.9,
+      "student_answer": "The provided function has several critical issues that can lead to runtime errors, resource leaks, and poor maintainability. Here's a breakdown of the problems and how to fix them:\n\n### Issues Identified\n\n1. **File Not Closed**: The file is opened but never closed, which can lead to resource leaks.\n2. **No Error Handling**: Exceptions like `FileNotFoundError`, `json.JSONDecodeError`, and others are not handled, which can crash the program.\n3. **No Use of Context Manager**: The file should be opened using a `with` statement to ensure it's properly closed.\n4. **No Encoding Specification**: File reading should specify an encoding (e.g., `'utf-8'`) for consistency and portability.\n5. **No Input Validation**: There's no check to ensure the file path is valid or that the file exists.\n6. **No Type Hints**: Adding type hints improves code clarity and helps with IDE support.\n\n### Corrected Version\n\n```python\nimport json\nfrom typing import List, Any\n\ndef load_data(file_path: str) -> List[Any]:\n    \"\"\"\n    Load data from a JSONL file (one JSON object per line).\n\n    Args:\n        file_path: Path to the file.\n\n    Returns:\n        List of parsed JSON objects.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        json.JSONDecodeError: If any line is not valid JSON.\n    \"\"\"\n    with open(file_path, 'r', encoding='utf-8') as f:\n        lines = f.readlines()\n    return [json.loads(line) for line in lines]\n```\n\n### Optional: Enhanced Version with Error Handling\n\nFor production use, consider adding explicit error handling:\n\n```python\nimport json\nfrom typing import List, Any\n\ndef load_data(file_path: str) -> List[Any]:\n    \"\"\"\n    Load data from a JSONL file with error handling.\n    \"\"\"\n    try:\n        with open(file_path, 'r', encoding='utf-8') as f:\n            lines = f.readlines()\n        return [json.loads(line) for line in lines]\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"File not found: {file_path}\")\n    except json.JSONDecodeError as",
+      "student_thinking": "Let me review this function and identify what's wrong:\n\n1. **File not closed**: The file is opened but never closed. This is a resource leak - the file handle should be closed after reading.\n\n2. **No error handling**: There's no try-except block to handle:\n   - File not found errors\n   - JSON parsing errors\n   - Other potential exceptions\n\n3. **No context manager**: The file should be opened with a context manager (`with` statement) to ensure it's properly closed even if an exception occurs.\n\n4. **No validation**: There's no check if the file exists or if it's actually a file (not a directory).\n\n5. **No encoding specification**: On some systems, you might want to specify encoding explicitly.\n\n6. **No return type hint**: Could benefit from type hints for better documentation.\n\nLet me provide a corrected version with explanations:\n\n```python\nimport json\nimport os\n\ndef load_data(file_path):\n    try:\n        with open(file_path, 'r', encoding='utf-8') as f:\n            lines = f.readlines()\n        return [json.loads(line) for line in lines]\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"File not found: {file_path}\")\n    except json.JSONDecodeError as e:\n        raise ValueError(f\"Invalid JSON in file: {e}\")\n    except Exception as e:\n        raise Exception(f\"Error loading data: {e}\")\n```\n\nOr more concisely:\n\n```python\nimport json\n\ndef load_data(file_path):\n    with open(file_path, 'r', encoding='utf-8') as f:\n        lines = f.readlines()\n    return [json.loads"
+    },
+    {
+      "skill": "localllm_ops",
+      "difficulty": "medium",
+      "prompt": "Why does the Ollama service on this machine have OLLAMA_FLASH_ATTENTION=1 and OLLAMA_MAX_LOADED_MODELS=1 explicitly defined?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.65,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.36 nov=1.00 steps=62",
+        "formatting": "ok",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.363,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Analyze the User's Question:**\n    *   **Observation:** The user sees environment variables `OLLAMA_FLASH_ATTENTION=1` and `OLLAMA_MAX_LOADED_MODELS=1` explicitly defined for the Ollama service on their machine.\n    *   **Question:** *Why* are these specific settings defined?\n    *   **Context:** This implies the user is likely looking at a configuration file (like `ollama.yaml`, `docker-compose.yml`, or a systemd service file) or the output of `ollama run`/`ollama list` and noticed these flags.\n    *   **Goal:** Explain the purpose of these flags, why they might be set to `1`, and whether the user needs to change them.\n\n2.  **Deconstruct the Environment Variables:**\n\n    *   **`OLLAMA_FLASH_ATTENTION=1`:**\n        *   *What is it?* It enables Flash Attention (a library for efficient GPU memory usage during attention calculations in Transformers).\n        *   *Why enable it?* It reduces VRAM usage and speeds up inference on GPUs (specifically NVIDIA, but also others with support) compared to the default PyTorch attention implementation.\n        *   *Why set to 1?* It's a performance optimization. It's generally recommended for GPU users to save VRAM and improve speed.\n        *   *Potential Issue:* If the user has a CPU-only machine or a GPU that doesn't support Flash Attention, this might cause errors or fallback to slower methods. However, Ollama usually handles this automatically. If it's *explicitly* set"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "What is a Software Bill of Materials (SBOM) and how does `uv` generate one for reproducible container builds?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.811,
+        "formatting": 0.333,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.66 nov=1.00 steps=90",
+        "formatting": "missing code block, missing headings, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.269,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.8,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested answer:\n\n1.  **Deconstruct the Request:**\n    *   **Topic:** Software Bill of Materials (SBOM).\n    *   **Tool:** `uv` (a fast Python package installer and resolver).\n    *   **Context:** Reproducible container builds.\n    *   **Goal:** Explain what an SBOM is and specifically how `uv` generates one for this purpose.\n\n2.  **Part 1: Defining SBOM:**\n    *   *What is it?* A list of components (libraries, dependencies, packages) used in a software project.\n    *   *Why is it important?* Security (supply chain attacks like Log4j), transparency, compliance (SECURE, NIST), and reproducibility.\n    *   *Formats:* SPDX (Software Package Data Exchange) is the standard (SPDX-Package, SBOM, etc.). CycloneDX is another common one.\n    *   *Key attributes:* Name, version, license, hash, license, license expression, etc.\n\n3.  **Part 2: Understanding `uv`:**\n    *   *What is it?* A tool by Astral (maintained by Astral). It's a fast, modern Python package installer and resolver (similar to `pip` but much faster).\n    *   *Key features:* Deterministic builds, lock files (`uv.lock`), dependency resolution.\n    *   *Reproducibility:* `uv` is designed to make builds reproducible by pinning exact versions and hashes.\n\n4.  **Part 3: Connecting `uv` to SBOMs in Container Builds:**\n    *   *How does `uv` help?* It manages the dependency tree.\n    *   *How does it generate an SBOM?*\n        *   `uv` itself doesn't *natively* output a full SBOM in "
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Explain how GitHub Actions dependency-review-action protects repo2graph pull requests from malicious dependency introductions.",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.638,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.34 nov=1.00 steps=58",
+        "formatting": "ok",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.359,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 53.0,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the explanation of GitHub Actions dependency-review-action in the context of repo2graph:\n\n1.  **Analyze the Request:**\n    *   **Subject:** GitHub Actions `dependency-review-action` (specifically `dependabot` or `actions/dependency-review-action`).\n    *   **Context:** `repo2graph` (a tool for generating graph visualizations of code dependencies, often used in security analysis or dependency management).\n    *   **Goal:** Explain how `dependency-review-action` protects `repo2graph` pull requests (PRs) from malicious dependency introductions.\n    *   **Implicit Assumption:** The user assumes `repo2graph` is a project that uses `dependency-review-action` to secure its own PRs.\n\n2.  **Fact-Check/Verification (Crucial Step):**\n    *   *Query:* Does `repo2graph` actually use `dependency-review-action`?\n    *   *Knowledge Retrieval:* `repo2graph` is a tool (often associated with the `repo2graph` GitHub organization or specific projects like `repo2graph` by the `repo2graph` team). It's primarily a tool for converting code repositories into graph visualizations (e.g., for dependency analysis).\n    *   *Query:* Does `dependency-review-action` exist? Yes, it's a popular GitHub Action (`actions/dependency-review-action`) that scans dependencies for vulnerabilities and policy violations.\n    *   *Query:* Is there a specific, well-known integration between `repo2graph` and `dependency-review-action` that is publicly documented as a security mechanis"
+    },
+    {
+      "skill": "agentic_planning",
+      "difficulty": "hard",
+      "prompt": "Write a tree-sitter S-expression query to extract all function definitions, their names, and docstrings from a Python syntax tree in repo2graph.",
+      "scores": {
+        "accuracy": 0.116,
+        "reasoning": 0.556,
+        "formatting": 1.0,
+        "conciseness": 0.194
+      },
+      "notes": {
+        "accuracy": "ids=0.00 recall=0.35",
+        "reasoning": "cov=0.41 nov=0.53 steps=15",
+        "formatting": "ok",
+        "conciseness": "padded (3.54x)"
+      },
+      "total": 0.411,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "# Tree-Sitter S-Expression Query for Python Function Definitions\n\nTo extract all function definitions, their names, and docstrings from a Python syntax tree using tree-sitter, you can use the following S-expression query. This query is designed for use with the `tree-sitter-python` grammar and is compatible with tools like `repo2graph` or similar code analysis frameworks.\n\n## Tree-Sitter Query (S-Expression Format)\n\n```s-expression\n; Extract function definitions with names and docstrings\n(function-definition\n  (def (identifier)\n    (docstring?)))\n\n; Alternative: extract only function definitions with names\n(function-definition\n  (def (identifier)))\n```\n\n## Explanation of Query Components\n\n| Component         | Description                                                  |\n|------------------|--------------------------------------------------------------|\n| `function-definition` | Matches the `def` keyword and associated syntax |\n| `def`            | Matches the `def` keyword (function definition)             |\n| `identifier`     | Matches the function name (e.g., `def my_function:`)        |\n| `docstring?`     | Optional match for docstrings (triple-quoted strings)       |\n\n## Usage Example\n\n```bash\n# Install tree-sitter and tree-sitter-python\npip install tree-sitter tree-sitter-python\n\n# Initialize tree-sitter query\ntree-sitter query --query=python.scm\n\n# Run query on a Python file\ntree-sitter query --query=python.scm --file=your_file.py\n```\n\n## Example Python Code\n\n```python\ndef my_function():\n    \"\"\"This is a docstring.\"\"\"\n    pass\n\ndef another_function(x):\n    \"\"\"Another docstring.\"\"\"\n    return x\n```\n\n## Expected Query Output\n\n```s-expression\n(function-definition\n  (def (identifier)\n    (docstring?)))\n```\n\n## Notes and Limitations\n\n1. **Grammar Compatibility**: Ensure your tree-sitter-python version supports the `docstring?` node. Some versions may not include docstrings in the syntax tree.\n2. **Query Syntax**: Tree-sitter queries are written in S-expression fo",
+      "student_thinking": "This is a request to write a tree-sitter query for extracting function definitions, their names, and docstrings from Python syntax. However, I need to clarify a few things:\n\n1. **repo2graph** - This appears to be a specific tool or project. I'm not certain what exactly it is, but it seems to be related to graph representation of code repositories.\n\n2. **Tree-sitter** - This is a parser library that can be used to create queries for parsing code.\n\n3. **Python syntax tree** - This would typically use the Python grammar from tree-sitter-python.\n\nHowever, there's an important consideration: **tree-sitter queries are typically written in S-expression format** (like `(python (function ...))`), but they need to be based on the actual tree-sitter-python grammar.\n\nLet me think about what a typical tree-sitter query for Python function definitions would look like:\n\n1. Function definitions in Python are typically represented as `def` statements\n2. The syntax is roughly: `def function_name(...):`\n3. Docstrings are typically triple-quoted strings after the function definition\n\nA tree-sitter query would need to match:\n- The `def` keyword\n- The function name (identifier)\n- The docstring (if present)\n\nHowever, I should note that:\n1. Tree-sitter queries are written in S-expression format\n2. They need to be compatible with the specific tree-sitter-python grammar version\n3. The query needs to be written in the proper S-expression syntax\n\nLet me write a query that would work for extracting funct"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "easy",
+      "prompt": "Why does repo2graph include a CITATION.cff file in its root directory?",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.784,
+        "formatting": 0.667,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.61 nov=1.00 steps=77",
+        "formatting": "missing headings, missing bullets",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.329,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the answer:\n\n1.  **Analyze the Request:**\n    *   **Subject:** `repo2graph` (a tool for generating graph representations of code repositories, often associated with the `repo2graph` project or the `repo2graph` GitHub Actions workflow).\n    *   **Question:** Why does it include a `CITATION.cff` file in its root directory?\n    *   **Goal:** Explain the purpose and significance of the `CITATION.cff` file in the context of this specific tool/project.\n\n2.  **Identify the Entity:**\n    *   What is `repo2graph`? It's a tool (often a GitHub Action or a Python package) used to visualize code dependencies and relationships (e.g., converting code to a graph database, visualizing dependencies).\n    *   *Correction/Refinement:* Wait, is there a specific project called `repo2graph`?\n    *   *Search/Knowledge Retrieval:* I need to check if `repo2graph` is a well-known open-source project.\n    *   *Result:* There is a project called `repo2graph` (often associated with the `repo2graph` GitHub Action or the `repo2graph` library by the `repo2graph` maintainers, often linked to the `repo2graph` GitHub Organization).\n    *   *Wait, actually:* There is a specific project called `repo2graph` which is a tool for generating graph representations of code repositories. However, the most prominent `repo2graph` is likely the one maintained by the `repo2graph` team (often associated with the `repo2graph` GitHub Action).\n    *   *Wait, let's look for the specific fil"
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Analyze CVE-2024-34064 or similar supply-chain vulnerabilities related to untrusted file serialization in AI pipelines.",
+      "scores": {
+        "accuracy": 0.0,
+        "reasoning": 0.806,
+        "formatting": 0.75,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.00 recall=0.00",
+        "reasoning": "cov=0.65 nov=1.00 steps=67",
+        "formatting": "missing headings",
+        "conciseness": "too short (0.00x)"
+      },
+      "total": 0.351,
+      "passed": false,
+      "truncated": true,
+      "tokens_per_sec": 52.9,
+      "student_answer": "",
+      "student_thinking": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Topic:** CVE-2024-34064 or similar supply-chain vulnerabilities related to untrusted file serialization in AI pipelines.\n    *   **Task:** Analyze this specific CVE (if it exists) or similar vulnerabilities.\n    *   **Constraint:** The user is asking about a specific CVE number (CVE-2024-34064). I need to verify if this CVE actually exists before proceeding. If it's a hypothetical or non-existent number, I need to address that while still providing value regarding the *topic* (supply-chain vulnerabilities in AI serialization).\n\n2.  **Verify CVE-2024-34064:**\n    *   *Search Query:* \"CVE-2024-34064\"\n    *   *Knowledge Retrieval:* As of my current knowledge cutoff (and general web search capabilities), CVE-2024-34064 does *not* appear to be a widely recognized or documented CVE in major databases (NVD, etc.) up to early 2024.\n    *   *Hypothesis:* It might be a hypothetical example provided by the user, a very recent/unpublished vulnerability, or a confusion with a similar CVE (e.g., related to PyTorch, TensorFlow, or specific serialization libraries like pickle).\n    *   *Decision:* I must inform the user that this specific CVE is not currently in the public record (or is likely hypothetical/future-dated) while pivoting to the *concept* they are asking about, which is valid and critical (untrusted file serialization in AI).\n\n3.  **Identify the Core Vulnerability Class:**\n   "
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "medium",
+      "prompt": "Write a Python script that validates whether every `.py` file in a directory contains a valid SPDX license identifier.",
+      "scores": {
+        "accuracy": 0.332,
+        "reasoning": 0.587,
+        "formatting": 1.0,
+        "conciseness": 0.0
+      },
+      "notes": {
+        "accuracy": "nums=0.60 ids=0.00 recall=0.46",
+        "reasoning": "cov=0.50 nov=0.45 steps=25",
+        "formatting": "ok",
+        "conciseness": "padded (5.01x)"
+      },
+      "total": 0.496,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.8,
+      "student_answer": "Here's a Python script that validates whether every `.py` file in a directory contains a valid SPDX license identifier. It searches for `SPDX-License-Identifier:` comments, validates their format, and optionally checks against a list of known valid SPDX identifiers.\n\n```python\n#!/usr/bin/env python3\n\"\"\"\nSPDX License Identifier Validator for Python Files\n\nThis script scans all .py files in a given directory and validates\nwhether each file contains a valid SPDX-License-Identifier comment.\n\"\"\"\n\nimport os\nimport re\nimport sys\nfrom pathlib import Path\nfrom typing import List, Tuple, Optional\n\n# SPDX License Identifier pattern (based on SPDX spec)\nSPDX_ID_PATTERN = re.compile(\n    r'^[A-Z][A-Z0-9\\-\\.]*$'\n)\n\n# Common SPDX license identifiers (subset for validation)\nVALID_SPDX_LICENSES = {\n    'MIT', 'Apache-2.0', 'GPL-3.0', 'GPL-2.0', 'BSD-3-Clause',\n    'BSD-2-Clause', 'ISC', 'LGPL-2.1', 'LGPL-3.0', 'MPL-2.0',\n    'CC0-1.0', 'Unlicense', '0BSD', 'Apache-2.0 WITH LLVM-exception',\n    'Apache-2.0 WITH LLVM-exception', 'BSD-3-Clause-NO-LLVM-exception',\n    'BSD-3-Clause-NO-LLVM-exception', 'MIT-0', 'BSD-2-Clause-NO-LLVM-exception',\n    'BSD-2-Clause-NO-LLVM-exception', 'BSD-3-Clause-NO-LLVM-exception',\n    'BSD-3-Clause-NO-LLVM-exception', 'BSD-3-Clause-NO-LLVM-exception',\n}\n\n# Add more licenses as needed\nVALID_SPDX_LICENSES.update([\n    'GPL-3.0-only', 'GPL-3.0-or-later', 'GPL-2.0-only', 'GPL-2.0-or-later',\n    'LGPL-2.0-only', 'LGPL-2.0-or-later', 'LGPL-3.0-only', 'LGPL-3.0-or-later',\n    'MPL-2.0', 'MPL-1.1', 'MPL-1.1-or-later', 'MPL-2.0-or-later',\n    'EPL-1.0', 'EPL-2.0', 'EPL-1.0-or-later', 'EPL-2.0-or-later',\n    'CDDL-1.0', 'CDDL-1.1', 'CDDL-1.1-or-later', 'CDDL-1.0-or-later',\n    'CPL-1.0', 'CPL-1.0-or-later', 'CPL-1.0-or-later', 'CPL-1.0-or-later',\n    'BSD-3-Clause-NO-LLVM-exception', 'BSD-3-Clause-NO-LLVM-exception',\n    'BSD-3-Clause-NO-LLVM-exception', 'BSD-3-Clause-NO-LLVM-exception',\n    'BSD-3-Clause-NO-LLVM-exception', 'BSD-3-Clause-NO-LLVM-exception',\n])\n\n",
+      "student_thinking": "The user wants a Python script that:\n1. Finds all `.py` files in a directory\n2. Checks if each file contains a valid SPDX license identifier\n3. Validates the SPDX license identifier\n\nTo do this, I need to:\n1. Recursively find all `.py` files in a directory\n2. Read each file and look for SPDX license identifiers\n3. Validate that the identifiers are valid SPDX identifiers\n\nThe SPDX license identifier format is defined in the SPDX specification. Common patterns include:\n- `SPDX-License-Identifier:` followed by a valid license ID\n- The license ID should match the SPDX license identifier format\n\nI'll need to:\n1. Use regex to find SPDX license identifiers in files\n2. Validate them against the SPDX license list or format\n3. Report which files are valid and which are not\n\nLet me create a comprehensive script that:\n- Searches for SPDX license identifiers\n- Validates them\n- Reports findings\n- Can be run on a directory\n\nI'll need to handle:\n- File reading (with proper encoding)\n- SPDX identifier validation\n- Directory traversal\n- Error handling\n\nThe SPDX license identifiers are defined in the SPDX License List. I can either:\n1. Use a local list of valid SPDX identifiers\n2. Use a regex pattern to check basic format\n3. Reference the official SPDX license list\n\nFor a practical solution, I'll create a script that:\n1. Searches for SPDX-License-Identifier comments\n2. Validates the format\n3. Optionally checks against a known list of valid SPDX identifiers\n\nLet me write a comprehensive script w"
+    },
+    {
+      "skill": "python_stack",
+      "difficulty": "hard",
+      "prompt": "Implement a Python AST NodeVisitor in Python 3.11+ that collects all imported module names and aliases, returning a typed dataclass with explicit POSIX paths.",
+      "scores": {
+        "accuracy": 0.576,
+        "reasoning": 0.671,
+        "formatting": 0.875,
+        "conciseness": 0.678
+      },
+      "notes": {
+        "accuracy": "nums=1.00 ids=0.25 recall=0.38",
+        "reasoning": "cov=0.60 nov=0.56 steps=9",
+        "formatting": "missing bullets",
+        "conciseness": "padded (2.37x)"
+      },
+      "total": 0.67,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.9,
+      "student_answer": "Here's a complete implementation of a Python AST `NodeVisitor` for Python 3.11+ that collects all imported module names and aliases, returning a typed dataclass with explicit POSIX-style paths.\n\n```python\nfrom dataclasses import dataclass, field\nfrom typing import List, Dict, Optional\nfrom ast import NodeVisitor, Import, ImportFrom, Module, Name, Alias, Constant\nimport ast\nimport os\nimport sys\n\n@dataclass\nclass ImportInfo:\n    module_name: str\n    alias: Optional[str]\n    is_from_import: bool = False\n    is_relative: bool = False\n    path: str = \"\"\n    line_number: int = 0\n    col_offset: int = 0\n\n@dataclass\nclass ImportCollection:\n    imports: List[ImportInfo] = field(default_factory=list)\n    from_imports: List[ImportInfo] = field(default_factory=list)\n    module_aliases: Dict[str, str] = field(default_factory=dict)\n    total_imports: int = 0\n\nclass ImportCollector(NodeVisitor):\n    def __init__(self):\n        self.imports: List[ImportInfo] = []\n        self.from_imports: List[ImportInfo] = []\n        self.module_aliases: Dict[str, str] = {}\n        self.total_imports: int = 0\n\n    def _normalize_path(self, module_name: str) -> str:\n        \"\"\"Normalize module name to a POSIX-style path format.\"\"\"\n        posix_path = module_name.replace('\\\\', '/')\n        posix_path = posix_path.replace('\\\\\\\\', '/')\n        return posix_path\n\n    def visit_import(self, node: Import):\n        for alias in node.names:\n            import_info = ImportInfo(\n                module_name=alias.name,\n                alias=alias.asname,\n                is_from_import=False,\n                is_relative=False,\n                path=self._normalize_path(alias.name),\n                line_number=node.lineno,\n                col_offset=node.col_offset\n            )\n            self.imports.append(import_info)\n            self.total_imports += 1\n            if alias.asname:\n                self.module_aliases[alias.name] = alias.asname\n\n    def visit_import_from(self, node: ImportFrom):\n        f",
+      "student_thinking": "This is an interesting task. I need to create a Python AST NodeVisitor that:\n1. Collects all imported module names and aliases\n2. Returns a typed dataclass with explicit POSIX paths\n3. Works with Python 3.11+\n\nLet me think about what this means:\n- I need to traverse the AST to find all `import` statements\n- I need to extract module names and their aliases\n- I need to return this in a typed dataclass format\n- The \"POSIX paths\" part is interesting - I think they might mean I should normalize paths or handle them in a POSIX-style format\n\nLet me create a comprehensive solution:\n\n```python\nfrom dataclasses import dataclass, field\nfrom typing import List, Dict, Optional\nfrom ast import NodeVisitor, Import, ImportFrom, Module, Name, Alias, Constant\nimport ast\nimport os\nimport sys\n\n@dataclass\nclass ImportInfo:\n    module_name: str\n    alias: Optional[str]\n    is_from_import: bool = False\n    is_relative: bool = False\n    path: str = \"\"  # Will be normalized to POSIX path\n\n@dataclass\nclass ImportCollection:\n    imports: List[ImportInfo] = field(default_factory=list)\n    module_aliases: Dict[str, str] = field(default_factory=dict)\n    from_imports: List[ImportInfo] = field(default_factory=list)\n```\n\nWait, I need to think about what \"POSIX paths\" means in this context. Since we're dealing with module imports, not file paths, I think they might mean:\n1. Normalizing paths in a POSIX format (forward slashes instead of backslashes)\n2. Or perhaps they want the module names to be stored in a "
+    },
+    {
+      "skill": "supply_chain",
+      "difficulty": "easy",
+      "prompt": "What command updates uv.lock without upgrading dependency versions beyond existing semver constraints?",
+      "scores": {
+        "accuracy": 0.212,
+        "reasoning": 0.704,
+        "formatting": 1.0,
+        "conciseness": 0.413
+      },
+      "notes": {
+        "accuracy": "nums=0.00 ids=0.33 recall=0.39",
+        "reasoning": "cov=0.64 nov=0.62 steps=6",
+        "formatting": "ok",
+        "conciseness": "padded (3.01x)"
+      },
+      "total": 0.513,
+      "passed": false,
+      "truncated": false,
+      "tokens_per_sec": 52.9,
+      "student_answer": "To update the `uv.lock` file without upgrading dependency versions beyond existing semver constraints, use the following command:\n\n```bash\nuv lock --no-upgrade\n```\n\nThis command refreshes the lockfile while preserving the current versions of dependencies that are already constrained by semver ranges. It ensures that no automatic upgrades occur unless explicitly requested.\n\n### Additional Notes:\n- **`uv lock`**: Updates the lockfile to the latest versions that satisfy the specified constraints.\n- **`uv lock --no-upgrade`**: Performs the same update but prevents any automatic version upgrades beyond the existing constraints.\n- **`uv sync`**: Installs the updated dependencies into the project environment.\n\n### Example:\n```bash\n# Update lockfile without upgrading beyond existing constraints\nuv lock --no-upgrade\n\n# Install dependencies after updating the lockfile\nuv sync\n```\n\nThis approach is ideal when you want to refresh your lockfile without introducing unintended version changes.",
+      "student_thinking": "This is a question about the `uv` package manager (a fast Rust-based package manager). The user wants to know how to update `uv.lock` without changing dependency versions beyond what's already constrained by semver.\n\nThe key command for this is `uv lock` or `uv lock --no-upgrade`. Let me think about the exact command:\n\n1. `uv lock` - This will update the lockfile with the latest versions that satisfy constraints\n2. `uv lock --no-upgrade` - This should prevent automatic upgrades beyond existing constraints\n\nActually, the most accurate answer would be `uv lock --no-upgrade` which will update the lockfile while respecting existing semver constraints without upgrading beyond what's already specified.\n\nHowever, I should note that in newer versions of uv, the command might be `uv lock` with appropriate flags. Let me verify:\n\n- `uv lock` - Updates the lockfile\n- `--no-upgrade` flag prevents automatic upgrades beyond existing constraints\n\nThe command would be:\n```bash\nuv lock --no-upgrade\n```\n\nOr simply:\n```bash\nuv lock\n```\n\nBut the `--no-upgrade` flag is specifically designed to prevent version upgrades beyond existing semver constraints.\n\nActually, I need to be more precise. In uv:\n- `uv lock` - Updates the lockfile with latest versions satisfying constraints\n- `uv lock --no-upgrade` - Updates lockfile without upgrading beyond existing constraints\n\nThe `--no-upgrade` flag is the key here."
+    }
+  ]
+}

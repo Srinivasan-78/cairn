@@ -1,0 +1,245 @@
+# curriculum.yaml - What the Student must learn from the Teacher.
+#
+# This file is the single source of truth for the whole pipeline:
+#   generate_lessons.py  reads `skills` to know what examples to synthesize
+#   grade_student.py     reads `rubric` + `eval` to know how to score
+#   train_student.py     reads `training` for the VRAM-calibrated hyperparameters
+#
+# Calibrated for: RTX 4060 Ti 8 GB | Ryzen 7 5700X | 64 GB RAM | WSL2 Ubuntu
+
+meta:
+  student_model: srini-draft:4b                      # served (Ollama tag) - updated in-place only
+  student_hf_repo: unsloth/Qwen3.5-4B            # trained (HF repo, 4-bit QLoRA)
+  teacher: claude-opus-5                          # Claude, acting as Teacher
+  daily_driver: srini-coder:9b                        # untouched by training
+  created: 2026-11-22
+  version: 1
+  governance:
+    model_update_policy: in_place_merge_only
+    no_duplicate_tags: true
+    # Renamed 2026-11-26: tags are now named for what the model is FOR
+    # (srini-coder:9b, srini-tools:3b), and the upstream names were removed.
+    # That REPLACED the old tags rather than duplicating them, so the
+    # no-duplicates intent below still holds - it is the ":vN"/second-tag-for-
+    # the-same-weights pattern that is banned, not the naming scheme.
+    rule: "Always merge future lesson adapters directly into the model weights/tag in-place. Never create a second tag for the same weights (:vN, -v2, a parallel persona tag) - one row per model in `ollama list`."
+
+# ---------------------------------------------------------------------------
+# DOMAIN - set during Phase 4. Everything downstream keys off this.
+# ---------------------------------------------------------------------------
+domain:
+  name: "Agentic Python tooling for code-intelligence systems"
+  description: >
+    Assist on repo2graph-class work: a published Python 3.11+ OSS project that
+    builds code graphs with tree-sitter, serves them over MCP, and returns
+    cited, budget-bounded answers to coding agents. The Student must reason
+    about static analysis, emit exact tool/MCP call JSON, respect supply-chain
+    and no-network boundaries, and handle the local-LLM ops that run this very
+    pipeline.
+  stacks:
+    - python3.11+          # modern typing, dataclasses, pathlib; 3.11-3.14 support
+    - mcp                  # Model Context Protocol servers and tool schemas
+    - tree-sitter          # AST parsing, language packs, static analysis
+    - uv                   # dependency locking, SBOM, reproducible installs
+    - pytest
+    - docker
+    - github-actions       # egress-restricted CI
+    - sqlite               # graph/index persistence
+    - ollama               # local inference, Modelfiles, GGUF
+    - qlora                # Unsloth / trl fine-tuning
+
+# ---------------------------------------------------------------------------
+# SKILLS - one block per competency. `weight` sets its relative share of a
+# lesson batch. `difficulty` ladders: lessons escalate across micro-epochs.
+# ---------------------------------------------------------------------------
+skills:
+  - id: tool_call_format
+    name: "Exact tool-call / MCP schema formatting"
+    weight: 3
+    difficulty: [easy, medium, hard]
+    description: >
+      Emit tool and MCP calls with strict schema adherence - correct tool name,
+      only declared parameters, valid JSON, no prose wrapped around the call,
+      no invented fields. The single highest-value skill for a small model,
+      because one malformed call breaks an entire agent loop.
+    must_include: ["parseable JSON", "no hallucinated params", "no prose in the call"]
+
+  - id: python_stack
+    name: "Modern Python 3.11+ idioms"
+    weight: 3
+    difficulty: [easy, medium, hard]
+    description: >
+      Type-annotated, pathlib-first, dataclass-using Python that would pass
+      review on repo2graph: narrow exception handling, no bare except, explicit
+      encoding on file reads, generators over list building, and docstrings that
+      explain why rather than restating the signature.
+    must_include: ["type hints", "explicit encoding", "no bare except"]
+
+  - id: static_analysis
+    name: "tree-sitter / AST reasoning"
+    weight: 2
+    difficulty: [medium, hard]
+    description: >
+      Walk and query syntax trees, write tree-sitter queries, map symbols to
+      definitions and references, and reason about language-pack boundaries and
+      graph construction over a codebase.
+    must_include: ["node types", "traversal correctness"]
+
+  - id: structured_extraction
+    name: "Schema-faithful structured output"
+    weight: 2
+    difficulty: [easy, medium, hard]
+    description: >
+      Parse logs, configs and documents into exactly the requested schema -
+      no extra keys, no commentary, correct types and nulls, stable field order.
+      Small models gain the most measurable accuracy here.
+    must_include: ["exact schema", "no extra keys", "correct types"]
+
+  - id: localllm_ops
+    name: "Local-LLM / ML ops reasoning"
+    weight: 2
+    difficulty: [medium, hard]
+    description: >
+      VRAM arithmetic, quantization tradeoffs, KV-cache sizing, QLoRA
+      hyperparameter choice, Ollama Modelfiles and GGUF export - so the Student
+      can help maintain the pipeline that trains it.
+    must_include: ["shows the arithmetic", "states the VRAM ceiling"]
+
+  - id: supply_chain
+    name: "Dependency and supply-chain boundaries"
+    weight: 1
+    difficulty: [hard]
+    description: >
+      Reason about pinning and version caps as security boundaries rather than
+      compatibility ones: what a dependency executes at import time, whether it
+      fetches code at runtime, and whether a lockfile and SBOM still describe
+      what actually runs.
+    must_include: ["names the concrete risk", "proposes a verifiable control"]
+
+  - id: agentic_planning
+    name: "Multi-step agentic planning"
+    weight: 2
+    difficulty: [medium, hard]
+    description: >
+      Decompose a request into an ordered tool-call plan, state assumptions,
+      choose the cheapest sufficient step, verify before reporting done, and
+      recover when a step fails instead of fabricating success.
+    must_include: ["ordered steps", "verification step", "failure handling"]
+
+# ---------------------------------------------------------------------------
+# RUBRIC - how grade_student.py scores an answer. Weights must sum to 1.0.
+# ---------------------------------------------------------------------------
+rubric:
+  weights:
+    accuracy: 0.45      # is the substance correct?
+    reasoning: 0.25     # is the chain-of-thought sound, not just the answer?
+    formatting: 0.20    # does it match the required output shape exactly?
+    conciseness: 0.10   # no padding, no restating the question
+  pass_threshold: 0.70  # below this, the skill is logged as weak
+  scale: 5              # per-criterion scoring is 0-5, normalized to 0-1
+
+# ---------------------------------------------------------------------------
+# DATA GENERATION
+# ---------------------------------------------------------------------------
+generation:
+  batch_size: 25                 # examples per lesson batch
+  include_thinking: true         # preserve the Teacher's CoT in the target
+  thinking_tag: "think"          # wrapped as <think>...</think> in training text
+  min_chars: 120                 # reject stubs
+  # Cap tied to training.max_seq_length (2048 tok ~= 8k chars). An example past
+  # the sequence length is truncated mid-answer, which teaches the Student to
+  # stop early - worse than dropping it. This counts `output` only, and the
+  # training text is thinking + output, so the real budget is tighter still.
+  # Raise only together with max_seq_length.
+  max_chars: 8000
+  dedupe:
+    method: minhash_jaccard      # near-duplicate detection, not just exact
+    threshold: 0.85              # >= this Jaccard similarity = duplicate
+    shingle_size: 5              # word n-gram size for shingling
+  quality_filters:
+    require_thinking: true       # a target with no CoT is low-signal
+    reject_refusals: true
+    reject_placeholders: true    # "TODO", "...", "your code here"
+    max_per_skill_ratio: 0.40    # no single skill may dominate the batch
+
+# ---------------------------------------------------------------------------
+# EVALUATION
+# ---------------------------------------------------------------------------
+eval:
+  holdout_ratio: 0.20            # fraction of generated examples kept unseen
+  n_eval_prompts: 20             # per grading run
+  temperature: 0.3               # low, for score stability across runs
+  think: true                    # grade the reasoning channel too
+  # 2048 truncated the BASE model into silence: 22/40 prompts returned an empty
+  # answer because the whole budget went to an unclosed <think> block, which
+  # inflated every trained-vs-base delta up to lesson 35. Both sides are graded
+  # fresh each run, so raising this keeps a run internally valid but makes its
+  # numbers incomparable to any report written at 2048.
+  max_tokens: 4096
+  # Compare each run against the previous to catch regression / forgetting.
+  regression_guard:
+    enabled: true
+    max_drop: 0.05               # >5% score drop on a previously-passing skill
+                                 # = likely catastrophic forgetting; halt.
+
+# ---------------------------------------------------------------------------
+# TRAINING - QLoRA hyperparameters calibrated to 8 GB VRAM.
+# These numbers are deliberately conservative; peak usage ~6 GB leaves
+# headroom for the Windows desktop compositor sharing the card.
+# ---------------------------------------------------------------------------
+training:
+  max_seq_length: 2048           # 4096 will OOM at batch 2 on 8 GB
+  load_in_4bit: true             # QLoRA - the base stays quantized
+  dtype: bfloat16                # Ada (RTX 4060 Ti) supports bf16 natively
+
+  lora:
+    r: 16                        # 16 is the sweet spot for small incremental runs
+    alpha: 32                    # 2x r
+    dropout: 0.0                 # Unsloth's fast path requires 0
+    bias: none
+    target_modules:
+      - q_proj
+      - k_proj
+      - v_proj
+      - o_proj
+      - gate_proj
+      - up_proj
+      - down_proj
+    use_rslora: true             # rank-stabilized: steadier at low LR
+    use_gradient_checkpointing: unsloth
+
+  batch:
+    per_device_train_batch_size: 2
+    gradient_accumulation_steps: 8   # effective batch = 16
+    dataloader_num_workers: 2
+
+  optim:
+    optimizer: adamw_8bit        # paged 8-bit optimizer; saves ~1 GB
+    learning_rate: 8.0e-5        # conservative LR for stacked incremental lessons (rslora alpha=32)
+    min_learning_rate: 2.0e-5    # floor - the cosine decays to this
+    lr_scheduler_type: cosine
+    warmup_ratio: 0.03
+    weight_decay: 0.01
+    max_grad_norm: 0.3           # low clip: guards against loss spikes
+    num_train_epochs: 2          # a "micro-epoch" pass over the new batch
+    seed: 3407
+
+  # --- anti-catastrophic-forgetting -----------------------------------------
+  # The core defence is structural: LoRA only (base weights frozen), a low LR
+  # floor, and replaying old examples alongside new ones.
+  forgetting_guard:
+    replay_ratio: 0.65           # 65% of each batch is resampled older data to prevent forgetting
+    train_on_responses_only: true  # mask the prompt; don't train on user turns
+    resume_from_last_adapter: true # stack lessons rather than restarting
+    eval_before_and_after: true    # grade_student.py runs on both sides
+
+  checkpointing:
+    save_steps: 25
+    save_total_limit: 4
+    output_dir: ./adapters
+
+  export:
+    merge_to_16bit: true
+    gguf_quant: q4_k_m           # matches the served daily-driver quant
+    gguf_dir: ./gguf
+    ollama_tag: srini-draft:4b       # Always updates existing student tag in-place (no duplicates)
