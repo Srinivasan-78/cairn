@@ -104,11 +104,10 @@ COPY install/calibre-empty-library/metadata.db /app/assets/calibre/metadata.db
 # Copy entrypoint script and ensure it's executable
 COPY install/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    groupadd -r cairn && useradd -r -g cairn -d /app cairn && \
     mkdir -p /app/storage /app/update-shared && \
-    chown -R cairn:cairn /app
+    chown -R node:node /app
 
-USER cairn
+USER node
 
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

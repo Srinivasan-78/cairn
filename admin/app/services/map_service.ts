@@ -163,7 +163,9 @@ export class MapService implements IMapService {
         continue
       }
 
-      const filename = resource.url.split('/').pop()
+      const { sanitizeFilename } = await import('../utils/fs.js')
+      const rawName = new URL(resource.url).pathname.split('/').pop() || ''
+      const filename = sanitizeFilename(rawName)
       if (!filename) {
         logger.warn(`[MapService] Could not determine filename from URL ${resource.url}, skipping.`)
         continue

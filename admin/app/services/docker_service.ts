@@ -50,6 +50,23 @@ export class DockerService {
   private _servicesStatusInflight: Promise<{ service_name: string; status: string }[]> | null = null
 
   constructor() {
+    const dockerHost = process.env.DOCKER_HOST?.trim()
+    if (dockerHost) {
+      if (dockerHost.startsWith('unix://')) {
+        this.docker = new Docker({ socketPath: dockerHost.slice('unix://'.length) })
+      } else if (dockerHost.startsWith('tcp://') || dockerHost.startsWith('http://') || dockerHost.startsWith('https://')) {
+        const parsed = new URL(dockerHost.replace(/^tcp:\/\//, 'http://'))
+        this.docker = new Docker({
+          protocol: parsed.protocol === 'https:' ? 'https' : 'http',
+          host: parsed.hostname,
+          port: parsed.port ? Number(parsed.port) : 2375,
+        })
+      } else {
+        this.docker = new Docker({ socketPath: dockerHost })
+      }
+      return
+    }
+
     // Support both Linux (production) and Windows (development with Docker Desktop)
     const isWindows = process.platform === 'win32'
     if (isWindows) {

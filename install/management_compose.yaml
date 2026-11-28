@@ -146,9 +146,10 @@ services:
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
+      - /dev:/host/dev:ro
       # If you relocated storage (see the admin service above), set this host path to match EXACTLY,
       # or the host disk-usage figures shown in the UI will point at the wrong location.
-      - /opt/cairn/storage:/storage:ro
+      - /opt/cairn/storage:/storage
 
 volumes:
   cairn-update-shared:

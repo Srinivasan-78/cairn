@@ -321,7 +321,9 @@ export class ZimService {
         continue
       }
 
-      const filename = resolved.url.split('/').pop()
+      const { sanitizeFilename } = await import('../utils/fs.js')
+      const rawName = new URL(resolved.url).pathname.split('/').pop() || ''
+      const filename = sanitizeFilename(rawName)
       if (!filename) continue
 
       downloadFilenames.push(filename)
@@ -798,8 +800,10 @@ export class ZimService {
       return { success: false, message: 'Download already in progress' }
     }
 
-    // Extract filename from URL
-    const filename = selectedOption.url.split('/').pop()
+    // Extract and sanitize filename from URL
+    const { sanitizeFilename } = await import('../utils/fs.js')
+    const rawName = new URL(selectedOption.url).pathname.split('/').pop() || ''
+    const filename = sanitizeFilename(rawName)
     if (!filename) {
       throw new Error('Could not determine filename from URL')
     }
