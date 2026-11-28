@@ -479,18 +479,9 @@ export default function BenchmarkPage(props: {
                         <Alert
                           type="success"
                           title="Shared with Community"
-                          message="Your benchmark has been submitted to the community leaderboard. Thanks for contributing!"
+                          message="Your benchmark has been recorded."
                           variant="bordered"
-                        >
-                          <a
-                            href="https://benchmark.cairn.example"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-desert-green hover:underline mt-2 inline-block"
-                          >
-                            View the leaderboard →
-                          </a>
-                        </Alert>
+                        />
                       )}
                     </div>
                   </div>

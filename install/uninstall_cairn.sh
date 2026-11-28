@@ -108,7 +108,7 @@ storage_cleanup() {
   case "$delete_dir_choice" in
       y|Y )
           echo "Removing Cairn files..."
-          if rm -rf "${CAIRN_DIR}"; then
+          if rm -rf "${CAIRN_DIR:?}"; then
               echo "Cairn files removed."
           else
               echo "Warning: Failed to fully remove ${CAIRN_DIR}. You may need to remove it manually."

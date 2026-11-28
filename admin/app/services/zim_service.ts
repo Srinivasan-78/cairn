@@ -37,7 +37,7 @@ import type { CategoryWithStatus } from '../../types/collections.js'
 import CustomLibrarySource from '#models/custom_library_source'
 import { assertNotPrivateUrl } from '#validators/common'
 import { resolveZimDownload } from '../utils/zim_download_resolution.js'
-import { getHostedContentHeaders } from '../utils/hosted_content_auth.js'
+import { isGatedResource } from '../utils/hosted_content.js'
 import { KIWIX_CATALOG_BASE_URL } from '../../constants/kiwix.js'
 
 const ZIM_MIME_TYPES = ['application/x-zim', 'application/x-openzim', 'application/octet-stream']
@@ -202,10 +202,12 @@ export class ZimService {
       throw new Error('A download for this URL is already in progress')
     }
 
-    // Extract the filename from the URL
-    const filename = url.split('/').pop()
-    if (!filename) {
-      throw new Error('Could not determine filename from URL')
+    // Extract and sanitize the filename from the URL pathname
+    const rawName = parsed.pathname.split('/').pop() || ''
+    const { sanitizeFilename } = await import('../utils/fs.js')
+    const filename = sanitizeFilename(rawName)
+    if (!filename || !filename.endsWith('.zim')) {
+      throw new Error('Could not determine valid .zim filename from URL')
     }
 
     const filepath = join(process.cwd(), ZIM_STORAGE_PATH, filename)
@@ -333,8 +335,8 @@ export class ZimService {
         filetype: 'zim',
         title: (resource as any).title || undefined,
         totalBytes: resolved.sizeBytes,
-        // Undefined for every ungated resource, so the existing flow is untouched.
-        requestHeaders: getHostedContentHeaders(resource),
+        // Resolve bearer credential in the worker at fetch time rather than persisting in Redis.
+        useHostedAuth: isGatedResource(resource),
         resourceMetadata: {
           resource_id: resource.id,
           version: resolved.version,
@@ -963,6 +965,10 @@ export class ZimService {
     const res = await axios.get(normalizedUrl, {
       responseType: 'text',
       timeout: 15000,
+      maxRedirects: 3,
+      beforeRedirect: (options) => {
+        if (options.href) assertNotPrivateUrl(options.href)
+      },
       headers: {
         'Accept': 'text/html',
       },

@@ -41,6 +41,13 @@ export default function Chat({
   const [isStreamingResponse, setIsStreamingResponse] = useState(false)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const streamAbortRef = useRef<AbortController | null>(null)
+  const isInitialModelHydrationRef = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      streamAbortRef.current?.abort()
+    }
+  }, [])
 
   useEffect(() => {
     if (!isMobileSidebarOpen) return
@@ -163,7 +170,16 @@ export default function Chat({
     }) => api.sendChatMessage({ ...request, stream: false }),
     onSuccess: async (data) => {
       if (!data || !activeSessionId) {
-        throw new Error('No response from Ollama')
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `msg-${Date.now()}-error`,
+            role: 'assistant',
+            content: 'Sorry, there was an error processing your request. Please try again.',
+            timestamp: new Date(),
+          },
+        ])
+        return
       }
 
       // Add assistant message
@@ -204,11 +220,14 @@ export default function Chat({
     }
   }, [installedModels, selectedModel, lastModelSetting])
 
-  // Persist model selection
+  // Persist model selection (skip initial hydration value)
   useEffect(() => {
-    if (selectedModel) {
-      api.updateSetting('chat.lastModel', selectedModel)
+    if (!selectedModel) return
+    if (isInitialModelHydrationRef.current) {
+      isInitialModelHydrationRef.current = false
+      return
     }
+    api.updateSetting('chat.lastModel', selectedModel)
   }, [selectedModel])
 
   // Page-load normalization: enforce the "one chat model at a time" invariant

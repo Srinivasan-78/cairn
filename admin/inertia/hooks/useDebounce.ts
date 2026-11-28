@@ -1,14 +1,16 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 const useDebounce = () => {
-  const timeout = useRef<number | undefined>(400);
+  const timeout = useRef<number | undefined>(undefined);
 
-  const debounce =
+  const debounce = useCallback(
     (func: Function, wait: number = 0) =>
-    (...args: any[]) => {
-      clearTimeout(timeout.current);
-      timeout.current = window.setTimeout(() => func(...args), wait);
-    };
+      (...args: any[]) => {
+        clearTimeout(timeout.current);
+        timeout.current = window.setTimeout(() => func(...args), wait);
+      },
+    []
+  );
 
   useEffect(() => {
     return () => {

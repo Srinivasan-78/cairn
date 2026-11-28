@@ -44,6 +44,8 @@ export type RunDownloadJobParams = Omit<
   filetype: string
   title?: string
   totalBytes?: number
+  /** When true, worker resolves hosted-content auth headers from env at fetch time. */
+  useHostedAuth?: boolean
   resourceMetadata?: {
     resource_id: string
     version: string

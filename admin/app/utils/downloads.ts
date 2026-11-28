@@ -9,6 +9,7 @@ import { createWriteStream } from 'fs'
 import { rename } from 'fs/promises'
 import path from 'path'
 import logger from '@adonisjs/core/services/logger'
+import { assertNotPrivateUrl } from '#validators/common'
 
 /**
  * A gated source rejected this install's credentials (401/403).
@@ -79,6 +80,9 @@ export async function doResumableDownload({
       signal,
       timeout,
       headers,
+      beforeRedirect: (options) => {
+        if (options.href) assertNotPrivateUrl(options.href)
+      },
     })
   } catch (error: any) {
     // A 401/403 from a gated source is not a network problem and the raw axios
@@ -115,9 +119,14 @@ export async function doResumableDownload({
     }
   }
 
-  // If final file already exists at correct size, return early (idempotent)
+  // If final file already exists at correct size (or non-empty when content-length is omitted), return early
   const finalFileStats = await getFileStatsIfExists(filepath)
-  if (finalFileStats && Number(finalFileStats.size) === totalBytes && totalBytes > 0 && !forceNew) {
+  if (
+    finalFileStats &&
+    !forceNew &&
+    ((totalBytes > 0 && Number(finalFileStats.size) === totalBytes) ||
+      (totalBytes === 0 && Number(finalFileStats.size) > 0))
+  ) {
     return filepath
   }
 
@@ -162,6 +171,9 @@ export async function doResumableDownload({
       headers,
       signal,
       timeout,
+      beforeRedirect: (options) => {
+        if (options.href) assertNotPrivateUrl(options.href)
+      },
     })
 
   let response = await fetchStream(headers)
@@ -257,32 +269,36 @@ export async function doResumableDownload({
     writeStream.on('finish', async () => {
       clearStallTimer()
       try {
-        // Atomically move the completed .tmp file to the final path
-        await rename(tempPath, filepath)
-      } catch (renameError) {
-        // A parallel job may have completed the same file first — treat as success
-        // if the destination already exists at the expected size.
-        const existing = await getFileStatsIfExists(filepath)
-        if (existing && Number(existing.size) === totalBytes && totalBytes > 0) {
-          // fall through to resolve
-        } else {
-          reject(renameError)
-          return
+        try {
+          // Atomically move the completed .tmp file to the final path
+          await rename(tempPath, filepath)
+        } catch (renameError) {
+          // A parallel job may have completed the same file first — treat as success
+          // if the destination already exists at the expected size.
+          const existing = await getFileStatsIfExists(filepath)
+          if (existing && Number(existing.size) === totalBytes && totalBytes > 0) {
+            // fall through to resolve
+          } else {
+            reject(renameError)
+            return
+          }
         }
+        if (onProgress) {
+          onProgress({
+            downloadedBytes,
+            totalBytes,
+            lastProgressTime: Date.now(),
+            lastDownloadedBytes: downloadedBytes,
+            url,
+          })
+        }
+        if (onComplete) {
+          await onComplete(url, filepath)
+        }
+        resolve(filepath)
+      } catch (finishError) {
+        reject(finishError)
       }
-      if (onProgress) {
-        onProgress({
-          downloadedBytes,
-          totalBytes,
-          lastProgressTime: Date.now(),
-          lastDownloadedBytes: downloadedBytes,
-          url,
-        })
-      }
-      if (onComplete) {
-        await onComplete(url, filepath)
-      }
-      resolve(filepath)
     })
 
     // Start stall timer and pipe: response -> progressStream -> writeStream

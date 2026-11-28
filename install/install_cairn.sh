@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Cairn Installation Script
 
@@ -167,29 +168,28 @@ ensure_docker_installed() {
     sudo apt-get install -y ca-certificates curl
 
     # Create directory for keyrings
-    # sudo install -m 0755 -d /etc/apt/keyrings
+    sudo install -m 0755 -d /etc/apt/keyrings
 
-    # # Download Docker's official GPG key
-    # sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-    # sudo chmod a+r /etc/apt/keyrings/docker.asc
+    # Download Docker's official GPG key
+    . /etc/os-release
+    local distro_id="${ID:-debian}"
+    if [[ "$distro_id" != "ubuntu" && "$distro_id" != "debian" ]]; then
+      distro_id="debian"
+    fi
+    sudo curl -fsSL "https://download.docker.com/linux/${distro_id}/gpg" -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-    # # Add the repository to Apt sources
-    # echo \
-    #   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-    #   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    #   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    # Add the repository to Apt sources
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/${distro_id} \
+      ${VERSION_CODENAME} stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-    # # Update the package database with the Docker packages from the newly added repo
-    # sudo apt-get update
+    # Update the package database with the Docker packages from the newly added repo
+    sudo apt-get update
 
-    # # Install Docker packages
-    # sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-    # Download the Docker convenience script
-    curl -fsSL https://get.docker.com -o get-docker.sh
-
-    # Run the Docker installation script
-    sudo sh get-docker.sh
+    # Install Docker packages
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     # Check if Docker was installed successfully
     if ! command -v docker &> /dev/null; then
@@ -393,7 +393,7 @@ create_cairn_directory(){
   if [[ ! -d "$CAIRN_DIR" ]]; then
     echo -e "${YELLOW}#${RESET} Creating directory for Cairn at $CAIRN_DIR...\\n"
     sudo mkdir -p "$CAIRN_DIR"
-    sudo chown "$(whoami):$(whoami)" "$CAIRN_DIR"
+    sudo chown "$(id -un):$(id -gn)" "$CAIRN_DIR"
 
     echo -e "${GREEN}#${RESET} Directory created successfully.\\n"
   else
@@ -426,8 +426,14 @@ download_management_compose_file() {
   # If stale data exists, MySQL ignores the new passwords above and uses the old ones,
   # causing "Access denied" errors when the admin container tries to connect.
   if [[ -d "${CAIRN_DIR}/mysql" ]]; then
-    echo -e "${YELLOW}#${RESET} Removing existing MySQL data directory to ensure credentials match...\\n"
-    sudo rm -rf "${CAIRN_DIR}/mysql"
+    read -r -p "Existing MySQL data found at ${CAIRN_DIR}/mysql. Delete it so new credentials apply? (y/N): " wipe_mysql
+    if [[ "$wipe_mysql" =~ ^[yY]$ ]]; then
+      echo -e "${YELLOW}#${RESET} Removing existing MySQL data directory...\\n"
+      sudo rm -rf "${CAIRN_DIR:?}/mysql"
+    else
+      echo -e "${RED}#${RESET} Keeping existing MySQL data; aborting to avoid credential mismatch."
+      exit 1
+    fi
   fi
 
   # Inject dynamic env values into the compose file

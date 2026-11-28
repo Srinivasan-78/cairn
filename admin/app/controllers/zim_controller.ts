@@ -124,14 +124,37 @@ export default class ZimController {
 
         filename = sanitized
         tmpPath = finalPath + '.tmp'
+        const maxUploadBytes = Number(process.env.MAX_ZIM_UPLOAD_BYTES || 100 * 1024 * 1024 * 1024)
+        let bytesReceived = 0
         const ws = createWriteStream(tmpPath)
 
         await new Promise<void>((res, rej) => {
           ws.on('error', rej)
           ws.on('finish', res)
           part.on('error', rej)
+          part.on('data', (chunk: Buffer) => {
+            bytesReceived += chunk.length
+            if (bytesReceived > maxUploadBytes) {
+              part.destroy(new Error('UPLOAD_TOO_LARGE'))
+              ws.destroy()
+            }
+          })
           part.pipe(ws)
         })
+
+        // Validate ZIM magic bytes ("ZIM\x04") before promoting temp file
+        const { open } = await import('fs/promises')
+        const fh = await open(tmpPath, 'r')
+        try {
+          const magic = Buffer.alloc(4)
+          const { bytesRead } = await fh.read(magic, 0, 4, 0)
+          if (bytesRead < 4 || magic.toString('ascii', 0, 3) !== 'ZIM' || magic[3] !== 0x04) {
+            uploadError = 'INVALID_TYPE'
+            return
+          }
+        } finally {
+          await fh.close()
+        }
 
         await rename(tmpPath, finalPath)
         tmpPath = null

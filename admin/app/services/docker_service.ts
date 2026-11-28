@@ -309,10 +309,20 @@ export class DockerService {
       }
     }
 
-    // Mark installation as in progress
+    // Mark installation as in progress atomically to prevent TOCTOU races across processes
     this.activeInstallations.add(serviceName)
+    const affected = await Service.query()
+      .where('service_name', serviceName)
+      .whereNot('installation_status', 'installing')
+      .update({ installation_status: 'installing' })
+    if (!affected || (Array.isArray(affected) && affected[0] === 0)) {
+      this.activeInstallations.delete(serviceName)
+      return {
+        success: false,
+        message: `Service ${serviceName} installation is already in progress`,
+      }
+    }
     service.installation_status = 'installing'
-    await service.save()
 
     // Check if a service wasn't marked as installed but has an existing container
     // This can happen if the service was created but not properly installed
@@ -500,7 +510,8 @@ export class DockerService {
       }
       return `Couldn't start because ${portText} is already in use on this machine. Stop whatever is using ${portText} on the host, then try again.`
     }
-    return raw
+    logger.error({ err: error, serviceName }, '[DockerService] Container operation failed')
+    return `Container operation failed for ${serviceName}. Check server logs for details.`
   }
 
   /**
@@ -851,7 +862,13 @@ export class DockerService {
         ...(containerConfig?.WorkingDir && { WorkingDir: containerConfig.WorkingDir }),
         ...(containerConfig?.ExposedPorts && { ExposedPorts: containerConfig.ExposedPorts }),
         Env: [...(containerConfig?.Env ?? []), ...ollamaEnv, ...appEnv],
-        ...(service.container_command ? { Cmd: service.container_command.split(' ') } : {}),
+        ...(service.container_command
+          ? {
+              Cmd: (service.container_command.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) ?? []).map(
+                (arg) => arg.replace(/^(['"])(.*)\1$/, '$2')
+              ),
+            }
+          : {}),
         // Ensure container is attached to the Cairn docker network in production
         ...(process.env.NODE_ENV === 'production' && {
           NetworkingConfig: {
@@ -1092,13 +1109,25 @@ export class DockerService {
 
     // 10-year self-signed cert. CN/SAN are cosmetic for a self-signed cert (the browser warns
     // regardless), but a SAN keeps it structurally valid for clients that require one.
-    const execAsync = promisify(exec)
-    await execAsync(
-      `openssl req -x509 -newkey rsa:2048 -nodes ` +
-        `-keyout "${keyPath}" -out "${certPath}" -days 3650 ` +
-        `-subj "/CN=${commonName}" ` +
-        `-addext "subjectAltName=DNS:cairn,DNS:localhost"`
-    )
+    const { execFile } = await import('node:child_process')
+    const execFileAsync = promisify(execFile)
+    await execFileAsync('openssl', [
+      'req',
+      '-x509',
+      '-newkey',
+      'rsa:2048',
+      '-nodes',
+      '-keyout',
+      keyPath,
+      '-out',
+      certPath,
+      '-days',
+      '3650',
+      '-subj',
+      `/CN=${commonName}`,
+      '-addext',
+      'subjectAltName=DNS:cairn,DNS:localhost',
+    ])
 
     await chmod(keyPath, 0o600)
     await chmod(certPath, 0o644)

@@ -30,9 +30,9 @@ services:
       #      Paths are case-sensitive (/mnt/Data != /mnt/data); a mismatch makes Docker create a new
       #      empty folder, which is the usual cause of "my content disappeared after moving it".
       - /opt/cairn/storage:/app/storage
-      - /var/run/docker.sock:/var/run/docker.sock # Allows the admin service to communicate with the Host's Docker daemon
       - cairn-update-shared:/app/update-shared # Shared volume for update communication
     environment:
+      - DOCKER_HOST=tcp://docker-socket-proxy:2375
       - NODE_ENV=production
       # CAIRN_STORAGE_PATH should equal the host path of the /app/storage volume above. The admin
       # normally auto-detects that mount, so this is a fallback used only if the container can't be
@@ -61,6 +61,8 @@ services:
       - REDIS_PORT=6379
       - DISABLE_COMPRESSION=false # Most reverse proxies (Nginx, Caddy, etc.) will skip compression if the response is already compressed so this is usally a win all around, but if this causes issues with your setup you can set it to "true" to disable gzip in the admin server
     depends_on:
+      docker-socket-proxy:
+        condition: service_started
       mysql:
         condition: service_healthy
       redis:
@@ -70,13 +72,27 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:0.3.0
+    container_name: cairn_docker_proxy
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+      - IMAGES=1
+      - INFO=1
+      - NETWORKS=1
+      - VOLUMES=1
+      - POST=1
+      - EXEC=1
   dozzle:
     # Dozzle is an optional container that allows for easily viewing container logs. We recommend including it unless you have a specific reason not to. Note that if you don't install it, the "Service Logs & Metrics" link in Settings that launches Dozzle will not work.
     image: amir20/dozzle:v10.0
     container_name: cairn_dozzle
     restart: unless-stopped
     ports:
-      - "9999:8080"
+      - "127.0.0.1:9999:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # Allows Dozzle to read logs from the Host's Docker daemon
     environment:
@@ -128,10 +144,11 @@ services:
     container_name: cairn_disk_collector
     restart: unless-stopped
     volumes:
-      - /:/host:ro,rslave  # Read-only view of host FS with rslave propagation so /sys and /proc submounts are visible
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
       # If you relocated storage (see the admin service above), set this host path to match EXACTLY,
       # or the host disk-usage figures shown in the UI will point at the wrong location.
-      - /opt/cairn/storage:/storage
+      - /opt/cairn/storage:/storage:ro
 
 volumes:
   cairn-update-shared:

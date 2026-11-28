@@ -11,6 +11,20 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => {
   return <p className="mb-4 leading-relaxed text-desert-green-darker/85">{children}</p>
 }
 
+const isSafeHref = (href: string | undefined): boolean => {
+  if (!href) return false
+  const trimmed = href.trim()
+  if (trimmed.startsWith('/') || trimmed.startsWith('#') || trimmed.startsWith('./') || trimmed.startsWith('../')) {
+    return true
+  }
+  try {
+    const parsed = new URL(trimmed)
+    return ['http:', 'https:', 'mailto:'].includes(parsed.protocol)
+  } catch {
+    return false
+  }
+}
+
 // Link component
 const Link = ({
   href,
@@ -21,10 +35,11 @@ const Link = ({
   title?: string
   children: React.ReactNode
 }) => {
-  const isExternal = href?.startsWith('http')
+  const safeHref = isSafeHref(href) ? href : '#'
+  const isExternal = safeHref.startsWith('http')
   return (
     <a
-      href={href}
+      href={safeHref}
       title={title}
       className="text-desert-orange font-medium hover:text-desert-orange-dark underline decoration-desert-orange-lighter/50 underline-offset-2 hover:decoration-desert-orange transition-colors"
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}

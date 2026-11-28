@@ -44,7 +44,20 @@ export class SystemUpdateService {
       let targetTag = options?.targetTag
       if (!targetTag) {
         const latestVersion = await KVStore.getValue('system.latestVersion')
+        if (latestVersion && !/^\d+\.\d+\.\d+$/.test(latestVersion)) {
+          return {
+            success: false,
+            message: 'Invalid cached latestVersion format',
+          }
+        }
         targetTag = latestVersion ? `v${latestVersion}` : 'latest'
+      }
+
+      if (!/^[A-Za-z0-9._-]+$/.test(targetTag)) {
+        return {
+          success: false,
+          message: 'Invalid target image tag format',
+        }
       }
 
       const requestData = {

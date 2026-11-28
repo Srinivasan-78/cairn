@@ -70,7 +70,7 @@ export const extractFileName = (path: string) => {
  * @param fn The asynchronous function to be wrapped.
  * @returns A new function that executes the original function and logs any errors. Returns undefined in case of an error.
  */
-export function catchInternal<Fn extends (...args: any[]) => any>(fn: Fn): (...args: Parameters<Fn>) => Promise<ReturnType<Fn> | undefined> {
+export function catchInternal<Fn extends (...args: any[]) => any>(fn: Fn): (...args: Parameters<Fn>) => Promise<ReturnType<Fn>> {
   return async (...args: any[]) => {
     try {
       return await fn(...args)
@@ -86,7 +86,7 @@ export function catchInternal<Fn extends (...args: any[]) => any>(fn: Fn): (...a
         })
       }
 
-      return undefined
+      throw error
     }
   }
 }

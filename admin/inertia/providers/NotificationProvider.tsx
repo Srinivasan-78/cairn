@@ -57,12 +57,15 @@ const NotificationsProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {children}
-      <div className="!fixed bottom-16 right-0 p-4 z-[9999]">
+      <div
+        role="status"
+        aria-live="polite"
+        className="!fixed bottom-16 right-0 p-4 z-[9999]"
+      >
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className={`mb-4 p-4 rounded shadow-md border border-border-default bg-surface-primary max-w-96`}
-            onClick={() => removeNotification(notification.id)}
+            className="mb-4 p-4 rounded shadow-md border border-border-default bg-surface-primary max-w-96"
           >
             <div className="flex flex-row items-start gap-3">
               <div className="flex-shrink-0 mt-0.5">
@@ -71,6 +74,14 @@ const NotificationsProvider = ({ children }: { children: React.ReactNode }) => {
               <div className="flex-1 min-w-0">
                 <p className="break-words">{notification.message}</p>
               </div>
+              <button
+                type="button"
+                aria-label="Dismiss notification"
+                onClick={() => removeNotification(notification.id)}
+                className="text-text-muted hover:text-text-primary text-sm leading-none px-1"
+              >
+                ×
+              </button>
             </div>
           </div>
         ))}

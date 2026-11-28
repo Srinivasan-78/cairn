@@ -269,7 +269,21 @@ export default class OllamaController {
   }
 
   async configureRemote({ request, response }: HttpContext) {
-    const remoteUrl: string | null = request.input('remoteUrl', null)
+    const rawRemoteUrl = request.input('remoteUrl', null)
+    if (rawRemoteUrl !== null && typeof rawRemoteUrl !== 'string') {
+      return response.status(422).send({ success: false, message: 'remoteUrl must be a string or null.' })
+    }
+    const remoteUrl: string | null = rawRemoteUrl
+    if (remoteUrl && remoteUrl.trim() !== '') {
+      try {
+        const parsed = new URL(remoteUrl.trim())
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+          return response.status(422).send({ success: false, message: 'remoteUrl must use http or https.' })
+        }
+      } catch {
+        return response.status(422).send({ success: false, message: 'remoteUrl must be a valid URL.' })
+      }
+    }
 
     const ollamaService = await Service.query().where('service_name', SERVICE_NAMES.OLLAMA).first()
     if (!ollamaService) {

@@ -93,6 +93,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
           (response.stage === 'idle' && seenAdvancedStageRef.current)
 
         if (isComplete) {
+          clearInterval(interval)
           // Re-check version so the KV store clears the stale "update available" flag
           // before we reload, otherwise the banner shows "current → current"
           try {

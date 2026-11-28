@@ -25,7 +25,15 @@ jobs:
     steps:
       - name: check-auth
         id: check-auth
-        run: echo "is_authorized=${{ contains(secrets.DEPLOYMENT_AUTHORIZED_USERS, github.triggering_actor) }}" >> $GITHUB_OUTPUT
+        env:
+          AUTHORIZED_USERS: ${{ secrets.DEPLOYMENT_AUTHORIZED_USERS }}
+          ACTOR: ${{ github.triggering_actor }}
+        run: |
+          if echo "$AUTHORIZED_USERS" | tr ',' '\n' | tr -d ' ' | grep -qxF "$ACTOR"; then
+            echo "is_authorized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_authorized=false" >> "$GITHUB_OUTPUT"
+          fi
   build:
     name: Build sidecar-updater image
     needs: check_authorization

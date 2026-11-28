@@ -43,7 +43,7 @@ sudo bash install_cairn.sh
 
 Cairn is now installed on your device! Open a browser and navigate to `http://localhost:8080` (or `http://DEVICE_IP:8080`) to start exploring!
 
-For a complete step-by-step walkthrough (including Ubuntu installation), see the [Installation Guide](https://cairn.example/install). For Windows users, see the [WSL2 install guide](https://cairn.example/install/wsl2) — community-supported path covering native Docker and Docker Desktop install routes.
+For Windows users, WSL2 is a community-supported path covering native Docker and Docker Desktop install routes.
 
 ### Advanced Installation
 For more control over the installation process, copy and paste the [Docker Compose template](https://raw.githubusercontent.com/Srinivasan-78/cairn/refs/heads/main/install/management_compose.yaml) into a `docker-compose.yml` file and customize it to your liking (be sure to replace any placeholders with your actual values). Then, run `docker compose up -d` to start the Command Center and its dependencies. Note: this method is recommended for advanced users only, as it requires familiarity with Docker and manual configuration before starting.
@@ -58,7 +58,7 @@ Cairn is a management UI ("Command Center") and API that orchestrates a collecti
 - **Offline Maps** — downloadable regional maps via [ProtoMaps](https://protomaps.com)
 - **Data Tools** — encryption, encoding, and analysis via [CyberChef](https://gchq.github.io/CyberChef/)
 - **Notes** — local note-taking via [FlatNotes](https://github.com/dullage/flatnotes)
-- **System Benchmark** — hardware scoring with a [community leaderboard](https://benchmark.cairn.example)
+- **System Benchmark** — hardware scoring and local performance telemetry
 - **Supply Depot** — a one-click app catalog (PDF tools, file browser, e-book library, password manager, and more) plus the ability to run your own custom Docker containers
 - **Automatic Updates** — opt-in, hands-off updates for the core software, installed apps, and offline content, on a schedule you control
 - **Easy Setup Wizard** — guided first-time configuration with curated content collections
@@ -104,8 +104,6 @@ To run LLMs and other included AI tools:
 - OS: Debian-based (Ubuntu 26.04 LTS recommended)
 - Stable internet connection (required during install only)
 
-**For detailed build recommendations at three price points ($150–$1,000+), see the [Hardware Guide](https://cairn.example/hardware).**
-
 Again, Cairn itself is quite lightweight — it's the tools and resources you choose to install with Cairn that will determine the specs required for your unique deployment
 
 #### Running AI models on a different host
@@ -127,7 +125,7 @@ You can override the endpoint used for this check in two ways. The connectivity 
 ## About Security
 By design, Cairn is intended to be open and available without hurdles — it includes no authentication. If you decide to connect your device to a local network after install (e.g. for allowing other devices to access its resources), you can block/open ports to control which services are exposed.
 
-**Will authentication be added in the future?** Maybe. It's not currently a priority, but if there's enough demand for it, we may consider building in an optional authentication layer in a future release to support use cases where multiple users need access to the same instance but with different permission levels (e.g. family use with parental controls, classroom use with teacher/admin accounts, etc.). We have a suggestion for this on our public roadmap, so if this is something you'd like to see, please upvote it here: https://roadmap.cairn.example/posts/1/user-authentication-please-build-in-user-auth-with-admin-user-roles
+**Will authentication be added in the future?** Maybe. It's not currently a priority, but if there's enough demand for it, we may consider building in an optional authentication layer in a future release to support use cases where multiple users need access to the same instance but with different permission levels (e.g. family use with parental controls, classroom use with teacher/admin accounts, etc.). If this is something you'd like to see, please open or upvote an issue on [GitHub Issues](https://github.com/Srinivasan-78/cairn/issues).
 
 For now, we recommend using network-level controls to manage access if you're planning to expose your Cairn instance to other devices on a local network. Cairn is not designed to be exposed directly to the internet, and we strongly advise against doing so unless you really know what you're doing, have taken appropriate security measures, and understand the risks involved.
 

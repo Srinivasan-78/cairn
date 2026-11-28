@@ -16,11 +16,13 @@ const ActiveEmbedJobs = ({ withHeader = false }: ActiveEmbedJobsProps) => {
   const { data: jobs } = useEmbedJobs()
 
   // Re-render every 5s to keep per-job "last activity Xs ago" timestamps fresh.
+  const hasJobs = Boolean(jobs && jobs.length > 0)
   const [tick, setTick] = useState(() => Date.now())
   useEffect(() => {
+    if (!hasJobs) return
     const id = setInterval(() => setTick(Date.now()), 5000)
     return () => clearInterval(id)
-  }, [])
+  }, [hasJobs])
 
   return (
     <>

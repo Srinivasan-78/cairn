@@ -101,7 +101,7 @@ export class DownloadService {
     const modelDownloads = modelJobs.map((job) => ({
       jobId: job.id!.toString(),
       url: job.data.modelName || 'Unknown Model',
-      progress: parseInt(job.progress.toString(), 10),
+      progress: parseProgress(job.progress).percent,
       filepath: job.data.modelName || 'Unknown Model',
       filetype: 'model',
       status: (job.failedReason ? 'failed' : 'active') as 'active' | 'failed',

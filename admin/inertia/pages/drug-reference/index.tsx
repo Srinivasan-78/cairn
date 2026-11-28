@@ -291,9 +291,10 @@ export default function DrugReferenceIndex({
   const drugNothing = drugSearched && !drugLoading && drugResults.length === 0
 
   // Auto-collapse the filter drawer once results land (keeps controls on top, tidy).
+  const hasDrugResults = drugResults.length > 0
   useEffect(() => {
-    if (drugResults.length > 0) setFiltersOpen(false)
-  }, [drugResults.length > 0])
+    if (hasDrugResults) setFiltersOpen(false)
+  }, [hasDrugResults])
 
   // ── Situation search (multi-select) ─────────────────────────────────────────
   const fetchSituation = useCallback(

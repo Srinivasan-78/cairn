@@ -1,4 +1,5 @@
 #!/bin/bash
+set -uo pipefail
 
 # Cairn Update Sidecar - Polls for update requests and executes them
 
@@ -30,6 +31,12 @@ EOF
 
 perform_update() {
     local target_tag="$1"
+
+    if ! [[ "$target_tag" =~ ^[A-Za-z0-9._-]+$ ]]; then
+        log "ERROR: Invalid target_tag '${target_tag}' rejected"
+        write_status "error" 0 "Invalid target_tag format"
+        return 1
+    fi
 
     log "Update request received - starting system update (target tag: ${target_tag})"
 

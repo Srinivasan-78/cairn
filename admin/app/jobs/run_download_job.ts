@@ -11,6 +11,7 @@ import { OllamaService } from '#services/ollama_service'
 import { EmbedFileJob } from './embed_file_job.js'
 import { basename, join, resolve, sep } from 'node:path'
 import { ZIM_STORAGE_PATH } from '../utils/fs.js'
+import { getHostedContentHeaders } from '../utils/hosted_content_auth.js'
 
 /** Maps live under `<cwd>/storage/maps/pmtiles`; no shared constant exists. */
 const MAP_STORAGE_PATH = '/storage/maps'
@@ -67,8 +68,11 @@ export class RunDownloadJob {
   }
 
   async handle(job: Job) {
-    const { url, filepath, timeout, allowedMimeTypes, forceNew, filetype, resourceMetadata, requestHeaders } =
+    const { url, filepath, timeout, allowedMimeTypes, forceNew, filetype, resourceMetadata, requestHeaders, useHostedAuth } =
       job.data as RunDownloadJobParams
+    const resolvedHeaders = useHostedAuth
+      ? { ...requestHeaders, ...getHostedContentHeaders({ auth: 'cairn_app_key' }) }
+      : requestHeaders
 
     // Register abort controller for this job
     const abortController = new AbortController()
@@ -110,7 +114,7 @@ export class RunDownloadJob {
         timeout,
         allowedMimeTypes,
         forceNew,
-        requestHeaders,
+        requestHeaders: resolvedHeaders,
         signal: abortController.signal,
         onProgress(progress) {
           const progressPercent = (progress.downloadedBytes / (progress.totalBytes || 1)) * 100

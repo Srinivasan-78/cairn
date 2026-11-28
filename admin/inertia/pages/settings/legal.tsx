@@ -32,9 +32,28 @@ export default function LegalPage() {
 
           {/* Third-Party Software */}
           <section className="mb-10">
+            <h2 className="text-2xl font-semibold mb-4">Origin &amp; Upstream Attribution</h2>
+            <p className="text-text-primary mb-3">
+              Cairn is a derivative work based on{' '}
+              <a
+                href="https://github.com/Crosstalk-Solutions/project-nomad"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Project NOMAD
+              </a>{' '}
+              by Crosstalk Solutions, LLC, licensed under the Apache License, Version 2.0.
+              Cairn is an independent fork and is not affiliated with, endorsed by, or sponsored
+              by Crosstalk Solutions, LLC.
+            </p>
+          </section>
+
+          {/* Third-Party Software */}
+          <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Third-Party Software Attribution</h2>
             <p className="text-text-primary mb-4">
-              Cairn&trade; integrates the following open source projects. We are grateful to
+              Cairn integrates the following open source projects. We are grateful to
               their developers and communities:
             </p>
             <ul className="space-y-3 text-text-primary">

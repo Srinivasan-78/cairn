@@ -25,7 +25,15 @@ jobs:
     steps:
       - name: check-auth
         id: check-auth
-        run: echo "is_authorized=${{ contains(secrets.DEPLOYMENT_AUTHORIZED_USERS, github.triggering_actor) }}" >> $GITHUB_OUTPUT
+        env:
+          AUTHORIZED_USERS: ${{ secrets.DEPLOYMENT_AUTHORIZED_USERS }}
+          ACTOR: ${{ github.triggering_actor }}
+        run: |
+          if echo "$AUTHORIZED_USERS" | tr ',' '\n' | tr -d ' ' | grep -qxF "$ACTOR"; then
+            echo "is_authorized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_authorized=false" >> "$GITHUB_OUTPUT"
+          fi
   build:
     name: Build Docker image
     needs: check_authorization
@@ -37,6 +45,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Compute build date
+        id: meta
+        run: echo "build_date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550  # v4
         with:
@@ -53,6 +64,5 @@ jobs:
             ${{ inputs.tag_latest && 'ghcr.io/srinivasan-78/cairn:latest' || '' }}
           build-args: |
             VERSION=${{ inputs.version }}
-            BUILD_DATE=${{ github.event.workflow_run.created_at }}
+            BUILD_DATE=${{ steps.meta.outputs.build_date }}
             VCS_REF=${{ github.sha }}
-            CREATOR_PACKS_APP_KEY=${{ secrets.CREATOR_PACKS_APP_KEY }}

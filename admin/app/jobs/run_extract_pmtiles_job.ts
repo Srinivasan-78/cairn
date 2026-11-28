@@ -83,44 +83,53 @@ export class RunExtractPmtilesJob {
     let userCancelled = false
     let proc: ChildProcess | null = null
     let lastReportedBytes = -1
+    let tickInFlight = false
 
     // One 2s tick polls the Redis cancel signal and reads file-size for progress. pmtiles
     // writes incrementally but rewrites directories near the end so progress isn't strictly
     // monotonic — we cap at 99% and skip emit when bytes are unchanged to avoid Redis chatter.
     const tick = setInterval(async () => {
+      if (tickInFlight) return
+      tickInFlight = true
       try {
-        const val = await cancelRedis.get(RunExtractPmtilesJob.cancelKey(job.id!))
-        if (val) {
-          await cancelRedis.del(RunExtractPmtilesJob.cancelKey(job.id!))
-          userCancelled = true
-          proc?.kill('SIGTERM')
+        try {
+          const val = await cancelRedis.get(RunExtractPmtilesJob.cancelKey(job.id!))
+          if (val) {
+            await cancelRedis.del(RunExtractPmtilesJob.cancelKey(job.id!))
+            userCancelled = true
+            proc?.kill('SIGTERM')
+          }
+        } catch {
+          // Redis errors non-fatal — in-memory handle also covers same-process cancels
         }
-      } catch {
-        // Redis errors non-fatal — in-memory handle also covers same-process cancels
-      }
 
-      try {
-        const fileStat = await stat(outputFilepath)
-        const downloadedBytes = Number(fileStat.size)
-        if (downloadedBytes === lastReportedBytes) return
-        lastReportedBytes = downloadedBytes
+        try {
+          const fileStat = await stat(outputFilepath)
+          const downloadedBytes = Number(fileStat.size)
+          if (downloadedBytes === lastReportedBytes) return
+          lastReportedBytes = downloadedBytes
 
-        const totalBytes = estimatedBytes ?? 0
-        const percent =
-          totalBytes > 0 ? Math.min(99, Math.floor((downloadedBytes / totalBytes) * 100)) : 0
+          const totalBytes = estimatedBytes ?? 0
+          const percent =
+            totalBytes > 0 ? Math.min(99, Math.floor((downloadedBytes / totalBytes) * 100)) : 0
 
-        await this.safeUpdateProgress(job, {
-          percent,
-          downloadedBytes,
-          totalBytes,
-          lastProgressTime: Date.now(),
-        } as DownloadProgressData)
-      } catch {
-        // File doesn't exist yet (subprocess still setting up)
+          await this.safeUpdateProgress(job, {
+            percent,
+            downloadedBytes,
+            totalBytes,
+            lastProgressTime: Date.now(),
+          } as DownloadProgressData)
+        } catch {
+          // File doesn't exist yet (subprocess still setting up)
+        }
+      } finally {
+        tickInFlight = false
       }
     }, 2000)
 
     try {
+      const { assertNotPrivateUrl } = await import('#validators/common')
+      assertNotPrivateUrl(sourceUrl)
       const args = buildPmtilesExtractArgs({
         sourceUrl,
         outputFilepath,

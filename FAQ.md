@@ -20,7 +20,7 @@ Long answer: Custom storage paths, mount points, and external drives (like iSCSI
 
 ## Can I run Cairn on MAC, WSL2, or a non-Debian-based Distro?
 
-**WSL2 on Windows** is community-supported via the [WSL2 install guide](https://cairn.example/install/wsl2) — covers two install paths (native Docker and Docker Desktop) with all known gotchas documented and empirical performance numbers comparing WSL2 to bare-metal.
+**WSL2 on Windows** — community-supported path covering native Docker and Docker Desktop install routes.
 
 **macOS and other non-Debian Linux distros** aren't officially supported. See [Why does Cairn require a Debian-based OS?](#why-does-cairn-require-a-debian-based-os) for details.
 
@@ -30,18 +30,18 @@ Cairn is currently designed to run on Debian-based Linux distributions (with Ubu
 
 Support for other operating systems will come in the future, but because our development resources are limited as a free and open-source project, we needed to prioritize our efforts and focus on a narrower set of supported platforms for the initial release. We chose Debian-based Linux as our starting point because it's widely used, easy to spin up, and provides a stable environment for running Docker containers.
 
-For Windows users, the [WSL2 install guide](https://cairn.example/install/wsl2) provides a community-supported path. Community members have also published guides for other platforms (e.g. macOS) in our Discord community and [Github Discussions](https://github.com/Srinivasan-78/cairn/discussions), so if you're interested in running Cairn on a non-Debian-based system, we recommend checking there for any available resources or guides. However, keep in mind that if you choose to run Cairn on a non-Debian-based system, you may encounter issues that we won't be able to provide support for, and you may need to have a higher level of technical expertise to troubleshoot and resolve any problems that arise.
+For Windows users, WSL2 provides a community-supported path. Community members have also published guides for other platforms (e.g. macOS) in [GitHub Discussions](https://github.com/Srinivasan-78/cairn/discussions), so if you're interested in running Cairn on a non-Debian-based system, we recommend checking there for any available resources or guides. However, keep in mind that if you choose to run Cairn on a non-Debian-based system, you may encounter issues that we won't be able to provide support for, and you may need to have a higher level of technical expertise to troubleshoot and resolve any problems that arise.
 
 ## Can I run Cairn on a Raspberry Pi or other ARM-based device?
 Cairn is currently designed to run on x86-64 architecture, and we have not yet tested or optimized it for ARM-based devices like the Raspberry Pi (and have not published any official images for ARM architecture).
 
 Support for ARM-based devices is on our roadmap, but our initial focus was on x86-64 hardware due to its widespread use and compatibility with a wide range of applications.
 
-Community members have forked and published their own ARM-compatible images and installation guides for running Cairn on Raspberry Pi and other ARM-based devices in our Discord community and [Github Discussions](https://github.com/Srinivasan-78/cairn/discussions), but these are not officially supported by the core development team, and we cannot guarantee their functionality or provide support for any issues that arise when using these community-created resources.
+Community members have forked and published their own ARM-compatible images and installation guides for running Cairn on Raspberry Pi and other ARM-based devices in [GitHub Discussions](https://github.com/Srinivasan-78/cairn/discussions), but these are not officially supported by the core development team, and we cannot guarantee their functionality or provide support for any issues that arise when using these community-created resources.
 
 ## What are the hardware requirements for running Cairn?
 
-Cairn itself is quite lightweight and can run on even modest x86-64 hardware, but the tools and resources you choose to install with Cairn will determine the specs required for your unique deployment. Please see the [Hardware Guide](https://cairn.example/hardware) for detailed build recommendations at various price points.
+Cairn itself is quite lightweight and can run on even modest x86-64 hardware, but the tools and resources you choose to install with Cairn will determine the specs required for your unique deployment. See the Device Requirements section in [README.md](README.md#device-requirements) for minimum and optimal specs.
 
 ## Does Cairn support languages other than English?
 
@@ -88,7 +88,7 @@ No, we do not sell hardware or pre-built devices with Cairn pre-installed at thi
 
 We strive to address and resolve issues as quickly as possible, but please keep in mind that Cairn is a free and open-source project maintained by a small team of volunteers. We prioritize issues based on their severity, impact on users, and the resources required to resolve them. Critical issues that affect a large number of users are typically addressed more quickly, while less severe issues may take longer to resolve. Aside from the development efforts needed to address the issue, we do our best to conduct thorough testing and validation to ensure that any fix we implement doesn't introduce new issues or regressions, which also adds to the time it takes to resolve an issue.
 
-We also encourage community involvement in troubleshooting and resolving issues, so if you encounter a problem, please consider checking our Discord community and Github Discussions for potential solutions or workarounds while we work on an official fix.
+We also encourage community involvement in troubleshooting and resolving issues, so if you encounter a problem, please consider checking [GitHub Discussions](https://github.com/Srinivasan-78/cairn/discussions) for potential solutions or workarounds while we work on an official fix.
 
 ## How often are new features added or updates released?
 
@@ -101,8 +101,8 @@ Because Cairn is still a young project, some PRs (particularly those for new fea
 
 ## I have a question that isn't answered here. Where can I ask for help?
 
-If you have a question that isn't answered in this FAQ, please feel free to ask for help in our Discord community (https://github.com/Srinivasan-78/cairn/discussions) or on our Github Discussions page (https://github.com/Srinivasan-78/cairn/discussions).
+If you have a question that isn't answered in this FAQ, please feel free to ask for help on our [GitHub Discussions](https://github.com/Srinivasan-78/cairn/discussions) page.
 
 ## I have a suggestion for a new feature or improvement. How can I share it?
 
-We welcome and encourage suggestions for new features and improvements! We highly encourage sharing your ideas (or upvoting existing suggestions) on our public roadmap at https://roadmap.cairn.example, where we track new feature requests. This is the best way to ensure that your suggestion is seen by the development team and the community, and it also allows other community members to upvote and show support for your idea, which can help prioritize it for future development.
+We welcome and encourage suggestions for new features and improvements! Please open an issue on [GitHub Issues](https://github.com/Srinivasan-78/cairn/issues) or start a thread in [GitHub Discussions](https://github.com/Srinivasan-78/cairn/discussions).

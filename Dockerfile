@@ -82,15 +82,8 @@ LABEL org.opencontainers.image.title="Cairn" \
 
 ENV NODE_ENV=production
 
-# Creator Packs entitlement key, injected into OFFICIAL release builds at build
-# time (--build-arg CREATOR_PACKS_APP_KEY=... from the CREATOR_PACKS_APP_KEY CI
-# secret; see build-primary-image.yml). Baked as an ENV so admin/start/env.ts
-# reads it at runtime. Empty by default, so builds from source (and any build
-# without the secret) ship UNCONFIGURED and hide the Creator Packs UI. The key
-# lands in this public image layer (extractable — the accepted ceiling); rotate
-# via `wrangler secret put APP_KEY` + a new image if it leaks.
-ARG CREATOR_PACKS_APP_KEY=""
-ENV CREATOR_PACKS_APP_KEY=$CREATOR_PACKS_APP_KEY
+# Runtime-only secret: pass CREATOR_PACKS_APP_KEY via environment or mounted
+# secret at container runtime rather than baking it into the image layer.
 
 WORKDIR /app
 COPY --from=production-deps /app/node_modules /app/node_modules
@@ -110,7 +103,12 @@ COPY install/calibre-empty-library/metadata.db /app/assets/calibre/metadata.db
 
 # Copy entrypoint script and ensure it's executable
 COPY install/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    groupadd -r cairn && useradd -r -g cairn -d /app cairn && \
+    mkdir -p /app/storage /app/update-shared && \
+    chown -R cairn:cairn /app
+
+USER cairn
 
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

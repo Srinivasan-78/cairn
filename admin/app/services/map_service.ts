@@ -266,9 +266,11 @@ export class MapService implements IMapService {
       throw new Error(`Download already in progress for URL ${url}`)
     }
 
-    const filename = url.split('/').pop()
-    if (!filename) {
-      throw new Error('Could not determine filename from URL')
+    const rawName = parsed.pathname.split('/').pop() || ''
+    const { sanitizeFilename } = await import('../utils/fs.js')
+    const filename = sanitizeFilename(rawName)
+    if (!filename || !filename.endsWith('.pmtiles')) {
+      throw new Error('Could not determine valid .pmtiles filename from URL')
     }
 
     const filepath = join(process.cwd(), this.mapStoragePath, 'pmtiles', filename)

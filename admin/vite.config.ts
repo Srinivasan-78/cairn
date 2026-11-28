@@ -19,6 +19,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: true // This is for dev environments only. Can be overriden with `__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` if needed.
+    ...(process.env.VITE_ALLOWED_HOSTS === 'true' ? { allowedHosts: true } : {}),
   }
 })

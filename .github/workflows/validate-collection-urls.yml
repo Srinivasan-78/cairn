@@ -2,11 +2,10 @@ name: Validate Collection URLs
 
 on:
   push:
+    branches: [main]
     paths:
       - 'collections/**.json'
-  pull_request:
-    paths:
-      - 'collections/**.json'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,6 +27,11 @@ jobs:
 
           while IFS= read -r url; do
             [ -z "$url" ] && continue
+            # Skip placeholder cairn-maps URLs until the cairn-maps repository is published
+            if [[ "$url" == https://github.com/Srinivasan-78/cairn-maps/* ]]; then
+              echo "Skipping unpublished cairn-maps placeholder: $url"
+              continue
+            fi
             CHECKED=$((CHECKED + 1))
             printf "Checking: %s ... " "$url"
 
