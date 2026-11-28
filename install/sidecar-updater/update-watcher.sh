@@ -18,12 +18,15 @@ write_status() {
     local stage="$1"
     local progress="$2"
     local message="$3"
+    local escaped_msg="${message//\\/\\\\}"
+    escaped_msg="${escaped_msg//\"/\\\"}"
+    escaped_msg="${escaped_msg//$'\n'/ }"
 
     cat > "$STATUS_FILE" <<EOF
 {
   "stage": "$stage",
   "progress": $progress,
-  "message": "$message",
+  "message": "$escaped_msg",
   "timestamp": "$(date -Iseconds)"
 }
 EOF

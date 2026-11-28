@@ -24,7 +24,7 @@ if [[ ! -f "$FILE" ]]; then
 fi
 
 # Find the line number of the ## Unreleased header (case-insensitive)
-HEADER_LINE=$(grep -inm1 '^## unreleased' "$FILE" | cut -d: -f1)
+HEADER_LINE=$(grep -inm1 '^## unreleased' "$FILE" | cut -d: -f1 || true)
 
 if [[ -z "$HEADER_LINE" ]]; then
   echo "No '## Unreleased' section found. Skipping."
@@ -38,7 +38,7 @@ NEXT_SECTION_LINE=""
 if [[ $HEADER_LINE -lt $TOTAL_LINES ]]; then
   NEXT_SECTION_LINE=$(tail -n +"$((HEADER_LINE + 1))" "$FILE" \
     | grep -nm1 '^## \|^---$' \
-    | cut -d: -f1)
+    | cut -d: -f1 || true)
 fi
 
 if [[ -n "$NEXT_SECTION_LINE" ]]; then

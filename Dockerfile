@@ -76,8 +76,8 @@ LABEL org.opencontainers.image.title="Cairn" \
       org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.vendor="Srinivasan Vijayaraghavan" \
-      org.opencontainers.image.documentation="https://github.com/Cairn/cairn/blob/main/README.md" \
-      org.opencontainers.image.source="https://github.com/Cairn/cairn" \
+      org.opencontainers.image.documentation="https://github.com/Srinivasan-78/cairn/blob/main/README.md" \
+      org.opencontainers.image.source="https://github.com/Srinivasan-78/cairn" \
       org.opencontainers.image.licenses="Apache-2.0"
 
 ENV NODE_ENV=production

@@ -9,6 +9,7 @@ jobs:
   check_authorization:
     name: Check authorization to release new version
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       isAuthorized: ${{ steps.check-auth.outputs.is_authorized }}
     steps:
@@ -18,7 +19,7 @@ jobs:
           AUTHORIZED_USERS: ${{ secrets.DEPLOYMENT_AUTHORIZED_USERS }}
           ACTOR: ${{ github.triggering_actor }}
         run: |
-          if echo "$AUTHORIZED_USERS" | grep -qw "$ACTOR"; then
+          if printf '%s\n' "$AUTHORIZED_USERS" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -qxF "$ACTOR"; then
             echo "is_authorized=true" >> "$GITHUB_OUTPUT"
           else
             echo "is_authorized=false" >> "$GITHUB_OUTPUT"

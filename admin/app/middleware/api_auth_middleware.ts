@@ -23,7 +23,14 @@ export default class ApiAuthMiddleware {
         try {
           const originHost = new URL(origin).host
           const requestHost = request.header('host')
-          const configuredUrl = process.env.URL ? new URL(process.env.URL).host : null
+          let configuredUrl: string | null = null
+          if (process.env.URL) {
+            try {
+              configuredUrl = new URL(process.env.URL).host
+            } catch {
+              configuredUrl = null
+            }
+          }
           if (originHost !== requestHost && originHost !== configuredUrl) {
             return response.forbidden({ message: 'Cross-origin request rejected' })
           }
